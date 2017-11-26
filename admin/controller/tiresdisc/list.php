@@ -20,6 +20,8 @@ class ControllerTiresDiscList extends Controller {
                     'cat'       => 'disc',
                     'cat_name'  => 'Диски',
                     'date'      => $prod['date'],
+                    'link'      => $prod['link'],
+                    'linkEdit'  => $this->url->link('tiresdisc/edit', 'token='.$this->session->data['token'].'&prod='.$prod['link'], TRUE),      
                     'price'     => $prod['price'],
                     'vin'       => $prod['vin'],      
                     'quant'     => $prod['quan'],      
@@ -44,7 +46,9 @@ class ControllerTiresDiscList extends Controller {
                     'vin'       => $prod['vin'],      
                     'quant'     => $prod['quan'],      
                     'locate'    => $prod['stock'].'/'.$prod['location'],      
-                    'stat'      => $prod['status'],      
+                    'stat'      => $prod['status'],
+                    'link'      => $prod['link'],
+                    'linkEdit'  => $this->url->link('tiresdisc/edit', 'token='.$this->session->data['token'].'&prod='.$prod['link'], TRUE),      
                     'type'      => $prod['type'],      
                     'cond'      => $prod['cond']
                 );
@@ -55,6 +59,14 @@ class ControllerTiresDiscList extends Controller {
         $this->response->setOutput($this->load->view("tiresdisc/list", $data));
     }
     
+    public function deleteItem(){
+        $id = $this->request->post['id'];
+        $this->load->model('tiresdisc/tiresdisc');
+        $result = $this->model_tiresdisc_tiresdisc->deleteProd($id);
+        echo $result;
+    }
+
+
     public function getLayout() {
         
         

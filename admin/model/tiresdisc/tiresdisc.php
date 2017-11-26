@@ -198,6 +198,7 @@ class ModelTiresdiscTiresdisc extends Model {
     public function getList() {
         $sql = "SELECT "
                 . "pd.name AS name, "
+                . "p.product_id AS link, "
                 . "p.price AS price, "
                 . "p.date_added AS date, "
                 . "tire.image AS tImage, "
@@ -216,6 +217,25 @@ class ModelTiresdiscTiresdisc extends Model {
               ."WHERE tire.link = p.product_id OR disc.link = p.product_id ";
         $result = $this->db->query($sql);
         return $result->rows;
+    }
+    
+    public function deleteProd($id) {
+        $query = $this->db->query("SELECT * FROM ".DB_PREFIX."td_disc WHERE link = ".(int)$id);
+        if(!empty($query->row)){
+            $table = DB_PREFIX.'td_disc';
+        } else {
+            $table = DB_PREFIX.'td_tires';
+        }
+        
+        if ($this->db->query("DELETE FROM ".$table." WHERE link = ".(int)$id)){
+            if($this->db->query("DELETE FROM ".DB_PREFIX."product WHERE product_id = ".(int)$id)){
+                if($this->db->query("DELETE FROM ".DB_PREFIX."product_description WHERE product_id = ".(int)$id)){
+                    if($this->db->query("DELETE FROM ".DB_PREFIX."product_image WHERE product_id = ".(int)$id)){
+                        return TRUE;
+                    } else { return FALSE;}
+                } else { return FALSE;} 
+            } else { return FALSE;}
+        } else { return FALSE;}
     }
 }
 
