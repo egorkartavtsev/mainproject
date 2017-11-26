@@ -33,7 +33,7 @@ class ControllerTiresdiscCreate extends Controller {
         
         foreach ($parameters as $field => $param) {
             $form.='<div class="form-group-sm col-md-3">';
-                $form.='<label for="'.$field.$id.'">Выберите "'.$param['name'].'"</label>';
+                $form.='<label for="'.$field.$id.'">"'.$param['name'].'"</label>';
                 $form.='<select class="form-control" id="'.$field.$id.'" name="info['.$id.']['.$field.']">';
                     foreach ($param['values'] as $value) {
                         $form.='<option value="'.$value['value'].'">'.$value['value'].'</option>';
@@ -42,13 +42,13 @@ class ControllerTiresdiscCreate extends Controller {
             $form.='</div>';
         }
         $form.= '<div class="form-group-sm col-md-3">';
-            $form.='<label for="photos'.$id.'">Выберите фотографии</label>';
+            $form.='<label for="photos'.$id.'">фотографии</label>';
             $form.= '<input name="photo['.$id.'][]" id="photos'.$id.'" class="form-control" type="file" multiple="true">';
         $form.= '</div>';
         
         /*-----------------------------------------------*/
         $form.='<div class="form-group-sm col-md-3">';
-            $form.='<label for="stock'.$id.'">Выберите склад</label>';
+            $form.='<label for="stock'.$id.'">склад</label>';
             $form.='<select type="text" class="form-control" id="stock'.$id.'" name="info['.$id.'][stock]">';
                     $form.= '<option value="-">---</option>';
                     foreach ($stocks as $stock) {
@@ -58,32 +58,32 @@ class ControllerTiresdiscCreate extends Controller {
         $form.='</div>';
         $form.='<div class="col-md-6">';
                 $form.='<div class="form-group-sm col-md-3">';
-                    $form.='<label for="stell'.$id.'">Выберите стеллаж</label>';
+                    $form.='<label for="stell'.$id.'">стеллаж</label>';
                     $form.='<input type="text" class="form-control" id="stell'.$id.'" name="info['.$id.'][stell]">';
                 $form.='</div>';
                 $form.='<div class="form-group-sm col-md-3">';
-                    $form.='<label for="jar'.$id.'">Выберите ярус</label>';
+                    $form.='<label for="jar'.$id.'">ярус</label>';
                     $form.='<input type="text" class="form-control" id="jar'.$id.'" name="info['.$id.'][jar]">';
                 $form.='</div>';
                 $form.='<div class="form-group-sm col-md-3">';
-                    $form.='<label for="shelf'.$id.'">Выберите полку</label>';
+                    $form.='<label for="shelf'.$id.'">полку</label>';
                     $form.='<input type="text" class="form-control" id="shelf'.$id.'" name="info['.$id.'][shelf]">';
                 $form.='</div>';
                 $form.='<div class="form-group-sm col-md-3">';
-                    $form.='<label for="box'.$id.'">Выберите коробку</label>';
+                    $form.='<label for="box'.$id.'">коробку</label>';
                     $form.='<input type="text" class="form-control" id="box'.$id.'" name="info['.$id.'][box]">';
                 $form.='</div>';
             $form.='</div>';
         /*------------------------------------------------*/
         $form.='<div class="form-group-sm col-md-3">';
-            $form.='<label for="ctype'.$id.'">Выберите тип товара</label>';
+            $form.='<label for="ctype'.$id.'">тип товара</label>';
             $form.='<select type="text" class="form-control" id="ctype'.$id.'" name="info['.$id.'][ctype]">'
                     . '<option value="Б/У">Б/У</option>'
                     . '<option value="Новый">Новый</option>'
                 . '</select>';
         $form.='</div>';
         $form.='<div class="form-group-sm col-md-3">';
-            $form.='<label for="cond'.$id.'">Выберите состояние товара</label>';
+            $form.='<label for="cond'.$id.'">состояние товара</label>';
             $form.='<select type="text" class="form-control" id="cond'.$id.'" name="info['.$id.'][cond]">'
                     . '<option value="Отличное">Отличное</option>'
                     . '<option value="Хорошее">Хорошее</option>'

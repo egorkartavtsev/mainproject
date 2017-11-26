@@ -10,7 +10,7 @@ class ControllerTiresDiscList extends Controller {
 		foreach ($list as $prod) {
             if($prod['dImage']!==NULL){
                 if (is_file(DIR_IMAGE.$prod['dImage'])) {
-                        $image = $this->model_tool_image->resize(DIR_IMAGE.$prod['dImage'], 40, 40);
+                        $image = $this->model_tool_image->resize($prod['dImage'], 40, 40);
                 } else {
                         $image = $this->model_tool_image->resize('no_image.png', 40, 40);
                 }
@@ -32,7 +32,7 @@ class ControllerTiresDiscList extends Controller {
                 );
             } else {
                 if (is_file(DIR_IMAGE.$prod['tImage'])) {
-                        $image = $this->model_tool_image->resize(DIR_IMAGE.$prod['tImage'], 40, 40);
+                        $image = $this->model_tool_image->resize($prod['tImage'], 40, 40);
                 } else {
                         $image = $this->model_tool_image->resize('no_image.png', 40, 40);
                 }
