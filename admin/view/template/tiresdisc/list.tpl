@@ -1,0 +1,54 @@
+<?php echo $header; ?><?php echo $column_left; ?>
+<div id="content">
+    <script type="text/javascript" src="view/javascript/tiresdisc.js"></script>
+    <div class="page-header">
+        <div class="container-fluid">
+            <h1><?php echo $heading_title; ?></h1>
+            <ul class="breadcrumb">
+                <?php foreach ($breadcrumbs as $breadcrumb) { ?>
+                <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
+                <?php } ?>
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="well">TUT BUDET FILTER</div>
+        <table class="table table-bordered table-responsive table-striped">
+            <thead>
+                <tr>
+                    <td>#</td>
+                    <td>Изображение</td>
+                    <td>Категория</td>
+                    <td>Название</td>
+                    <td>Внутренний номер</td>
+                    <td>Расположение</td>
+                    <td>Цена</td>
+                    <td>Количество</td>
+                    <td>Статус</td>
+                    <td>Дата создания</td>
+                    <td>Действие</td>
+                </tr>
+            </thead>
+            <tbody id="listProducts">
+                <?php foreach($list as $prod){ ?>
+                    <tr>
+                        <td>#</td>
+                        <td class="text-center"><?php echo '<img src="'.$prod['image'].'" />';?></td>
+                        <td><?php echo $prod['cat_name'];?></td>
+                        <td><?php echo $prod['name'];?></td>
+                        <td><?php echo $prod['vin'];?></td>
+                        <td><?php echo $prod['locate'];?></td>
+                        <td><?php echo $prod['price'];?></td>
+                        <td><?php echo $prod['quant'];?></td>
+                        <td><?php echo $prod['stat'];?></td>
+                        <td><?php echo $prod['date'];?></td>
+                        <td>
+                            <button class="btn btn-primary"><i class="fa fa-pencil fw"></i></button>
+                            <button class="btn btn-danger"><i class="fa fa-trash-o fw"></i></button>
+                        </td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
+<?php echo $footer;?>
