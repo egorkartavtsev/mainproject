@@ -27,7 +27,7 @@
                     $product['vnutn'] = str_replace("/", "-", $product['vnutn']);
                     $product['price'] = $product['price']!=NULL?$product['price']:0;
                     $product['modr']  = str_replace(">", "-", $product['modr']);
-                    $product['date']  = $product['date']!=NULL?$product['date']:'';
+                    $product['date']  = $product['date']!=NULL?DateTime::createFromFormat('Y-m-d', $product['date'])->format('d-‌​m-Y'):'';
                     $success = $this->emptyCells($product, $template);
                     if($success){
                         $success = $this->undefinedCells($product, $template);
@@ -257,7 +257,7 @@
                     $letter = $alphabet[$key];
                     $sheet->getColumnDimension($letter)->setAutoSize(true);
                     $cell = $letter.$i;
-                    $sheet->setCellValue($cell, (string)htmlspecialchars_decode(str_replace(">", "-", str_replace($replace, '***', (string)$row[$field['name']]))));
+                    $sheet->setCellValueExplicit($cell, (string)htmlspecialchars_decode(str_replace(">", "-", str_replace($replace, '***', (string)$row[$field['name']]))), PHPExcel_Cell_DataType::TYPE_STRING);
                     $sheet->getColumnDimension($letter)->setAutoSize(true);
                     if($row['quant']==0){
                         $sheet

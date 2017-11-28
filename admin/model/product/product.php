@@ -57,7 +57,7 @@ class ModelProductProduct extends Model {
     }
     
     public function getPCs($par) {
-        $query = "SELECT cd.name AS name FROM ".DB_PREFIX."category_description cd LEFT JOIN ".DB_PREFIX."category c ON c.category_id = cd.category_id WHERE c.parent_id = '".$par."' ";
+        $query = "SELECT cd.name AS name FROM ".DB_PREFIX."category_description cd LEFT JOIN ".DB_PREFIX."category c ON c.category_id = cd.category_id WHERE c.parent_id = '".$par."' ORDER BY cd.name";
         $arr = $this->db->query($query);
         $result = array();
         foreach ($arr->rows as $mod){
