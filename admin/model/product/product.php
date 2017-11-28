@@ -44,7 +44,7 @@ class ModelProductProduct extends Model {
 
     public function getModels($par, $mr) {
         if($mr){
-            $query = $this->db->query("SELECT id FROM ".DB_PREFIX."brand WHERE name = '".$par."'");
+            $query = $this->db->query("SELECT id FROM ".DB_PREFIX."brand WHERE name = '".$par."' AND parent_id!=0");
             $par = $query->row['id'];
         }
         $query = "SELECT name FROM ".DB_PREFIX."brand WHERE parent_id = '".$par."' ";

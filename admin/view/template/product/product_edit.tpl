@@ -267,6 +267,7 @@
                 },
                 success:function(result){
                     document.getElementById("input-model").innerHTML = result;
+                    document.getElementById("input-modRow").innerHTML = '';
                 }
             })
         })
@@ -283,6 +284,7 @@
                                mr: '1'
                 },
                 success:function(result){
+                    document.getElementById("input-modRow").innerHTML = '';
                     document.getElementById("input-modRow").innerHTML = result;
                 }
             })

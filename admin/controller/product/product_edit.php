@@ -121,9 +121,13 @@ class ControllerProductProductEdit extends Controller {
         }
         $this->load->model('product/product');
         $models = $this->model_product_product->getModels($brand, $mr);
-        $result = '';
+        if (count($models)>1){
+            $result = '<option disabled>Выберите модель</option>';
+        } else {
+            $result = '<option disabled selected>Выберите модель</option>';
+        }
         foreach ($models as $model) {
-            if($model == $currMod){
+            if(($model == $currMod) && (count($models)>1)){
                 $result.= '<option value="'.$model.'" selected >'.$model.'</option>';
             } else {
                 $result.= '<option value="'.$model.'">'.$model.'</option>';

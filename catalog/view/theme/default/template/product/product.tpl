@@ -51,7 +51,7 @@
             <?php } ?>
           </ul>
           <div class="tab-content">
-            <?php if(isset($complect)) { ?>
+            <?php if(isset($complect) && $c_id!='') { ?>
                 <div class="alert alert-danger" id="complect">
                     <h3><?php echo $entry_compl; ?></h3>
                     <table class="table">
