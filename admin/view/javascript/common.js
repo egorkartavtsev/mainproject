@@ -176,7 +176,7 @@ $(document).ready(function() {
                 
                 $("#button-gen-phot").on('click', function(){
                         var $forMain = $element.parent().find('input').val();
-                        $element.parent().parent().find('#input-main-image').val($forMain);
+                        $element.parent().parent().parent().parent().find('#input-main-image').val($forMain);
                         $('[id^="thumb-image"]').css("box-shadow", 'none');
                         $element.css("box-shadow", "0px 0px 50px #4CAF50");
                         $element.popover('destroy');

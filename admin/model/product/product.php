@@ -91,7 +91,7 @@ class ModelProductProduct extends Model {
         $pcat_id = $this->getPCID($product['podcat']);
         $category = $this->getCategoryName($product['category']);
         $model_id = $this->getMId($product['model']);
-        $quer = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE id = ".(int)$product['brand']);
+		$quer = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE id = ".(int)$product['brand']);
         $brand = $quer->row['name'];
         //update product
         $query = "UPDATE ".DB_PREFIX."product "

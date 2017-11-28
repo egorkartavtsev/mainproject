@@ -148,3 +148,22 @@ function getFormPart($id){
         }
     })
 }
+
+function deleteItem($id){
+    ajax({
+        url: "index.php?route=tiresdisc/list/deleteItem&token=" + getURLVar('token'),
+        statbox:"status",
+        method:"POST",
+        data:
+        {
+            id: $id
+        },
+        success:function(data){
+            if(data){
+                $('#item'+$id).remove();
+            } else {
+                alert('Произошла ошибка удаления. Повторите попытку.');
+            }
+        }
+    });
+}

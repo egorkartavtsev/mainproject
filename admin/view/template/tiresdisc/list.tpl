@@ -16,7 +16,6 @@
         <table class="table table-bordered table-responsive table-striped">
             <thead>
                 <tr>
-                    <td>#</td>
                     <td>Изображение</td>
                     <td>Категория</td>
                     <td>Название</td>
@@ -31,8 +30,7 @@
             </thead>
             <tbody id="listProducts">
                 <?php foreach($list as $prod){ ?>
-                    <tr>
-                        <td>#</td>
+                    <tr id='item<?php echo $prod['link'];?>'>
                         <td class="text-center"><?php echo '<img src="'.$prod['image'].'" />';?></td>
                         <td><?php echo $prod['cat_name'];?></td>
                         <td><?php echo $prod['name'];?></td>
@@ -43,8 +41,8 @@
                         <td><?php echo $prod['stat'];?></td>
                         <td><?php echo $prod['date'];?></td>
                         <td>
-                            <button class="btn btn-primary"><i class="fa fa-pencil fw"></i></button>
-                            <button class="btn btn-danger"><i class="fa fa-trash-o fw"></i></button>
+                            <a class="btn btn-primary" href="<?php echo $prod['linkEdit'];?>"><i class="fa fa-pencil fw"></i></a>
+                            <button class="btn btn-danger" onclick="confirm('Вы уверены?') ? deleteItem('<?php echo $prod['link'];?>') : false;"><i class="fa fa-trash-o fw"></i></button>
                         </td>
                     </tr>
                 <?php } ?>

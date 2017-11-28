@@ -100,7 +100,7 @@ class ModelTiresdiscTiresdisc extends Model {
         }
         
         if($prod['cat']=='disk'){
-            $name = 'Диск колёсный '.$prod['ctype'].' '.$prod['diameter'].'/'.$prod['width'].'/'.$prod['qHoles'].'x'.$prod['dHoles'];
+            $name = 'Диск колёсный '.$prod['type'].' '.$prod['diameter'].'/'.$prod['width'].'/'.$prod['qHoles'].'x'.$prod['dHoles'];
             $table = 'disc';
         } else {
             $name = 'Шина '.$prod['season'].' '.($prod['tModel']==''?'-':$prod['tModel']).' '.$prod['width'].'/'.$prod['hProf'].'/R'.($prod['diameter']);
@@ -198,6 +198,7 @@ class ModelTiresdiscTiresdisc extends Model {
     public function getList() {
         $sql = "SELECT "
                 . "pd.name AS name, "
+                . "p.product_id AS link, "
                 . "p.price AS price, "
                 . "p.date_added AS date, "
                 . "tire.image AS tImage, "
@@ -216,6 +217,112 @@ class ModelTiresdiscTiresdisc extends Model {
               ."WHERE tire.link = p.product_id OR disc.link = p.product_id ";
         $result = $this->db->query($sql);
         return $result->rows;
+    }
+    
+    public function deleteProd($id) {
+        $query = $this->db->query("SELECT * FROM ".DB_PREFIX."td_disc WHERE link = ".(int)$id);
+        if(!empty($query->row)){
+            $table = DB_PREFIX.'td_disc';
+        } else {
+            $table = DB_PREFIX.'td_tires';
+        }
+        
+        if ($this->db->query("DELETE FROM ".$table." WHERE link = ".(int)$id)){
+            if($this->db->query("DELETE FROM ".DB_PREFIX."product WHERE product_id = ".(int)$id)){
+                if($this->db->query("DELETE FROM ".DB_PREFIX."product_description WHERE product_id = ".(int)$id)){
+                    if($this->db->query("DELETE FROM ".DB_PREFIX."product_image WHERE product_id = ".(int)$id)){
+                        return TRUE;
+                    } else { return FALSE;}
+                } else { return FALSE;} 
+            } else { return FALSE;}
+        } else { return FALSE;}
+    }
+    /******************************************************************************************************************/
+    public function getCat($id) {
+        $query = $this->db->query("SELECT * FROM ".DB_PREFIX."td_disc WHERE link = ".(int)$id);
+        if (empty($query->row)){
+            return 'tire';
+        } else {
+            return 'disk';
+        }
+    }
+    
+    public function getProdInfo($id, $cat) {
+        if($cat=='disk'){
+            $table = DB_PREFIX.'td_disc';
+        } else {
+            $table = DB_PREFIX.'td_tires';
+        }
+        
+        $query = $this->db->query("SELECT * FROM ".$table." WHERE link = ".(int)$id);
+        $info = $query->row;
+        
+        $query = $this->db->query("SELECT image, weight, price, upc, ean, quantity, location FROM ".DB_PREFIX."product WHERE product_id = ".(int)$id);
+        $locate = explode("/", $query->row['location']);
+        $info['stell'] = isset($locate[0])?$locate[0]:'';
+        $info['jar'] = isset($locate[1])?$locate[1]:'';
+        $info['shelf'] = isset($locate[2])?$locate[2]:'';
+        $info['box'] = isset($locate[3])?$locate[3]:'';
+        
+        $info['main-image'] = $query->row['image'];
+        $info['stock'] = $query->row['weight'];
+        $info['price'] = $query->row['price'];
+        $info['ctype'] = $query->row['ean'];
+        $info['cond'] = $query->row['upc'];
+        $info['quant'] = $query->row['quantity'];
+        
+        $query = $this->db->query("SELECT name FROM ".DB_PREFIX."product_description WHERE product_id = ".(int)$id);
+        $info['name'] = $query->row['name'];
+        
+        return $info;
+    }
+    
+    public function getImages($id) {
+        $result = array();
+        $query = $this->db->query("SELECT image FROM ".DB_PREFIX."product_image WHERE product_id = ".(int)$id);
+        foreach ($query->rows as $item){
+            $result[] = $item['image'];
+        }
+        return $result;
+    }
+    
+    public function updateDB($prod, $id) {
+        $cat = $this->getCat($id);
+        if($cat=='disk'){
+            $name = 'Диск колёсный '.$prod['type'].' '.$prod['diameter'].'/'.$prod['width'].'/'.$prod['qHoles'].'x'.$prod['dHoles'];
+            $table = DB_PREFIX.'td_disc';
+        } else {
+            $name = 'Шина '.$prod['season'].' '.($prod['tModel']==''?'-':$prod['tModel']).' '.$prod['width'].'/'.$prod['hProf'].'/R'.($prod['diameter']);
+            $table = DB_PREFIX.'td_tires';
+        }
+        
+        $parameters = $this->takeDBParam($cat);
+        
+        $sql = "UPDATE ".$table." SET ";
+        foreach ($parameters as $field => $param) {
+            $sql.= $field." = '".$prod[$field]."', ";
+        }
+        $sql.="price = ".(int)$prod['price'].", "
+                . "image = '".$prod['mainimage']."' WHERE link = ".(int)$id;
+        $this->db->query($sql);
+//        exit($sql);
+        $this->db->query("UPDATE ".DB_PREFIX."product "
+                . "SET "
+                    . "price = ".(int)$prod['price'].", "
+                    . "upc = '".$prod['cond']."', "
+                    . "ean = '".$prod['ctype']."', "
+                    . "weight = '".$prod['stock']."', "
+                    . "image = '".$prod['mainimage']."', "
+                    . "quantity = '".$prod['quant']."', "
+                    . "location = '".$prod['stell']."/".$prod['jar']."/".$prod['shelf']."/".$prod['box']."' WHERE product_id  = ".(int)$id);
+        
+        $this->db->query("UPDATE ".DB_PREFIX."product_description SET name = '".$name."' WHERE product_id = ".(int)$id);
+        
+        $this->db->query("DELETE FROM ".DB_PREFIX."product_image WHERE product_id = ".(int)$id);
+       
+        foreach ($prod['image'] as $image) {
+            $this->db->query("INSERT INTO ".DB_PREFIX."product_image (product_id, image) VALUES (".(int)$id.", '".$image."')");           
+        }
     }
 }
 
