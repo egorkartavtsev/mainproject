@@ -347,29 +347,43 @@ class ControllerProductProduct extends Controller {
                         
                         $query = $this->db->query("SELECT id FROM ".DB_PREFIX."brand WHERE name = '".$product_info['manufacturer']."'");
                         
-                        $data['brand_id'] = $query->row['id'];
+                        $data['brand_id'] = isset($query->row['id'])?$query->row['id']:0;
                         
 			$data['manufacturer'] = $product_info['manufacturer'];
 			$data['manufacturers'] = $this->url->link('product/brand/info', 'brand_id=' . $data['brand_id']);
-			$data['model'] = $product_info['model'];
-                        $data['models'] = $this->url->link('product/brand/info', 'brand_id=' . $data['brand_id'] . "_" . $this->model_catalog_product->getModelID(trim($data['model'])));
+			$data['model'] = ($product_info['model']==='Универсальный')?'Не указано':$product_info['model'];
+                        if($data['model']!=='Не указано'){
+                            $data['models'] = $this->url->link('product/brand/info', 'brand_id=' . $data['brand_id'] . "_" . $this->model_catalog_product->getModelID(trim($data['model'])));
+                            $dev = $this->model_catalog_product->getModelID(trim($product_info['model_row']));
+                            if($dev!=0){
+                                    $data['model_row'] = $product_info['model_row'];
+                                    $data['model_rows'] = $this->url->link('product/brand/info', 'brand_id=' . $data['brand_id'] . "_" . $this->model_catalog_product->getModelID($data['model']) . "_" . $dev);
+                            } else {
+                                    $data['model_row'] = 'Не указано';
+                                    $data['model_rows'] = $data['models'];
+                            }
+                        } else {
+                            $dev = $this->model_catalog_product->getModelID(trim($product_info['model_row']));
+                            if($dev!=0){
+                                    $data['model_row'] = $product_info['model_row'];
+                                    $data['model_rows'] = $this->url->link('product/brand/info', 'brand_id=' . $data['brand_id'] . "_" . $this->model_catalog_product->getModelID($data['model']) . "_" . $dev);
+                            } else {
+                                    $data['model_row'] = 'Не указано';
+                            }
+                        }
                         if(isset($product_info['note'])){
                             $data['note'] = ($product_info['note']=='')?'---':$product_info['note'];
                         } else {
                             $data['note'] = '---';
                         }
+                        if(isset($product_info['dop'])){
+                            $data['dop'] = ($product_info['dop']=='')?'---':$product_info['dop'];
+                        } else {
+                            $data['dop'] = '---';
+                        }
 			$data['reward'] = $product_info['reward'];
 			$data['points'] = $product_info['points'];
 			$data['description'] = html_entity_decode($product_info['description'], ENT_QUOTES, 'UTF-8');
-                        
-                        $dev = $this->model_catalog_product->getModelID(trim($product_info['model_row']));
-                        if($dev!=0){
-                                $data['model_row'] = $product_info['model_row'];
-                                $data['model_rows'] = $this->url->link('product/brand/info', 'brand_id=' . $data['brand_id'] . "_" . $this->model_catalog_product->getModelID($data['model']) . "_" . $dev);
-                        } else {
-                                $data['model_row'] = 'неуказано';
-                                $data['model_rows'] = $data['models'];
-                        }
                         
                         $data['cat_numb'] = $product_info['cat_numb'];
                         $data['vin'] = $product_info['vin'];

@@ -29,8 +29,8 @@ class ModelCatalogCategory extends Model {
 	}
         
         public function getCBProds($allProds, $brand) {
-            $supArr = $this->db->query("SELECT product_id FROM ".DB_PREFIX."product_to_brand WHERE brand_id = '".$brand."' ");
-            
+            $supArr = $this->db->query("SELECT product_id FROM ".DB_PREFIX."product_to_brand WHERE brand_id = '".(int)$brand."' ");
+//            exit(var_dump($supArr->rows));
             foreach ($supArr->rows as $bProd){
                $brandProds[] = $bProd['product_id'] ;
             }
@@ -39,11 +39,9 @@ class ModelCatalogCategory extends Model {
             $i = 0;
             if(isset($brandProds)){
                 foreach ($allProds as $prod){
-                    foreach ($brandProds as $mID){
-                        if($prod['product_id'] == $mID){
-                            $result['prods'][$mID] = $prod;
-                            $result['total'] = ++$i;
-                        }
+                    if(in_array($prod['product_id'], $brandProds)){
+                        $result['prods'][$prod['product_id']] = $prod;
+                        $result['total'] = ++$i;
                     }
                 }
             }

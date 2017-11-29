@@ -163,14 +163,23 @@
           <h1><?php echo $heading_title; ?></h1>
           <ul class="list-unstyled">
             <?php if ($manufacturer) { ?>
-            <li>Марка: <a href="<?php echo $manufacturers; ?>"><?php echo $manufacturer; ?></a></li>
+                <li>Марка: <a href="<?php echo $manufacturers; ?>"><?php echo $manufacturer; ?></a></li>
             <?php } ?>
-            <li>Модель: <a href="<?php echo $models; ?>"><?php echo $model; ?></a></li>
-            <li>Модельный ряд: <a href="<?php echo $model_rows; ?>"><?php echo $model_row; ?></a></li>
+            <?php if (isset($models)) { ?>
+                <li>Модель: <a href="<?php echo $models; ?>"><?php echo $model; ?></a></li>
+            <?php } else { ?>
+                <li>Модель: <?php echo $model; ?></li>
+            <?php }?>
+            <?php if (isset($model_rows)) { ?>
+                <li>Модельный ряд: <a href="<?php echo $model_rows; ?>"><?php echo $model_row; ?></a></li>
+            <?php } else { ?>
+                <li>Модельный ряд: <?php echo $model_row; ?></li>
+            <?php }?>
             <li>Внутренний номер: <?php echo $vin; ?></li>
             <li>Каталожный номер: <?php echo $cat_numb!==""?$cat_numb:"---"; ?></li>
             <li>Применимость: <?php echo $compability!==""?$compability:"---"; ?></li>
             <li>Примечание: <?php echo $note!==""?$note:"---"; ?></li>
+            <li>Дополнительная информация: <?php echo $dop!==""?$dop:"---"; ?></li>
             <li>Состояние: <?php echo $condition!==""?$condition:"---"; ?></li>
             <?php if((isset($adress)) && ($adress!='')) { ?>
                 <li>Склад: <a href="index.php?route=information/information&information_id=5" target="blank"><?php echo $adress; ?></a></li>
