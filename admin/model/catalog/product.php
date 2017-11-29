@@ -506,6 +506,7 @@ class ModelCatalogProduct extends Model {
 			'p.length',
 			'p.weight',
 			'p.price',
+			'p.date_added',
 			'p.quantity',
 			'p.status',
 			'p2c.category_id',
