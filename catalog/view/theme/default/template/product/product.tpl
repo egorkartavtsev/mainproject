@@ -162,6 +162,7 @@
           </div>
           <h1><?php echo $heading_title; ?></h1>
           <ul class="list-unstyled">
+              <li><button class="btn btn-danger btn-block" id="send_prod">Отправить товар</button><li>
             <?php if ($manufacturer) { ?>
                 <li>Марка: <a href="<?php echo $manufacturers; ?>"><?php echo $manufacturer; ?></a></li>
             <?php } ?>
@@ -543,6 +544,7 @@
       <?php echo $content_bottom; ?></div>
     <?php echo $column_right; ?></div>
 </div>
+<script src="catalog/view/javascript/clipboard.min.js" type="text/javascript"></script>
 <script type="text/javascript"><!--
 $('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
 	$.ajax({
@@ -812,6 +814,24 @@ $(document).ready(function() {
             }
         })
     }
+    
+    $("#send_prod").on('click', function(){
+    
+        var clipboard = new Clipboard('#send_prod', {
+            text: function() {
+                return '<?php echo $sendLink; ?>';
+            }
+        });
+
+        clipboard.on('success', function(e) {
+            console.log(e);
+        });
+
+        clipboard.on('error', function(e) {
+            console.log(e);
+        });
+        alert('Ссылка скопирована в буфер обмена.');
+    })
 </script>
     
 <?php echo $footer; ?>

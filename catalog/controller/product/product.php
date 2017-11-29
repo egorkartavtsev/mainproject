@@ -394,7 +394,7 @@ class ControllerProductProduct extends Controller {
                         $data['note'] = $product_info['note'];
                         $data['condition'] = $product_info['con_p'];
                         $data['no_prod'] = FALSE;
-                        
+                        $data['sendLink'] = $this->url->link('product/product', 'produc_id='.$product_id);
                         if (isset($suc) && $suc) 
                         {
                             if (mail($mail['to'], 'Заявка на деталь с сайта авторазбор174.рф', $mail['text'])){
