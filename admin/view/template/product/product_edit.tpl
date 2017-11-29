@@ -37,6 +37,7 @@
                             <div class="form-group">
                                 <label for="input-brand">Марка:</label>
                                 <select class="form-control" id="input-brand" name="brand">
+                                    <option value="univ">Универсальный</option>
                                     <?php foreach($brands as $brand) { ?>
                                         <?php if($brand['val']==$brand_id){ ?>
                                             <option value="<?php echo $brand['val'];?>" selected ><?php echo $brand['name'];?></option>
@@ -72,6 +73,7 @@
                             <div class="form-group">
                                 <label for="input-model">Модель:</label>
                                 <select class="form-control" id="input-model" name="model">
+                                    <option value="univ">Универсальный</option>
                                     <?php foreach($models as $mod){ ?>
                                         <option id='bef-pcat' value="<?php echo $mod; ?>" <?php if($mod == $model) {echo 'selected';} ?> ><?php echo $mod; ?></option>
                                     <?php } ?>
@@ -119,6 +121,7 @@
                             <div class="form-group">
                                 <label for="input-modRow">Модельный ряд:</label>
                                 <select class="form-control" id="input-modRow" name="modRow">
+                                    <option value="univ">Универсальный</option>
                                     <?php foreach($modRs as $mr){ ?>
                                         <option id='bef-pcat' value="<?php echo $mr; ?>" <?php if($mr == $modRow) {echo 'selected';} ?> ><?php echo $mr; ?></option>
                                     <?php } ?>
@@ -163,6 +166,10 @@
                             <div class="form-group">
                                 <label for="input-note">Примечание:</label>
                                 <input type="text" name="note" id="input-note" class="form-control" value="<?php echo $note; ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="input-dop">Доп.информация:</label>
+                                <input type="text" name="dop" id="input-dop" class="form-control" value="<?php echo $dop; ?>">
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -254,40 +261,50 @@
         </div>
     </div>
     <script type="text/javascript">
-        
         $("#input-brand").on('change', function(){
-            ajax({
-                url:"index.php?route=product/product_edit/get_model&token=<?php echo $token; ?>",
-                statbox:"status",
-                method:"POST",
-                data:
-                {
-                               brand: document.getElementById("input-brand").value,
-                               currMod: '<?php echo $model; ?>'
-                },
-                success:function(result){
-                    document.getElementById("input-model").innerHTML = result;
-                    document.getElementById("input-modRow").innerHTML = '';
-                }
-            })
+            document.getElementById("input-model").innerHTML = '';
+            document.getElementById("input-modRow").innerHTML = '';
+            if($("#input-brand").val()==='univ'){
+                $("#input-model").html('<option val="univ">Универсальный</option>');
+                $("#input-modRow").html('<option val="univ">Универсальный</option>');
+            } else {
+                ajax({
+                    url:"index.php?route=product/product_edit/get_model&token=<?php echo $token; ?>",
+                    statbox:"status",
+                    method:"POST",
+                    data:
+                    {
+                                   brand: document.getElementById("input-brand").value,
+                                   currMod: '<?php echo $model; ?>'
+                    },
+                    success:function(result){
+                        document.getElementById("input-model").innerHTML = result;
+                        document.getElementById("input-modRow").innerHTML = '';
+                    }
+                })
+            }
         })
         
         $("#input-model").on('change', function(){
-            ajax({
-                url:"index.php?route=product/product_edit/get_model&token=<?php echo $token; ?>",
-                statbox:"status",
-                method:"POST",
-                data:
-                {
-                               brand: document.getElementById("input-model").value,
-                               currMod: '<?php echo $modRow; ?>',
-                               mr: '1'
-                },
-                success:function(result){
-                    document.getElementById("input-modRow").innerHTML = '';
-                    document.getElementById("input-modRow").innerHTML = result;
-                }
-            })
+            if($("#input-model").val()==='univ'){
+                $("#input-modRow").html('<option val="univ">Универсальный</option>');
+            } else {
+                ajax({
+                    url:"index.php?route=product/product_edit/get_model&token=<?php echo $token; ?>",
+                    statbox:"status",
+                    method:"POST",
+                    data:
+                    {
+                                   brand: document.getElementById("input-model").value,
+                                   currMod: '<?php echo $modRow; ?>',
+                                   mr: '1'
+                    },
+                    success:function(result){
+                        document.getElementById("input-modRow").innerHTML = '';
+                        document.getElementById("input-modRow").innerHTML = result;
+                    }
+                })
+            }
         })
         
         $("#input-categ").on('change', function(){
