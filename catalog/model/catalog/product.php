@@ -26,6 +26,7 @@ class ModelCatalogProduct extends Model {
                         . "p.compability AS compability, "
                         . "p.sku AS vin, "
                         . "p.comp AS comp, "
+                        . "p.width AS dop, "
                         . "p.weight AS stock, "
                         . "p.model AS model, "
                         . "p.length AS model_row, "
@@ -143,6 +144,7 @@ class ModelCatalogProduct extends Model {
                                 'vin'              => $query->row['vin'],
                                 'stock'            => $query->row['stock'],
                                 'note'             => $query->row['note'],
+                                'dop'             => $query->row['dop'],
                                 'con_p'            => $query->row['con_p'],
 			);
 		} else {

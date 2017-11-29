@@ -217,46 +217,15 @@
     }
     
     function sub_temp($token){
-        ajax({
-            url:"index.php?route=common/desctemp&token="+$token,
-            statbox:"status",
-            method:"POST",
-            data:
-            {
-                           temp: document.getElementById("desctempl").value
-            },
-           success:function(data){
-               document.getElementById("statbox").innerHTML=data;
-               setTimeout(function(){
-                    $("#stattext").animate({
-                        opacity: 0
-                    }, 1500);
-                    setTimeout(function(){document.getElementById("statbox").innerHTML = '';}, 2000);
-               }, 3000);
-            }
-       })
+        jQuery.post("index.php?route=common/desctemp&token="+$token,"temp="+encodeURIComponent(jQuery("#desctempl").val()));
+        location.reload();
     }
     
     function app_temp($token){
-        ajax({
-            url:"index.php?route=common/desctemp/apply&token="+$token,
-            statbox:"status",
-            method:"POST",
-            data:
-            {
-                           temp: document.getElementById("desctempl").value
-            },
-           success:function(data){
-               document.getElementById("statbox").innerHTML=data;
-//               setTimeout(function(){
-//                    $("#stattext").animate({
-//                        opacity: 0
-//                    }, 1500);
-//                    setTimeout(function(){document.getElementById("statbox").innerHTML = '';}, 2000);
-//               }, 3000);
-            }
-       })
+        jQuery.post("index.php?route=common/desctemp/apply&token="+$token,"temp="+encodeURIComponent(jQuery("#desctempl").val()));
+        location.reload();
     }
+    
     function showform(){
         $("#wo-form").toggle("slow", function(){});
         $("#formwo").show("slow", function(){});                

@@ -51,7 +51,7 @@
             <?php } ?>
           </ul>
           <div class="tab-content">
-            <?php if(isset($complect)) { ?>
+            <?php if(isset($complect) && $c_id!='') { ?>
                 <div class="alert alert-danger" id="complect">
                     <h3><?php echo $entry_compl; ?></h3>
                     <table class="table">
@@ -159,18 +159,28 @@
           <div class="btn-group">
             <button type="button" data-toggle="tooltip" class="btn btn-default" title="<?php echo $button_wishlist; ?>" onclick="wishlist.add('<?php echo $product_id; ?>');"><i class="fa fa-heart"></i></button>
             <button type="button" data-toggle="tooltip" class="btn btn-default" title="<?php echo $button_compare; ?>" onclick="compare.add('<?php echo $product_id; ?>');"><i class="fa fa-exchange"></i></button>
+            <button type="button" data-toggle="tooltip" class="btn btn-default" title="Скопировать ссылку" id="send_prod"><i class="fa fa-copy"></i></button>
           </div>
           <h1><?php echo $heading_title; ?></h1>
           <ul class="list-unstyled">
             <?php if ($manufacturer) { ?>
-            <li>Марка: <a href="<?php echo $manufacturers; ?>"><?php echo $manufacturer; ?></a></li>
+                <li>Марка: <a href="<?php echo $manufacturers; ?>"><?php echo $manufacturer; ?></a></li>
             <?php } ?>
-            <li>Модель: <a href="<?php echo $models; ?>"><?php echo $model; ?></a></li>
-            <li>Модельный ряд: <a href="<?php echo $model_rows; ?>"><?php echo $model_row; ?></a></li>
+            <?php if (isset($models)) { ?>
+                <li>Модель: <a href="<?php echo $models; ?>"><?php echo $model; ?></a></li>
+            <?php } else { ?>
+                <li>Модель: <?php echo $model; ?></li>
+            <?php }?>
+            <?php if (isset($model_rows)) { ?>
+                <li>Модельный ряд: <a href="<?php echo $model_rows; ?>"><?php echo $model_row; ?></a></li>
+            <?php } else { ?>
+                <li>Модельный ряд: <?php echo $model_row; ?></li>
+            <?php }?>
             <li>Внутренний номер: <?php echo $vin; ?></li>
             <li>Каталожный номер: <?php echo $cat_numb!==""?$cat_numb:"---"; ?></li>
             <li>Применимость: <?php echo $compability!==""?$compability:"---"; ?></li>
             <li>Примечание: <?php echo $note!==""?$note:"---"; ?></li>
+            <li>Дополнительная информация: <?php echo $dop!==""?$dop:"---"; ?></li>
             <li>Состояние: <?php echo $condition!==""?$condition:"---"; ?></li>
             <?php if((isset($adress)) && ($adress!='')) { ?>
                 <li>Склад: <a href="index.php?route=information/information&information_id=5" target="blank"><?php echo $adress; ?></a></li>
@@ -534,6 +544,7 @@
       <?php echo $content_bottom; ?></div>
     <?php echo $column_right; ?></div>
 </div>
+<script src="catalog/view/javascript/clipboard.min.js" type="text/javascript"></script>
 <script type="text/javascript"><!--
 $('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
 	$.ajax({
@@ -803,6 +814,24 @@ $(document).ready(function() {
             }
         })
     }
+    
+    $("#send_prod").on('click', function(){
+        var copyLink = '<?php echo $sendLink; ?>';
+        var clipboard = new Clipboard('#send_prod', {
+            text: function() {
+                return copyLink.replace("&amp;", "&");
+            }
+        });
+
+        clipboard.on('success', function(e) {
+            console.log(e);
+        });
+
+        clipboard.on('error', function(e) {
+            console.log(e);
+        });
+        alert(copyLink.replace("&amp;", "&"));
+    })
 </script>
     
 <?php echo $footer; ?>

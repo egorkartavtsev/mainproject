@@ -15,6 +15,7 @@ class ModelProductProduct extends Model {
                     . "p.podcateg AS pcat, "
                     . "p.upc AS condit, "
                     . "p.ean AS type, "
+                    . "p.width AS dop, "
                     . "p.jan AS note, "
                     . "p.compability AS compability, "
                     . "p.isbn AS catN, "
@@ -44,7 +45,7 @@ class ModelProductProduct extends Model {
 
     public function getModels($par, $mr) {
         if($mr){
-            $query = $this->db->query("SELECT id FROM ".DB_PREFIX."brand WHERE name = '".$par."'");
+            $query = $this->db->query("SELECT id FROM ".DB_PREFIX."brand WHERE name = '".$par."' AND parent_id!=0");
             $par = $query->row['id'];
         }
         $query = "SELECT name FROM ".DB_PREFIX."brand WHERE parent_id = '".$par."' ";
@@ -57,7 +58,7 @@ class ModelProductProduct extends Model {
     }
     
     public function getPCs($par) {
-        $query = "SELECT cd.name AS name FROM ".DB_PREFIX."category_description cd LEFT JOIN ".DB_PREFIX."category c ON c.category_id = cd.category_id WHERE c.parent_id = '".$par."' ";
+        $query = "SELECT cd.name AS name FROM ".DB_PREFIX."category_description cd LEFT JOIN ".DB_PREFIX."category c ON c.category_id = cd.category_id WHERE c.parent_id = '".$par."' ORDER BY cd.name";
         $arr = $this->db->query($query);
         $result = array();
         foreach ($arr->rows as $mod){
@@ -88,11 +89,39 @@ class ModelProductProduct extends Model {
     }
 
     public function updateProduct($product) {
+        //universal product?
+        $name = $product['podcat'];
+        $univ = array(
+            'brand' => FALSE,
+            'model' => FALSE,
+            'mr'    => FALSE
+        );
+        if($product['brand']==='univ'){
+            $univ['brand'] = TRUE;
+            $univ['model'] = TRUE;
+            $univ['mr'] = TRUE;
+            $name.= ' '.$product['dop'];
+        } else {
+            $quer = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE id = ".(int)$product['brand']);
+            $brand = $quer->row['name'];
+            $name.= ' '.$brand.' '.$product['dop'];
+            if($product['model']==='univ'){
+                $product['model'] = 'Универсальный';
+                $univ['model'] = TRUE;
+                $univ['mr'] = TRUE;
+            } else {
+                $model_id = $this->getMId($product['model']);
+                if ($product['modRow']==='univ'){
+                    $product['modRow']==='Универсальный';
+                    $univ['mr'] = TRUE;
+                } else {
+                    $name.= ' '.$brand.' '.$product['modRow'];
+                }
+            }
+        }
+        
         $pcat_id = $this->getPCID($product['podcat']);
         $category = $this->getCategoryName($product['category']);
-        $model_id = $this->getMId($product['model']);
-		$quer = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE id = ".(int)$product['brand']);
-        $brand = $quer->row['name'];
         //update product
         $query = "UPDATE ".DB_PREFIX."product "
                 . "SET "
@@ -104,6 +133,7 @@ class ModelProductProduct extends Model {
                     . "podcateg = '".$this->db->escape($product['podcat'])."', "
                     . "upc = '".$this->db->escape($product['cond'])."', "
                     . "ean = '".$this->db->escape($product['type'])."', "
+                    . "width = '".$this->db->escape($product['dop'])."', "
                     . "quantity = '".$this->db->escape($product['quant'])."', "
                     . "status = '".$this->db->escape($product['status'])."', "
                     . "jan = '".$this->db->escape($product['note'])."', "
@@ -117,18 +147,13 @@ class ModelProductProduct extends Model {
                     . "isbn = '".$this->db->escape($product['catN'])."' "
                 . "WHERE product_id = ".(int)$this->db->escape($product['pid']);
         $this->db->query($query);
-        $name = $product['podcat'].' '.$brand.' '.$product['modRow'];
+        
         //update name
         $this->db->query("UPDATE ".DB_PREFIX."product_description "
                 . "SET "
                     . "name = '".$this->db->escape($name)."' "
                 . "WHERE product_id = ".(int)$this->db->escape($product['pid']));
         
-        //modr_id
-        $modR = $this->db->query("SELECT length FROM ".DB_PREFIX."product WHERE product_id = ".(int)$this->db->escape($product['pid']));
-        $modR = $modR->row['length'];
-        $modR_id = $this->getMId($modR);
-                
         //update images
         $this->db->query("DELETE FROM ".DB_PREFIX."product_image WHERE product_id = ".(int)$this->db->escape($product['pid']));
         if((isset($product['image'])) && (!empty($product['image']))){
@@ -142,10 +167,33 @@ class ModelProductProduct extends Model {
         $this->db->query("INSERT INTO ".DB_PREFIX."product_to_category (product_id, category_id) VALUES (".(int)$this->db->escape($product['pid']).", '".(int)$this->db->escape($pcat_id)."')");
         //update brand-links
         $this->db->query("DELETE FROM ".DB_PREFIX."product_to_brand WHERE product_id = ".(int)$this->db->escape($product['pid']));
-        $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand (product_id, brand_id) VALUES (".(int)$this->db->escape($product['pid']).", '".(int)$this->db->escape($product['brand'])."')");
-        $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand (product_id, brand_id) VALUES (".(int)$this->db->escape($product['pid']).", '".(int)$this->db->escape($model_id)."')");
-        $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand (product_id, brand_id) VALUES (".(int)$this->db->escape($product['pid']).", '".(int)$this->db->escape($modR_id)."')");
-        
+        if(!$univ['brand']){
+            $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand (product_id, brand_id) VALUES (".(int)$this->db->escape($product['pid']).", '".(int)$this->db->escape($product['brand'])."')");
+            if(!$univ['model']){
+                $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand (product_id, brand_id) VALUES (".(int)$this->db->escape($product['pid']).", '".(int)$this->db->escape($model_id)."')");
+                if(!$univ['mr']){
+                    $modR = $this->db->query("SELECT length FROM ".DB_PREFIX."product WHERE product_id = ".(int)$this->db->escape($product['pid']));
+                    $modR = $modR->row['length'];
+                    $modR_id = $this->getMId($modR);
+                    $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand (product_id, brand_id) VALUES (".(int)$this->db->escape($product['pid']).", '".(int)$this->db->escape($modR_id)."')");
+                } else {
+                    $quer = $this->db->query("SELECT * FROM ".DB_PREFIX."brand WHERE parent_id = ".(int)$model_id);
+                    foreach ($quer->rows as $cpb) {
+                        $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand (product_id, brand_id) VALUES (".(int)$this->db->escape($product['pid']).", '".(int)$this->db->escape($cpb['id'])."')");
+                    }
+                }
+            } else {
+                $quer = $this->db->query("SELECT * FROM ".DB_PREFIX."brand WHERE parent_id = ".(int)$product['brand']);
+                foreach ($quer->rows as $cpb) {
+                    $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand (product_id, brand_id) VALUES (".(int)$this->db->escape($product['pid']).", '".(int)$this->db->escape($cpb['id'])."')");
+                }
+            }
+        } else {
+            $quer = $this->db->query("SELECT * FROM ".DB_PREFIX."brand WHERE 1");
+            foreach ($quer->rows as $cpb) {
+                $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand (product_id, brand_id) VALUES (".(int)$this->db->escape($product['pid']).", '".(int)$this->db->escape($cpb['id'])."')");
+            }
+        }
         //apply compability
         $help = explode(";", trim($product['compability']));
         foreach ($help as $cpbItem) {

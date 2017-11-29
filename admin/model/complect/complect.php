@@ -106,6 +106,8 @@
             $this->db->query($quer);
             
             $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE `sku` = '".$query->row['link']."' ");
+            $this->db->query("UPDATE ".DB_PREFIX."product SET comp_whole = '".$whole."' WHERE `sku` = '".$heading."' ");
+            
                 
             foreach ($complect as $com){
                 if($com!==''){
@@ -137,11 +139,15 @@
         
         public function searchComplects($request) {
             $reqwords = explode(" ", $request);
-            
             $query = "SELECT * FROM ".DB_PREFIX."complects c "
-                        . "WHERE 1 ";
-            foreach ($reqwords as $word){
-                $query.="AND LOCATE ('" . $this->db->escape($word) . "', c.name) ";
+                        . "WHERE ";
+            if(count($reqwords)==1){
+                $query.="0 OR LOCATE ('" . $this->db->escape($reqwords[0]) . "', c.name) OR LOCATE ('" . $this->db->escape($reqwords[0]) . "', c.heading)";
+            } else {
+                $query.="1 ";
+                foreach ($reqwords as $word){
+                    $query.="AND LOCATE ('" . $this->db->escape($word) . "', c.name) ";
+                }
             }
             $result = $this->db->query($query);
             return $result->rows;

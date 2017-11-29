@@ -17,12 +17,10 @@ class ControllerCommonDescTemp extends Controller {
             $this->load->model('common/tempdesc');
             $data['description'] = $this->model_common_tempdesc->getTemp(1);
             
-//            $products = $this->model_common_tempdesc->getProducts();
             if(isset($this->request->post['temp'])){
                 $this->model_common_tempdesc->saveTemp(1, $this->request->post['temp']);
-                $result = '<div class="alert alert-success" id="stattext">Кажется, это работает...</div>';
-                exit($result);
             }
+            
             $this->response->setOutput($this->load->view('common/tempdesc', $data));
         }
         

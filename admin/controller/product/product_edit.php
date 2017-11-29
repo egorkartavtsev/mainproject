@@ -101,7 +101,7 @@ class ControllerProductProductEdit extends Controller {
         }
         //берём модельные ряды
         $query = $this->db->query("SELECT id FROM ".DB_PREFIX."brand WHERE name = '".$data['model']."'");
-        $mod_id = $query->row['id'];
+        $mod_id = isset($query->row['id'])?$query->row['id']:'';
         $query = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE parent_id = ".(int)$mod_id." ORDER BY name");
         $modRs = $query->rows;
         foreach ($modRs as $modR) {
@@ -121,9 +121,14 @@ class ControllerProductProductEdit extends Controller {
         }
         $this->load->model('product/product');
         $models = $this->model_product_product->getModels($brand, $mr);
-        $result = '';
+        if (count($models)>1){
+            $result = '<option disabled>Выберите модель</option>';
+        } else {
+            $result = '<option disabled selected>Выберите модель</option>';
+        }
+        $result.='<option val="univ">Универсальный</option>';
         foreach ($models as $model) {
-            if($model == $currMod){
+            if(($model == $currMod) && (count($models)>1)){
                 $result.= '<option value="'.$model.'" selected >'.$model.'</option>';
             } else {
                 $result.= '<option value="'.$model.'">'.$model.'</option>';

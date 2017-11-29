@@ -201,18 +201,20 @@ private $error = array();
     public function get_model() {
         $brand = $this->request->post['brand'];
         $token = $this->request->post['token'];
-        $query = $this->db->query("SELECT "
-                                . "b.id AS id, "
-                                . "b.name AS name "
-                                . "FROM ".DB_PREFIX."brand b "
-                                . "WHERE b.parent_id = ".$brand." ORDER BY b.name");
-        $results = $query->rows;
         $mods = array();
-        foreach ($query->rows as $res) {
-           $mods[] = array(
-                'name' => $res['name'],
-                'id'   => $res['id']
-            );
+        if($brand!='univ'){
+            $query = $this->db->query("SELECT "
+                                    . "b.id AS id, "
+                                    . "b.name AS name "
+                                    . "FROM ".DB_PREFIX."brand b "
+                                    . "WHERE b.parent_id = ".$brand." ORDER BY b.name");
+            $results = $query->rows;
+            foreach ($query->rows as $res) {
+               $mods[] = array(
+                    'name' => $res['name'],
+                    'id'   => $res['id']
+                );
+            }
         }
         $models = "<select name='model_id' class='form-control' id='model' onchange='";
         $models.='ajax({';
@@ -228,6 +230,7 @@ private $error = array();
         $models.='})';
         $models.="'>";
         $models.='<option selected="selected" disabled="disabled">Выберите модель</option>';
+        $models.='<option value="univ">Универсальный товар</option>';
         foreach ($mods as $model){
             $models.='<option value="'.$model['id'].'">'.$model['name'].'</option>';
         }
@@ -276,21 +279,24 @@ private $error = array();
         $model = $this->request->post['model'];
         //exit(var_dump($_POST));
         $token = $this->request->post['token'];
-        $query = $this->db->query("SELECT "
-                                . "b.id AS id, "
-                                . "b.name AS name "
-                                . "FROM ".DB_PREFIX."brand b "
-                                . "WHERE b.parent_id = ".$model." ORDER BY b.name ");
-        $results = $query->rows;
         $modRs = array();
-        foreach ($query->rows as $res) {
-           $modRs[] = array(
-                'name' => $res['name'],
-                'id'   => $res['id']
-            );
+        if($model!='univ'){
+            $query = $this->db->query("SELECT "
+                                    . "b.id AS id, "
+                                    . "b.name AS name "
+                                    . "FROM ".DB_PREFIX."brand b "
+                                    . "WHERE b.parent_id = ".$model." ORDER BY b.name ");
+            $results = $query->rows;
+            foreach ($query->rows as $res) {
+               $modRs[] = array(
+                    'name' => $res['name'],
+                    'id'   => $res['id']
+                );
+            }
         }
         $modelRs = "<select name='modelRow_id' id='model_row_id' class='form-control'>";
         $modelRs.='<option selected="selected" disabled="disabled">Выберите модельный ряд</option>';
+        $modelRs.='<option value="univ">Универсальный товар</option>';
         foreach ($modRs as $modelR){
             $modelRs.='<option value="'.$modelR['id'].'">'.$modelR['name'].'</option>';
         }
@@ -525,6 +531,9 @@ private $error = array();
             $update_form.= '<h4 id="name'.$product['id'].'">'.$product['name'].' <b>('.$product['vin'].')</b></h4>';
             $update_form.= '<input type="hidden" name="info['.$product['id'].'][vin]" value="'.$product['vin'].'">';
             $update_form.= '<input type="hidden" name="info['.$product['id'].'][name]" value="'.$product['name'].'">';
+            $update_form.= '<input type="hidden" name="info['.$product['id'].'][uBrand]" value="'.$product['univ']['brand'].'">';
+            $update_form.= '<input type="hidden" name="info['.$product['id'].'][uMod]" value="'.$product['univ']['model'].'">';
+            $update_form.= '<input type="hidden" name="info['.$product['id'].'][uMR]" value="'.$product['univ']['mr'].'">';
             $update_form.= '<div class="clearfix"></div>';
             $update_form.= '<div class="clearfix"><p></p></div>';
             
@@ -535,6 +544,10 @@ private $error = array();
             $update_form.= '<div class="form-group-sm">';
                 $update_form.= '<label for="note'.$product['id'].'">Примечание</label>';
                 $update_form.= '<input class="form-control" type="text" name="info['.$product['id'].'][note]" id="note'.$product['id'].'" placeholder="Примечание">';
+            $update_form.= '</div>';
+            $update_form.= '<div class="form-group-sm">';
+                $update_form.= '<label for="dop'.$product['id'].'">Доп.информация</label>';
+                $update_form.= '<input class="form-control" type="text" name="info['.$product['id'].'][dop]" id="dop'.$product['id'].'" placeholder="Доп.информация">';
             $update_form.= '</div>';
             $update_form.= '<div class="form-group-sm">';
                 $update_form.= '<label for="price'.$product['id'].'">Цена</label>';
