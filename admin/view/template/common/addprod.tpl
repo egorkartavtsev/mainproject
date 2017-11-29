@@ -32,6 +32,7 @@
                     })
                 '>
                     <option selected="selected" disabled="disabled">Выберите марку</option>
+                    <option value="univ">Универсальный товар</option>
                     <?php foreach ($brands as $brand) { ?>
                         <option value="<?php echo $brand['val']; ?>"><?php echo $brand['name']; ?></option>
                     <?php } ?>

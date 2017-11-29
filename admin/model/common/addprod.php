@@ -84,23 +84,58 @@ class ModelCommonAddProd extends Model {
     
     public function createProduct($product, $manager) {
 //        exit(var_dump($product));
+        $univ = array(
+            'brand' => FALSE,
+            'model' => FALSE,
+            'mr'    => FALSE
+        ); 
         foreach ($product as $key => $row) {
             $$key = $row;
         }
+        if($brand_id!='univ'){
+            $h_ex = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE id = ".(int)$brand_id);
+            $brand = $h_ex->row['name'];
+            if($model_id!='univ'){
+                $h_ex = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE id = ".(int)$model_id);
+                $model = $h_ex->row['name'];
+                if($modelRow_id!='univ'){
+                    $h_ex = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE id = ".(int)$modelRow_id);
+                    $model_row = $h_ex->row['name'];
+                } else {
+                    $univ['mr'] = TRUE;
+                    $model_row = 'Универсальный';
+                }
+            } else {
+                $univ['model'] = true;
+                $univ['mr'] = TRUE;
+                $model = 'Универсальный';
+                $model_row = 'Универсальный';
+            }
+        } else {
+            $univ['brand'] = true;
+            $univ['model'] = true;
+            $univ['mr'] = TRUE;
+            $brand = 'Универсальный';
+            $model = 'Универсальный';
+            $model_row = 'Универсальный';
+        }
         
-        $h_ex = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE id = ".(int)$brand_id);
-        $brand = $h_ex->row['name'];
-        $h_ex = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE id = ".(int)$model_id);
-        $model = $h_ex->row['name'];
-        $h_ex = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE id = ".(int)$modelRow_id);
-        $model_row = $h_ex->row['name'];
+        
         $h_ex = $this->db->query("SELECT name FROM ".DB_PREFIX."category_description WHERE category_id = ".(int)$category_id);
         $category = $h_ex->row['name'];
         $h_ex = $this->db->query("SELECT name FROM ".DB_PREFIX."category_description WHERE category_id = ".(int)$podcat_id);
         $podcategory = $h_ex->row['name'];
         $image = '';
         $photos = array();
-        $name = $podcategory.' '.$brand.' '.$model_row;
+        $name = $podcategory;
+        
+        if(!$univ['brand']){
+            $name.= ' '.$brand;
+            if(!$univ['mr']){
+                $name.= ' '.$model_row;
+            }
+        }
+        
         if(strlen($_FILES['photo']['name'][0])!=0){         
             $dir = DIR_IMAGE . 'catalog/demo/production/'.$vin;
             $photos = scandir($dir);
@@ -175,26 +210,55 @@ class ModelCommonAddProd extends Model {
                                 . "product_id = ". (int)$product_id .", "
                                 . "image = 'catalog/demo/production/".$product['vin']."/".$photo."' ");
                     }
-        
-        $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand "
+        if(!$univ['brand']){
+            $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand "
                         . "SET "
                         . "product_id = ". (int)$product_id .", "
-                        . "brand_id = ".$brand_id);            
-        
-        $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand "
+                        . "brand_id = ".$brand_id);
+            if(!$univ['model']){
+                $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand "
                         . "SET "
                         . "product_id = ". (int)$product_id .", "
                         . "brand_id = ".$model_id);
-        $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand "
+                if(!$univ['mr']){
+                    $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand "
                         . "SET "
                         . "product_id = ". (int)$product_id .", "
                         . "brand_id = ".$modelRow_id);
+                } else {
+                    $quer = $this->db->query("SELECT id FROM ".DB_PREFIX."brand WHERE parent_id = ".(int)$model_id);
+                    foreach ($quer->rows as $cpb) {
+                        $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand "
+                                . "SET "
+                                . "product_id = ". (int)$product_id .", "
+                                . "brand_id = ".(int)$cpb['id']);
+                    }
+                }
+            } else {
+                $quer = $this->db->query("SELECT id FROM ".DB_PREFIX."brand WHERE parent_id = ".(int)$brand_id);
+                foreach ($quer->rows as $cpb) {
+                    $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand "
+                            . "SET "
+                            . "product_id = ". (int)$product_id .", "
+                            . "brand_id = ".(int)$cpb['id']);
+                }
+            }
+        } else {
+            $quer = $this->db->query("SELECT id FROM ".DB_PREFIX."brand WHERE 1");
+            foreach ($quer->rows as $cpb) {
+                $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand "
+                        . "SET "
+                        . "product_id = ". (int)$product_id .", "
+                        . "brand_id = ".(int)$cpb['id']);
+            }
+        }
         
         $info = array(
             'id'        => $product_id,
             'name'      => $name,
             'photos'    => $photos,
-            'vin'       => $vin
+            'vin'       => $vin,
+            'univ'      => $univ
         );
         
         return $info;
@@ -218,6 +282,7 @@ class ModelCommonAddProd extends Model {
                         . "price = ".($row['price']!=''?(int)$row['price']:0).", "
                         . "quantity = ".($row['quantity']!=''?(int)$row['quantity']:0).", "
                         . "ean = '".$row['type']."', "
+                        . "width = '".$row['dop']."', "
                         . "upc = '".$row['cond']."', "
                         . "weight = '".$row['stock']."', "
                         . "compability = '".trim($row['compability'])."', "
@@ -231,6 +296,7 @@ class ModelCommonAddProd extends Model {
                         . "price = ".($row['price']!=''?(int)$row['price']:0).", "
                         . "quantity = ".($row['quantity']!=''?(int)$row['quantity']:0).", "
                         . "ean = '".$row['type']."', "
+                        . "width = '".$row['dop']."', "
                         . "upc = '".$row['cond']."', "
                         . "weight = '".$row['stock']."', "
                         . "compability = '".trim($row['compability'])."', "
@@ -244,6 +310,7 @@ class ModelCommonAddProd extends Model {
                         . "price = ".($row['price']!=''?(int)$row['price']:0).", "
                         . "quantity = ".($row['quantity']!=''?(int)$row['quantity']:0).", "
                         . "ean = '".$row['type']."', "
+                        . "width = '".$row['dop']."', "
                         . "upc = '".$row['cond']."', "
                         . "weight = '".$row['stock']."', "
                         . "location = '".$row['stell'].'/'.$row['jar'].'/'.$row['shelf'].'/'.$row['box']."', "
@@ -260,7 +327,19 @@ class ModelCommonAddProd extends Model {
                     $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand (`product_id`, `brand_id`) VALUES (".(int)$key.",".(int)$quer->row['id'].")");
                 }
             }
-            
+            $name = $row['name'];
+            if($row['uBrand']!=''){
+                $name = $row['name'].' '.$row['dop'];
+            } else {
+                if($row['uMod']!=''){
+                    $name = $row['name'].' '.$row['dop'];
+                } else {
+                    if($row['uMR']!=''){
+                        $name = $row['name'].' '.$row['dop'];
+                    }
+                }
+            }
+            $this->db->query("UPDATE ".DB_PREFIX."product_description SET name = '".$name."' WHERE product_id = ".(int)$key);
         }
 //        exit(var_dump(trim($result)));
         return trim($result);
