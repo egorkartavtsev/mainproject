@@ -261,6 +261,18 @@
                     if($field['name'] == 'date'){
                         $row[$field['name']] = DateTime::createFromFormat('Y-m-d H:i:s', $row[$field['name']])->format('d.‌​m.Y');
                     }
+                    if ($field['name'] == 'whole'){
+                        if($row[$field['name']] == 1){
+                            $row[$field['name']] = 'Комплект';
+                        } else {
+                            $row[$field['name']] = '';
+                        }
+                    }
+                    
+                    if (($field['name'] == 'comp_price') && ($row[$field['name']] != '')) {
+                        $row['complect'] = '';
+                    }
+                    
                     $sheet->setCellValueExplicit($cell, (string)htmlspecialchars_decode(str_replace(">", "-", str_replace($replace, '***', (string)$row[$field['name']]))), PHPExcel_Cell_DataType::TYPE_STRING);
                     $sheet->getColumnDimension($letter)->setAutoSize(true);
                     if($row['quant']==0){

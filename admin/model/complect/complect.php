@@ -106,6 +106,8 @@
             $this->db->query($quer);
             
             $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE `sku` = '".$query->row['link']."' ");
+            $this->db->query("UPDATE ".DB_PREFIX."product SET comp_whole = '".$whole."' WHERE `sku` = '".$heading."' ");
+            
                 
             foreach ($complect as $com){
                 if($com!==''){
