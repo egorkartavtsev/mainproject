@@ -118,25 +118,36 @@ class ControllerComplectComplect extends Controller {
     
     function searchComplects() {
         $request = $this->request->post['request'];
+        $this->load->model('complect/complect');
         if($request!=''){
-            $this->load->model('complect/complect');
             $total = $this->model_complect_complect->searchComplects($request);
-            if(!empty($total)){
+        } else {
+            $total = $this->model_complect_complect->getTotalComplects();
+        }
+        
+        if(!empty($total)){
                 $output = '';
                 foreach ($total as $comp) {
+                    $href = HTTP_SERVER.'index.php?route=complect/complect/edit&complect='.$comp['id'].'&token='.$this->session->data['token'];
                     $output.='<tr>'
                                 . '<td>'.$comp['id'].'</td>'
                                 . '<td>'.$comp['name'].'</td>'
                                 . '<td>'.$comp['heading'].'</td>'
                                 . '<td>'.$comp['price'].'</td>'
-                                . '<td></td>'
+                                . '<td>
+                                            <a href="'.$href.'" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="Редактировать">
+                                                <i class="fa fa-pencil"></i>
+                                            </a>
+                                            <button onclick="confirm(\'Вы уверены?\') ? writeoff(\'$'.$comp['id'].'\', \''. $this->session->data['token'].'\') : false;"  data-toggle="tooltip" title="" class="btn btn-danger" data-original-title="Раскомплектация">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>'
                             . '</tr>';
                 }
                 exit($output);
             }else{
                 exit('Ничего не найдено');
             }
-        }
     }
 }
 
