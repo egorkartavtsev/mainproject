@@ -159,10 +159,10 @@
           <div class="btn-group">
             <button type="button" data-toggle="tooltip" class="btn btn-default" title="<?php echo $button_wishlist; ?>" onclick="wishlist.add('<?php echo $product_id; ?>');"><i class="fa fa-heart"></i></button>
             <button type="button" data-toggle="tooltip" class="btn btn-default" title="<?php echo $button_compare; ?>" onclick="compare.add('<?php echo $product_id; ?>');"><i class="fa fa-exchange"></i></button>
+            <button type="button" data-toggle="tooltip" class="btn btn-default" title="Скопировать ссылку" id="send_prod"><i class="fa fa-copy"></i></button>
           </div>
           <h1><?php echo $heading_title; ?></h1>
           <ul class="list-unstyled">
-              <li><button class="btn btn-danger btn-block" id="send_prod">Отправить товар</button><li>
             <?php if ($manufacturer) { ?>
                 <li>Марка: <a href="<?php echo $manufacturers; ?>"><?php echo $manufacturer; ?></a></li>
             <?php } ?>
@@ -816,10 +816,10 @@ $(document).ready(function() {
     }
     
     $("#send_prod").on('click', function(){
-    
+        var copyLink = '<?php echo $sendLink; ?>';
         var clipboard = new Clipboard('#send_prod', {
             text: function() {
-                return '<?php echo $sendLink; ?>';
+                return copyLink.replace("&amp;", "&");
             }
         });
 
@@ -830,7 +830,7 @@ $(document).ready(function() {
         clipboard.on('error', function(e) {
             console.log(e);
         });
-        alert('Ссылка скопирована в буфер обмена.');
+        alert(copyLink.replace("&amp;", "&"));
     })
 </script>
     
