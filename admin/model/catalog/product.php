@@ -502,23 +502,23 @@ class ModelCatalogProduct extends Model {
 		$sql .= " GROUP BY p.product_id";
 
 		$sort_data = array(
+			'p.date_added',
 			'pd.name',
 			'p.length',
 			'p.weight',
 			'p.price',
-			'p.date_added',
 			'p.quantity',
 			'p.status',
 			'p2c.category_id',
 			'p.sort_order'
 		);
-
+                
 		if (isset($data['sort']) && in_array($data['sort'], $sort_data)) {
 			$sql .= " ORDER BY " . $data['sort'];
 		} else {
-			$sql .= " ORDER BY pd.name";
+			$sql .= " ORDER BY p.date_added";
 		}
-
+                
 		if (isset($data['order']) && ($data['order'] == 'DESC')) {
 			$sql .= " DESC";
 		} else {
@@ -536,9 +536,8 @@ class ModelCatalogProduct extends Model {
 
 			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
 		}
-
+                
 		$query = $this->db->query($sql);
-
 		return $query->rows;
 	}
 
