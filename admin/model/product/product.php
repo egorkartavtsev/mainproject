@@ -107,15 +107,16 @@ class ModelProductProduct extends Model {
             $name.= ' '.$brand.' '.$product['dop'];
             if($product['model']==='univ'){
                 $product['model'] = 'Универсальный';
+                $product['modRow'] = 'Универсальный';
                 $univ['model'] = TRUE;
                 $univ['mr'] = TRUE;
             } else {
                 $model_id = $this->getMId($product['model']);
                 if ($product['modRow']==='univ'){
-                    $product['modRow']==='Универсальный';
+                    $product['modRow'] = 'Универсальный';
                     $univ['mr'] = TRUE;
                 } else {
-                    $name.= ' '.$brand.' '.$product['modRow'];
+                    $name = $product['podcat'].' '.$brand.' '.$product['modRow'];
                 }
             }
         }
