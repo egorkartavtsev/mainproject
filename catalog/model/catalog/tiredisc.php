@@ -24,7 +24,7 @@ class ModelCatalogTiredisc extends Model {
         return $list->rows;
     }
     
-    public function getTires() {
+    public function getTires($filter) {
         $result = array();
         $query = "SELECT "
                     . "p.product_id AS pid, "
@@ -37,13 +37,19 @@ class ModelCatalogTiredisc extends Model {
                 . "FROM ".DB_PREFIX."product p "
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
                 . "LEFT JOIN ".DB_PREFIX."td_tires tire ON p.sku = tire.vin "
-                . "WHERE p.sku = tire.vin";
+                . "WHERE p.sku = tire.vin ";
+        if(!empty($filter)){
+            foreach ($filter as $field => $value) {
+                $query.= "AND tire.".$field." = '".$value."' ";
+            }
+        }
+//        exit(var_dump($query));
         $list = $this->db->query($query);
         
         return $list->rows;
     }
     
-    public function getDisc() {
+    public function getDisc($filter) {
         $result = array();
         $query = "SELECT "
                     . "p.product_id AS pid, "
@@ -56,7 +62,12 @@ class ModelCatalogTiredisc extends Model {
                 . "FROM ".DB_PREFIX."product p "
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
                 . "LEFT JOIN ".DB_PREFIX."td_disc disc ON p.sku = disc.vin "
-                . "WHERE p.sku = disc.vin";
+                . "WHERE p.sku = disc.vin ";
+        if(!empty($filter)){
+            foreach ($filter as $field => $value) {
+                $query.= "AND disc.".$field." = '".$value."' ";
+            }
+        }
         $list = $this->db->query($query);
         
         return $list->rows;
@@ -94,6 +105,15 @@ class ModelCatalogTiredisc extends Model {
                 . "WHERE p.product_id = ".(int)$pid;
         $result = $this->db->query($sql);
         return $result->row;
+    }
+    
+    public function getValues($param, $belong) {
+        $query = $this->db->query("SELECT lib.value FROM ".DB_PREFIX."td_lib lib LEFT JOIN ".DB_PREFIX."td_params prm ON prm.id = lib.id_param WHERE prm.field = '".$param."' AND prm.belong = '".$belong."'");
+        $result = array();
+        foreach ($query->rows as $value) {
+            $result[] = $value['value'];
+        }
+        return $result;
     }
 }
 

@@ -27,8 +27,29 @@
           </div>
         </div>
        <?php } else { ?>
-       
-       <?php echo 'filter'; }?>
+       <h3>Уточните условия поиска:</h3>
+        <?php foreach($filter_fields as $field => $info) { ?>
+            <div class="col-md-3 form-group">
+                <label for="filter-<?php echo $field;?>"><?php echo $info['name'];?></label>
+                <select class="form-control" id="filter-<?php echo $field;?>">
+                    <option selected disabled>Выберите значение</option>
+                    <?php foreach($info['values'] as $value) { ?>
+                        <?php if(!stristr($path, $field)){ ?>
+                            <option value="<?php echo $path;?>&<?php echo $field;?>=<?php echo $value;?>"><?php echo $value;?></option>
+                        <?php } elseif((stristr($path, $field)) && (!stristr($path, $value))) { ?>
+                            <option value="<?php echo str_replace($curr_filter[$field],$value,$path)?>"><?php echo $value;?></option>
+                        <?php } else { ?>
+                            <option disabled selected><?php echo $value;?></option>
+                        <?php }?>
+
+                    <?php }?>
+                </select>
+            </div>
+        <?php }?>
+        <div class="clearfix"></div>
+        <a class="btn btn-danger" href='<?php echo $reset;?>'>Сбросить фильтры</a>
+        <div class="clearfix"></div>
+       <?php }?>
         <hr>
         <div class="row">
         <div class="col-md-2 col-sm-6 hidden-xs">
@@ -79,3 +100,11 @@
         overflow-x: hidden;
     }
 </style>
+<script>
+    <?php foreach($filter_fields as $field => $info) { ?>
+        $("#filter-<?php echo $field;?>").on('change', function(){
+            var url = document.location.pathname+this.value;
+            document.location.href = url;
+        })
+    <?php } ?>
+</script>

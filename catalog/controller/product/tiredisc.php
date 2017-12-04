@@ -86,9 +86,30 @@ class ControllerProductTiredisc extends Controller {
         $this->load->language('product/product');
         $this->load->model('catalog/brand');
         $this->load->model('catalog/product');
+        $this->load->model('catalog/tiredisc');
         $this->load->model('tool/image');
         
         $data['categ'] = 'tire';
+        
+        $data['filter_fields'] = array();
+        $f_fields = $this->model_catalog_tiredisc->getParams('tire');
+        foreach ($f_fields as $field => $name) {
+            $values = $this->model_catalog_tiredisc->getValues($field, $data['categ']);
+            $data['filter_fields'][$field] = array(
+                'name' => $name,
+                'values' => $values
+            );
+        }
+        $filter_data = array();
+        $data['path'] = '?route='.$this->request->get['route'];
+        foreach ($this->request->get as $var => $value) {
+            if($var!=='route'){
+                $filter_data[$var] = $value;
+                $data['curr_filter'][$var] = $value;
+                $data['path'].='&'.$var.'='.$value;
+            }
+        }
+        
         $data['breadcrumbs'] = array();
 
         $data['breadcrumbs'][] = array(
@@ -97,89 +118,11 @@ class ControllerProductTiredisc extends Controller {
         );
         $data['breadcrumbs'][] = array(
                 'text' => 'Шины и диски',
-                'href' => $this->url->link('product/brand/index')
-        );
-
-        $this->document->setTitle('Шины и диски');
-
-        $data['heading_title'] = 'Шины и диски';
-        
-        $this->load->model("catalog/tiredisc");
-        
-        $data['text_index'] = $this->language->get('text_index');
-        $data['text_empty'] = $this->language->get('text_empty');
-
-        $data['button_continue'] = $this->language->get('button_continue');
-
-        $data['continue'] = $this->url->link('common/home');
-        $data['compare'] = $this->url->link('product/compare');
-
-        $data['column_left'] = $this->load->controller('common/column_left');
-        $data['column_right'] = $this->load->controller('common/column_right');
-        $data['content_top'] = $this->load->controller('common/content_top');
-        $data['content_bottom'] = $this->load->controller('common/content_bottom');
-        $data['footer'] = $this->load->controller('common/footer');
-        $data['header'] = $this->load->controller('common/header');
-        $data['button_cart'] = $this->language->get('button_cart');
-        $data['button_grid'] = $this->language->get('button_grid');
-        $data['button_list'] = $this->language->get('button_list');
-        $data['text_compare'] = $this->language->get('text_compare');
-        $data['text_sort'] = $this->language->get('text_sort');
-        $data['text_limit'] = $this->language->get('text_limit');
-        $data['column_left'] = $this->load->controller('common/column_left');
-	$data['column_right'] = $this->load->controller('common/column_right');
-	$data['content_top'] = $this->load->controller('common/content_top');
-	$data['content_bottom'] = $this->load->controller('common/content_bottom');
-	$data['footer'] = $this->load->controller('common/footer');
-	$data['header'] = $this->load->controller('common/header');
-        $results = $this->model_catalog_tiredisc->getTires();
-        foreach ($results as $result) {
-                                if ($result['image']) {
-					$image = $this->model_tool_image->resize($result['image'], $this->config->get($this->config->get('config_theme') . '_image_product_width'), $this->config->get($this->config->get('config_theme') . '_image_product_height'));
-				} else {
-					$image = $this->model_tool_image->resize('placeholder.png', $this->config->get($this->config->get('config_theme') . '_image_product_width'), $this->config->get($this->config->get('config_theme') . '_image_product_height'));
-				}
-                                                                
-                                $data['products'][] = array(
-                                        
-                                        'name' => $result['name'],
-                                        'vin' => $result['vin'],
-                                        'price' => $result['price'],
-                                        'cond' => $result['cond'],
-                                        'type' => $result['type'],
-                                        'thumb' => $image,
-                                        'href' => $this->url->link('product/tiredisc/tire', 'product='.$result['pid'])
-                                    
-                                );
-                    
-                }
-                
-        $this->response->setOutput($this->load->view('product/tiredisc_info', $data));        
-        
-    }
-    
-    public function disclist() {
-        $this->load->model('tool/image');
-        $this->load->language('product/manufacturer');
-        $this->load->language('product/product');
-        $this->load->model('catalog/brand');
-        $this->load->model('catalog/product');
-        $this->load->model('tool/image');
-        
-        $data['categ'] = 'disc';
-        $data['breadcrumbs'] = array();
-
-        $data['breadcrumbs'][] = array(
-                'text' => $this->language->get('text_home'),
-                'href' => $this->url->link('common/home')
-        );
-        $data['breadcrumbs'][] = array(
-                'text' => 'Шины и диски',
-                'href' => $this->url->link('product/tiredisc')
+                'href' => $this->url->link('product/tiresdisc')
         );
         $data['breadcrumbs'][] = array(
                 'text' => 'Шины',
-                'href' => $this->url->link('product/tiredisc/disclisc')
+                'href' => $this->url->link('product/tiredisc/tirelist')
         );
 
         $this->document->setTitle('Шины');
@@ -214,7 +157,114 @@ class ControllerProductTiredisc extends Controller {
 	$data['content_bottom'] = $this->load->controller('common/content_bottom');
 	$data['footer'] = $this->load->controller('common/footer');
 	$data['header'] = $this->load->controller('common/header');
-        $results = $this->model_catalog_tiredisc->getDisc();
+        $results = $this->model_catalog_tiredisc->getTires($filter_data);
+        $data['products'] = array();
+        $data['reset'] = $this->url->link($this->request->get['route']);
+        foreach ($results as $result) {
+                                if ($result['image']) {
+					$image = $this->model_tool_image->resize($result['image'], $this->config->get($this->config->get('config_theme') . '_image_product_width'), $this->config->get($this->config->get('config_theme') . '_image_product_height'));
+				} else {
+					$image = $this->model_tool_image->resize('placeholder.png', $this->config->get($this->config->get('config_theme') . '_image_product_width'), $this->config->get($this->config->get('config_theme') . '_image_product_height'));
+				}
+                                                                
+                                $data['products'][] = array(
+                                        
+                                        'name' => $result['name'],
+                                        'vin' => $result['vin'],
+                                        'price' => $result['price'],
+                                        'cond' => $result['cond'],
+                                        'type' => $result['type'],
+                                        'thumb' => $image,
+                                        'href' => $this->url->link('product/tiredisc/tire', 'product='.$result['pid'])
+                                    
+                                );
+                    
+                }
+                
+        $this->response->setOutput($this->load->view('product/tiredisc_info', $data));        
+        
+    }
+    
+    public function disclist() {
+        $this->load->model('tool/image');
+        $this->load->language('product/manufacturer');
+        $this->load->language('product/product');
+        $this->load->model('catalog/brand');
+        $this->load->model('catalog/product');
+        $this->load->model('catalog/tiredisc');
+        $this->load->model('tool/image');
+        
+        $data['categ'] = 'disk';
+        
+        $data['filter_fields'] = array();
+        $f_fields = $this->model_catalog_tiredisc->getParams('disk');
+        foreach ($f_fields as $field => $name) {
+            $values = $this->model_catalog_tiredisc->getValues($field, $data['categ']);
+            $data['filter_fields'][$field] = array(
+                'name' => $name,
+                'values' => $values
+            );
+        }
+        
+        $filter_data = array();
+        $data['path'] = '?route='.$this->request->get['route'];
+        foreach ($this->request->get as $var => $value) {
+            if($var!=='route'){
+                $filter_data[$var] = $value;
+                $data['curr_filter'][$var] = $value;
+                $data['path'].='&'.$var.'='.$value;
+            }
+        }
+        $data['breadcrumbs'] = array();
+
+        $data['breadcrumbs'][] = array(
+                'text' => $this->language->get('text_home'),
+                'href' => $this->url->link('common/home')
+        );
+        $data['breadcrumbs'][] = array(
+                'text' => 'Шины и диски',
+                'href' => $this->url->link('product/tiredisc')
+        );
+        $data['breadcrumbs'][] = array(
+                'text' => 'Диски',
+                'href' => $this->url->link('product/tiredisc/disclist')
+        );
+
+        $this->document->setTitle('Диски');
+
+        $data['heading_title'] = 'Диски';
+        
+        $this->load->model("catalog/tiredisc");
+        
+        $data['text_index'] = $this->language->get('text_index');
+        $data['text_empty'] = $this->language->get('text_empty');
+
+        $data['button_continue'] = $this->language->get('button_continue');
+
+        $data['continue'] = $this->url->link('common/home');
+        $data['compare'] = $this->url->link('product/compare');
+
+        $data['column_left'] = $this->load->controller('common/column_left');
+        $data['column_right'] = $this->load->controller('common/column_right');
+        $data['content_top'] = $this->load->controller('common/content_top');
+        $data['content_bottom'] = $this->load->controller('common/content_bottom');
+        $data['footer'] = $this->load->controller('common/footer');
+        $data['header'] = $this->load->controller('common/header');
+        $data['button_cart'] = $this->language->get('button_cart');
+        $data['button_grid'] = $this->language->get('button_grid');
+        $data['button_list'] = $this->language->get('button_list');
+        $data['text_compare'] = $this->language->get('text_compare');
+        $data['text_sort'] = $this->language->get('text_sort');
+        $data['text_limit'] = $this->language->get('text_limit');
+        $data['column_left'] = $this->load->controller('common/column_left');
+	$data['column_right'] = $this->load->controller('common/column_right');
+	$data['content_top'] = $this->load->controller('common/content_top');
+	$data['content_bottom'] = $this->load->controller('common/content_bottom');
+	$data['footer'] = $this->load->controller('common/footer');
+	$data['header'] = $this->load->controller('common/header');
+        $results = $this->model_catalog_tiredisc->getDisc($filter_data);
+        $data['products'] = array();
+        $data['reset'] = $this->url->link($this->request->get['route']);
         foreach ($results as $result) {
                                 if ($result['image']) {
 					$image = $this->model_tool_image->resize($result['image'], $this->config->get($this->config->get('config_theme') . '_image_product_width'), $this->config->get($this->config->get('config_theme') . '_image_product_height'));
