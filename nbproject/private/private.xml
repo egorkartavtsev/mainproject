@@ -12,11 +12,10 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/OSPanel/domains/mgnauto/catalog/view/theme/default/template/product/product.tpl</file>
-            <file>file:/D:/OSPanel/domains/mgnauto/catalog/controller/product/product.php</file>
-            <file>file:/D:/OSPanel/domains/mgnauto/catalog/view/theme/default/template/common/header.tpl</file>
-            <file>file:/D:/OSPanel/domains/mgnauto/admin/controller/common/forfix.php</file>
-            <file>file:/D:/OSPanel/domains/mgnauto/catalog/model/catalog/product.php</file>
+            <file>file:/D:/OSPanel/domains/mgnauto/admin/controller/product/product_edit.php</file>
+            <file>file:/D:/OSPanel/domains/mgnauto/admin/controller/common/addprod.php</file>
+            <file>file:/D:/OSPanel/domains/mgnauto/admin/model/common/addprod.php</file>
+            <file>file:/D:/OSPanel/domains/mgnauto/admin/model/product/product.php</file>
         </group>
     </open-files>
 </project-private>
