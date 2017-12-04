@@ -167,3 +167,18 @@ function deleteItem($id){
         }
     });
 }
+    
+function getFilters($categ){
+    ajax({
+        url: "index.php?route=tiresdisc/list/getFilter&token=" + getURLVar('token'),
+        statbox:"status",
+        method:"POST",
+        data:
+        {
+            categ: $categ
+        },
+        success:function(data){
+            $("#filter_fields").html(data);
+        }
+    });
+}
