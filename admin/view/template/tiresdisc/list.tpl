@@ -12,7 +12,14 @@
         </div>
     </div>
     <div class="container-fluid">
-        <div class="well">TUT BUDET FILTER</div>
+        <div class="alert alert-success" id="filters">
+            <select id="filter-categ" class="form-control">
+                <option value="all">Все товары</option>
+                <option value="disk">Диски</option>
+                <option value="tire">Шины</option>
+            </select>
+            <div class="col-sm-12" id="filter_fields"></div>
+        </div>
         <table class="table table-bordered table-responsive table-striped">
             <thead>
                 <tr>
@@ -49,4 +56,9 @@
             </tbody>
         </table>
     </div>
+    <script>
+        $("#filter-categ").on('change', function(){
+            getFilters($("#filter-categ").val());
+        })
+    </script>
 <?php echo $footer;?>

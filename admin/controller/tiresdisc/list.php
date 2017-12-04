@@ -5,6 +5,7 @@ class ControllerTiresDiscList extends Controller {
         $data = $this->getLayout();
         $this->load->model("tiresdisc/tiresdisc");
         $list = $this->model_tiresdisc_tiresdisc->getList();
+        $data['filters'] = $this->model_tiresdisc_tiresdisc->getAllParameters('tire');
         $this->load->model('tool/image');
 		$data['list'] = array();
 		foreach ($list as $prod) {
@@ -94,5 +95,32 @@ class ControllerTiresDiscList extends Controller {
         return $data;
         
     }
+    
+    public function getFilter() {
+        $categ = $this->request->post['categ'];
+        $this->load->model('tiresdisc/tiresdisc');
+        $params = array();
+        if($categ!=='all'){
+            $params = $this->model_tiresdisc_tiresdisc->getAllParameters($categ);
+        }
+        $result = '';
+        
+        foreach ($params as $field => $value) {
+            $result.='<div class="form-group col-md-3">';
+                $result.='<label for="filter-'.$field.'">'.$value['name'].'</label>';
+                $result.='<select id="filter-'.$field.'" class="form-control">';
+                $result.='<option value="all">Все товары</option>';
+                foreach ($value['values'] as $row) {
+                    $result.='<option value="'.$row['value'].'">'.$row['value'].'</option>';
+                }
+                $result.='</select>';
+            $result.='</div>';
+        }
+        $result.='<div class="clearfix"></div>';
+        $result.='<input type="hidden" id="filter-cat" value="'.$categ.'">';
+        $result.='<button class="btn btn-primary" id="submit-filters">Применить фильтры</button>';
+        echo $result;
+    }
+    
 }
 
