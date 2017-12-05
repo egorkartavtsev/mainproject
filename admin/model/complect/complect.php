@@ -76,8 +76,11 @@
                     . "WHERE sku = '".$heading."'";
             $this->db->query($quer);
         /*привязываем комплектующие к головному товару*/
+            $price = 0;
             foreach ($complects as $com){
                 if($com!==''){
+                    $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE sku = '".$com."'");
+                    $price+= $sup->row['price'];
                     $quer = "UPDATE ".DB_PREFIX."product "
                         . "SET comp = '".$heading."', "
                             . "image = '".$image."' "
@@ -85,6 +88,10 @@
                     $this->db->query($quer);
                 }
             }
+            $price = $price*0.9;
+            $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$price."' WHERE heading = '".$heading."'");
+            $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE sku = '".$link."'");
+            $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE sku = '".$heading."'");
         }
         
         public function editComplect($id, $name, $price, $heading, $complect=0, $whole) {
@@ -109,9 +116,11 @@
             $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE `sku` = '".$query->row['link']."' ");
             $this->db->query("UPDATE ".DB_PREFIX."product SET comp_whole = '".$whole."' WHERE `sku` = '".$heading."' ");
             
-                
+            $price = 0;    
             foreach ($complect as $com){
                 if($com!==''){
+                    $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE sku = '".$com."'");
+                    $price+= $sup->row['price'];
                     $quer = "UPDATE ".DB_PREFIX."product "
                         . "SET comp = '".$heading."', "
                             . "image = '".$image."' "
@@ -119,6 +128,10 @@
                     $this->db->query($quer);
                 }
             }
+            $price = $price*0.9;
+            $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$price."' WHERE heading = '".$heading."'");
+            $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE sku = '".$query->row['link']."'");
+            $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE sku = '".$heading."'");
         }
         
         public function getTotalComplects() {
