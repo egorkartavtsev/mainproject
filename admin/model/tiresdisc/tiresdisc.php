@@ -195,14 +195,16 @@ class ModelTiresdiscTiresdisc extends Model {
         return $vin.'-0.jpg';
     }
 /***************************************************************************************************************/
-    public function getList() {
-        $sql = "SELECT "
+    public function getList($filter, $sort) {
+        $sql = "";
+        if(empty($filter) || !$filter['cat']){
+            $sql = "SELECT "
                 . "pd.name AS name, "
                 . "p.product_id AS link, "
                 . "p.price AS price, "
                 . "p.date_added AS date, "
-                . "tire.image AS tImage, "
-                . "disc.image AS dImage, "
+                . "tire.image AS tiresImage, "
+                . "disc.image AS discImage, "
                 . "p.location AS location, "
                 . "p.weight AS stock, "
                 . "p.sku AS vin, "
@@ -214,7 +216,35 @@ class ModelTiresdiscTiresdisc extends Model {
               ."LEFT JOIN ".DB_PREFIX."td_tires tire ON tire.link = p.product_id "
               ."LEFT JOIN ".DB_PREFIX."td_disc disc ON disc.link = p.product_id "
               ."LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
-              ."WHERE tire.link = p.product_id OR disc.link = p.product_id ";
+              ."WHERE tire.link = p.product_id OR disc.link = p.product_id ".$sort;
+        } else {
+            $sql.= "SELECT "
+                . "pd.name AS name, "
+                . "p.product_id AS link, "
+                . "p.price AS price, "
+                . "p.date_added AS date, "
+                . $filter['cat'].".image AS ".$filter['cat']."Image, "
+                . "p.location AS location, "
+                . "p.weight AS stock, "
+                . "p.sku AS vin, "
+                . "p.quantity AS quan, "
+                . "p.upc AS cond, "
+                . "p.ean AS type, "
+                . "p.status AS status "
+              ."FROM `".DB_PREFIX."product` p "
+              ."LEFT JOIN ".DB_PREFIX."td_".$filter['cat']." ".$filter['cat']." ON ".$filter['cat'].".link = p.product_id "
+              ."LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
+              ."WHERE ".$filter['cat'].".link = p.product_id ";
+            foreach ($filter as $field => $value) {
+                if($value && $field!='cat'){
+                    $sql.= "AND ".$filter['cat'].".".$field."='".$value."' ";
+                }
+            }
+            $sql.= $sort;
+        }
+        
+        
+        
         $result = $this->db->query($sql);
         return $result->rows;
     }

@@ -4,14 +4,32 @@ class ControllerTiresDiscList extends Controller {
     public function index() {
         $data = $this->getLayout();
         $this->load->model("tiresdisc/tiresdisc");
-        $list = $this->model_tiresdisc_tiresdisc->getList();
-        $data['filters'] = $this->model_tiresdisc_tiresdisc->getAllParameters('tire');
+        $filter = array();
+        $data['link'] = 'index.php?route='.$this->request->get['route'].'&token='.$this->session->data['token'];
+        if(isset($this->request->get['sortorder'])){
+            $data['sortorder'] = $this->request->get['sortorder']=='ASC'?'DESC':'ASC';
+        } else {
+            $data['sortorder'] = 'ASC';
+        }
+        $data['link'].= '&sortorder='.$data['sortorder'];
+        if(!empty($this->request->post)){
+            foreach ($this->request->post as $field => $value) {
+                $filter[$field] = $value=='all'?FALSE:$value;
+            }
+        }
+        if(isset($this->request->get['sort'])){
+            $sort = 'ORDER BY '.$this->request->get['sort'].' '.$this->request->get['sortorder'];
+        } else {
+            $sort = '';
+        }
+        $data['curr_filter'] = (isset($filter['cat']) && $filter['cat'])?$filter['cat']:'all';
+        $list = $this->model_tiresdisc_tiresdisc->getList($filter, $sort);
         $this->load->model('tool/image');
-		$data['list'] = array();
-		foreach ($list as $prod) {
-            if($prod['dImage']!==NULL){
-                if (is_file(DIR_IMAGE.$prod['dImage'])) {
-                        $image = $this->model_tool_image->resize($prod['dImage'], 40, 40);
+        $data['list'] = array();
+        foreach ($list as $prod) {
+            if(isset($prod['discImage']) && $prod['discImage']!==NULL){
+                if (is_file(DIR_IMAGE.$prod['discImage'])) {
+                        $image = $this->model_tool_image->resize($prod['discImage'], 40, 40);
                 } else {
                         $image = $this->model_tool_image->resize('no_image.png', 40, 40);
                 }
@@ -32,8 +50,8 @@ class ControllerTiresDiscList extends Controller {
                     'cond'      => $prod['cond']      
                 );
             } else {
-                if (is_file(DIR_IMAGE.$prod['tImage'])) {
-                        $image = $this->model_tool_image->resize($prod['tImage'], 40, 40);
+                if (is_file(DIR_IMAGE.$prod['tiresImage'])) {
+                        $image = $this->model_tool_image->resize($prod['tiresImage'], 40, 40);
                 } else {
                         $image = $this->model_tool_image->resize('no_image.png', 40, 40);
                 }
@@ -97,18 +115,23 @@ class ControllerTiresDiscList extends Controller {
     }
     
     public function getFilter() {
-        $categ = $this->request->post['categ'];
+        $categ = $this->request->post['categ']=='disc'?'disk':'tire';
+        $cat = $this->request->post['categ'];
+        if($this->request->post['categ']=='all'){
+            $categ = $this->request->post['categ'];
+            $cat = 'all';
+        }
         $this->load->model('tiresdisc/tiresdisc');
         $params = array();
         if($categ!=='all'){
             $params = $this->model_tiresdisc_tiresdisc->getAllParameters($categ);
         }
-        $result = '';
+        $result = '<form method="post" action="index.php?route=tiresdisc/list&token='.$this->session->data['token'].'">';
         
         foreach ($params as $field => $value) {
             $result.='<div class="form-group col-md-3">';
-                $result.='<label for="filter-'.$field.'">'.$value['name'].'</label>';
-                $result.='<select id="filter-'.$field.'" class="form-control">';
+                $result.='<label for="'.$field.'">'.$value['name'].'</label>';
+                $result.='<select id="'.$field.'" name="'.$field.'" class="form-control">';
                 $result.='<option value="all">Все товары</option>';
                 foreach ($value['values'] as $row) {
                     $result.='<option value="'.$row['value'].'">'.$row['value'].'</option>';
@@ -116,9 +139,10 @@ class ControllerTiresDiscList extends Controller {
                 $result.='</select>';
             $result.='</div>';
         }
-        $result.='<div class="clearfix"></div>';
-        $result.='<input type="hidden" id="filter-cat" value="'.$categ.'">';
-        $result.='<button class="btn btn-primary" id="submit-filters">Применить фильтры</button>';
+            $result.='<div class="clearfix"></div>';
+            $result.='<input type="hidden" id="cat" name="cat" value="'.$cat.'">';
+            $result.='<button class="btn btn-primary" id="submit-filters">Применить фильтры</button>';
+        $result.='</form>';
         echo $result;
     }
     
