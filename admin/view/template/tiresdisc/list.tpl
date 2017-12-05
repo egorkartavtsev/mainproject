@@ -45,7 +45,7 @@
                         <td><?php echo $prod['locate'];?></td>
                         <td><?php echo $prod['price'];?></td>
                         <td><?php echo $prod['quant'];?></td>
-                        <td><?php echo $prod['stat'];?></td>
+                        <td><?php echo $prod['stat']=='1'?'<span class="label label-success">Включено</span>':'<span class="label label-warning">Отключено</span>';?></td>
                         <td><?php echo $prod['date'];?></td>
                         <td>
                             <a class="btn btn-primary" href="<?php echo $prod['linkEdit'];?>"><i class="fa fa-pencil fw"></i></a>

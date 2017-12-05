@@ -118,7 +118,7 @@ class ControllerProductTiredisc extends Controller {
         );
         $data['breadcrumbs'][] = array(
                 'text' => 'Шины и диски',
-                'href' => $this->url->link('product/tiresdisc')
+                'href' => $this->url->link('product/tiredisc')
         );
         $data['breadcrumbs'][] = array(
                 'text' => 'Шины',

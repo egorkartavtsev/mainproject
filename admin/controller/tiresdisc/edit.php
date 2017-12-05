@@ -120,6 +120,21 @@ class ControllerTiresdiscEdit extends Controller {
                     $form.='<label for="cond'.$id.'">Cостояние товара</label>';
                     $form.='<input type="text" class="form-control" id="cond'.$id.'" name="cond" value="'.$info['cond'].'">';
                 $form.='</div>';
+                $form.='<div class="form-group-sm col-md-3">';
+                    $form.='<label for="stat'.$id.'">Статус товара</label>';
+                    $form.='<select class="form-control" id="stat'.$id.'" name="status" value="'.$info['cond'].'">';
+                        $form.='<option value="1">Включен</option>';
+                        $form.='<option value="0" '.($info['status']=='0'?'selected':'').'>Отключен</option>';
+                    $form.='</select>';
+                $form.='</div>';
+                $form.='<div class="form-group-sm col-md-3">';
+                    $form.='<label for="dop'.$id.'">Доп.информация</label>';
+                    $form.='<input type="text" class="form-control" id="dop'.$id.'" name="dop" value="'.$info['dop'].'">';
+                $form.='</div>';
+                $form.='<div class="form-group-sm col-md-3">';
+                    $form.='<label for="note'.$id.'">Примечание</label>';
+                    $form.='<input type="text" class="form-control" id="note'.$id.'" name="note" value="'.$info['note'].'">';
+                $form.='</div>';
             $form.='</div>';
         return $form;
     }
