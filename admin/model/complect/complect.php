@@ -88,6 +88,8 @@
                     $this->db->query($quer);
                 }
             }
+            $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE sku = '".$heading."' ");
+            $price+= $sup->row['price'];
             $price = $price*0.9;
             $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$price."' WHERE heading = '".$heading."'");
             $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE sku = '".$link."'");
@@ -128,6 +130,8 @@
                     $this->db->query($quer);
                 }
             }
+            $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE sku = '".$heading."' ");
+            $price+= $sup->row['price'];
             $price = $price*0.9;
             $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$price."' WHERE heading = '".$heading."'");
             $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE sku = '".$query->row['link']."'");
