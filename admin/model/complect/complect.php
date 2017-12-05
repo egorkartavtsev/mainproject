@@ -33,7 +33,7 @@
                 'heading' => $query_comp->row['heading']
             );
             
-            $query = 'SELECT p.sku AS vin, pd.name AS name '
+            $query = 'SELECT p.sku AS vin, pd.name AS name, p.price AS price '
                    . 'FROM '.DB_PREFIX.'product p '
                    . 'LEFT JOIN '.DB_PREFIX.'product_description pd '
                         . 'ON pd.product_id = p.product_id '
@@ -43,6 +43,7 @@
             foreach ($query_acc->rows as $prod) {
                 $complect_info['accessories'][] = array(
                     'vin' => $prod['vin'],
+                    'price' => $prod['price'],
                     'name' => $prod['name']
                 );
             }

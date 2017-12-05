@@ -74,6 +74,9 @@
                                     <?php echo $acc['name']?>
                                 </td>
                                 <td>
+                                    <?php echo $acc['price']?>
+                                </td>
+                                <td>
                                     <button class="btn btn-danger" onclick="deleteAccss('<?php echo $acc['vin'];?>', 'c<?php echo $i;?>', '<?php echo $i;?>', '<?php echo $token; ?>')"><i class="fa fa-minus fw"></i></button>
                                 </td>
                             </tr>
