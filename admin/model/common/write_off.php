@@ -34,13 +34,13 @@ class ModelCommonWriteoff extends Model {
         $results = '';
         foreach ($prods as $data) {
             $results.= $data['vin'].',';
-            $query = $this->db->query("SELECT product_id, heading FROM ".DB_PREFIX."product WHERE sku = '".$data['vin']."'");
+            $query = $this->db->query("SELECT product_id, comp FROM ".DB_PREFIX."product WHERE sku = '".$data['vin']."'");
             $product_id = $query->row['product_id'];
-            $heading = $query->row['heading'];
+            $heading = $query->row['comp'];
             
-            if($heading!==NULL){
+            if($heading!=''){
                 $comp_price = 0;
-                $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE heading = '".$heading."' OR sku = '".$heading."' ");
+                $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE comp = '".$heading."' OR sku = '".$heading."' ");
                 foreach ($sup->rows as $value) {
                     $comp_price+=$value['price'];
                 }
