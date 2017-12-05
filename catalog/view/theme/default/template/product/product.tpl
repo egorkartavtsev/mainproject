@@ -71,7 +71,7 @@
                         </tr>
                         <?php }?>
                         <tr>
-                            <td colspan='3' style="text-align: center;">Цена комплекта: <?php echo $c_price; ?> руб.</td>
+                            <td colspan='3' style="text-align: center;">Цена комплекта со скидкой: <?php echo $c_price; ?> руб.</td>
                             
                         </tr>
                         <tr>
