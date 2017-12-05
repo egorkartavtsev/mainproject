@@ -2,7 +2,7 @@
 <script>
     <?php $i = 0; ?>
     <?php foreach($complect['accessories'] as $acc) { ?>
-        window.complect[<?php echo $i; ?>] = <?php echo $acc['vin']; ?>;
+        window.complect[<?php echo $i; ?>] = '<?php echo $acc['vin']; ?>';
         <?php ++$i; ?>
     <?php } ?>
 </script>

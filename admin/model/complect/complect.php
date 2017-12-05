@@ -117,8 +117,7 @@
             
             $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE `sku` = '".$query->row['link']."' ");
             $this->db->query("UPDATE ".DB_PREFIX."product SET comp_whole = '".$whole."' WHERE `sku` = '".$heading."' ");
-            
-            $price = 0;    
+            $price = 0;
             foreach ($complect as $com){
                 if($com!==''){
                     $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE sku = '".$com."'");
@@ -130,6 +129,7 @@
                     $this->db->query($quer);
                 }
             }
+            
             $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE sku = '".$heading."' ");
             $price+= $sup->row['price'];
             $price = $price*0.9;
