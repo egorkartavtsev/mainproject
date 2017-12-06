@@ -6,6 +6,8 @@ private $error = array();
         $data = $this->getLayout();
         $this->load->model('common/edit_model');
         if(isset($this->request->post['newname'])){
+            $sup = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE id = '".$this->request->post['pointer']."'");
+            $this->db->query("UPDATE ".DB_PREFIX."product SET length = '".$this->request->post['newname']."' WHERE length = '".$sup->row['name']."'");
             $this->db->query("UPDATE ".DB_PREFIX."brand "
                     . "SET name = '".$this->request->post['newname']."' "
                     . "WHERE id = '".$this->request->post['pointer']."'");
