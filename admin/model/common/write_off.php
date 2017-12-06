@@ -45,6 +45,19 @@ class ModelCommonWriteoff extends Model {
                     $comp_price+=$value['price'];
                 }
                 $comp_price = $comp_price*0.9;
+                //okruglenie
+                if($comp_price<500){
+                    $rvr = $comp_price%10;
+                    if($rvr>0){ 
+                        $rvr = 10 - $rvr;
+                        $comp_price = $comp_price + $rvr;
+                    }
+                } else {
+                    $rvr = $comp_price%100;
+                    $rvr = 50 - $rvr;
+                    $comp_price = $comp_price + $rvr;
+                }
+            //---------------
                 $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$comp_price."' WHERE heading = '".$heading."' ");
                 $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$comp_price."' WHERE sku = '".$heading."' ");
                 $sup = $this->db->query("SELECT link FROM ".DB_PREFIX."complects WHERE heading = '".$heading."' ");

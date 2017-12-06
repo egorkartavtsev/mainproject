@@ -91,6 +91,19 @@
             $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE sku = '".$heading."' ");
             $price+= $sup->row['price'];
             $price = $price*0.9;
+            //okruglenie
+                if($price<500){
+                    $rvr = $price%10;
+                    if($rvr>0){
+                        $rvr = 10 - $rvr;
+                        $price = $price + $rvr;
+                    }
+                } else {
+                    $rvr = $price%100;
+                    $rvr = 50 - $rvr;
+                    $price = $price + $rvr;
+                }
+            //---------------
             $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$price."' WHERE heading = '".$heading."'");
             $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE sku = '".$link."'");
             $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE sku = '".$heading."'");
@@ -132,7 +145,20 @@
             
             $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE sku = '".$heading."' ");
             $price+= $sup->row['price'];
-            $price = $price*0.9;
+            $price = $price*0.85;
+            //okruglenie
+                if($price<500){
+                    $rvr = $price%10;
+                    if($rvr>0){
+                        $rvr = 10 - $rvr;
+                        $price = $price + $rvr;
+                    }
+                } else {
+                    $rvr = $price%100;
+                    $rvr = 50 - $rvr;
+                    $price = $price + $rvr;
+                }
+            //---------------
             $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$price."' WHERE heading = '".$heading."'");
             $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE sku = '".$query->row['link']."'");
             $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE sku = '".$heading."'");
