@@ -7,7 +7,12 @@ private $error = array();
         $this->load->model('common/edit_model');
         if(isset($this->request->post['newname'])){
             $sup = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE id = '".$this->request->post['pointer']."'");
+            $repn = $this->db->query("SELECT name, product_id FROM ".DB_PREFIX."product_description WHERE LOCATE('".$sup->row['name']."', name) ");
             $this->db->query("UPDATE ".DB_PREFIX."product SET length = '".$this->request->post['newname']."' WHERE length = '".$sup->row['name']."'");
+            foreach ($repn->rows as $value) {
+                $newname = str_replace($sup->row['name'], $this->request->post['newname'], $value['name']);
+                $this->db->query("UPDATE ".DB_PREFIX."product_description SET name = '".$newname."', meta_h1 = '".$newname."', meta_title = '".$newname."' WHERE product_id = '".$value['product_id']."'");
+            }
             $this->db->query("UPDATE ".DB_PREFIX."brand "
                     . "SET name = '".$this->request->post['newname']."' "
                     . "WHERE id = '".$this->request->post['pointer']."'");
