@@ -15,8 +15,8 @@
         <div class="alert alert-success" id="filters">
             <select id="filter-categ" class="form-control">
                 <option value="all">Все товары</option>
-                <option value="disk">Диски</option>
-                <option value="tire">Шины</option>
+                <option value="disc">Диски</option>
+                <option value="tires">Шины</option>
             </select>
             <div class="col-sm-12" id="filter_fields"></div>
         </div>

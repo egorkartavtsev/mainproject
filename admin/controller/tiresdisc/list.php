@@ -4,8 +4,14 @@ class ControllerTiresDiscList extends Controller {
     public function index() {
         $data = $this->getLayout();
         $this->load->model("tiresdisc/tiresdisc");
-        $list = $this->model_tiresdisc_tiresdisc->getList();
         $data['filters'] = $this->model_tiresdisc_tiresdisc->getAllParameters('tire');
+        $filter_data = array();
+        if(!empty($this->request->post)){
+            foreach ($this->request->post as $field => $value) {
+                $filter_data[$field] = $value=='all'?FALSE:$value;
+            }
+        }
+        $list = $this->model_tiresdisc_tiresdisc->getList($filter_data);
         $this->load->model('tool/image');
 		$data['list'] = array();
 		foreach ($list as $prod) {
@@ -97,28 +103,36 @@ class ControllerTiresDiscList extends Controller {
     }
     
     public function getFilter() {
-        $categ = $this->request->post['categ'];
+        if($this->request->post['categ']=='disk'){
+            $categ = $this->request->post['categ'];
+            $cat = $this->request->post['categ'];
+        } else {
+            $categ = 'tire';
+            $cat = 'tires';
+        }
         $this->load->model('tiresdisc/tiresdisc');
         $params = array();
         if($categ!=='all'){
             $params = $this->model_tiresdisc_tiresdisc->getAllParameters($categ);
         }
         $result = '';
+        $result.='<form action="index.php?route=tiresdisc/list&token='.$this->session->data['token'].'" method="post">';
+            foreach ($params as $field => $value) {
+                $result.='<div class="form-group col-md-3">';
+                    $result.='<label for="filter-'.$field.'">'.$value['name'].'</label>';
+                    $result.='<select id="filter-'.$field.'" name="'.$field.'" class="form-control">';
+                    $result.='<option value="all">Все товары</option>';
+                    foreach ($value['values'] as $row) {
+                        $result.='<option value="'.$row['value'].'">'.$row['value'].'</option>';
+                    }
+                    $result.='</select>';
+                $result.='</div>';
+            }
+            $result.='<div class="clearfix"></div>';
+            $result.='<input type="hidden" id="filter-cat" name="cat" value="'.$cat.'">';
+            $result.='<button class="btn btn-primary" id="submit-filters">Применить фильтры</button>';
+        $result.='</form>';
         
-        foreach ($params as $field => $value) {
-            $result.='<div class="form-group col-md-3">';
-                $result.='<label for="filter-'.$field.'">'.$value['name'].'</label>';
-                $result.='<select id="filter-'.$field.'" class="form-control">';
-                $result.='<option value="all">Все товары</option>';
-                foreach ($value['values'] as $row) {
-                    $result.='<option value="'.$row['value'].'">'.$row['value'].'</option>';
-                }
-                $result.='</select>';
-            $result.='</div>';
-        }
-        $result.='<div class="clearfix"></div>';
-        $result.='<input type="hidden" id="filter-cat" value="'.$categ.'">';
-        $result.='<button class="btn btn-primary" id="submit-filters">Применить фильтры</button>';
         echo $result;
     }
     
