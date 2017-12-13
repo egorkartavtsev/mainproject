@@ -34,8 +34,35 @@ class ModelCommonWriteoff extends Model {
         $results = '';
         foreach ($prods as $data) {
             $results.= $data['vin'].',';
-            $query = $this->db->query("SELECT product_id FROM ".DB_PREFIX."product WHERE sku = '".$data['vin']."'");
+            $query = $this->db->query("SELECT product_id, comp FROM ".DB_PREFIX."product WHERE sku = '".$data['vin']."'");
             $product_id = $query->row['product_id'];
+            $heading = $query->row['comp'];
+            
+            if($heading!=''){
+                $comp_price = 0;
+                $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE comp = '".$heading."' OR sku = '".$heading."' ");
+                foreach ($sup->rows as $value) {
+                    $comp_price+=$value['price'];
+                }
+                $comp_price = $comp_price*0.9;
+                //okruglenie
+                if($comp_price<500){
+                    $rvr = $comp_price%10;
+                    if($rvr>0){ 
+                        $rvr = 10 - $rvr;
+                        $comp_price = $comp_price + $rvr;
+                    }
+                } else {
+                    $rvr = $comp_price%100;
+                    $rvr = 50 - $rvr;
+                    $comp_price = $comp_price + $rvr;
+                }
+            //---------------
+                $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$comp_price."' WHERE heading = '".$heading."' ");
+                $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$comp_price."' WHERE sku = '".$heading."' ");
+                $sup = $this->db->query("SELECT link FROM ".DB_PREFIX."complects WHERE heading = '".$heading."' ");
+                $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$comp_price."' WHERE sku = '".$sup->row['link']."' ");
+            }
 
             if ($this->db->query("INSERT INTO ".DB_PREFIX."sales_info "
                     . "SET "

@@ -18,7 +18,7 @@ class ModelCatalogTiredisc extends Model {
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
                 . "LEFT JOIN ".DB_PREFIX."td_disc disc ON p.sku = disc.vin "
                 . "LEFT JOIN ".DB_PREFIX."td_tires tire ON p.sku = tire.vin "
-                . "WHERE p.sku = disc.vin OR p.sku = tire.vin";
+                . "WHERE p.sku = disc.vin OR p.sku = tire.vin AND p.status='1' ";
         $list = $this->db->query($query);
         
         return $list->rows;
@@ -43,6 +43,7 @@ class ModelCatalogTiredisc extends Model {
                 $query.= "AND tire.".$field." = '".$value."' ";
             }
         }
+        $query.= "AND p.status='1' ";
 //        exit(var_dump($query));
         $list = $this->db->query($query);
         
@@ -68,6 +69,7 @@ class ModelCatalogTiredisc extends Model {
                 $query.= "AND disc.".$field." = '".$value."' ";
             }
         }
+        $query.= "AND p.status='1' ";
         $list = $this->db->query($query);
         
         return $list->rows;

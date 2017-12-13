@@ -33,7 +33,7 @@
                 'heading' => $query_comp->row['heading']
             );
             
-            $query = 'SELECT p.sku AS vin, pd.name AS name '
+            $query = 'SELECT p.sku AS vin, pd.name AS name, p.price AS price '
                    . 'FROM '.DB_PREFIX.'product p '
                    . 'LEFT JOIN '.DB_PREFIX.'product_description pd '
                         . 'ON pd.product_id = p.product_id '
@@ -43,6 +43,7 @@
             foreach ($query_acc->rows as $prod) {
                 $complect_info['accessories'][] = array(
                     'vin' => $prod['vin'],
+                    'price' => $prod['price'],
                     'name' => $prod['name']
                 );
             }
@@ -75,8 +76,11 @@
                     . "WHERE sku = '".$heading."'";
             $this->db->query($quer);
         /*привязываем комплектующие к головному товару*/
+            $price = 0;
             foreach ($complects as $com){
                 if($com!==''){
+                    $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE sku = '".$com."'");
+                    $price+= $sup->row['price'];
                     $quer = "UPDATE ".DB_PREFIX."product "
                         . "SET comp = '".$heading."', "
                             . "image = '".$image."' "
@@ -84,6 +88,25 @@
                     $this->db->query($quer);
                 }
             }
+            $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE sku = '".$heading."' ");
+            $price+= $sup->row['price'];
+            $price = $price*0.9;
+            //okruglenie
+                if($price<500){
+                    $rvr = $price%10;
+                    if($rvr>0){
+                        $rvr = 10 - $rvr;
+                        $price = $price + $rvr;
+                    }
+                } else {
+                    $rvr = $price%100;
+                    $rvr = 50 - $rvr;
+                    $price = $price + $rvr;
+                }
+            //---------------
+            $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$price."' WHERE heading = '".$heading."'");
+            $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE sku = '".$link."'");
+            $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE sku = '".$heading."'");
         }
         
         public function editComplect($id, $name, $price, $heading, $complect=0, $whole) {
@@ -107,10 +130,11 @@
             
             $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE `sku` = '".$query->row['link']."' ");
             $this->db->query("UPDATE ".DB_PREFIX."product SET comp_whole = '".$whole."' WHERE `sku` = '".$heading."' ");
-            
-                
+            $price = 0;
             foreach ($complect as $com){
                 if($com!==''){
+                    $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE sku = '".$com."'");
+                    $price+= $sup->row['price'];
                     $quer = "UPDATE ".DB_PREFIX."product "
                         . "SET comp = '".$heading."', "
                             . "image = '".$image."' "
@@ -118,6 +142,26 @@
                     $this->db->query($quer);
                 }
             }
+            
+            $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE sku = '".$heading."' ");
+            $price+= $sup->row['price'];
+            $price = $price*0.85;
+            //okruglenie
+                if($price<500){
+                    $rvr = $price%10;
+                    if($rvr>0){
+                        $rvr = 10 - $rvr;
+                        $price = $price + $rvr;
+                    }
+                } else {
+                    $rvr = $price%100;
+                    $rvr = 50 - $rvr;
+                    $price = $price + $rvr;
+                }
+            //---------------
+            $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$price."' WHERE heading = '".$heading."'");
+            $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE sku = '".$query->row['link']."'");
+            $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE sku = '".$heading."'");
         }
         
         public function getTotalComplects() {

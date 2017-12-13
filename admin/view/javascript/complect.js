@@ -211,7 +211,6 @@
             },
             success:function(data){
                     document.getElementById("statbox").innerHTML=data;
-                    window.complect = [];
             }
         })
     }

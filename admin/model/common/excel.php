@@ -495,7 +495,7 @@
                         . "p.comp AS ".$template[22]['name'].", "
                         . "p.comp_price AS ".$template[21]['name'].", "
                         . "p.comp_whole AS ".$template[23]['name'].", "
-                        . "p.date_added AS ".$template[24]['name'].", "
+                        . "p.date_added AS ".$template[25]['name'].", "
                         . "p.quantity AS ".$template[20]['name']." "
                         . "FROM ".DB_PREFIX."product p "
                         . "LEFT JOIN ".DB_PREFIX."brand b ON p.manufacturer_id = b.id "

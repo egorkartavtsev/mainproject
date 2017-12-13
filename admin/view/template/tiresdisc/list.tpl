@@ -15,8 +15,8 @@
         <div class="alert alert-success" id="filters">
             <select id="filter-categ" class="form-control">
                 <option value="all">Все товары</option>
-                <option value="disc">Диски</option>
-                <option value="tires">Шины</option>
+                <option value="disc" <?php if($curr_filter=='disc') { echo 'selected'; }?>>Диски</option>
+                <option value="tires" <?php if($curr_filter=='tires') { echo 'selected'; }?>>Шины</option>
             </select>
             <div class="col-sm-12" id="filter_fields"></div>
         </div>
@@ -25,13 +25,13 @@
                 <tr>
                     <td>Изображение</td>
                     <td>Категория</td>
-                    <td>Название</td>
-                    <td>Внутренний номер</td>
-                    <td>Расположение</td>
-                    <td>Цена</td>
-                    <td>Количество</td>
-                    <td>Статус</td>
-                    <td>Дата создания</td>
+                    <td><a href='<?php echo $link; ?>&sort=pd.name'>Название</a></td>
+                    <td><a href='<?php echo $link; ?>&sort=p.sku'>Внутренний номер</a></td>
+                    <td><a href='<?php echo $link; ?>&sort=p.weight'>Расположение</a></td>
+                    <td><a href='<?php echo $link; ?>&sort=p.price'>Цена</a></td>
+                    <td><a href='<?php echo $link; ?>&sort=p.quantity'>Количество</a></td>
+                    <td><a href='<?php echo $link; ?>&sort=p.status'>Статус</a></td>
+                    <td><a href='<?php echo $link; ?>&sort=p.date_added'>Дата создания</a></td>
                     <td>Действие</td>
                 </tr>
             </thead>
@@ -45,7 +45,7 @@
                         <td><?php echo $prod['locate'];?></td>
                         <td><?php echo $prod['price'];?></td>
                         <td><?php echo $prod['quant'];?></td>
-                        <td><?php echo $prod['stat'];?></td>
+                        <td><?php echo $prod['stat']=='1'?'<span class="label label-success">Включено</span>':'<span class="label label-warning">Отключено</span>';?></td>
                         <td><?php echo $prod['date'];?></td>
                         <td>
                             <a class="btn btn-primary" href="<?php echo $prod['linkEdit'];?>"><i class="fa fa-pencil fw"></i></a>

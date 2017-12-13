@@ -506,7 +506,7 @@ class ModelCatalogProduct extends Model {
                         $prods = $this->db->query("SELECT * FROM ".DB_PREFIX."product p "
                                 . "LEFT JOIN ".DB_PREFIX."product_description pd "
                                     . "ON pd.product_id = p.product_id "
-                                . "WHERE p.comp = '".$sup->row['heading']."' OR p.sku = '".$sup->row['heading']."' ");
+                                . "WHERE p.comp = '".$sup->row['heading']."' OR p.sku = '".$sup->row['heading']."' ORDER BY pd.name ");
                         $complect['complect'] = $prods->rows;
                         
                         $complect['compl_price'] = $sup->row['price'];
@@ -517,7 +517,7 @@ class ModelCatalogProduct extends Model {
                         $prods = $this->db->query("SELECT * FROM ".DB_PREFIX."product p "
                                 . "LEFT JOIN ".DB_PREFIX."product_description pd "
                                     . "ON pd.product_id = p.product_id "
-                                . "WHERE p.comp = '".$query->row['comp']."' OR p.sku = '".$query->row['comp']."' ");
+                                . "WHERE p.comp = '".$query->row['comp']."' OR p.sku = '".$query->row['comp']."' ORDER BY pd.name ");
                         $complect['complect'] = $prods->rows;
                         
                         foreach ($prods->rows as $prod) {

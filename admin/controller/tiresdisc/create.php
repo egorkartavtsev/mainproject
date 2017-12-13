@@ -90,6 +90,14 @@ class ControllerTiresdiscCreate extends Controller {
                     . '<option value="Удовлетворительное">Удовлетворительное</option>'
                 . '</select>';
         $form.='</div>';
+        $form.='<div class="form-group-sm col-md-3">';
+            $form.='<label for="dop'.$id.'">Введите доп.информацию</label>';
+            $form.='<input type="text" class="form-control" id="dop'.$id.'" name="info['.$id.'][dop]" value="">';
+        $form.='</div>';
+        $form.='<div class="form-group-sm col-md-3">';
+            $form.='<label for="note'.$id.'">Введите примечание</label>';
+            $form.='<input type="text" class="form-control" id="note'.$id.'" name="info['.$id.'][note]" value="">';
+        $form.='</div>';
         echo $form;
     }
     
