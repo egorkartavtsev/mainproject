@@ -37,7 +37,7 @@
                                         .'Причина уценки: '.$res['reason'].' '
                                     .'</td>'
                                     .'<td>'.$res['summ'].'</td>'
-                                    .'<td>Склад: '.$res['loc'].'<br>Продано: '.$res['date'].'<br>Списано: '.$res['date_mod'].'</td>'
+                                    .'<td>Склад: '.$res['loc'].'<br>Продано: '. $res['date'] .'<br>Списано: '.$res['date_mod'].'</td>'
                                     .'<td>'.$res['manager'].'</td>'
                                 .'</tr>';
                         }

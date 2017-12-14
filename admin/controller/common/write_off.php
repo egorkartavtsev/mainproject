@@ -158,8 +158,41 @@ class ControllerCommonWriteOff extends Controller {
     public function saleList() {
         $data = $this->getLayout();
         $this->load->model('common/write_off');
-        $data['res_sales'] = $this->model_common_write_off->getSales();
-        //exit(var_dump($data['res_sales']));
+        $results = $this->model_common_write_off->getSales();
+        $res_sales = array();
+        
+        foreach ($results as $result) {
+            $res_sales[] = array(
+                'name' => $result['name'],
+                'sku' => $result['sku'],
+                'city' => $result['city'],
+                'client' => $result['client'],
+                'summ' => $result['summ'],
+                'price' => $result['price'],
+                'saleprice' => $result['saleprice'],
+                'reason' => $result['reason'],
+                'loc' => $result['loc'],
+                'date' => date('Y-m-d H:i', strtotime($result['date'])),
+                'date_mod' => $result['date_mod'],
+                'manager' => $result['manager']
+            );
+        }
+        $countres = count($res_sales);
+        $i = 0;
+        $j = 0;
+        $helper = array();
+        for($i; $i<$countres; ++$i ){
+            for($j; $j<$countres; ++$j ){
+                if($res_sales[$i]['date']>$res_sales[$j]['date']){
+                    $helper = $res_sales[$i];
+                    $res_sales[$i] = $res_sales[$j];
+                    $res_sales[$j] = $helper;
+                }
+            }
+            $j = 0;
+            $helper = array();
+        }
+        $data['res_sales'] = $res_sales;
         $this->response->setOutput($this->load->view('common/sale_list', $data));
     }
     
