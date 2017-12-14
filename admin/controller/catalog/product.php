@@ -299,6 +299,11 @@ class ControllerCatalogProduct extends Controller {
 		} else {
 			$filter_name = null;
 		}
+		if (isset($this->request->get['filter_catn'])) {
+			$filter_catn = $this->request->get['filter_catn'];
+		} else {
+			$filter_catn = null;
+		}
                 if (isset($this->request->get['filter_category'])) {
 			$filter_category = $this->request->get['filter_category'];
 		} else {
@@ -372,6 +377,9 @@ class ControllerCatalogProduct extends Controller {
 
 		$url = '';
 
+		if (isset($this->request->get['filter_catn'])) {
+			$url .= '&filter_catn=' . urlencode(html_entity_decode($this->request->get['filter_catn'], ENT_QUOTES, 'UTF-8'));
+			}
 		if (isset($this->request->get['filter_name'])) {
 			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
 			}
@@ -444,6 +452,7 @@ class ControllerCatalogProduct extends Controller {
 
 		$filter_data = array(
 			'filter_name'	  => $filter_name,
+			'filter_catn'	  => $filter_catn,
 			'filter_model'	  => $filter_model,
 			'filter_price'	  => $filter_price,
 			'filter_vin'	  => $filter_vin,
@@ -473,7 +482,7 @@ class ControllerCatalogProduct extends Controller {
 		);
 
 		$data['categories'] = $this->model_catalog_category->getCategories($filter_data);
-
+                $data['utype'] = $this->session->data['uType'];
 		foreach ($results as $result) {
 
                     $category =  $this->model_catalog_product->getProductCategories($result['product_id']);
@@ -499,6 +508,7 @@ class ControllerCatalogProduct extends Controller {
                             $data['products'][] = array(
                                     'product_id' => $result['product_id'],
                                     'image'      => $image,
+                                    'manager'    => $result['manager'],
                                     'name'       => $result['name'],
                                     'vin'        => $result['sku'],
                                     'location'   => $result['location'],
@@ -573,6 +583,10 @@ class ControllerCatalogProduct extends Controller {
 			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
 		}
 
+		if (isset($this->request->get['filter_catn'])) {
+			$url .= '&filter_catn=' . urlencode(html_entity_decode($this->request->get['filter_catn'], ENT_QUOTES, 'UTF-8'));
+		}
+
 		if (isset($this->request->get['filter_model'])) {
 			$url .= '&filter_model=' . urlencode(html_entity_decode($this->request->get['filter_model'], ENT_QUOTES, 'UTF-8'));
 		}
@@ -620,6 +634,7 @@ class ControllerCatalogProduct extends Controller {
 
 		$data['sort_name'] = $this->url->link('catalog/product', 'token=' . $this->session->data['token'] . '&sort=pd.name' . $url, true);
 		$data['sort_model'] = $this->url->link('catalog/product', 'token=' . $this->session->data['token'] . '&sort=p.length' . $url, true);
+		$data['sort_manager'] = $this->url->link('catalog/product', 'token=' . $this->session->data['token'] . '&sort=p.manager' . $url, true);
 		$data['sort_locate'] = $this->url->link('catalog/product', 'token=' . $this->session->data['token'] . '&sort=p.weight' . $url, true);
 		$data['sort_date_added'] = $this->url->link('catalog/product', 'token=' . $this->session->data['token'] . '&sort=p.date_added' . $url, true);
 		$data['sort_price'] = $this->url->link('catalog/product', 'token=' . $this->session->data['token'] . '&sort=p.price' . $url, true);
@@ -632,6 +647,9 @@ class ControllerCatalogProduct extends Controller {
 
 		if (isset($this->request->get['filter_name'])) {
 			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
+		}
+		if (isset($this->request->get['filter_catn'])) {
+			$url .= '&filter_catn=' . urlencode(html_entity_decode($this->request->get['filter_catn'], ENT_QUOTES, 'UTF-8'));
 		}
 
 		if (isset($this->request->get['filter_model'])) {
@@ -681,6 +699,7 @@ class ControllerCatalogProduct extends Controller {
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($product_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($product_total - $this->config->get('config_limit_admin'))) ? $product_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $product_total, ceil($product_total / $this->config->get('config_limit_admin')));
 
 		$data['filter_name'] = $filter_name;
+		$data['filter_catn'] = $filter_catn;
 		$data['filter_model'] = $filter_model;
 		$data['filter_price'] = $filter_price;
 		$data['filter_vin'] = $filter_vin;

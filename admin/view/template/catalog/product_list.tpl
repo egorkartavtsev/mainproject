@@ -104,11 +104,10 @@
                   <?php } ?>
                 </select>
               </div>
-              <!--<div class="checkbox">
-                <label>
-                    <input name="filter_wocat" id="wo_cat" type="checkbox" value="true"> Без категории
-                </label>
-              </div>-->
+              <div class="form-group">
+                <label class="control-label" for="input-catn">Каталожный номер</label>
+                <input type="text" name="filter_catn" value="<?php echo $filter_catn; ?>" placeholder="Каталожный номер" id="input-catn" class="form-control" />
+              </div>
               <button type="button" id="button-filter" class="btn btn-primary pull-left"><i class="fa fa-filter"></i> Применить <?php echo $button_filter; ?></button>
               <button type="button" id='btn-clear-filters' class="btn btn-danger pull-left"><i class="fa fa-binoculars"></i> Очистить фильтры</button>
             </div>
@@ -159,6 +158,14 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
                     <?php } ?></td>
+                  <?php if($utype == 'adm') { ?>
+                  <td class="text-left"><?php if ($sort == 'p.manager') { ?>
+                    <a href="<?php echo $sort_manager; ?>" class="<?php echo strtolower($order); ?>">Менеджер</a>
+                    <?php } else { ?>
+                    <a href="<?php echo $sort_manager; ?>">Менеджер</a>
+                    <?php } ?>
+                  </td>
+                  <?php }?>
                   <td class="text-left"><?php if ($sort == 'p.date_added') { ?>
                     <a href="<?php echo $sort_date_added; ?>" class="<?php echo strtolower($order); ?>">Дата создания</a>
                     <?php } else { ?>
@@ -207,6 +214,7 @@
                     <span class="label label-success"><?php echo $product['quantity']; ?></span>
                     <?php } ?></td>
                   <td class="text-left"><?php echo $product['status']; ?></td>
+                  <?php if($utype == 'adm') { ?><td class="text-left"><?php echo $product['manager']; ?></td><?php }?>
                   <td class="text-left"><?php echo DateTime::createFromFormat('Y-m-d H:i:s', $product['date_added'])->format('d.‌​m.Y'); ?></td>
                   <td class="text-right"><a href="<?php echo $product['edit'];?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
                 </tr>
@@ -244,6 +252,13 @@ $('#button-filter').on('click', function() {
 
 	if (filter_name) {
 		url += '&filter_name=' + encodeURIComponent(filter_name);
+	}
+      
+        
+	var filter_catn = $('input[name=\'filter_catn\']').val();
+
+	if (filter_catn) {
+		url += '&filter_catn=' + encodeURIComponent(filter_catn);
 	}
 
 	var filter_model = $('input[name=\'filter_model\']').val();

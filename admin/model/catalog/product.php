@@ -477,6 +477,9 @@ class ModelCatalogProduct extends Model {
                 if (isset($data['filter_vin']) && !is_null($data['filter_vin'])) {
 			$sql .= " AND p.sku LIKE '" . $this->db->escape($data['filter_vin']) . "%'";
 		}
+                if (isset($data['filter_catn']) && !is_null($data['filter_catn'])) {
+			$sql .= " AND LOCATE('" . $this->db->escape($data['filter_catn']) . "', p.isbn)";
+		}
                 
               
                 
@@ -507,6 +510,7 @@ class ModelCatalogProduct extends Model {
 			'p.length',
 			'p.weight',
 			'p.price',
+			'p.manager',
 			'p.quantity',
 			'p.status',
 			'p2c.category_id',
@@ -760,6 +764,10 @@ class ModelCatalogProduct extends Model {
                 
 		if (!empty($data['filter_name'])) {
 			$sql .= " AND pd.name LIKE '" . $this->db->escape($data['filter_name']) . "%'";
+		}
+                
+                if (!empty($data['filter_catn'])) {
+			$sql .= " AND LOCATE('" . $this->db->escape($data['filter_catn']) . "', p.isbn)";
 		}
 
 		if (!empty($data['filter_model'])) {
