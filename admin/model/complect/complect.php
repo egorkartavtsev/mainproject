@@ -94,10 +94,10 @@
             $sale = $sale==0?15:$sale;
             $supsale = 100 - $sale;
             $supsale = $supsale/100;
-            $price = $price*$supsale;
+            $price = ceil($price*$supsale);
             //okruglenie
                 if($price<500){
-                    $rvr = ceil($price)%100;
+                    $rvr = $price%100;
                     if($rvr>0){
                         $rvr = 50 - $rvr;
                         $price = $price + $rvr;
@@ -107,7 +107,7 @@
                         }
                     }
                 } else {
-                    $rvr = ceil($price)%100;
+                    $rvr = $price%100;
                     $rvr = 100 - $rvr;
                     $price = $price + $rvr;
                     if($sale%10!=0){
@@ -161,10 +161,10 @@
             $sale = $sale==0?15:$sale;
             $supsale = 100 - $sale;
             $supsale = $supsale/100;
-            $price = $price*$supsale;
+            $price = ceil($price*$supsale);
             //okruglenie
                 if($price<500){
-                    $rvr = ceil($price)%100;
+                    $rvr = $price%100;
                     if($rvr>0){
                         $rvr = 50 - $rvr;
                         $price = $price + $rvr;
@@ -174,7 +174,7 @@
                         }
                     }
                 } else {
-                    $rvr = ceil($price)%100;
+                    $rvr = $price%100;
                     $rvr = 100 - $rvr;
                     $price = $price + $rvr;
                     if($sale%10!=0){
