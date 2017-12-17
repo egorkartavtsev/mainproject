@@ -133,6 +133,7 @@
                 name: document.getElementById('name').value,
                 price: document.getElementById('price').value,
                 whole: document.getElementById('whole').value,
+                sale: document.getElementById('sale').value,
                 token: $token
             },
             success:function(data){
@@ -207,6 +208,7 @@
                 name: document.getElementById('name').value,
                 price: document.getElementById('price').value,
                 whole: document.getElementById('whole').value,
+                sale: document.getElementById('sale').value,
                 token: $token
             },
             success:function(data){

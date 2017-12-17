@@ -30,7 +30,8 @@
                 'id' => $query_comp->row['id'],
                 'name' => $query_comp->row['name'],
                 'price' => $query_comp->row['price'],
-                'heading' => $query_comp->row['heading']
+                'heading'   => $query_comp->row['heading'],
+                'sale'      => $query_comp->row['sale']
             );
             
             $query = 'SELECT p.sku AS vin, pd.name AS name, p.price AS price '
@@ -51,7 +52,7 @@
             return $complect_info;
         }
         
-        public function create($name, $price, $heading, $complect=0, $whole) {
+        public function create($name, $price, $heading, $complect=0, $whole, $sale=0) {
             
             $quer = $this->db->query("SELECT * FROM ".DB_PREFIX."product WHERE sku = '".$heading."'");
             $image = $quer->row['image'];
@@ -64,8 +65,8 @@
             $this->db->query("INSERT INTO ".DB_PREFIX."product_to_store (product_id, store_id) VALUES (".(int)$prod.", 0)");
             
         /*создаём комплект*/
-            $quer = "INSERT INTO ".DB_PREFIX."complects (name, price, heading, image, link, whole) "
-                    . "VALUES ('".$name."', ".(int)$price.", '".$heading."', '".$image."', '".$link."', ".(int)$whole.")";
+            $quer = "INSERT INTO ".DB_PREFIX."complects (name, price, heading, image, link, whole, sale) "
+                    . "VALUES ('".$name."', ".(int)$price.", '".$heading."', '".$image."', '".$link."', ".(int)$whole.", ".(int)$sale.")";
             $this->db->query($quer);
             $comp_id = $this->db->getLastId();
         /*головному товару прописываем принадлежность к комплекту*/
@@ -90,18 +91,29 @@
             }
             $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE sku = '".$heading."' ");
             $price+= $sup->row['price'];
-            $price = $price*0.9;
+            $sale = $sale==0?15:$sale;
+            $supsale = 100 - $sale;
+            $supsale = $supsale/100;
+            $price = $price*$supsale;
             //okruglenie
                 if($price<500){
-                    $rvr = $price%10;
+                    $rvr = ceil($price)%100;
                     if($rvr>0){
-                        $rvr = 10 - $rvr;
+                        $rvr = 50 - $rvr;
                         $price = $price + $rvr;
+                        if($sale%10!=0){
+                            $helper = $price%100;
+                            $price = $price+(100-$helper);
+                        }
                     }
                 } else {
-                    $rvr = $price%100;
-                    $rvr = 50 - $rvr;
+                    $rvr = ceil($price)%100;
+                    $rvr = 100 - $rvr;
                     $price = $price + $rvr;
+                    if($sale%10!=0){
+                        $helper = $price%100;
+                        $price = $price+(100-$helper);
+                    }
                 }
             //---------------
             $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$price."' WHERE heading = '".$heading."'");
@@ -109,7 +121,7 @@
             $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE sku = '".$heading."'");
         }
         
-        public function editComplect($id, $name, $price, $heading, $complect=0, $whole) {
+        public function editComplect($id, $name, $price, $heading, $complect=0, $whole, $sale=0) {
             
             $quer = $this->db->query("SELECT * FROM ".DB_PREFIX."product WHERE sku = '".$heading."'");
             $image = $quer->row['image'];
@@ -120,6 +132,7 @@
                         . "price = ".(int)$price.", "
                         . "heading = '".$heading."', "
                         . "image = '".$image."', "
+                        . "sale = '".$sale."', "
                         . "whole = ".(int)$whole." "
                     . "WHERE id = '".$id."' ";
             $this->db->query($quer);
@@ -145,18 +158,29 @@
             
             $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE sku = '".$heading."' ");
             $price+= $sup->row['price'];
-            $price = $price*0.85;
+            $sale = $sale==0?15:$sale;
+            $supsale = 100 - $sale;
+            $supsale = $supsale/100;
+            $price = $price*$supsale;
             //okruglenie
                 if($price<500){
-                    $rvr = $price%10;
+                    $rvr = ceil($price)%100;
                     if($rvr>0){
-                        $rvr = 10 - $rvr;
+                        $rvr = 50 - $rvr;
                         $price = $price + $rvr;
+                        if($sale%10!=0){
+                            $helper = $price%100;
+                            $price = $price+(100-$helper);
+                        }
                     }
                 } else {
-                    $rvr = $price%100;
-                    $rvr = 50 - $rvr;
+                    $rvr = ceil($price)%100;
+                    $rvr = 100 - $rvr;
                     $price = $price + $rvr;
+                    if($sale%10!=0){
+                        $helper = $price%100;
+                        $price = $price+(100-$helper);
+                    }
                 }
             //---------------
             $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$price."' WHERE heading = '".$heading."'");

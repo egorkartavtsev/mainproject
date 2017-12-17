@@ -42,10 +42,18 @@
                 <div class="col-lg-12"><p></p></div>
                 <div  class="col-lg-12">
                     <div class="col-lg-4">
+                        <label>Способ продажи комплекта</label>
                         <select id="whole" class="form-control">
                             <option value="0">Обычная продажа</option>
                             <option value="1">Только комплект целиком</option>
                         </select>
+                    </div>
+                    <div class="col-lg-4">
+                        <label>Скидка(в процентах. при значении 0, скидка = 15%)</label>
+                        <div class="input-group">
+                            <input class="form-control" name="sale" id="sale" value="<?php echo $complect['sale']?>"/>
+                            <div class="input-group-addon">%</div>
+                        </div>
                     </div>
                     <div class="col-lg-3"><button class='btn btn-info btn-block' onclick="editComplect('<?php echo $token; ?>');">Сохранить</button></div>
                 </div>

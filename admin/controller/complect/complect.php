@@ -49,8 +49,9 @@ class ControllerComplectComplect extends Controller {
         $heading = $this->request->post['heading'];
         $complect = explode(",", $this->request->post['complect']);
         $whole = $this->request->post['whole'];
+        $sale = $this->request->post['sale']!=0?$this->request->post['sale']:15;
         
-        $this->model_complect_complect->create($name, $price, $heading, $complect, $whole);
+        $this->model_complect_complect->create($name, $price, $heading, $complect, $whole, $sale);
         
         echo $name.' - комплект успешно создан! <br><br>';
     }
@@ -64,7 +65,9 @@ class ControllerComplectComplect extends Controller {
         $heading = $this->request->post['heading'];
         $complect = explode(",", $this->request->post['complect']);
         $whole = $this->request->post['whole'];
-        $this->model_complect_complect->editComplect($id, $name, $price, $heading, $complect, $whole);
+        $sale = $this->request->post['sale']!=0?$this->request->post['sale']:15;
+        
+        $this->model_complect_complect->editComplect($id, $name, $price, $heading, $complect, $whole, $sale);
         
         echo $name.' - комплект успешно сохранён!';
     }
