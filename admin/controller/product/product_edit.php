@@ -40,7 +40,12 @@ class ControllerProductProductEdit extends Controller {
             }
             ++$local_id;
         }
-        
+        $data['cond_list'] = '<select name="cond" id="input-cond" class="form-control">';
+            $data['cond_list'].= '<option value="-" '.($product_info['condit']=='-'?'selected':'').'>-</option>';
+            $data['cond_list'].= '<option value="Отличное" '.($product_info['condit']=='Отличное'?'selected':'').'>Отличное</option>';
+            $data['cond_list'].= '<option value="Хорошее" '.($product_info['condit']=='Хорошее'?'selected':'').'>Хорошее</option>';
+            $data['cond_list'].= '<option value="Повреждения" '.($product_info['condit']=='Повреждения'?'selected':'').'>Повреждения</option>';
+        $data['cond_list'].= '</select>';
         $data['pid'] = $pid;
         $location = explode("/", $data['location']);
         $data['stell'] = isset($location[0])?$location[0]:'';

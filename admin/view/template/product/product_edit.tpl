@@ -96,7 +96,7 @@
                             </div>
                             <div class="form-group col-sm-6">
                                 <label for="input-cond">Состояние:</label>
-                                <input type="text" name="cond" id="input-cond" class="form-control" value="<?php echo $condit; ?>">
+                                <?php echo $cond_list; ?>
                             </div>
                             <div class="form-group col-sm-8">
                                 <label for="input-stock">Склад:</label>
@@ -180,6 +180,10 @@
                             <div class="form-group">
                                 <label for="input-compability">Применимость:</label>
                                 <input type="text" name="compability" placeholder="Применимость" data-toggle="modal" data-target="#cpbModal" data-whatever="<?php echo $pid;?>" id="input-compability" class="form-control" value="<?php echo $compability; ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="input-donor">Донор:</label>
+                                <input type="text" name="donor" placeholder="Донор" id="input-donor" class="form-control" value="<?php echo $donor; ?>">
                             </div>
                         </div>
                     </div>
