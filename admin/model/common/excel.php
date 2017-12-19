@@ -89,6 +89,7 @@
                 $comp_price = $data['comp_price']!=NULL?$data['comp_price']:'';
                 $complect = '';
                 $comp_whole = $data['whole']!=NULL?1:'';
+                $donor = $data['donor']!=NULL?$data['donor']:'';
             /*******************************************************************************/
             /******************** блок работы с комплектами ********************************/
                 if($data['comp_price']!=NULL){
@@ -115,6 +116,7 @@
                             . "`jan` = '". $data['note'] ."', "
                             . "`sku` = '". $vin ."', "
                             . "`upc` = '". $data['condit'] ."', "
+                            . "`height` = '". $donor ."', "
                             . "`ean` = '". $data['type'] ."', "
                             . "`location` = '".$data['still']."/".$data['jar']."/".$data['shelf']."/".$data['box']."', "
                             . "`isbn` = '". $data['catn'] ."', "
@@ -495,6 +497,7 @@
                         . "p.comp AS ".$template[22]['name'].", "
                         . "p.comp_price AS ".$template[21]['name'].", "
                         . "p.comp_whole AS ".$template[23]['name'].", "
+                        . "p.height AS ".$template[24]['name'].", "
                         . "p.date_added AS ".$template[25]['name'].", "
                         . "p.quantity AS ".$template[20]['name']." "
                         . "FROM ".DB_PREFIX."product p "

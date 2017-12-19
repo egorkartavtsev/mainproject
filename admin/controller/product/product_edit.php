@@ -194,7 +194,7 @@ class ControllerProductProductEdit extends Controller {
             $data['vin'] = $this->model_product_product->getVin($data['pid']);
         }
         $this->model_product_product->updateProduct($data);
-        
+//        exit(var_dump($data));
         $this->response->redirect($this->url->link('catalog/product', 'token=' . $this->session->data['token'], true));
     }
 }

@@ -187,6 +187,7 @@
                             </div>
                         </div>
                     </div>
+                    <input type="hidden" name="complect" value="<?php echo $complect;?>">
                     <h3>Фотографии:</h3>
                     <div class="well col-sm-12">
                         <?php $count = 0; ?>

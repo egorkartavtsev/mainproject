@@ -207,6 +207,7 @@ class ControllerProductTiredisc extends Controller {
         }
         
         $filter_data = array();
+        
         $data['path'] = '?route='.$this->request->get['route'];
         foreach ($this->request->get as $var => $value) {
             if($var!=='route'){
@@ -262,6 +263,7 @@ class ControllerProductTiredisc extends Controller {
 	$data['content_bottom'] = $this->load->controller('common/content_bottom');
 	$data['footer'] = $this->load->controller('common/footer');
 	$data['header'] = $this->load->controller('common/header');
+        
         $results = $this->model_catalog_tiredisc->getDisc($filter_data);
         $data['products'] = array();
         $data['reset'] = $this->url->link($this->request->get['route']);

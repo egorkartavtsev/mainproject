@@ -18,7 +18,7 @@ class ModelCatalogTiredisc extends Model {
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
                 . "LEFT JOIN ".DB_PREFIX."td_disc disc ON p.sku = disc.vin "
                 . "LEFT JOIN ".DB_PREFIX."td_tires tire ON p.sku = tire.vin "
-                . "WHERE p.sku = disc.vin OR p.sku = tire.vin AND p.status='1' ";
+                . "WHERE p.status='1' AND p.product_id = tire.link OR p.status='1' AND p.product_id = disc.link ";
         $list = $this->db->query($query);
         
         return $list->rows;
@@ -37,7 +37,7 @@ class ModelCatalogTiredisc extends Model {
                 . "FROM ".DB_PREFIX."product p "
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
                 . "LEFT JOIN ".DB_PREFIX."td_tires tire ON p.sku = tire.vin "
-                . "WHERE p.sku = tire.vin ";
+                . "WHERE p.product_id = tire.link ";
         if(!empty($filter)){
             foreach ($filter as $field => $value) {
                 $query.= "AND tire.".$field." = '".$value."' ";
@@ -63,13 +63,14 @@ class ModelCatalogTiredisc extends Model {
                 . "FROM ".DB_PREFIX."product p "
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
                 . "LEFT JOIN ".DB_PREFIX."td_disc disc ON p.sku = disc.vin "
-                . "WHERE p.sku = disc.vin ";
+                . "WHERE p.product_id = disc.link ";
         if(!empty($filter)){
             foreach ($filter as $field => $value) {
                 $query.= "AND disc.".$field." = '".$value."' ";
             }
         }
         $query.= "AND p.status='1' ";
+//        exit(var_dump($query));
         $list = $this->db->query($query);
         
         return $list->rows;
