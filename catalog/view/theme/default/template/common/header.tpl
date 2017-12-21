@@ -78,10 +78,11 @@
 </nav>
 <div class="container">
     <div class="">
-        <p class="alert alert-danger col-sm-8 pull-left text-center">
+        <p class="alert alert-danger col-sm-7 pull-left text-center">
             ВНИМАНИЕ! Если Вы не нашли необходимую деталь - можете уточнить о наличии по телефону<br class="hidden-sm"> + ‎7 (912) 475 08 70
         </p>
-        <div class="col-sm-4 pull-right text-right">
+        <div class="col-sm-5 pull-right text-right">
+            <a style="cursor: pointer;"><img data-toggle="modal" data-target="#wapp_viber" src="<?php echo $viber;?>" width="50"></a>
             <a  target="blank" href="https://vk.com/mgnautorazbor"><img src="<?php echo $lvk;?>" width="50"></a>
             <a  target="blank" href="https://www.instagram.com/autorazbor174"><img src="<?php echo $linst;?>" width="50"></a>
             <a  target="blank" href="https://www.youtube.com/channel/UCNgBC4t07efN7qMYUls0fcw"><img src="<?php echo $lyt;?>" width="50"></a>
