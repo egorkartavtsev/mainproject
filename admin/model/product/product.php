@@ -129,6 +129,9 @@ class ModelProductProduct extends Model {
                 if(empty($query->row)){
                     $query = $this->db->query("SELECT * FROM ".DB_PREFIX."complects WHERE heading = '".$product['complect']."' ");
                     $sale = $query->row['sale'];
+                    if($sale == 0){
+                        $sale = 15;
+                    }
                     $link = $query->row['link'];
                     $qcomp = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE comp = '".$product['complect']."' AND product_id != '".$product['pid']."' OR sku = '".$product['complect']."' AND product_id != '".$product['pid']."'");
                     $items = $qcomp->rows;
@@ -164,6 +167,9 @@ class ModelProductProduct extends Model {
                     $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE sku = '".$link."'");
                 } else {
                     $sale = $query->row['sale'];
+                    if($sale == 0){
+                        $sale = 15;
+                    }
                     $link = $query->row['link'];
                     $qcomp = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE comp = '".$product['vin']."' ");
                     $items = $qcomp->rows;
