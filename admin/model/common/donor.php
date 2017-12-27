@@ -8,7 +8,7 @@ class ModelCommonDonor extends Model {
         $model = $quer->row['name'];
         $quer = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE id = '".$data['modelRow_id']."' ");
         $model_row = $quer->row['name'];
-        $name = $brand." ".$model_row." - ".$data['vin'];
+        $name = $brand." ".$model_row."(".$data['year'].") - ".$data['vin'];
         $this->db->query("INSERT INTO ".DB_PREFIX."donor "
                             . "SET "
                             . "numb = '".$data['number']."', "
@@ -38,6 +38,20 @@ class ModelCommonDonor extends Model {
                         . "image = 'catalog/demo/donor/".$data['number']."/".$photo."' ");
             }
         }
+    }
+    
+    public function getDonors($filter){
+        $sql = "SELECT * FROM ".DB_PREFIX."donor d LEFT JOIN ".DB_PREFIX."donor_image di ON d.id = di.donor_id WHERE ";
+        
+        if (empty($filter)) {
+            $sql.="1 ";
+        }
+        
+        $sql.="GROUP BY d.id ";
+        
+        $query = $this->db->query($sql);
+        
+        return $query->rows;
     }
 }
 
