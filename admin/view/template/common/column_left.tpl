@@ -27,6 +27,18 @@
         </ul>
             
     </li>
+    <li id="menu-donor">
+        <a class="parent"><i class="fa fa fa-car fw"></i> <span>Работа с донорами</span></a>
+        <ul>
+            <li>
+                <a href="index.php?route=donor/create&token=<?php echo $token_excel;?>"><span>Создать донора</span></a>
+            </li>
+            <li>
+                <a href="index.php?route=donor/list&token=<?php echo $token_excel;?>"><span>Список доноров</span></a>
+            </li>
+        </ul>
+            
+    </li>
     <li id="menu-produp">
         <a class="parent"><i class="fa fa-umbrella fw"></i> <span><?php echo $edit_prod['adm_prod'];?></span></a>
         <ul>
@@ -34,33 +46,33 @@
                 <a class="parent">Товары</a>
                 <ul class="collapse">
                     <li>
-                        <a href="index.php?route=common/setphotos&token=<?php echo $token_excel;?>"><i class="fa fa-file-photo-o fw"></i> <span><?php echo $edit_prod['add_photo'];?></span></a>
+                        <a href="index.php?route=common/setphotos&token=<?php echo $token_excel;?>"><span><?php echo $edit_prod['add_photo'];?></span></a>
                     </li>
                     <li>
-                        <a href="index.php?route=common/addprod&token=<?php echo $token_excel;?>"><i class="fa fa-bars fw"></i> <span><?php echo $edit_prod['add_prod'];?></span></a>
+                        <a href="index.php?route=common/addprod&token=<?php echo $token_excel;?>"><?php echo $edit_prod['add_prod'];?></span></a>
                     </li>
                     <li>
-                        <a href="index.php?route=common/write_off&token=<?php echo $token_excel;?>"><i class="fa fa-pencil fw"></i> <span><?php echo $edit_prod['write-off'];?></span></a>
+                        <a href="index.php?route=common/write_off&token=<?php echo $token_excel;?>"><?php echo $edit_prod['write-off'];?></span></a>
                     </li>
                     <li>
-                        <a href="index.php?route=common/refund&token=<?php echo $token_excel;?>"><i class="fa fa-repeat fw"></i> <span><?php echo $edit_prod['refund'];?></span></a>
+                        <a href="index.php?route=common/refund&token=<?php echo $token_excel;?>"><?php echo $edit_prod['refund'];?></span></a>
                     </li>
                     <li>
-                        <a href="index.php?route=common/excel&token=<?php echo $token_excel;?>"><i class="fa fa-archive fw"></i> <span><?php echo $edit_prod['excel'];?></span></a>
+                        <a href="index.php?route=common/excel&token=<?php echo $token_excel;?>"><span><?php echo $edit_prod['excel'];?></span></a>
                     </li>
                 </ul>
             </li>
             <li>
-                <a href="index.php?route=complect/complect&token=<?php echo $token_excel;?>"><i class="fa fa-bar-chart fw"></i> <span><?php echo $edit_prod['complect'];?></span></a>
+                <a href="index.php?route=complect/complect&token=<?php echo $token_excel;?>"><span><?php echo $edit_prod['complect'];?></span></a>
             </li>
             <li>
-                <a href="index.php?route=common/edit_model&token=<?php echo $token_excel;?>"><i class="fa fa-car fw"></i> <span><?php echo $edit_prod['edit_model'];?></span></a>
+                <a href="index.php?route=common/edit_model&token=<?php echo $token_excel;?>"><span><?php echo $edit_prod['edit_model'];?></span></a>
             </li>
             <li>
-                <a href="index.php?route=common/write_off/saleList&token=<?php echo $token_excel;?>"><i class="fa fa-list fw"></i> <span><?php echo $edit_prod['list'];?></span></a>
+                <a href="index.php?route=common/write_off/saleList&token=<?php echo $token_excel;?>"><span><?php echo $edit_prod['list'];?></span></a>
             </li>
             <li>
-                <a href="index.php?route=common/desctemp&token=<?php echo $token_excel;?>"><i class="fa fa-paint-brush fw"></i> <span><?php echo $edit_prod['tempdesc'];?></span></a>
+                <a href="index.php?route=common/desctemp&token=<?php echo $token_excel;?>"><span><?php echo $edit_prod['tempdesc'];?></span></a>
             </li>
         </ul>
     </li>
