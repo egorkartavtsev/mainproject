@@ -8,7 +8,7 @@ class ModelCommonDonor extends Model {
         $model = $quer->row['name'];
         $quer = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE id = '".$data['modelRow_id']."' ");
         $model_row = $quer->row['name'];
-        $name = $brand." ".$model_row."(".$data['year'].") - ".$data['vin'];
+        $name = $brand." ".$model_row." (ГВ: ".$data['year'].") - (VIN: ".$data['vin'].")";
         $this->db->query("INSERT INTO ".DB_PREFIX."donor "
                             . "SET "
                             . "numb = '".$data['number']."', "
@@ -29,6 +29,7 @@ class ModelCommonDonor extends Model {
         if(strlen($_FILES['photo']['name'][0])!=0){         
             $dir = DIR_IMAGE . 'catalog/demo/donor/'.$data['number'];
             $photos = scandir($dir);
+            $image = 'catalog/demo/donor/'.$data['number']."/".$photos[0];
             array_shift($photos);
             array_shift($photos);
             foreach ($photos as $photo){
@@ -37,17 +38,16 @@ class ModelCommonDonor extends Model {
                         . "donor_id = '".$donor_id."', "
                         . "image = 'catalog/demo/donor/".$data['number']."/".$photo."' ");
             }
+            $this->db->query("UPDATE ".DB_PREFIX."donor SET image = '".$image."' WHERE id = '".$donor_id."' ");
         }
     }
     
     public function getDonors($filter){
-        $sql = "SELECT * FROM ".DB_PREFIX."donor d LEFT JOIN ".DB_PREFIX."donor_image di ON d.id = di.donor_id WHERE ";
+        $sql = "SELECT * FROM ".DB_PREFIX."donor WHERE ";
         
         if (empty($filter)) {
             $sql.="1 ";
         }
-        
-        $sql.="GROUP BY d.id ";
         
         $query = $this->db->query($sql);
         
