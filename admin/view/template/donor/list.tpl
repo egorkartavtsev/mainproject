@@ -50,7 +50,10 @@
                         <td><?php echo $donor['priv'];?></td>
                         <td><?php echo $donor['color'];?></td>
                         <td><?php echo $donor['price'];?></td>
-                        <td>***</td>
+                        <td>
+                            <a href="<?php echo $donor['edit'];?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                            <a href="<?php echo $donor['delete'];?>" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>
+                        </td>
                     </tr>
                 <?php } ?>
             </tbody>

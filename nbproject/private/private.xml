@@ -13,10 +13,16 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/OpenServer/domains/mgnauto/admin/controller/donor/create.php</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/model/common/donor.php</file>
             <file>file:/D:/OpenServer/domains/mgnauto/admin/view/template/common/addprod.tpl</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/view/template/tiresdisc/list.tpl</file>
             <file>file:/D:/OpenServer/domains/mgnauto/admin/view/template/donor/create.tpl</file>
             <file>file:/D:/OpenServer/domains/mgnauto/admin/controller/common/addprod.php</file>
             <file>file:/D:/OpenServer/domains/mgnauto/admin/controller/common/excel.php</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/controller/donor/list.php</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/controller/tiresdisc/list.php</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/view/template/donor/list.tpl</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/model/common/addprod.php</file>
         </group>
     </open-files>
 </project-private>

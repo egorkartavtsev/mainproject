@@ -27,7 +27,9 @@ class ControllerDonorList extends Controller {
                 'kmeters' => $donor['kmeters'],
                 'trmiss' => $donor['trmiss'],
                 'priv' => $donor['priv'],
-                'name' => $donor['name']
+                'name' => $donor['name'],
+                'delete' => $this->url->link('donor/list/delete', 'token=' . $this->session->data['token'].'&donor_id='.$donor['id'], true),
+                'edit' => $this->url->link('donor/edit', 'token=' . $this->session->data['token'].'&donor_id='.$donor['id'], true)
             );
         }
         $this->document->setTitle('Список доноров');
@@ -51,6 +53,13 @@ class ControllerDonorList extends Controller {
         $data['token_add'] = $this->session->data['token'];
         
         $this->response->setOutput($this->load->view('donor/list', $data));
+    }
+    
+    public function delete() {
+        $id = $this->request->get['donor_id'];
+        $this->load->model("common/donor");
+        $this->model_common_donor->deleteDonor($id);
+        $this->response->redirect($this->url->link('donor/list', 'token=' . $this->session->data['token'], true));
     }
 }
 
