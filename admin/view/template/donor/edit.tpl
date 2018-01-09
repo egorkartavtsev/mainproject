@@ -21,10 +21,15 @@
                 <div class="form-group-sm">
                     <label for="cuzov">Выберите Тип кузова</label>
                     <select class="form-control" id="cuzov" name="cuzov">
-                        <option value="седан">седан</option>
-                        <option value="хетчбек">хетчбек</option>
-                        <option value="универсал">универсал</option>
-                        <option value="лифтбек">лифтбек</option>
+                        <option value="седан" >седан</option>
+                        <option value="хетчбек" <?php if ($donor['ctype']==='хетчбек') {echo "selected";} ?>>хетчбек</option>
+                        <option value="универсал" <?php if ($donor['ctype']==='универсал') {echo "selected";} ?>>универсал</option>
+                        <option value="купе" <?php if ($donor['ctype']==='купе') {echo "selected";} ?>>купе</option>
+                        <option value="внедорожник" <?php if ($donor['ctype']==='внедорожник') {echo "selected";} ?>>внедорожник</option>
+                        <option value="кроссовер" <?php if ($donor['ctype']==='кроссовер') {echo "selected";} ?>>кроссовер</option>
+                        <option value="пикап" <?php if ($donor['ctype']==='пикап') {echo "selected";} ?>>пикап</option>
+                        <option value="минивэн" <?php if ($donor['ctype']==='минивэн') {echo "selected";} ?>>минивэн</option>
+                        <option value="лифтбек" <?php if ($donor['ctype']==='лифтбек') {echo "selected";} ?>>лифтбек</option>
                     </select>
                 </div>
                 <div class="form-group-sm">
@@ -97,7 +102,7 @@
                     <label for="trans">Трансмиссия</label>
                     <select class="form-control" id="trans" name="trans">
                         <option value="MT">MT</option>
-                        <option value="AT">AT</option>
+                        <option value="AT" <?php if($donor['trmiss']==='AT') {echo 'selected';}?>>AT</option>
                     </select>
                 </div>
             </div>
@@ -121,7 +126,7 @@
                     <label for="privod">Привод</label>
                     <select class="form-control" id="privod" name="privod">
                         <option value="2WD">2WD</option>
-                        <option value="4WD">4WD</option>
+                        <option value="4WD" <?php if ($donor['priv']==='4WD') {echo 'selected';} ?>>4WD</option>
                     </select>
                 </div>
             </div>
@@ -156,6 +161,10 @@
         </form>
                         <div class="clearfix"></div>
                         <div class="clearfix"><p></p></div>
+        <div class="well well-sm col-sm-12">
+            <p>Общее количество деталей: <span class="label label-success"><?php echo $donor['quant'];?></span></p>
+            <p>Общяя стоимость деталей: <span class="label label-success"><?php echo $donor['totalp'];?></span></p>
+        </div>
         <table class="table table-bordered table-hover table-responsive">
               <thead>
                 <tr>

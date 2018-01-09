@@ -7,6 +7,13 @@ class ControllerDonorList extends Controller {
         $donors = $this->model_common_donor->getDonors($filter);
         $this->load->model('tool/image');
         foreach ($donors as $donor) {
+            $prods = $this->model_common_donor->getProds($donor['numb']);
+            $total_price = 0;
+            $quant = 0;
+            foreach ($prods as $prod) {
+                $total_price += $prod['price']*$prod['quantity'];
+                $quant+=$prod['quantity'];
+            }
             if (is_file(DIR_IMAGE.$donor['image'])) {
                     $image = $this->model_tool_image->resize($donor['image'], 40, 40);
             } else {
@@ -15,6 +22,8 @@ class ControllerDonorList extends Controller {
             $data['donors'][] = array(
                 'numb' => $donor['numb'],
                 'image' => $image,
+                'totalp' => $total_price,
+                'quant' => $quant,
                 'vin' => $donor['vin'],
                 'dvs' => $donor['dvs'],
                 'price' => $donor['price'],

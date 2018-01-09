@@ -53,7 +53,12 @@ class ControllerDonorEdit extends Controller {
             ++$i;
         }
         $prods = $this->model_common_donor->getProds($data['donor']['numb']);
+        $total_price = 0;
+        $quant = 0;
         foreach ($prods as $result){
+            $total_price += $result['price']*$result['quantity'];
+            $quant+=$result['quantity'];
+            
             if (is_file(DIR_IMAGE . $result['image'])) {
                 $image = $this->model_tool_image->resize($result['image'], 60, 60);
             } else {
@@ -79,6 +84,8 @@ class ControllerDonorEdit extends Controller {
                 );
             }
         }
+        $data['donor']['quant'] = $quant;
+        $data['donor']['totalp'] = $total_price;
         //берём марки
         $query = $this->db->query("SELECT id, name FROM ".DB_PREFIX."brand "
                                 . "WHERE parent_id = 0 ORDER BY name ");

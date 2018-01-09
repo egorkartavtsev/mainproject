@@ -29,6 +29,8 @@
                     <td>Привод</td>
                     <td>Цвет кузова</td>
                     <td>Стоимость</td>
+                    <td>К-во деталей</td>
+                    <td>Цена деталей</td>
                     <td>Действие</td>
                 </tr>
             </thead>
@@ -50,6 +52,8 @@
                         <td><?php echo $donor['priv'];?></td>
                         <td><?php echo $donor['color'];?></td>
                         <td><?php echo $donor['price'];?></td>
+                        <td><?php echo $donor['quant'];?></td>
+                        <td><?php echo $donor['totalp'];?></td>
                         <td>
                             <a href="<?php echo $donor['edit'];?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
                             <a href="<?php echo $donor['delete'];?>" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>
