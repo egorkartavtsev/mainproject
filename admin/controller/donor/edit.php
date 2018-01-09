@@ -52,6 +52,7 @@ class ControllerDonorEdit extends Controller {
             }
             ++$i;
         }
+        $data['products'] = array();
         $prods = $this->model_common_donor->getProds($data['donor']['numb']);
         $total_price = 0;
         $quant = 0;

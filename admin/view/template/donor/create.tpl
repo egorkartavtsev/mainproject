@@ -94,6 +94,10 @@
                         <option value="AT">AT</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="note">Примечание</label>
+                    <input class="form-control" name="note" id="note" type="text" />
+                </div>
             </div>
             
             <div class="col-md-3">

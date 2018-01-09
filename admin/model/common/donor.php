@@ -12,6 +12,7 @@ class ModelCommonDonor extends Model {
         $this->db->query("INSERT INTO ".DB_PREFIX."donor "
                             . "SET "
                             . "numb = '".$data['number']."', "
+                            . "note = '".$data['note']."', "
                             . "name = '".$name."', "
                             . "brand = '".$brand."', "
                             . "model = '".$model."', "

@@ -72,6 +72,10 @@
                     <label for="color">Цвет кузова</label>
                     <input class="form-control" name="color" id="color" type="text" value="<?php echo $donor['color'];?>"/>
                 </div>
+                <div class="form-group-sm">
+                    <label for="note">Примечание</label>
+                    <input class="form-control" name="note" id="note" type="text" value="<?php echo $donor['note']; ?>"/>
+                </div>
             </div>
             
             <div class="col-md-3">
