@@ -96,7 +96,16 @@ class ModelCommonDonor extends Model {
         $query = $this->db->query("SELECT * FROM ".DB_PREFIX."product p "
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
                 . "WHERE p.height = '".$donor."'");
-        return $query->rows;
+        
+        $results = array();
+        
+        foreach ($query->rows as $row){
+            if($row['model']!=''){
+                $results[] = $row;
+            }
+        }
+        
+        return $results;
     }
     
     public function updateDonor($data, $id) {
