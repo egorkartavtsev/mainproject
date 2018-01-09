@@ -56,6 +56,10 @@
                 <label class="control-label" for="input-vin">Внутренний номер</label>
                 <input type="text" name="filter_vin" value="<?php echo $filter_vin; ?>" placeholder="Внутренний номер" id="input-vin" class="form-control" />
               </div>
+              <div class="form-group">
+                <label class="control-label" for="input-donor">Донор</label>
+                <input type="text" name="filter_donor" value="<?php echo $filter_donor; ?>" placeholder="Донор" id="input-donor" class="form-control" />
+              </div>
             </div>
             <div class="col-sm-4">
               <div class="form-group">
@@ -261,6 +265,11 @@ $('#button-filter').on('click', function() {
 		url += '&filter_name=' + encodeURIComponent(filter_name);
 	}
       
+	var filter_donor = $('input[name=\'filter_donor\']').val();
+
+	if (filter_donor) {
+		url += '&filter_donor=' + encodeURIComponent(filter_donor);
+	}
         
 	var filter_catn = $('input[name=\'filter_catn\']').val();
 

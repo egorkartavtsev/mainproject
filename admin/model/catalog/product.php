@@ -461,6 +461,10 @@ class ModelCatalogProduct extends Model {
                 if (isset($data['filter_brand']) && !is_null($data['filter_brand'])) {
                     $sql .= " AND LOCATE ('" . $this->db->escape($data['filter_brand']) . "', pd.name)";
                 }
+                
+                if (isset($data['filter_donor']) && !is_null($data['filter_donor'])) {
+                    $sql .= " AND LOCATE ('" . $this->db->escape($data['filter_donor']) . "', p.height)";
+                }
 
 		if (!empty($data['filter_name'])) {
 			$sql .= " AND pd.name LIKE '" . $this->db->escape($data['filter_name']) . "%'";
@@ -760,6 +764,10 @@ class ModelCatalogProduct extends Model {
                 
                 if (isset($data['filter_brand']) && !is_null($data['filter_brand'])) {
 			$sql .= " AND LOCATE ('" . $this->db->escape($data['filter_brand']) . "', pd.name)";
+		}
+                
+                if (isset($data['filter_donor']) && !is_null($data['filter_donor'])) {
+			$sql .= " AND LOCATE ('" . $this->db->escape($data['filter_donor']) . "', p.height) AND p.model != '' ";
 		}
                 
 		if (!empty($data['filter_name'])) {

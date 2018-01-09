@@ -299,6 +299,11 @@ class ControllerCatalogProduct extends Controller {
 		} else {
 			$filter_name = null;
 		}
+		if (isset($this->request->get['filter_donor'])) {
+			$filter_donor = $this->request->get['filter_donor'];
+		} else {
+			$filter_donor = null;
+		}
 		if (isset($this->request->get['filter_catn'])) {
 			$filter_catn = $this->request->get['filter_catn'];
 		} else {
@@ -383,6 +388,9 @@ class ControllerCatalogProduct extends Controller {
 		if (isset($this->request->get['filter_name'])) {
 			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
 			}
+		if (isset($this->request->get['filter_donor'])) {
+			$url .= '&filter_donor=' . urlencode(html_entity_decode($this->request->get['filter_donor'], ENT_QUOTES, 'UTF-8'));
+			}
 
 		if (isset($this->request->get['filter_category'])) {
 			$url .= '&filter_category=' . urlencode(html_entity_decode($this->request->get['filter_category'], ENT_QUOTES, 'UTF-8'));
@@ -452,6 +460,7 @@ class ControllerCatalogProduct extends Controller {
 
 		$filter_data = array(
 			'filter_name'	  => $filter_name,
+			'filter_donor'	  => $filter_donor,
 			'filter_catn'	  => $filter_catn,
 			'filter_model'	  => $filter_model,
 			'filter_price'	  => $filter_price,
@@ -593,6 +602,9 @@ class ControllerCatalogProduct extends Controller {
 		if (isset($this->request->get['filter_name'])) {
 			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
 		}
+		if (isset($this->request->get['filter_donor'])) {
+			$url .= '&filter_donor=' . urlencode(html_entity_decode($this->request->get['filter_donor'], ENT_QUOTES, 'UTF-8'));
+		}
 
 		if (isset($this->request->get['filter_catn'])) {
 			$url .= '&filter_catn=' . urlencode(html_entity_decode($this->request->get['filter_catn'], ENT_QUOTES, 'UTF-8'));
@@ -659,6 +671,9 @@ class ControllerCatalogProduct extends Controller {
 		if (isset($this->request->get['filter_name'])) {
 			$url .= '&filter_name=' . urlencode(html_entity_decode($this->request->get['filter_name'], ENT_QUOTES, 'UTF-8'));
 		}
+		if (isset($this->request->get['filter_donor'])) {
+			$url .= '&filter_donor=' . urlencode(html_entity_decode($this->request->get['filter_donor'], ENT_QUOTES, 'UTF-8'));
+		}
 		if (isset($this->request->get['filter_catn'])) {
 			$url .= '&filter_catn=' . urlencode(html_entity_decode($this->request->get['filter_catn'], ENT_QUOTES, 'UTF-8'));
 		}
@@ -710,6 +725,7 @@ class ControllerCatalogProduct extends Controller {
 		$data['results'] = sprintf($this->language->get('text_pagination'), ($product_total) ? (($page - 1) * $this->config->get('config_limit_admin')) + 1 : 0, ((($page - 1) * $this->config->get('config_limit_admin')) > ($product_total - $this->config->get('config_limit_admin'))) ? $product_total : ((($page - 1) * $this->config->get('config_limit_admin')) + $this->config->get('config_limit_admin')), $product_total, ceil($product_total / $this->config->get('config_limit_admin')));
 
 		$data['filter_name'] = $filter_name;
+		$data['filter_donor'] = $filter_donor;
 		$data['filter_catn'] = $filter_catn;
 		$data['filter_model'] = $filter_model;
 		$data['filter_price'] = $filter_price;
@@ -1667,6 +1683,7 @@ class ControllerCatalogProduct extends Controller {
 
 			$filter_data = array(
 				'filter_name'  => $filter_name,
+				'filter_donor'  => $filter_donor,
 				'filter_model' => $filter_model,
 				'start'        => 0,
 				'limit'        => $limit
