@@ -117,9 +117,9 @@ class ModelTiresdiscTiresdisc extends Model {
         $this->db->query($sql);
         $description = "&lt;p&gt;&lt;b&gt;Авторазбор174.рф предлагает Вам купить ".$name." со склада в г.Магнитогорске.&amp;nbsp;&amp;nbsp;&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Авторазбор автозапчасти б/у и новые в наличии и под заказ.&lt;/b&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;ЕСЛИ ВЫ НЕ НАШЛИ НЕОБХОДИМУЮ АВТОЗАПЧАСТЬ - ПОЗВОНИТЕ ПО ОДНОМУ ИЗ УКАЗАННЫХ ТЕЛЕФОНОВ&lt;/b&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;МЫ ПРОКОНСУЛЬТИРУЕМ ВАС ПО НАЛИЧИЮ, СТОИМОСТИ И СРОКАХ ДОСТАВКИ.&lt;/b&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;‎+7 (3519) 43 49 03&amp;nbsp;&lt;/b&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;‎+7 (3519) 47 71 71 ‎&lt;/b&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;+7 (912) 475 08 70 ‎&lt;/b&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;+7 (908) 825 52 40 ‎&lt;/b&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;+7 (951) 122 56 39&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;autorazbor174@mail.ru&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;БУДЬТЕ ВНИМАТЕЛЬНЫ!!&lt;/b&gt;&lt;b&gt;&amp;nbsp;С ДРУГИХ ТЕЛЕФОНОВ И E-MAIL МЫ НЕ ОТПРАВЛЯЕМ ИНФОРМАЦИЮ!!!&amp;nbsp;&lt;br&gt;&lt;/b&gt;&lt;br&gt;&lt;/p&gt;";
         $this->db->query("INSERT INTO ".DB_PREFIX."product "
-                    . "(sku, price, status, width, jan, quantity, viewed, image, date_added, upc, ean, weight, location) "
+                    . "(height, sku, price, status, width, jan, quantity, viewed, image, date_added, upc, ean, weight, location) "
                 . "VALUES "
-                    . "('".$prod['vin']."', ".(int)$prod['price'].", 1, '".$prod['dop']."', '".$prod['note']."', ".(int)$prod['quant'].", 0, '".$image."', NOW(), '".$prod['cond']."', '".$prod['ctype']."', '".$prod['stock']."', '".$prod['stell']."/".$prod['jar']."/".$prod['shelf']."/".$prod['box']."')");
+                    . "('".$prod['donor']."', '".$prod['vin']."', ".(int)$prod['price'].", 1, '".$prod['dop']."', '".$prod['note']."', ".(int)$prod['quant'].", 0, '".$image."', NOW(), '".$prod['cond']."', '".$prod['ctype']."', '".$prod['stock']."', '".$prod['stell']."/".$prod['jar']."/".$prod['shelf']."/".$prod['box']."')");
         $link = $this->db->getLastId();
         $this->db->query("INSERT INTO ".DB_PREFIX."product_description (name, description, language_id, product_id) VALUES ('".$name."', '".$description."', 1, ".$link.")");
         $this->db->query("INSERT INTO ".DB_PREFIX."product_to_store (product_id, store_id) VALUES (".(int)$link.", 0)");
@@ -287,7 +287,7 @@ class ModelTiresdiscTiresdisc extends Model {
         $query = $this->db->query("SELECT * FROM ".$table." WHERE link = ".(int)$id);
         $info = $query->row;
         
-        $query = $this->db->query("SELECT image, weight, jan, width, price, upc, ean, quantity, status, location FROM ".DB_PREFIX."product WHERE product_id = ".(int)$id);
+        $query = $this->db->query("SELECT image, weight, height, jan, width, price, upc, ean, quantity, status, location FROM ".DB_PREFIX."product WHERE product_id = ".(int)$id);
         $locate = explode("/", $query->row['location']);
         $info['stell'] = isset($locate[0])?$locate[0]:'';
         $info['jar'] = isset($locate[1])?$locate[1]:'';
@@ -295,6 +295,7 @@ class ModelTiresdiscTiresdisc extends Model {
         $info['box'] = isset($locate[3])?$locate[3]:'';
         
         $info['main-image'] = $query->row['image'];
+        $info['donor'] = $query->row['height'];
         $info['stock'] = $query->row['weight'];
         $info['note'] = $query->row['jan'];
         $info['dop'] = $query->row['width'];
@@ -343,6 +344,7 @@ class ModelTiresdiscTiresdisc extends Model {
                 . "SET "
                     . "price = ".(int)$prod['price'].", "
                     . "upc = '".$prod['cond']."', "
+                    . "height = '".$prod['donor']."', "
                     . "ean = '".$prod['ctype']."', "
                     . "weight = '".$prod['stock']."', "
                     . "width = '".$prod['dop']."', "

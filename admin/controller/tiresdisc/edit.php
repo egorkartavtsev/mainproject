@@ -135,6 +135,10 @@ class ControllerTiresdiscEdit extends Controller {
                     $form.='<label for="note'.$id.'">Примечание</label>';
                     $form.='<input type="text" class="form-control" id="note'.$id.'" name="note" value="'.$info['note'].'">';
                 $form.='</div>';
+                $form.='<div class="form-group-sm col-md-3">';
+                    $form.='<label for="donor'.$id.'">Донор</label>';
+                    $form.='<input type="text" class="form-control" id="donor'.$id.'" name="donor" value="'.$info['donor'].'">';
+                $form.='</div>';
             $form.='</div>';
         return $form;
     }

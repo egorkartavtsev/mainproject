@@ -98,6 +98,10 @@ class ControllerTiresdiscCreate extends Controller {
             $form.='<label for="note'.$id.'">Введите примечание</label>';
             $form.='<input type="text" class="form-control" id="note'.$id.'" name="info['.$id.'][note]" value="">';
         $form.='</div>';
+        $form.='<div class="form-group-sm col-md-3">';
+            $form.='<label for="donor'.$id.'">Введите донор</label>';
+            $form.='<input type="text" class="form-control" id="donor'.$id.'" name="info['.$id.'][donor]" value="">';
+        $form.='</div>';
         echo $form;
     }
     
