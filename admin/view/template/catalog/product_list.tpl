@@ -148,6 +148,8 @@
                     <a href="<?php echo $sort_category; ?>"><?php echo $column_category; ?></a>
                     <?php } ?></td>
                   
+                  <td>Донор</td>
+                  
                   <td class="text-right"><?php if ($sort == 'p.quantity') { ?>
                     <a href="<?php echo $sort_quantity; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_quantity; ?></a>
                     <?php } else { ?>
@@ -158,6 +160,7 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
                     <?php } ?></td>
+                  <td>Дата продажи</td>
                   <?php if($utype == 'adm') { ?>
                   <td class="text-left"><?php if ($sort == 'p.manager') { ?>
                     <a href="<?php echo $sort_manager; ?>" class="<?php echo strtolower($order); ?>">Менеджер</a>
@@ -205,6 +208,9 @@
                     <?php echo $category['name'];?><br>
                     <?php } ?>
                     <?php } ?></td>
+                  
+                  <td class="text-left">
+                    <?php echo $product['donor'];?></td>
 
                   <td class="text-right"><?php if ($product['quantity'] <= 0) { ?>
                     <span class="label label-warning"><?php echo $product['quantity']; ?></span>
@@ -214,6 +220,7 @@
                     <span class="label label-success"><?php echo $product['quantity']; ?></span>
                     <?php } ?></td>
                   <td class="text-left"><?php echo $product['status']; ?></td>
+                  <td class="text-left"><?php echo $product['saled']; ?></td>
                   <?php if($utype == 'adm') { ?><td class="text-left"><?php echo $product['manager']; ?></td><?php }?>
                   <td class="text-left"><?php echo DateTime::createFromFormat('Y-m-d H:i:s', $product['date_added'])->format('d.‌​m.Y'); ?></td>
                   <td class="text-right"><a href="<?php echo $product['edit'];?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>

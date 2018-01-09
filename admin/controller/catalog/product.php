@@ -504,14 +504,25 @@ class ControllerCatalogProduct extends Controller {
 					break;
 				}
 			}
+                        
+                        $quer = $this->db->query("SELECT * FROM ".DB_PREFIX."sales_info WHERE sku = '".$result['sku']."'");
+                        $saleDate = '';
+                        if(!empty($quer->row)){
+                            $saleDate = $quer->row['date'];
+                        } else {
+                            $saleDate = 'В наличии';
+                        }
+                        
                         if($result['product_id']!=NULL){
                             $data['products'][] = array(
                                     'product_id' => $result['product_id'],
                                     'image'      => $image,
+                                    'saled'      => $saleDate,
                                     'manager'    => $result['manager'],
                                     'name'       => $result['name'],
                                     'vin'        => $result['sku'],
                                     'location'   => $result['location'],
+                                    'donor'      => $result['height'],
                                     'stock'      => isset($result['weight'])?$result['weight']:'не указан',
                                     'model'      => $result['length'],
                                     'price'      => $result['price'],
