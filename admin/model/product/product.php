@@ -165,6 +165,7 @@ class ModelProductProduct extends Model {
                     //---------------
                     $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$price."' WHERE link = '".$link."' ");
                     $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE sku = '".$link."'");
+                    $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE sku = '".$product['complect']."'");
                 } else {
                     $sale = $query->row['sale'];
                     if($sale == 0){
@@ -203,6 +204,7 @@ class ModelProductProduct extends Model {
                     //---------------
                     $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$price."' WHERE link = '".$link."' ");
                     $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE sku = '".$link."'");
+                    $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE sku = '".$product['vin']."'");
                 }
 
             }
