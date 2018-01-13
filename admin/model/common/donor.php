@@ -47,7 +47,7 @@ class ModelCommonDonor extends Model {
         $sql = "SELECT * FROM ".DB_PREFIX."donor WHERE ";
         
         if (empty($filter)) {
-            $sql.="1 ";
+            $sql.="1 ORDER BY id DESC ";
         }
         
         $query = $this->db->query($sql);
@@ -152,7 +152,7 @@ class ModelCommonDonor extends Model {
         foreach ($rWords as $word) {
             $sql.="OR LOCATE('".$word."', name) OR LOCATE('".$word."', numb) OR LOCATE('".$word."', dvs) ";
         }
-        
+        $sql.="ORDER BY id DESC";
         $result = $this->db->query($sql);
         return $result->rows;
     }

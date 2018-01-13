@@ -139,6 +139,7 @@ class ControllerTiresDiscList extends Controller {
                 $result.='</select>';
             $result.='</div>';
         }
+            $result.='<div class="form-group col-md-3"><label for="vin">Внутренний номер</label><input type="text" class="form-control" id="vin" name="vin"></div>';
             $result.='<div class="clearfix"></div>';
             $result.='<input type="hidden" id="cat" name="cat" value="'.$cat.'">';
             $result.='<button class="btn btn-primary" id="submit-filters">Применить фильтры</button>';
