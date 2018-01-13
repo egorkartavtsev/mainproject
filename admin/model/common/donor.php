@@ -143,8 +143,18 @@ class ModelCommonDonor extends Model {
             foreach ($data['image'] as $img) {
                 $this->db->query("INSERT INTO ".DB_PREFIX."donor_image (donor_id, image) VALUES (".(int)$this->db->escape($id).", '".$this->db->escape($img)."')");
             }
+        }    
+    }
+    
+    public function filterList($request) {
+        $rWords = explode(" ", trim($request));
+        $sql = "SELECT * FROM ".DB_PREFIX."donor WHERE 0 ";
+        foreach ($rWords as $word) {
+            $sql.="OR LOCATE('".$word."', name) OR LOCATE('".$word."', numb) OR LOCATE('".$word."', dvs) ";
         }
         
+        $result = $this->db->query($sql);
+        return $result->rows;
     }
 }
 

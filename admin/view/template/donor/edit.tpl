@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="container-fluid">
-        <form action="<?php echo $action;?>" method="post" enctype="multipart/form-data">
+        <form action="<?php echo $action;?>" method="post" id="donorform" enctype="multipart/form-data">
             
             <div class="col-md-3">
                 <div class="form-group-sm">
@@ -161,8 +161,8 @@
                             <button class="btn btn-warning"><i class="fa fa-exclamation-circle"></i>  - сделать фотографию главной</button></p>
                     </div>
                         <div class="clearfix"></div>
-            <button type="submit" class="btn btn-success col-md-3">Сохранить</button>
         </form>
+        <button id="donorSubmit" class="btn btn-success col-md-3">Сохранить</button>
                         <div class="clearfix"></div>
                         <div class="clearfix"><p></p></div>
         <div class="well well-sm col-sm-12">
@@ -221,4 +221,10 @@
             </table>
     </div>
 </div>
+<script src="view/javascript/donor.js"></script>
+<script type="text/javascript">
+    $("#donorSubmit").on("click", function(){
+        validateDonorForm();
+    });
+</script>
 <?php echo $footer;?>

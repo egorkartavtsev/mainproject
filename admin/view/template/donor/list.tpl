@@ -11,6 +11,10 @@
         </div>
     </div>
     <div class="container-fluid">
+        <div class="well well-sm col-sm-12">
+            <label>Поиск проводится по марке, модели, модельному ряду, году выпуска, VIN, ДВС и внутреннему номеру донора</label>
+            <input type="text" id="searchd" class="form-control" placeholder="Введите условия поиска" />
+        </div>
         <table class="table table-bordered table-responsive table-striped">
             <thead>
                 <tr>
@@ -64,4 +68,10 @@
         </table>
     </div>
 </div>
+<script src="view/javascript/donor.js"></script>
+<script type="text/javascript">
+    $("#searchd").on("input", function(){
+        filterDonorList();
+    })
+</script>
 <?php echo $footer;?>

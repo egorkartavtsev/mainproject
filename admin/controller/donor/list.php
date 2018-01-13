@@ -70,5 +70,58 @@ class ControllerDonorList extends Controller {
         $this->model_common_donor->deleteDonor($id);
         $this->response->redirect($this->url->link('donor/list', 'token=' . $this->session->data['token'], true));
     }
+    
+    public function filter() {
+        $this->load->model("common/donor");
+        $filter = array();
+        $request = $this->request->post['param'];
+        if($request==''){
+            $donors = $this->model_common_donor->getDonors($filter);
+        } else {
+            $donors = $this->model_common_donor->filterList($request);
+        }
+        $this->load->model('tool/image');
+        $table = '';
+        foreach ($donors as $donor) {
+            $prods = $this->model_common_donor->getProds($donor['numb']);
+            $total_price = 0;
+            $quant = 0;
+            foreach ($prods as $prod) {
+                $total_price += $prod['price']*$prod['quantity'];
+                $quant+=$prod['quantity'];
+            }
+            if (is_file(DIR_IMAGE.$donor['image'])) {
+                    $image = $this->model_tool_image->resize($donor['image'], 40, 40);
+            } else {
+                    $image = $this->model_tool_image->resize('no_image.png', 40, 40);
+            }
+            
+            $table.='<tr>';
+            $table.='<td class="text-center"><img src="'.$image.'"></td>';
+            $table.='<td>'.$donor['name'].'</td>';
+            $table.='<td>'.$donor['numb'].'</td>';
+            $table.='<td>'.$donor['brand'].'</td>';
+            $table.='<td>'.$donor['model'].'</td>';
+            $table.='<td>'.$donor['mod_row'].'</td>';
+            $table.='<td>'.$donor['ctype'].'</td>';
+            $table.='<td>'.$donor['year'].'</td>';
+            $table.='<td>'.$donor['kmeters'].'</td>';
+            $table.='<td>'.$donor['vin'].'</td>';
+            $table.='<td>'.$donor['dvs'].'</td>';
+            $table.='<td>'.$donor['trmiss'].'</td>';
+            $table.='<td>'.$donor['priv'].'</td>';
+            $table.='<td>'.$donor['color'].'</td>';
+            $table.='<td>'.$donor['price'].'</td>';
+            $table.='<td>'.$quant.'</td>';
+            $table.='<td>'.$total_price.'</td>';
+            $table.='<td>'
+                    . '<a href="'.$this->url->link('donor/edit', 'token=' . $this->session->data['token'].'&donor_id='.$donor['id'], true).'" class="btn btn-primary"><i class="fa fa-pencil"></i></a>'
+                    . '<a href="'.$this->url->link('donor/list/delete', 'token=' . $this->session->data['token'].'&donor_id='.$donor['id'], true).'" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>'
+                    . '</td>';
+            $table.='</tr>';
+        }
+        
+        echo $table;
+    }
 }
 
