@@ -37,10 +37,13 @@ class ModelProductProduct extends Model {
     }
     
     public function getPhotos($pid){
-        $query = $this->db->query("SELECT image FROM ".DB_PREFIX."product_image WHERE product_id = '".$pid."' ");
+        $query = $this->db->query("SELECT image, sort_order FROM ".DB_PREFIX."product_image WHERE product_id = '".$pid."' ORDER BY sort_order ");
         $result = array();
         foreach ($query->rows as $img) {
-            $result[] = $img['image'];
+            $result[] = array(
+                'img'           =>  $img['image'],
+                'sort_order'    =>  $img['sort_order']
+            );
         }
         return $result;
     }
@@ -251,7 +254,7 @@ class ModelProductProduct extends Model {
         $this->db->query("DELETE FROM ".DB_PREFIX."product_image WHERE product_id = ".(int)$this->db->escape($product['pid']));
         if((isset($product['image'])) && (!empty($product['image']))){
             foreach ($product['image'] as $img) {
-                $this->db->query("INSERT INTO ".DB_PREFIX."product_image (product_id, image) VALUES (".(int)$this->db->escape($product['pid']).", '".$this->db->escape($img)."')");
+                $this->db->query("INSERT INTO ".DB_PREFIX."product_image (product_id, image, sort_order) VALUES (".(int)$this->db->escape($product['pid']).", '".$this->db->escape($img['img'])."', '".$this->db->escape($img['sort-order'])."')");
             }
         }
         //update category-links

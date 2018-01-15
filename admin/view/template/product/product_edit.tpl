@@ -192,11 +192,14 @@
                     <div class="well col-sm-12">
                         <?php $count = 0; ?>
                         <?php foreach($images as $img) { ?>
-                            <div style="float: left;">
+                            <div style="float: left;" class="col-sm-2">
                                 <a href="" id="thumb-image<?php echo $img['lid']?>" data-toggle="image" class="img-thumbnail" data-toggle="popover" <?php if($img['main']){echo 'style="box-shadow: 0px 0px 50px #4CAF50;"';} ?>>
                                     <img src="<?php echo $img['thumb']; ?>" alt="" title="" data-placeholder="<?php echo $placeholder; ?>" />
                                 </a>
-                                <input type="hidden" id="input-image<?php echo $img['lid']?>" name="image[]" value="<?php echo $img['image']; ?>"/>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="image[<?php echo $img['lid']?>][sort-order]" value="<?php echo $img['sort_order']; ?>" />
+                                </div>
+                                <input type="hidden" data-toggle='input-image' id="input-image<?php echo $img['lid']?>" name="image[<?php echo $img['lid']?>][img]" value="<?php echo $img['image']; ?>"/>
                             </div>
                         <?php ++$count; ?>
                         <?php } ?>

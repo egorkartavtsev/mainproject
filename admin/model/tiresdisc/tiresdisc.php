@@ -313,9 +313,12 @@ class ModelTiresdiscTiresdisc extends Model {
     
     public function getImages($id) {
         $result = array();
-        $query = $this->db->query("SELECT image FROM ".DB_PREFIX."product_image WHERE product_id = ".(int)$id);
+        $query = $this->db->query("SELECT image, sort_order FROM ".DB_PREFIX."product_image WHERE product_id = ".(int)$id);
         foreach ($query->rows as $item){
-            $result[] = $item['image'];
+            $result[] = array(
+                'img'           =>  $item['image'],
+                'sort_order'    =>  $item['sort_order']
+            );
         }
         return $result;
     }
@@ -359,7 +362,7 @@ class ModelTiresdiscTiresdisc extends Model {
         $this->db->query("DELETE FROM ".DB_PREFIX."product_image WHERE product_id = ".(int)$id);
        
         foreach ($prod['image'] as $image) {
-            $this->db->query("INSERT INTO ".DB_PREFIX."product_image (product_id, image) VALUES (".(int)$id.", '".$image."')");           
+            $this->db->query("INSERT INTO ".DB_PREFIX."product_image (product_id, image, sort_order) VALUES (".(int)$id.", '".$image['img']."', '".$image['so']."')");           
         }
     }
 }

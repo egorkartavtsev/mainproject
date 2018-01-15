@@ -81,7 +81,7 @@ class ModelCommonDonor extends Model {
     }
     
     public function getImages($id) {
-        $query = $this->db->query("SELECT * FROM ".DB_PREFIX."donor_image WHERE donor_id = '".$id."' ");
+        $query = $this->db->query("SELECT * FROM ".DB_PREFIX."donor_image WHERE donor_id = '".$id."' ORDER BY sort_order");
         return $query->rows;
     }
     
@@ -141,7 +141,7 @@ class ModelCommonDonor extends Model {
         $this->db->query("DELETE FROM ".DB_PREFIX."donor_image WHERE donor_id = '".$id."'");
         if((isset($data['image'])) && (!empty($data['image']))){
             foreach ($data['image'] as $img) {
-                $this->db->query("INSERT INTO ".DB_PREFIX."donor_image (donor_id, image) VALUES (".(int)$this->db->escape($id).", '".$this->db->escape($img)."')");
+                $this->db->query("INSERT INTO ".DB_PREFIX."donor_image (donor_id, image, sort_order) VALUES (".(int)$this->db->escape($id).", '".$this->db->escape($img['img'])."', '".$this->db->escape($img['sort-order'])."')");
             }
         }    
     }

@@ -175,7 +175,7 @@ $(document).ready(function() {
 		});
                 
                 $("#button-gen-phot").on('click', function(){
-                        var $forMain = $element.parent().find('input').val();
+                        var $forMain = $element.parent().find('[data-toggle=\'input-image\']').val();
                         $element.parent().parent().parent().parent().find('#input-main-image').val($forMain);
                         $('[id^="thumb-image"]').css("box-shadow", 'none');
                         $element.css("box-shadow", "0px 0px 50px #4CAF50");
@@ -188,11 +188,12 @@ $(document).ready(function() {
             e.preventDefault();
             var $element = $(this);
             var $recipient = $element.data('pointer');
-            var $emptyDiv = '<div style="float: left;">';
+            var $emptyDiv = '<div style="float: left;" class="col-sm-2">';
                     $emptyDiv+='<a href="" id="thumb-image'+$recipient+'" data-toggle="image" class="img-thumbnail" data-toggle="popover">';
                         $emptyDiv+='<img src="" alt="" title="" data-placeholder="" />';
                     $emptyDiv+='</a>';
-                    $emptyDiv+='<input type="hidden" id="input-image'+$recipient+'" name="image[]" value=""/>';
+                    $emptyDiv+='<div class="col-sm-8"><input type="text" class="form-control" name="image['+$recipient+'][sort-order]" value="0"/></div>';
+                    $emptyDiv+='<input type="hidden" data-toggle=\'input-image\' id="input-image'+$recipient+'" name="image['+$recipient+'][img]" value=""/>';
                 $emptyDiv+='</div>';
             
             

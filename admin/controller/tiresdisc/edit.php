@@ -7,6 +7,7 @@ class ControllerTiresdiscEdit extends Controller {
         $id = $this->request->get['prod'];
         $this->load->model('tiresdisc/tiresdisc');
         if(!empty($this->request->post)){
+//            exit(var_dump($this->request->post));
             $this->model_tiresdisc_tiresdisc->updateDB($this->request->post, $id);
         }
         $cat = $this->model_tiresdisc_tiresdisc->getCat($id);
@@ -16,17 +17,19 @@ class ControllerTiresdiscEdit extends Controller {
         $local_id = 0;
         $data['images'] = array();
         foreach ($photos as $img) {
-            if($img===$info['main-image']){
+            if($img['img']===$info['main-image']){
                 $data['images'][] = array(
-                    'image' => $img,
-                    'thumb' => $this->model_tool_image->resize($img, 100, 100),
+                    'image' => $img['img'],
+                    'sort_order' => $img['sort_order'],
+                    'thumb' => $this->model_tool_image->resize($img['img'], 100, 100),
                     'lid'   => $local_id,
                     'main' => TRUE
                 );
             } else {
                 $data['images'][] = array(
-                    'image' => $img,
-                    'thumb' => $this->model_tool_image->resize($img, 100, 100),
+                    'image' => $img['img'],
+                    'sort_order' => $img['sort_order'],
+                    'thumb' => $this->model_tool_image->resize($img['img'], 100, 100),
                     'lid'   => $local_id,
                     'main' => FALSE
                 );

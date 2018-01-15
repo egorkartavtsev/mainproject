@@ -23,23 +23,26 @@ class ControllerProductProductEdit extends Controller {
         $local_id = 0;
         $data['images'] = array();
         foreach ($photos as $img) {
-            if($img===$data['mainimage']){
+            if($img['img']===$data['mainimage']){
                 $data['images'][] = array(
-                    'image' => $img,
-                    'thumb' => $this->model_tool_image->resize($img, 100, 100),
-                    'lid'   => $local_id,
-                    'main' => TRUE
+                    'image'         => $img['img'],
+                    'sort_order'    => $img['sort_order'],
+                    'thumb'         => $this->model_tool_image->resize($img['img'], 100, 100),
+                    'lid'           => $local_id,
+                    'main'          => TRUE
                 );
             } else {
                 $data['images'][] = array(
-                    'image' => $img,
-                    'thumb' => $this->model_tool_image->resize($img, 100, 100),
+                    'image' => $img['img'],
+                    'sort_order'    => $img['sort_order'],
+                    'thumb' => $this->model_tool_image->resize($img['img'], 100, 100),
                     'lid'   => $local_id,
                     'main' => FALSE
                 );
             }
             ++$local_id;
         }
+        $data['count'] = $local_id;
         $data['cond_list'] = '<select name="cond" id="input-cond" class="form-control">';
             $data['cond_list'].= '<option value="-" '.($product_info['condit']=='-'?'selected':'').'>-</option>';
             $data['cond_list'].= '<option value="Отличное" '.($product_info['condit']=='Отличное'?'selected':'').'>Отличное</option>';
@@ -189,6 +192,7 @@ class ControllerProductProductEdit extends Controller {
         $this->load->model('product/product');
         
         $data = $this->request->post;
+//        exit(var_dump($data));
         $data['pid'] = $this->request->get['product_id'];
         if($data['vin']==''){
             $data['vin'] = $this->model_product_product->getVin($data['pid']);

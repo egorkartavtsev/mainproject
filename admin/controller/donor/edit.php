@@ -30,6 +30,7 @@ class ControllerDonorEdit extends Controller {
         $images = $this->model_common_donor->getImages($this->request->get['donor_id']);
 //        exit(var_dump($images));
         $data['mainimage'] = $data['donor']['image'];
+        $data['images'] = array();
         foreach ($images as $image) {
             if (is_file(DIR_IMAGE.$image['image'])) {
                     $thumb = $this->model_tool_image->resize($image['image'], 100, 100);
@@ -39,13 +40,15 @@ class ControllerDonorEdit extends Controller {
             $data['images'][$i] = array(
                 'lid' => $i,
                 'image' => $image['image'],
+                'sort_order' => $image['sort_order'],
                 'thumb' => $thumb,
                 'main'  => FALSE
             );
             if($image['image'] === $data['donor']['image']){
                 $data['images'][$i] = array(
-                    'lid' => $i,
+                'lid' => $i,
                 'image' => $image['image'],
+                'sort_order' => 0,
                 'thumb' => $thumb,
                 'main'  => TRUE
                 );
