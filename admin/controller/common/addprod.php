@@ -654,7 +654,7 @@ private $error = array();
     
     public function constructInfo($products) {
         $prod_info = array();
-        $sql = 'SELECT p.price, pd.name, p.sku AS vin, p.quantity, p.location, p.comp FROM '.DB_PREFIX.'product p LEFT JOIN '.DB_PREFIX.'product_description pd ON p.product_id = pd.product_id WHERE 0 ';
+        $sql = 'SELECT p.price, pd.name, p.sku AS vin, p.quantity, p.location, p.weight, p.comp FROM '.DB_PREFIX.'product p LEFT JOIN '.DB_PREFIX.'product_description pd ON p.product_id = pd.product_id WHERE 0 ';
         $query = $this->db->query("SELECT firstname, lastname FROM ".DB_PREFIX."user WHERE user_id = '".$this->session->data['user_id']."'");
         $manager = $query->row['firstname'].' '.$query->row['lastname'];
         $info = array(
@@ -681,7 +681,7 @@ private $error = array();
                 'price'     => $prod['price'],
                 'pricefact' => $prod['price'],
                 'quanfact'  => $prod['quantity'],
-                'locate'    => $prod['location'],
+                'locate'    => $prod['weight'].'/'.$prod['location'],
                 'reason'    => ''
             );
         }

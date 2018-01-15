@@ -366,7 +366,7 @@
         }
         
         public function createInvoice($info, $id_invoice) {
-            //exit(var_dump($info));
+//            exit(var_dump($info));
             $this->load->language('common/excelTools');
             $xls = new PHPExcel();
             $xls->setActiveSheetIndex(0);
