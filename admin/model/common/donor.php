@@ -129,6 +129,7 @@ class ModelCommonDonor extends Model {
                             . "mod_row = '".$model_row."', "
                             . "ctype = '".$data['cuzov']."', "
                             . "year = '".$data['year']."', "
+                            . "note = '".$data['note']."', "
                             . "kmeters = '".$data['kilometers']."', "
                             . "vin = '".$data['vin']."', "
                             . "dvs = '".$data['dvs']."', "

@@ -61,7 +61,9 @@ class ModelCommonWriteoff extends Model {
                 $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$comp_price."' WHERE heading = '".$heading."' ");
                 $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$comp_price."' WHERE sku = '".$heading."' ");
                 $sup = $this->db->query("SELECT link FROM ".DB_PREFIX."complects WHERE heading = '".$heading."' ");
-                $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$comp_price."' WHERE sku = '".$sup->row['link']."' ");
+                if(isset($sup->row['link'])){
+                    $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$comp_price."' WHERE sku = '".$sup->row['link']."' ");
+                }
             }
 
             if ($this->db->query("INSERT INTO ".DB_PREFIX."sales_info "

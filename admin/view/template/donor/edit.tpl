@@ -22,7 +22,7 @@
                     <label for="cuzov">Выберите Тип кузова</label>
                     <select class="form-control" id="cuzov" name="cuzov">
                         <option value="седан" >седан</option>
-                        <option value="хетчбек" <?php if ($donor['ctype']==='хетчбек') {echo "selected";} ?>>хетчбек</option>
+                        <option value="хэтчбек" <?php if ($donor['ctype']==='хэтчбек') {echo "selected";} ?>>хэтчбек</option>
                         <option value="универсал" <?php if ($donor['ctype']==='универсал') {echo "selected";} ?>>универсал</option>
                         <option value="купе" <?php if ($donor['ctype']==='купе') {echo "selected";} ?>>купе</option>
                         <option value="внедорожник" <?php if ($donor['ctype']==='внедорожник') {echo "selected";} ?>>внедорожник</option>

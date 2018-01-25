@@ -22,7 +22,7 @@
                     <label for="cuzov">Выберите Тип кузова</label>
                     <select class="form-control" id="cuzov" name="cuzov">
                         <option value="седан" >седан</option>
-                        <option value="хетчбек">хетчбек</option>
+                        <option value="хэтчбек">хэтчбек</option>
                         <option value="универсал">универсал</option>
                         <option value="купе">купе</option>
                         <option value="внедорожник">внедорожник</option>

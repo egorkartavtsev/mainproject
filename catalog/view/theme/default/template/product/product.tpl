@@ -53,7 +53,7 @@
           <div class="tab-content">
             <?php if(isset($complect) && $c_id!='') { ?>
                 <div class="alert alert-danger" id="complect">
-                    <h3><?php echo $entry_compl; ?></h3>
+                    <h3><?php if(!isset($whole) || !$whole) {echo $entry_compl;} else {echo "Деталь продаётся только в комплекте: ";} ?></h3>
                     <table class="table">
                         <thead>
                             <tr>

@@ -93,7 +93,7 @@ class ModelTiresdiscTiresdisc extends Model {
     
     public function createProd($prod, $photos) {
         $params = $this->takeDBParam($prod['cat']);
-        if($photos){
+        if(!empty($photos)){
             $image = $this->setPhotos($prod['vin'], $photos);
         } else {
             $image = '';
@@ -137,6 +137,8 @@ class ModelTiresdiscTiresdisc extends Model {
                                 . "image = 'catalog/demo/production/".$prod['vin']."/".$photo."' ");
             }
         }
+        
+        
     }
     
     private function setPhotos($vin, $photo) {
@@ -362,7 +364,7 @@ class ModelTiresdiscTiresdisc extends Model {
         $this->db->query("DELETE FROM ".DB_PREFIX."product_image WHERE product_id = ".(int)$id);
        
         foreach ($prod['image'] as $image) {
-            $this->db->query("INSERT INTO ".DB_PREFIX."product_image (product_id, image, sort_order) VALUES (".(int)$id.", '".$image['img']."', '".$image['so']."')");           
+            $this->db->query("INSERT INTO ".DB_PREFIX."product_image (product_id, image, sort_order) VALUES (".(int)$id.", '".$image['img']."', '".$image['sort-order']."')");           
         }
     }
 }
