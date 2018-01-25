@@ -705,6 +705,7 @@ class ModelCatalogProduct extends Model {
                     . "pd.name AS name, "
                     . "p.sku AS vin, "
                     . "p.image AS image, "
+                    . "p.jan AS note, "
                     . "p.compability AS compability, "
                     . "p.isbn AS cat_numb, "
                     . "p.price AS price, "

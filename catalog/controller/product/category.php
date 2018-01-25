@@ -254,6 +254,7 @@ class ControllerProductCategory extends Controller {
                         $this->load->model('catalog/category');
                         
                         if(isset($this->request->get['brand'])){
+                            $filter_data['limit'] = 1000;
                             $allProds = $this->model_catalog_product->getProducts($filter_data);
                             if(isset($this->request->get['model'])){
                                 if(isset($this->request->get['mr'])){

@@ -28,7 +28,7 @@
                     . "FROM ".DB_PREFIX."category c "
                     . "LEFT JOIN ".DB_PREFIX."category_description cd "
                         . "ON (cd.language_id=1 AND cd.category_id = c.category_id) "
-                    . "WHERE c.parent_id = 0");
+                    . "WHERE c.parent_id = 0 ORDER BY cd.name ");
 
             $results = $query->rows;
             $data['category'] = array();
@@ -41,7 +41,7 @@
 
             //берём марки
             $query = $this->db->query("SELECT id, name FROM ".DB_PREFIX."brand "
-                                    . "WHERE parent_id = 0");
+                                    . "WHERE parent_id = 0 ORDER BY name ");
 
             $brands = $query->rows;
             $data['brands'] = array();
