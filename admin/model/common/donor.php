@@ -93,6 +93,14 @@ class ModelCommonDonor extends Model {
         return $query->row;
     }
     
+    public function getDonorShow($numb) {
+        $sql = "SELECT * FROM ".DB_PREFIX."donor WHERE numb = '".$numb."' ";
+                
+        $query = $this->db->query($sql);
+        
+        return $query->row;
+    }
+    
     public function getProds($donor){
         $query = $this->db->query("SELECT * FROM ".DB_PREFIX."product p "
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "

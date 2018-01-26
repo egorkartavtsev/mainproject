@@ -103,7 +103,7 @@ class ModelTiresdiscTiresdisc extends Model {
             $name = 'Диск колёсный '.$prod['type'].' '.$prod['diameter'].'/'.$prod['width'].'/'.$prod['qHoles'].'x'.$prod['dHoles'].' '.$prod['dop'];
             $table = 'disc';
         } else {
-            $name = 'Шина '.$prod['season'].' '.($prod['tModel']==''?'-':$prod['tModel']).' '.$prod['width'].'/'.$prod['hProf'].'/R'.$prod['diameter'].' '.$prod['dop'];
+            $name = 'Шина '.$prod['season'].' '.$prod['brand'].' '.($prod['tModel']==''?'-':$prod['tModel']).' '.$prod['width'].'/'.$prod['hProf'].'/R'.$prod['diameter'].' '.$prod['dop'];
             $table = 'tires';
         }
         
@@ -331,7 +331,7 @@ class ModelTiresdiscTiresdisc extends Model {
             $name = 'Диск колёсный '.$prod['type'].' '.$prod['diameter'].'/'.$prod['width'].'/'.$prod['qHoles'].'x'.$prod['dHoles'].' '.$prod['dop'];
             $table = DB_PREFIX.'td_disc';
         } else {
-            $name = 'Шина '.$prod['season'].' '.($prod['tModel']==''?'-':$prod['tModel']).' '.$prod['width'].'/'.$prod['hProf'].'/R'.($prod['diameter']).' '.$prod['dop'];
+            $name = 'Шина '.$prod['season'].' '.$prod['brand'].' '.($prod['tModel']==''?'-':$prod['tModel']).' '.$prod['width'].'/'.$prod['hProf'].'/R'.($prod['diameter']).' '.$prod['dop'];
             $table = DB_PREFIX.'td_tires';
         }
         

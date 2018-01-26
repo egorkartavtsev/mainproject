@@ -59,6 +59,7 @@
                         <td><?php echo $donor['quant'];?></td>
                         <td><?php echo $donor['totalp'];?></td>
                         <td>
+                            <a href="<?php echo $donor['show'];?>" class="btn btn-primary"><i class="fa fa-eye"></i></a>
                             <a href="<?php echo $donor['edit'];?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
                             <a href="<?php echo $donor['delete'];?>" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>
                         </td>

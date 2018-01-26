@@ -38,7 +38,8 @@ class ControllerDonorList extends Controller {
                 'priv' => $donor['priv'],
                 'name' => $donor['name'],
                 'delete' => $this->url->link('donor/list/delete', 'token=' . $this->session->data['token'].'&donor_id='.$donor['id'], true),
-                'edit' => $this->url->link('donor/edit', 'token=' . $this->session->data['token'].'&donor_id='.$donor['id'], true)
+                'edit' => $this->url->link('donor/edit', 'token=' . $this->session->data['token'].'&donor_id='.$donor['id'], true),
+                'show' => $this->url->link('donor/show', 'token=' . $this->session->data['token'].'&numb='.$donor['numb'], true)
             );
         }
         $this->document->setTitle('Список доноров');

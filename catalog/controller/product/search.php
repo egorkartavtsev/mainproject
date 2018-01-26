@@ -17,6 +17,7 @@ class ControllerProductSearch extends Controller {
 
 		if (isset($this->request->get['tag'])) {
 			$tag = $this->request->get['tag'];
+			$search = $this->request->get['tag'];
 		} elseif (isset($this->request->get['search'])) {
 			$tag = $this->request->get['search'];
 		} else {
