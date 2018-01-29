@@ -66,3 +66,42 @@ function chooseCPC($id, $name){
        success:function(data){ document.getElementById("cat").innerHTML = data; $("#podcatDD").hide('fast', function(){});}
     })
 }
+
+function setCompl($item, $heading){
+    ajax({
+        url:"index.php?route=product/product_edit/setCompl&token=" + getURLVar('token'),
+        statbox:"status",
+        method:"POST",
+        data:
+        {
+            heading: $heading,
+            item: $item
+        },
+        success:function(data){
+            if(data == 0) {
+                $("#result").html("<b>Произошла ошибка. Повторите попытку.</b>");
+                $("#setComp").attr('disabled', 'true');
+            } else {
+//                $("#result").html(data);
+                location.reload();
+            }
+
+        }
+    })
+}
+
+function remCompl($item, $heading){
+    ajax({
+        url:"index.php?route=product/product_edit/remCompl&token=" + getURLVar('token'),
+        statbox:"status",
+        method:"POST",
+        data:
+        {
+            heading: $heading,
+            item: $item
+        },
+        success:function(data){
+            location.reload();
+        }
+    })
+}

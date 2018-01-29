@@ -8,6 +8,7 @@ class ModelProductProduct extends Model {
                     . "p.manufacturer_id AS brand_id, "
                     . "p.model AS model, "
                     . "p.status AS status, "
+                    . "p.comp_price AS comp_price, "
                     . "p.height AS donor, "
                     . "p.comp AS complect, "
                     . "p.length AS modRow, "
@@ -307,5 +308,71 @@ class ModelProductProduct extends Model {
     public function getVin($pid) {
         $quer = $this->db->query("SELECT sku FROM ".DB_PREFIX."product WHERE product_id = '".$pid."'");
         return $quer->row['sku'];
+    }
+    
+    public function findCompl($head) {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."complects WHERE heading = '".$head."' ");
+        if(empty($sup->row)){
+            return FALSE;
+        } else {
+            $compl = array(
+                'image'     => $sup->row['image'],
+                'name'      => $sup->row['name'],
+                'price'     => $sup->row['price'],
+                'sale'      => $sup->row['sale']
+            );
+            return $compl;
+        }
+    }
+    
+    public function setCompl($newItem, $heading) {
+        if($this->db->query("UPDATE ".DB_PREFIX."product SET comp = '".$heading."' WHERE product_id = '".$newItem."' ")){
+            $this->recountCompl($heading);
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+    
+    public function remCompl($item, $heading) {
+        $this->db->query("UPDATE ".DB_PREFIX."product SET comp = '' WHERE product_id = '".$item."' ");
+        $this->recountCompl($heading);
+    }
+    
+    private function recountCompl($heading){
+        $supIt = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE sku = '".$heading."' OR comp = '".$heading."' ");
+        $supCp = $this->db->query("SELECT * FROM ".DB_PREFIX."complects WHERE heading = '".$heading."' ");
+        $price = 0;
+        
+        foreach ($supIt->rows as $itPrice){
+            $price+= $itPrice['price'];
+        }
+        $supsale = 100 - $supCp->row['sale'];
+        $supsale = $supsale/100;
+        $price = ceil($price*$supsale);
+        //okruglenie
+            if($price<500){
+                $rvr = $price%100;
+                if($rvr>0){
+                    $rvr = 50 - $rvr;
+                    $price = $price + $rvr;
+                    if($sale%10!=0){
+                        $helper = $price%100;
+                        $price = $price+(100-$helper);
+                    }
+                }
+            } else {
+                $rvr = $price%100;
+                $rvr = 100 - $rvr;
+                $price = $price + $rvr;
+                if($sale%10!=0){
+                    $helper = $price%100;
+                    $price = $price+(100-$helper);
+                }
+            }
+        //---------------
+        $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$price."' WHERE link = '".$supCp->row['link']."' ");
+        $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE sku = '".$supCp->row['link']."'");
+        $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE sku = '".$heading."'");
     }
 }

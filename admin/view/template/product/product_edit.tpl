@@ -9,7 +9,19 @@
                 <button type="submit" form="form-product" data-toggle="tooltip" title="Сохранить" class="btn btn-primary"><i class="fa fa-save"></i></button>
                 <a href="<?php echo $cancel; ?>" data-toggle="tooltip" title="Отмена" class="btn btn-default"><i class="fa fa-reply"></i></a>
             </div>
-            <h1><?php echo $heading_title; ?></h1>
+            <h1><?php echo $name; ?></h1>
+            <?php if($complect != '') { ?>
+                <br>
+                <?php if($comp_price=='') { ?>
+                    <h4><span class="label label-primary">комплектующее</span></h4>
+                <?php } else { ?>
+                    <h4><span class="label label-primary">головной товар в комплекте</span></h4>
+                <?php } ?>
+            <?php } ?>
+            <?php if($complect === '') { ?><br><button class="btn btn-sm btn-success" type="button" data-toggle="modal" data-target="#compModal"><i class="fa fa-plus-circle"></i> прикрепить к комплекту</button><?php } ?>
+            <?php if($complect != '' && $comp_price=='') { ?>
+                <button class="btn btn-sm btn-danger" id="remCopml"><i class="fa fa-minus-circle"></i> открепить</button>
+            <?php } ?>
             <ul class="breadcrumb">
                 <?php foreach ($breadcrumbs as $breadcrumb) { ?>
                 <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
@@ -268,6 +280,28 @@
           </div>
         </div>
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="compModal" tabindex="-1" role="dialog" aria-labelledby="compModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Выберите комплект</h4>
+          </div>
+          <div class="modal-body">
+            <div class="form-group-sm">
+                <label for="heading">Введите внутренний номер головного товара</label>
+                <input type="text" class="form-control" id="heading"/>
+            </div>
+            <div class="row" id="result"></div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-primary" id="setComp" disabled>Прикрепить</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <script type="text/javascript">
         $("#input-brand").on('change', function(){
             document.getElementById("input-model").innerHTML = '';
@@ -331,6 +365,40 @@
             })
         })
         
+        
+        $("#heading").on('input', function(){
+            ajax({
+                url:"index.php?route=product/product_edit/getCompl&token=" + getURLVar('token'),
+                statbox:"status",
+                method:"POST",
+                data:
+                {
+                    heading: $("#heading").val()
+                },
+                success:function(data){
+                    if(data == 0) {
+                        $("#result").html("<b>Такого комплекта не существует</b>");
+                        $("#setComp").attr('disabled', 'true');
+                    } else {
+                        $("#result").html(data);
+                        $("#setComp").removeAttr('disabled');
+                    }
+                    
+                }
+            })
+        })
+        
+        $("#setComp").on('click', function(){
+            var heading = $('#heading').val();
+            var item = getURLVar('product_id');
+            setCompl(item, heading);
+        })
+        
+        $('#remCopml').on('click', function(){
+            var heading = '<?php echo $complect; ?>';
+            var item = getURLVar('product_id');
+            remCompl(item, heading);
+        })
     </script>
     <style>
         .cpbItem{

@@ -531,7 +531,7 @@ class ControllerCatalogProduct extends Controller {
                                     'name'       => $result['name'],
                                     'vin'        => $result['sku'],
                                     'location'   => $result['location'],
-                                    'donor'      => $result['height'],
+                                    'donor'      => $result['height']!=''?'<a target="_blank" href="'.$this->url->link('donor/show', 'token=' . $this->session->data['token'] . '&numb=' . $result['height'] . $url, true).'">'.$result['height'].'</a>':'-',
                                     'stock'      => isset($result['weight'])?$result['weight']:'не указан',
                                     'model'      => $result['length'],
                                     'price'      => $result['price'],

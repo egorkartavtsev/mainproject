@@ -173,13 +173,14 @@ class ControllerProductProductEdit extends Controller {
 
         $data['breadcrumbs'][] = array(
                 'text' => $this->language->get('text_home'),
+                'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
+        );
+        
+        $data['breadcrumbs'][] = array(
+                'text' => 'Товары',
                 'href' => $this->url->link('catalog/product', 'token=' . $this->session->data['token'], true)
         );
-
-        $data['breadcrumbs'][] = array(
-                'text' => $this->language->get('heading_title'),
-                'href' => $this->url->link('product/product_edit', 'token=' . $this->session->data['token'], true)
-        );
+        
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
@@ -200,5 +201,42 @@ class ControllerProductProductEdit extends Controller {
         $this->model_product_product->updateProduct($data);
 //        exit(var_dump($data));
         $this->response->redirect($this->url->link('catalog/product', 'token=' . $this->session->data['token'], true));
+    }
+    
+    public function getCompl() {
+        $this->load->model('product/product');
+        $compl = $this->model_product_product->findCompl($this->request->post['heading']);
+        $html = '';
+        if($compl){
+            $this->load->model('tool/image');
+            $image = $this->model_tool_image->resize($compl['image'], 100, 100);
+            $html.= '<div class="col-sm-3">';
+                $html.='<img src="'.trim($image).'" class="thumb" alt="" title="" data-placeholder="'.$this->model_tool_image->resize('no_image.png', 100, 100).'" />';
+            $html.= '</div>';
+            $html.= '<div class="col-sm-9">';
+                $html.= '<h3>'.$compl['name'].'</h3>';
+                $html.= '<p>Стоимость: <span class="label label-primary">'.$compl['price'].'</span></p>';
+                $html.= '<p>Скидка на комплект: <span class="label label-primary">'.$compl['sale'].'</span></p>';
+            $html.= '</div>';
+            echo $html;
+        } else {
+            echo 0;
+        }
+    }
+    
+    public function setCompl() {
+        $heading = $this->request->post['heading'];
+        $item = $this->request->post['item'];
+        $this->load->model('product/product');
+        $result = $this->model_product_product->setCompl($item, $heading);
+        echo $result;
+    }
+    
+    public function remCompl() {
+        $heading = $this->request->post['heading'];
+        $item = $this->request->post['item'];
+        $this->load->model('product/product');
+        $this->model_product_product->remCompl($item, $heading);
+        echo 1;
     }
 }

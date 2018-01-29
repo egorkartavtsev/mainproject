@@ -58,21 +58,27 @@
                         <thead>
                             <tr>
                                 <th>Название:</th>
-                                <th>Цена:</th>
+                                <?php if(!$whole) { ?><th>Цена:</th><?php } ?>
                             </tr>
                         </thead>
-                        <?php foreach($complect as $acc) { ?>
-                        <tr>
-                            <td><a href="index.php?route=product/product&product_id=<?php echo $acc['product_id'];?>" target="blank"><?php echo $acc['name'];?></a></td>
-                            <td><?php echo $acc['price'];?> руб.</td>
-                            <?php if(!$whole) { ?>
-                                <td><button class="btn btn-primary" onclick="cart.add('<?php echo $acc['product_id']; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i></button></td>
-                            <?php } ?>
-                        </tr>
+                        <?php $summ = 0; foreach($complect as $acc) { ?>
+                            <tr>
+                                <td><a href="index.php?route=product/product&product_id=<?php echo $acc['product_id'];?>" target="blank"><?php echo $acc['name'];?></a></td>
+                                <?php $summ+= $acc['price'];?>
+                                <?php if(!$whole) { ?>
+                                    <td><?php echo $acc['price'];?> руб.</td>
+                                    <td><button class="btn btn-primary" onclick="cart.add('<?php echo $acc['product_id']; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i></button></td>
+                                <?php } ?>
+                            </tr>
                         <?php }?>
+                        <?php if(!$whole) { ?>
+                            <tr>
+                                <td style="text-align: right; font-size: 10pt;">Итого:</td>
+                                <td colspan='2' style="text-align: left; font-size: 14pt;"><s><?php echo $summ; ?> руб.</s></td>
+                            </tr>
+                        <?php } ?>
                         <tr>
-                            <td colspan='3' style="text-align: center;">Цена комплекта со скидкой: <?php echo $c_price; ?> руб.</td>
-                            
+                            <td colspan='3' style="text-align: center; font-size: 14pt;">Цена комплекта <?php if(!$whole) { ?>со скидкой<?php } ?>: <span class="label label-danger"><?php echo $c_price; ?> руб.</span></td>
                         </tr>
                         <tr>
                             <td colspan='3' style="text-align: center;"><button class="btn btn-primary" onclick="cart.add('<?php echo $link; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i> Купить весь комплект</button></td>
@@ -190,36 +196,6 @@
             <?php } ?>
             <li><?php echo $text_stock; ?> <?php echo $stock; ?></li>
           </ul>
-          <?php if ($price) { ?>
-          <ul class="list-unstyled">
-            <?php if (!$special) { ?>
-            <li>
-              <h2><?php echo $price; ?></h2>
-            </li>
-            <?php } else { ?>
-            <li><span style="text-decoration: line-through;"><?php echo $price; ?></span></li>
-            <li>
-              <h2><?php echo $special; ?></h2>
-            </li>
-            <?php } ?>
-            <?php if ($tax) { ?>
-            <li><?php echo $text_tax; ?> <?php echo $tax; ?></li>
-            <?php } ?>
-            <?php if ($points) { ?>
-            <li><?php echo $text_points; ?> <?php echo $points; ?></li>
-            <?php } ?>
-            <?php if ($discounts) { ?>
-            <li>
-              <hr>
-            </li>
-            <?php foreach ($discounts as $discount) { ?>
-            <li><?php echo $discount['quantity']; ?><?php echo $text_discount; ?><?php echo $discount['price']; ?></li>
-            <?php } ?>
-            <?php } ?>
-          </ul>
-          <?php } ?>
-          
-          <hr>
           <!-------------------------------------------->
           <?php if ($no_prod) { ?>
             <!-- Button trigger modal -->
@@ -305,6 +281,36 @@
                 </script>
           <?php } else { ?>
           <?php if(!isset($whole) || !$whole) { ?>
+            <?php if ($price) { ?>
+            <ul class="list-unstyled">
+              <?php if (!$special) { ?>
+              <li>
+                <h2><?php echo $price; ?></h2>
+              </li>
+              <?php } else { ?>
+              <li><span style="text-decoration: line-through;"><?php echo $price; ?></span></li>
+              <li>
+                <h2><?php echo $special; ?></h2>
+              </li>
+              <?php } ?>
+              <?php if ($tax) { ?>
+              <li><?php echo $text_tax; ?> <?php echo $tax; ?></li>
+              <?php } ?>
+              <?php if ($points) { ?>
+              <li><?php echo $text_points; ?> <?php echo $points; ?></li>
+              <?php } ?>
+              <?php if ($discounts) { ?>
+              <li>
+                <hr>
+              </li>
+              <?php foreach ($discounts as $discount) { ?>
+              <li><?php echo $discount['quantity']; ?><?php echo $text_discount; ?><?php echo $discount['price']; ?></li>
+              <?php } ?>
+              <?php } ?>
+            </ul>
+            <?php } ?>
+
+            <hr>
                 <div id="product">
                   <?php if ($options) { ?>
                   <hr>
