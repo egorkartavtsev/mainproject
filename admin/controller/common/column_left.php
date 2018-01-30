@@ -9,7 +9,7 @@ class ControllerCommonColumnLeft extends Controller {
 			$this->load->model('tool/image');
 	
 			$user_info = $this->model_user_user->getUser($this->user->getId());
-	
+                        $data['uType'] = $this->session->data['uType'];
 			if ($user_info) {
 				$data['firstname'] = $user_info['firstname'];
 				$data['lastname'] = $user_info['lastname'];

@@ -12,6 +12,16 @@
       <small><?php echo $user_group; ?></small></div>
   </div>
   <ul id="menu">
+    <?php if($uType === 'adm') { ?>
+        <li id="menu-avito">
+            <a class="parent"><i class="fa fa-diamond fw"></i> <span>Работа с Авито</span></a>
+            <ul>
+                <li>
+                    <a href="index.php?route=common/avito/categories&token=<?php echo $token_excel;?>"><span>Категории</span></a>
+                </li>
+            </ul>
+        </li>
+    <?php } ?>
     <li id="menu-prodtdup">
         <a class="parent"><i class="fa fa-arrow-circle-o-up fw"></i> <span><?php echo $tiresdisc['main'];?></span></a>
         <ul>
