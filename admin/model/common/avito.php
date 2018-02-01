@@ -28,4 +28,43 @@ class ModelCommonAvito extends Model {
             $this->db->query("UPDATE ".DB_PREFIX."category_description SET avitoId = '".$cav."' WHERE category_id = '".$cid."'");
         }
     }
+    
+    public function getLibr() {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."aset_libr WHERE 1");
+        $result = array();
+        foreach ($sup->rows as $row) {
+            $result[$row['name']][] = array(
+                'value'         => $row['value'],
+                'description'   => $row['description']
+            );
+        }
+        
+        return $result;
+    }
+    
+    public function getSetts() {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."avito_settings WHERE 1");
+        return $sup->row;
+    }
+    
+    public function updateSetts($data) {
+        $query = "UPDATE ".DB_PREFIX."avito_settings SET ";
+        foreach ($data as $key => $value){
+            if($key=='edate' && ($value=='' || $value==0)){
+                $value = 30;
+            }
+            if($key=='price' && ($value=='' || $value==0)){
+                $value = 500;
+            }
+            $query.= $key." = '".$value."', ";
+        }
+        $query.= "id = 1 ";
+        $query.= "WHERE id = 1 ";
+        $this->db->query($query);
+    }
+    
+    public function getPCID($pcat) {
+        $quer = $this->db->query("SELECT avitoId AS id FROM ".DB_PREFIX."category_description WHERE name = '".$pcat."'");
+        return $quer->row['id'];
+    }
 }

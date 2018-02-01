@@ -210,7 +210,6 @@ class ModelProductProduct extends Model {
                     $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE sku = '".$link."'");
                     $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE sku = '".$product['vin']."'");
                 }
-
             }
             
         //--------------------------
@@ -374,5 +373,10 @@ class ModelProductProduct extends Model {
         $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$price."' WHERE link = '".$supCp->row['link']."' ");
         $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE sku = '".$supCp->row['link']."'");
         $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE sku = '".$heading."'");
+    }
+    
+    public function getManager($id) {
+        $sup = $this->db->query("SELECT manager FROM ".DB_PREFIX."product WHERE product_id = '".$id."'");
+        return $sup->row['manager'];
     }
 }

@@ -191,15 +191,20 @@ class ControllerProductProductEdit extends Controller {
     
     public function saveForm(){
         $this->load->model('product/product');
-        
+        $this->load->model('common/avito');
+        $settings = $this->model_common_avito->getSetts();
         $data = $this->request->post;
 //        exit(var_dump($data));
         $data['pid'] = $this->request->get['product_id'];
         if($data['vin']==''){
             $data['vin'] = $this->model_product_product->getVin($data['pid']);
         }
+        $data['manager'] = $this->model_product_product->getManager($data['pid']);
         $this->model_product_product->updateProduct($data);
-//        exit(var_dump($data));
+        if($data['price']>=$settings['price']){
+            $this->load->model('tool/xml');
+            $this->model_tool_xml->findAd($data);
+        }
         $this->response->redirect($this->url->link('catalog/product', 'token=' . $this->session->data['token'], true));
     }
     

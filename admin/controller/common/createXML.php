@@ -8,10 +8,21 @@ class ControllerCommonCreateXML extends Controller {
             $this->createFile();
             $data['success'] = 'Работает';
         }
-        
+        $data['xmls'] = simplexml_load_file('../Avito/ads.xml');
+        $xmls = $data['xmls'];
+        foreach($xmls->Ad as $ad){
+            if(in_array('0001', (array)$ad)){
+                $ad->Price = 1234;
+                $this->load->model('tool/xml');
+                $this->model_tool_xml->createAd(null, $xmls);
+            } else{ 
+                $ad->Price = 4321;
+            }
+        }
+        $xmls->saveXML('../Avito/ads.xml');
+//        $data['xmls'] = simplexml_load_file('../Avito/test1.xml');
         $this->load->language('common/addprod');
         $this->document->setTitle('Тестовый контроллер');
-        
         $data['heading_title'] = 'Тестовый контроллер';
 
         $data['breadcrumbs'] = array();
@@ -29,7 +40,7 @@ class ControllerCommonCreateXML extends Controller {
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
         $data['token'] = $this->session->data['token'];
-
+        $data['man'] = $this->user;
         $this->response->setOutput($this->load->view('common/createXML', $data));
     }
     

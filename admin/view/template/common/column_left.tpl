@@ -17,6 +17,9 @@
             <a class="parent"><i class="fa fa-diamond fw"></i> <span>Работа с Авито</span></a>
             <ul>
                 <li>
+                    <a href="index.php?route=common/avito/settings&token=<?php echo $token_excel;?>"><span>Настройки</span></a>
+                </li>
+                <li>
                     <a href="index.php?route=common/avito/categories&token=<?php echo $token_excel;?>"><span>Категории</span></a>
                 </li>
             </ul>

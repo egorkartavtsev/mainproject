@@ -20,5 +20,14 @@
     <div class='col-sm-12'>
         <a href="index.php?route=common/createXML&token=<?php echo $token;?>&comm=true" class="btn btn-block btn-success btn-lg">Создать XML</a>
     </div>
+    <?php $sup=0; foreach($xmls->Ad as $ad){
+        echo date('Y-m-d', strtotime("+10 days")).'<br>';
+        if(in_array('0004', (array)$ad)){
+            echo 'Присутствует! '.$xmls->Ad[$sup]->Id.'<br>';
+        } else{
+            ++$sup;
+            echo 'Отсутствует!'.date("Y-m-d").'<br>';
+        }
+    }?>
 </div>
 <?php echo $footer;?>
