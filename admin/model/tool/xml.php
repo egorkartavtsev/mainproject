@@ -40,13 +40,17 @@ class ModelToolXml extends Model {
             $ad->addChild('Category', 'Запчасти и аксессуары');
             $aid = $this->model_common_avito->getPCID($data['podcat']);
             $ad->addChild('TypeId', $aid);
-            $ad->addChild('Title', $data['name']);
+            if($data['avitoname']!=''){
+                $ad->addChild('Title', $data['avitoname']);
+            } else {    
+                $ad->addChild('Title', $data['name']);
+            }
             $ad->addChild('Description', 'Описание товара');
             $ad->addChild('Price', $data['price']);
             /******************************/
             $images = $ad->addChild('Images');
             $image = $images->addChild('Image');
-            $image->addAttribute('url', HTTP_CATALOG.$data['main-image']);
+            $image->addAttribute('url', HTTP_CATALOG.'image/'.$data['main-image']);
             /*****************************/
             $photos = $this->model_product_product->getPhotos($data['pid']);
             if(!empty($photos)){

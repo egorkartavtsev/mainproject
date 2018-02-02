@@ -20,9 +20,10 @@ private $error = array();
         }
         $brands = $this->model_common_edit_model->getBrands(0);
         foreach ($brands as $brand) {
-            $data['brands'][] = array(
-                'val' => $brand['id'],
-                'name' => $brand['name']
+            $data['brands'][$brand['id']] = array(
+                'id' => $brand['id'],
+                'name' => $brand['name'],
+                'trans' => $brand['transcript']
             );
         }
         
@@ -46,7 +47,7 @@ private $error = array();
         $view = '<table class="table table-striped">';
         foreach ($mod_arr as $model) {
             $view .= '<tr>';
-                $view .= '<td id="name'.$model['id'].'" style="cursor: pointer;" class="col-lg-10 mod" onclick = "';
+                $view .= '<td id="name'.$model['id'].'" style="cursor: pointer;" class="col-lg-4 mod" onclick = "';
                     $view .= 'ajax({';
                     $view .= "url:'index.php?route=common/edit_model/getModelRow&token=".$token."',";
                     $view .= "statbox:'status',
@@ -59,12 +60,14 @@ private $error = array();
                               success:function(data){document.getElementById('model_row_list').innerHTML=data;}";
                     $view .= '})';
                 $view .= '">'.$model['name'].'</td>';
-                $view .= '<td id="delete" class="col-lg-1">'
+                $view .= '<td class="col-lg-5"><input class="form-control" oninput="checkInp(\''.$model['id'].'\');" id="trans'.$model['id'].'" value="'.$model['transcript'].'" placeholder="Введите транскрипцию..." maxlength="64"></td>';
+                $view .= '<td><button class="btn btn-success" onclick="saveTrans(\''.$model['id'].'\');" id="save'.$model['id'].'" disabled><i class="fa fa-floppy-o"></i></button></td>';
+                $view .= '<td id="delete'.$model['id'].'" class="col-lg-1">'
                             . '<button type="button" class="btn btn-danger" onclick="del('.$model['id'].', '.$parentID.');">'
                                 . '<i class="fa fa-trash-o"></i>'
                             . '</button>'
                         . '</td>';
-                $view .= '<td id="edit" class="col-lg-1">'
+                $view .= '<td id="edit'.$model['id'].'" class="col-lg-1">'
                             . '<a href="index.php?route=common/edit_model/editForm&mod='.$model['id'].'&modname='.$model['name'].'&token='.$token.'" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="Редактировать">'
                                 . '<i class="fa fa-pencil"></i>'
                             . '</a>'
@@ -178,5 +181,12 @@ private $error = array();
         $data['token_em'] = $this->session->data['token'];
         return $data;
 
-    }        
+    } 
+    
+    public function saveTrans() {
+        $data = $this->request->post;
+        $this->load->model('common/edit_model');
+        $result = $this->model_common_edit_model->saveTrans($data);
+        echo $result;
+    }
 }

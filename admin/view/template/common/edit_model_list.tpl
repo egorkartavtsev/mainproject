@@ -123,6 +123,7 @@
             }
         </script>
             <!------------------------------------------------------------------------------->
+            <div class="col-sm-12" id="statbar"></div>
             <h4>Выберите марку</h4>
             <div class="form-group col-lg-3" style="float: left;">
                 <select class="form-control" name="brand_id" id='brand' onchange='
@@ -135,18 +136,35 @@
                                                                                   brand: document.getElementById("brand").value,
                                                                                   token: "<?php echo $token_em; ?>"
                                                                    },
-                                                                  success:function(data){document.getElementById("model_list").innerHTML=data; document.getElementById("model_row_list").innerHTML="";}
+                                                                  success:function(data){
+                                                                      <?php foreach ($brands as $brand) {
+                                                                        echo "$(\"#row".$brand["id"]."\").attr(\"hidden\", \"true\"); ";
+                                                                      }?>
+                                                                      document.getElementById("model_list").innerHTML=data; 
+                                                                      document.getElementById("model_row_list").innerHTML="";
+                                                                      $("#row"+$("#brand").val()).removeAttr("hidden");
+                                                                  }
 
                                                    })
                         '>
                     <option selected="selected" disabled="disabled">Выберите марку</option>
                     <?php foreach ($brands as $brand) { ?>
-                        <option value="<?php echo $brand['val']; ?>"><?php echo $brand['name']; ?></option>
+                        <option value="<?php echo $brand['id']; ?>"><?php echo $brand['name']; ?></option>
                     <?php } ?>
                 </select>
             </div>
-            <div class='clearfix'></div>
             
+            <div class="col-lg-6" style="float: left;">
+                <table class="table table table-striped">
+                    <?php foreach ($brands as $brand) { ?>
+                    <tr id="row<?php echo $brand['id'];?>" hidden>
+                        <td class="col-sm-9"><input class="form-control" oninput="checkInp('<?php echo $brand['id'];?>');" id="trans<?php echo $brand['id'];?>" placeholder="Введите транскрипцию..." value="<?php echo $brand['trans'];?>" maxlength="64"></td>
+                        <td class="col-sm-3"><button class="btn btn-success" onclick="saveTrans('<?php echo $brand['id'];?>');" id="save<?php echo $brand['id'];?>" disabled><i class="fa fa-floppy-o"></i></button></td>
+                    </tr>
+                    <?php } ?>
+                </table>
+            </div>
+            <div class='clearfix'></div>
             <div class="form-group col-lg-6" style="float: left;" id="model_list"></div>
             <div class="form-group col-lg-6" style="float: left;" id="model_row_list"></div>
             <div class="clearfix"></div>
@@ -226,5 +244,35 @@
       $('#myModel').on('shown.bs.modal', function () {
         $('#myInput').focus()
       })
+      
+      function checkInp($id){
+          if($("#trans"+$id).val()!=''){
+              $("#save"+$id).removeAttr('disabled');
+              $("#statbar").html('');
+          } else {
+              $("#save"+$id).attr('disabled', 'true');
+          }
+      }
+      
+      function saveTrans($id){
+        ajax({
+            url:"index.php?route=common/edit_model/saveTrans&token=" + getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data:
+            {
+                trans: $("#trans"+$id).val(),
+                id: $id
+            },
+            success:function(data){
+                if(data=='1'){
+                    $("#save"+$id).attr('disabled', 'true');
+                    $("#statbar").html('<div class="alert alert-success col-md-6"><h4>Успешно сохранено!</h4></div>');
+                } else {
+                    $("#statbar").html('<div class="alert alert-danger col-md-6"><h4>Ошибка!</h4></div>');
+                }                    
+            }
+        })
+      }
     </script>
 <?php echo $footer;?>

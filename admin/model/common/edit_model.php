@@ -3,11 +3,19 @@ class ModelCommonEditModel extends Model {
     
     public function getBrands($param) {
         
-        $query = $this->db->query("SELECT id, name FROM ".DB_PREFIX."brand WHERE parent_id = '".$param."' ORDER BY name ASC");
+        $query = $this->db->query("SELECT id, name, transcript FROM ".DB_PREFIX."brand WHERE parent_id = '".$param."' ORDER BY name ASC");
         return $query->rows;
     }
     
-    public function delete($id){
+    public function saveTrans($data){
+        if($this->db->query("UPDATE ".DB_PREFIX."brand SET transcript = '".$data['trans']."' WHERE id = '".$data['id']."'")){
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+        public function delete($id){
         $this->db->query("DELETE FROM ".DB_PREFIX."brand WHERE id = '".$id."' ");
         $this->db->query("DELETE FROM ".DB_PREFIX."brand WHERE parent_id = '".$id."' ");
         //$childs = $this->isparent($id);

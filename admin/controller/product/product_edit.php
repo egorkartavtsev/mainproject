@@ -115,7 +115,13 @@ class ControllerProductProductEdit extends Controller {
         foreach ($modRs as $modR) {
             $data['modRs'][] = $modR['name'];
         }
-        
+        //берём комплектность
+        if($data['complect']!='' && $data['comp_price']==''){
+            $comp = $this->model_product_product->getComplect($data['complect']);
+            $data['cname'] = $comp['name'];
+            $data['clink'] = $this->url->link('complect/complect/edit', 'token=' . $this->session->data['token'] . '&complect=' . $comp['id'], true);
+            
+        }
         $this->response->setOutput($this->load->view('product/product_edit', $data));
     }
     

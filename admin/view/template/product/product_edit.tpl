@@ -13,7 +13,7 @@
             <?php if($complect != '') { ?>
                 <br>
                 <?php if($comp_price=='') { ?>
-                    <h4><span class="label label-primary">комплектующее</span></h4>
+                    <h4><span class="label label-primary">комплектующее</span> - <span class="label label-primary"><a target="blank" href="<?php echo $clink;?>" style="color: #FFFFFF!important;"><?php echo $cname;?></a></span></h4>
                 <?php } else { ?>
                     <h4><span class="label label-primary">головной товар в комплекте</span></h4>
                 <?php } ?>
@@ -220,6 +220,19 @@
                             <button id="button-add-image" data-toggle="tooltip" data-original-title="Добавить фото" data-pointer="<?php echo $count;?>" class="btn btn-success btn-lg"><i class="fa fa-plus-circle"></i></button>
                         </div>
                     </div>
+                    <div class='clearfix'></div>
+                    <div class='clearfix'><p></p></div>
+                    <div class="alert alert-success col-sm-12">
+                        <h3>Индивидуальные настройки для Авито</h3>
+                        <div class="col-md-6">
+                            <div class="form-group-sm">
+                                <label for="avitoname">Заголовок объявления отображаемый на авито(лимит: 50 символов).</label>
+                                <input type="text" name="avitoname" class="form-control" id="avitoname" maxlength="50" value="<?php if($avitoname != '') { echo $avitoname; } else { echo $name; }?>" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class='clearfix'></div>
+                    <div class='clearfix'><p></p></div>
                 </form>
                     <div class="well">
                         <p>

@@ -7,6 +7,7 @@ class ModelProductProduct extends Model {
                     . "b.name AS brand, "
                     . "p.manufacturer_id AS brand_id, "
                     . "p.model AS model, "
+                    . "p.avitoname AS avitoname, "
                     . "p.status AS status, "
                     . "p.comp_price AS comp_price, "
                     . "p.height AS donor, "
@@ -225,6 +226,7 @@ class ModelProductProduct extends Model {
                     . "weight = '".$this->db->escape($product['stock'])."', "
                     . "price = '".$this->db->escape($product['price'])."', "
                     . "height = '".$this->db->escape($product['donor'])."', "
+                    . "avitoname = '".$this->db->escape($product['avitoname'])."', "
                     . "model = '".$this->db->escape($product['model'])."', "
                     . "podcateg = '".$this->db->escape($product['podcat'])."', "
                     . "upc = '".$this->db->escape($product['cond'])."', "
@@ -378,5 +380,10 @@ class ModelProductProduct extends Model {
     public function getManager($id) {
         $sup = $this->db->query("SELECT manager FROM ".DB_PREFIX."product WHERE product_id = '".$id."'");
         return $sup->row['manager'];
+    }
+    
+    public function getComplect($heading) {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."complects WHERE heading = '".$heading."' ");
+        return $sup->row;
     }
 }
