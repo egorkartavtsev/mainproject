@@ -46,14 +46,14 @@ class ModelToolXml extends Model {
             /******************************/
             $images = $ad->addChild('Images');
             $image = $images->addChild('Image');
-            $image->addAttribute('url', DIR_IMAGE.$data['main-image']);
+            $image->addAttribute('url', HTTP_CATALOG.$data['main-image']);
             /*****************************/
             $photos = $this->model_product_product->getPhotos($data['pid']);
             if(!empty($photos)){
                 foreach ($photos as $photo) {
                     if($photo['img']!=$data['main-image']){
                         $image = $images->addChild('Image');
-                        $image->addAttribute('url', DIR_IMAGE.$photo['img']);
+                        $image->addAttribute('url', HTTP_CATALOG.'image/'.$photo['img']);
                     }
                 }
             }

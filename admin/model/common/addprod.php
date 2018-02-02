@@ -5,7 +5,6 @@ class ModelCommonAddProd extends Model {
         $uploadtmpdir = DIR_IMAGE . "tmp/";
         mkdir(DIR_IMAGE . "catalog/demo/production/".$vin);
         $uploaddir = DIR_IMAGE . "catalog/demo/production/".$vin."/";
-        $watermark = imagecreatefrompng(DIR_IMAGE . "watermark.png");
 
         $photo = array();
 
@@ -63,12 +62,7 @@ class ModelCommonAddProd extends Model {
 
             imagecopyresampled($dest, $source, 0, 0, 0, 0, $optw, $h_dest, $w_src, $h_src);
 
-            $marge_right = 10;
-            $marge_bottom = 10;
-            $sx = imagesx($watermark);
-            $sy = imagesy($watermark);
-
-            imagecopy($dest, $watermark, imagesx($dest) - $sx - $marge_right, imagesy($dest) - $sy - $marge_bottom, 0, 0, imagesx($watermark), imagesy($watermark));
+            
 
             imagejpeg($dest, $uploadtmpdir . $file['name'], 90);
             imagedestroy($dest);
