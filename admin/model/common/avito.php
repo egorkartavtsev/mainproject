@@ -67,4 +67,9 @@ class ModelCommonAvito extends Model {
         $quer = $this->db->query("SELECT avitoId AS id FROM ".DB_PREFIX."category_description WHERE name = '".$pcat."'");
         return $quer->row['id'];
     }
+    
+    public function getDescTempl() {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."text_template WHERE id = 2 ");
+        return $sup->row['text'];
+    }
 }

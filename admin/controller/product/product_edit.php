@@ -76,15 +76,16 @@ class ControllerProductProductEdit extends Controller {
         }
 
         //берём марки
-        $query = $this->db->query("SELECT id, name FROM ".DB_PREFIX."brand "
+        $query = $this->db->query("SELECT id, name, transcript FROM ".DB_PREFIX."brand "
                                 . "WHERE parent_id = 0 ORDER BY name");
 
         $brands = $query->rows;
         $data['brands'] = array();
         foreach ($brands as $res) {
-            $data['brands'][] = array(
+            $data['brands'][$res['id']] = array(
             'name' => $res['name'],
-            'val'  => $res['id']
+            'val'  => $res['id'],
+            'transcript' => $res['transcript']
             );
         }
 
@@ -120,8 +121,8 @@ class ControllerProductProductEdit extends Controller {
             $comp = $this->model_product_product->getComplect($data['complect']);
             $data['cname'] = $comp['name'];
             $data['clink'] = $this->url->link('complect/complect/edit', 'token=' . $this->session->data['token'] . '&complect=' . $comp['id'], true);
-            
         }
+        
         $this->response->setOutput($this->load->view('product/product_edit', $data));
     }
     
@@ -206,8 +207,28 @@ class ControllerProductProductEdit extends Controller {
             $data['vin'] = $this->model_product_product->getVin($data['pid']);
         }
         $data['manager'] = $this->model_product_product->getManager($data['pid']);
+        $brand = $this->db->query("SELECT name, transcript FROM ".DB_PREFIX."brand WHERE id = '".$data['brand']."'");
+        $squery = $this->db->query("SELECT transcript FROM ".DB_PREFIX."brand WHERE name = '".$data['model']."'");
+        $smr = $this->db->query("SELECT name, transcript FROM ".DB_PREFIX."brand WHERE name = '".$data['modRow']."'");
+        if($data['avitoname']==''){
+            $sname = '';
+            $str = explode(" ", $data['podcat']);
+            $sname.= $str[0];
+            if(isset($str[1])){
+                $sname.= ' '.$str[1];
+            }
+            $sname.= ' '.$brand->row['name'].' '.$data['model'];
+            if($squery->row['transcript']!='' || $brand->row['transcript']!=''){
+                $sname.= ' / '.$brand->row['transcript'].' '.$squery->row['transcript'];
+            }
+            $data['avitoname'] = $sname;
+        }
         $this->model_product_product->updateProduct($data);
         if($data['price']>=$settings['price']){
+            $data['trbrand'] = $brand->row['transcript'];
+            $data['brandname'] = $brand->row['name'];
+            $data['trmodrow'] = $smr->row['transcript'];
+            $data['mrname'] = $smr->row['name'];
             $this->load->model('tool/xml');
             $this->model_tool_xml->findAd($data);
         }

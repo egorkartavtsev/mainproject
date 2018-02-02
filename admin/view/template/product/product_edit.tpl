@@ -226,8 +226,8 @@
                         <h3>Индивидуальные настройки для Авито</h3>
                         <div class="col-md-6">
                             <div class="form-group-sm">
-                                <label for="avitoname">Заголовок объявления отображаемый на авито(лимит: 50 символов).</label>
-                                <input type="text" name="avitoname" class="form-control" id="avitoname" maxlength="50" value="<?php if($avitoname != '') { echo $avitoname; } else { echo $name; }?>" />
+                                <label for="avitoname">Заголовок объявления отображаемый на авито(лимит: 50 символов). Оставьте пустым для автоматической генерации.</label>
+                                <input type="text" name="avitoname" class="form-control" id="avitoname" maxlength="50" value="<?php echo $avitoname;?>" />
                             </div>
                         </div>
                     </div>

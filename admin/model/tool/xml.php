@@ -21,6 +21,27 @@ class ModelToolXml extends Model {
         $this->load->model('common/avito');
         $this->load->model('product/product');
         $settings = $this->model_common_avito->getSetts();
+        $stock = $this->db->query("SELECT * FROM ".DB_PREFIX."stocks WHERE name = '".$data['stock']."'");
+        //-----------------------------------------
+        $templ = htmlspecialchars_decode($this->model_common_avito->getDescTempl());
+        $desc = '<![CDATA[';
+        /************************/
+            $templ = str_replace('%podcat%', $data['podcat'], $templ);
+            $templ = str_replace('%brand%', $data['brandname'], $templ);
+            $templ = str_replace('%modrow%', $data['mrname'], $templ);
+            $templ = str_replace('%trbrand%', $data['trbrand'], $templ);
+            $templ = str_replace('%trmodrow%', $data['trmodrow'], $templ);
+            $templ = str_replace('%stock%', $stock->row['adress'], $templ);
+            $templ = str_replace('%vin%', $data['vin'], $templ);
+            $templ = str_replace('%catn%', $data['catN'], $templ);
+            $templ = str_replace('%condit%', $data['cond'], $templ);
+            $templ = str_replace('%compabil%', $data['compability'], $templ);
+            $templ = str_replace('%note%', $data['note'], $templ);
+            $templ = str_replace('%dopinfo%', $data['dop'], $templ);
+        /************************/
+            $desc.= $templ;
+        $desc.= ']]>';
+        
         //-----------------------------------------
         $ad = $xmls->addChild('Ad');
         
@@ -40,12 +61,8 @@ class ModelToolXml extends Model {
             $ad->addChild('Category', 'Запчасти и аксессуары');
             $aid = $this->model_common_avito->getPCID($data['podcat']);
             $ad->addChild('TypeId', $aid);
-            if($data['avitoname']!=''){
-                $ad->addChild('Title', $data['avitoname']);
-            } else {    
-                $ad->addChild('Title', $data['name']);
-            }
-            $ad->addChild('Description', 'Описание товара');
+            $ad->addChild('Title', $data['avitoname']);
+            $ad->addChild('Description', $desc);
             $ad->addChild('Price', $data['price']);
             /******************************/
             $images = $ad->addChild('Images');
@@ -66,7 +83,7 @@ class ModelToolXml extends Model {
     
     public function updateAd($data, $id, $xmls) {
         $xmls->Ad[$id]->Price = $data['price'];
-        $xmls->Ad[$id]->Title = $data['name'];
+        $xmls->Ad[$id]->Title = $data['avitoname'];
         $aid = $this->model_common_avito->getPCID($data['podcat']);
         $xmls->Ad[$id]->TypeId = $aid;
         $xmls->saveXML('../Avito/ads.xml');
