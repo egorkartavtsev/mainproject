@@ -750,6 +750,7 @@ $(document).ready(function() {
 //--></script>
 
 <script type="text/javascript">
+// че пацаны аниме?                                                                                     
     $(document).ready(function() {
 	$('.thumbnails').magnificPopup({
 		type:'image',
