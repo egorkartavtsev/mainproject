@@ -761,10 +761,11 @@ $(document).ready(function() {
 
 <script type="text/javascript">
 $(document).ready(function () {
+//for commit
 	$(".thumbnails a").jqPhotoSwipe({
 		forceSingleGallery: true,
         });
-});        
+});    
 </script>
 
 <script type="text/javascript">
