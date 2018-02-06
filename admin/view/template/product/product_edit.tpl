@@ -229,6 +229,15 @@
                                 <label for="avitoname">Заголовок объявления отображаемый на авито(лимит: 50 символов). Оставьте пустым для автоматической генерации.</label>
                                 <input type="text" name="avitoname" class="form-control" id="avitoname" maxlength="50" value="<?php echo $avitoname;?>" />
                             </div>
+                            <div class="form-group-sm">
+                                <label for="avitosave">Добавить товар на Авито</label>
+                                <select name="avitosave" class="form-control" id="avitosave">
+                                    <option value="нет">Нет</option>
+                                    <option value="да">Да</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
                         </div>
                     </div>
                     <div class='clearfix'></div>

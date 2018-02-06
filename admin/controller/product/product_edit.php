@@ -224,7 +224,7 @@ class ControllerProductProductEdit extends Controller {
             $data['avitoname'] = $sname;
         }
         $this->model_product_product->updateProduct($data);
-        if($this->session->data['uType'] == 'adm'){
+        if($this->session->data['uType'] == 'adm' && $data['avitosave']=='да'){
             $data['trbrand'] = $brand->row['transcript'];
             $data['brandname'] = $brand->row['name'];
             $data['trmodrow'] = $smr->row['transcript'];
