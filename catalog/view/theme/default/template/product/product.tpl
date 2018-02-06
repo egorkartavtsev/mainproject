@@ -551,6 +551,16 @@
     <?php echo $column_right; ?></div>
 </div>
 <script src="catalog/view/javascript/clipboard.min.js" type="text/javascript"></script>
+<!-- PhotoSwipe Core CSS file -->
+<link rel="stylesheet" href="catalog/view/javascript/jquery/PhSw/src/PhotoSwipe/photoswipe.css"> 
+<!-- PhotoSwipe Skin CSS file (styling of UI - buttons, caption, etc.) -->
+<link rel="stylesheet" href="catalog/view/javascript/jquery/PhSw/src/PhotoSwipe/default-skin/default-skin.css"> 
+<!-- PhotoSwipe Core JS file -->
+<script src="catalog/view/javascript/jquery/PhSw/src/PhotoSwipe/photoswipe.min.js"></script> 
+<!-- PhotoSwipe UI JS file -->
+<script src="catalog/view/javascript/jquery/PhSw/src/PhotoSwipe/photoswipe-ui-default.min.js"></script>
+<!-- jqPhotoSwipe JS file -->
+<script src="catalog/view/javascript/jquery/PhSw/src/jqPhotoSwipe.min.js"></script>
 <script type="text/javascript"><!--
 $('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
 	$.ajax({
@@ -749,16 +759,13 @@ $(document).ready(function() {
 })
 //--></script>
 
-<script type="text/javascript">                                                                                 
-    $(document).ready(function() {
-	$('.thumbnails').magnificPopup({
-		type:'image',
-		delegate: 'a',
-		gallery: {
-			enabled:true
-		}
-	});
-    });
+<script type="text/javascript">
+$(document).ready(function () {
+//for commit
+	$(".thumbnails a").jqPhotoSwipe({
+		forceSingleGallery: true,
+        });
+});    
 </script>
 
 <script type="text/javascript">
