@@ -15,6 +15,7 @@ class ModelToolXml extends Model {
                 } else {
                     $dom=dom_import_simplexml($xmls->Ad[$sup]);
                     $dom->parentNode->removeChild($dom);
+                    $xmls->saveXML('../Avito/ads.xml');
                     return 0;
                 }
             } else{ 
@@ -145,6 +146,23 @@ class ModelToolXml extends Model {
         
         //--------------------------------------------
         $xmls->saveXML('../Avito/ads.xml');
+    }
+    
+    public function findToRemoveAd($vin) {
+        $xmls = simplexml_load_file('../Avito/ads.xml');
+        $sup = 0;
+        $this->load->model('common/avito');
+        $settings = $this->model_common_avito->getSetts();
+        foreach($xmls->Ad as $ad){
+            if(in_array($vin, (array)$ad)){
+                $dom=dom_import_simplexml($xmls->Ad[$sup]);
+                $dom->parentNode->removeChild($dom);
+                $xmls->saveXML('../Avito/ads.xml');
+                return 0;
+            } else{ 
+                ++$sup;
+            }
+        }
     }
     
 }

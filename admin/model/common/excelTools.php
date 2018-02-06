@@ -321,7 +321,6 @@
             
             $query = $this->db->query("SELECT firstname, lastname FROM ".DB_PREFIX."user WHERE user_id = '".$this->session->data['user_id']."'");
             $manager = $query->row['firstname'].' '.$query->row['lastname'];
-            
             foreach ($info['products'] as $vin => $prod) {
                 $prodinfo[] = array(
                     'name'      =>  $prod['name'],

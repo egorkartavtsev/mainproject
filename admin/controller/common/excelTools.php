@@ -356,6 +356,7 @@
                     'summ'      =>  $prod['pricefact']*$prod['quanfact'],
                     'location'  =>  $prod['locate'],
                     'saleprice' =>  $prod['pricefact'],
+                    'wherefrom' =>  $info['wherefrom'],
                     'price'     =>  $prod['price'],
                     'reason'    =>  $prod['reason'],
                     'date'      =>  $info['date'],
