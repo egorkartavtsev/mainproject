@@ -23,8 +23,9 @@ class ModelToolXml extends Model {
         $settings = $this->model_common_avito->getSetts();
         $stock = $this->db->query("SELECT * FROM ".DB_PREFIX."stocks WHERE name = '".$data['stock']."'");
         //-----------------------------------------
-        $templ = htmlspecialchars_decode($this->model_common_avito->getDescTempl());
-        $desc = '<![CDATA[';
+        $templ = $this->model_common_avito->getDescTempl();
+        $templ = htmlspecialchars_decode($templ);
+//        $desc = '<![CDATA[';
         /************************/
             $templ = str_replace('%podcat%', $data['podcat'], $templ);
             $templ = str_replace('%brand%', $data['brandname'], $templ);
@@ -39,8 +40,8 @@ class ModelToolXml extends Model {
             $templ = str_replace('%note%', $data['note'], $templ);
             $templ = str_replace('%dopinfo%', $data['dop'], $templ);
         /************************/
-            $desc.= $templ;
-        $desc.= ']]>';
+//            $desc.= $templ;
+//        $desc.= ']]>';
         
         //-----------------------------------------
         $ad = $xmls->addChild('Ad');
@@ -62,7 +63,12 @@ class ModelToolXml extends Model {
             $aid = $this->model_common_avito->getPCID($data['podcat']);
             $ad->addChild('TypeId', $aid);
             $ad->addChild('Title', $data['avitoname']);
-            $ad->addChild('Description', $desc);
+            /*--------------------------------*/
+            $desc = $ad->addChild('Description');
+            $node = dom_import_simplexml($desc);
+            $no = $node->ownerDocument;
+            $node->appendChild($no->createCDATASection($templ));
+            /*--------------------------------*/
             $ad->addChild('Price', $data['price']);
             /******************************/
             $images = $ad->addChild('Images');
@@ -70,13 +76,21 @@ class ModelToolXml extends Model {
             $image->addAttribute('url', HTTP_CATALOG.'image/'.$data['main-image']);
             /*****************************/
             $photos = $this->model_product_product->getPhotos($data['pid']);
+            $count = 1;
             if(!empty($photos)){
                 foreach ($photos as $photo) {
-                    if($photo['img']!=$data['main-image']){
+                    if($photo['img']!=$data['main-image'] && $count<=3){
                         $image = $images->addChild('Image');
                         $image->addAttribute('url', HTTP_CATALOG.'image/'.$photo['img']);
+                        ++$count;
                     }
                 }
+            }
+            $image = $images->addChild('Image');
+            if($stock->row['adress']==='г. Магнитогорск, ул. Магнитная 109/1'){
+                $image->addAttribute('url', HTTP_CATALOG.'image/shop.jpg');
+            } else {
+                $image->addAttribute('url', HTTP_CATALOG.'image/KM.jpg');
             }
         $xmls->saveXML('../Avito/ads.xml');
     }
