@@ -31,7 +31,7 @@
             <?php if ($thumb || $images) { ?>
             <ul class="thumbnails">
               <?php if ($thumb) { ?>
-              <li><a class="thumbnail" href="<?php echo $popup; ?>" title="<?php echo $heading_title; ?>"><img src="<?php echo $thumb; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></li>
+              <li><a class="thumbnail" href="<?php echo $popup; ?>" title="<?php echo $heading_title; ?>"><img class="zoom" src="<?php echo $thumb; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" data-help="Вы можете использовать колесико мыши для увеличения/уменьшения изображения." /></a></li>
               <?php } ?>
               <?php if ($images) { ?>
               <?php foreach ($images as $image) { ?>
@@ -561,6 +561,7 @@
 <script src="catalog/view/javascript/jquery/PhSw/src/PhotoSwipe/photoswipe-ui-default.min.js"></script>
 <!-- jqPhotoSwipe JS file -->
 <script src="catalog/view/javascript/jquery/PhSw/src/jqPhotoSwipe.min.js"></script>
+<script src='catalog/view/javascript/jquery/zoomsl-3.0.min.js'></script>
 <script type="text/javascript"><!--
 $('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
 	$.ajax({
@@ -766,6 +767,18 @@ $(document).ready(function () {
 		forceSingleGallery: true,
         });
 });    
+</script>
+
+<script type="text/javascript">
+   jQuery(function(){
+        $(".zoom").imagezoomsl({
+	zoomrange: [1, 10],
+        magnifiersize: [350, 350],
+        cursorshadeborder: "5px solid #000",
+        magnifiereffectanimate: "fadeIn",
+        statusdivopacity: "1"
+        });
+   });   
 </script>
 
 <script type="text/javascript">
