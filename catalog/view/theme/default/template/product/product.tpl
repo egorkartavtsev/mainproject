@@ -774,7 +774,7 @@ $(document).ready(function () {
         $(".zoom").imagezoomsl({
 	zoomrange: [1, 10],
         magnifiersize: [350, 350],
-        cursorshadeborder: "5px solid #000",
+        cursorshadeborder: "2px solid #000",
         magnifiereffectanimate: "fadeIn",
         statusdivopacity: "1"
         });
