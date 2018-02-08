@@ -32,6 +32,7 @@ class ModelCommonWriteoff extends Model {
     
     public function sale($prods, $id_invoice) {
         $results = '';
+        $this->load->model('tool/xml');
         foreach ($prods as $data) {
             $results.= $data['vin'].',';
             $query = $this->db->query("SELECT product_id, comp FROM ".DB_PREFIX."product WHERE sku = '".$data['vin']."'");
@@ -74,6 +75,7 @@ class ModelCommonWriteoff extends Model {
                         . "city = '".$data['city']."', "
                         . "client = '".$data['client']."', "
                         . "summ = '".$data['summ']."', "
+                        . "wherefrom = '".$data['wherefrom']."', "
                         . "loc = '".$data['location']."', "
                         . "saleprice = '".$data['saleprice']."', "
                         . "price = '".$data['price']."', "
@@ -81,6 +83,7 @@ class ModelCommonWriteoff extends Model {
                         . "date = '".$data['date']."', "
                         . "date_mod = NOW(), "
                         . "manager = '".$data['manager']."'")){
+                $this->model_tool_xml->findToRemove($data['vin']);
                 $result = TRUE;
             } else {
                 $result = FALSE;

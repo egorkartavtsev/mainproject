@@ -42,6 +42,16 @@
                                     </span>
                                 </div>
                             </div>
+                            <div class="form-group col-lg-6">
+                                <lable for="wherefrom" class="control-label">Откуда пришёл покупатель</lable>
+                                <select class="form-control" name="wherefrom" id="wherefrom">
+                                    <option value="avito">avito</option>
+                                    <option value="сайт">сайт</option>
+                                    <option value="2gis">2gis</option>
+                                    <option value="drom">drom</option>
+                                    <option value="vk">vk</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <table class="table table-bordered table-responsive">

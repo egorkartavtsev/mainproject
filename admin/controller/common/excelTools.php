@@ -353,6 +353,7 @@
                     'quan'      =>  $prod['quan'],
                     'quanfact'  =>  $prod['quanfact'],
                     'client'    =>  $info['client'],
+                    'wherefrom' =>  $info['wherefrom'],
                     'summ'      =>  $prod['pricefact']*$prod['quanfact'],
                     'location'  =>  $prod['locate'],
                     'saleprice' =>  $prod['pricefact'],

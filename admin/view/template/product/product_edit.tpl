@@ -229,6 +229,13 @@
                                 <label for="avitoname">Заголовок объявления отображаемый на авито(лимит: 50 символов). Оставьте пустым для автоматической генерации.</label>
                                 <input type="text" name="avitoname" class="form-control" id="avitoname" maxlength="50" value="<?php echo $avitoname;?>" />
                             </div>
+                            <div class="form-group-sm">
+                                <label for="allowavito">Заголовок объявления отображаемый на авито(лимит: 50 символов). Оставьте пустым для автоматической генерации.</label>
+                                <select name="allowavito" class="form-control" id="allowavito">
+                                    <option value="нет">Нет</option>
+                                    <option value="да">Да</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class='clearfix'></div>

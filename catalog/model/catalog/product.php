@@ -727,4 +727,29 @@ class ModelCatalogProduct extends Model {
             $result = $this->db->query($query);
             return $result->rows;
         }
+        
+        public function findAlters($request) {
+            $search = explode(" ", $request);
+            $resreq = '';
+            foreach ($search as $word) {
+                $sup1 = $this->db->query("SELECT name FROM ".DB_PREFIX."category_description WHERE LOCATE('".$word."', alters)");
+                if(empty($sup1->row)){
+                    $sup2 = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE LOCATE('".$word."', transcript)");
+                    if(empty($sup2->row)){
+                        if(!stristr($resreq, $word)){
+                            $resreq.= $word.' ';
+                        }
+                    } else {
+                        if(!stristr($resreq, $sup2->row['name'])){
+                            $resreq.= $sup2->row['name'].' ';
+                        }
+                    }
+                } else {
+                    if(!stristr($resreq, $sup1->row['name'])){
+                            $resreq.= $sup1->row['name'].' ';
+                        }
+                }
+            }
+            return $resreq;
+        }
 }
