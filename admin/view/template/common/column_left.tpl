@@ -90,6 +90,9 @@
             <li>
                 <a href="index.php?route=common/desctemp&token=<?php echo $token_excel;?>"><span><?php echo $edit_prod['tempdesc'];?></span></a>
             </li>
+            <li>
+                <a href="index.php?route=common/alternative&token=<?php echo $token_excel;?>"><span>Работа с синонимами</span></a>
+            </li>
         </ul>
     </li>
     <?php foreach ($menus as $menu) { ?>

@@ -20,6 +20,7 @@ class ControllerCommonDescTemp extends Controller {
             
             if(isset($this->request->post['temp'])){
                 $this->model_common_tempdesc->saveTemp($this->request->post['temp_id'], $this->request->post['temp']);
+                $this->response->redirect($this->url->link('common/desctemp', 'token=' . $this->session->data['token'], true));
             }
             
             $this->response->setOutput($this->load->view('common/tempdesc', $data));
