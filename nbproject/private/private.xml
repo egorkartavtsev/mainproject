@@ -12,14 +12,12 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/OpenServer/domains/mgnauto/admin/model/tool/xml.php</file>
-            <file>file:/D:/OpenServer/domains/mgnauto/admin/model/common/avito.php</file>
-            <file>file:/D:/OpenServer/domains/mgnauto/admin/config.php</file>
-            <file>file:/D:/OpenServer/domains/mgnauto/admin/controller/product/product_edit.php</file>
-            <file>file:/D:/OpenServer/domains/mgnauto/admin/controller/common/createXML.php</file>
-            <file>file:/D:/OpenServer/domains/mgnauto/Avito/ads.xml</file>
-            <file>file:/D:/OpenServer/domains/mgnauto/admin/model/product/product.php</file>
-            <file>file:/D:/OpenServer/domains/mgnauto/admin/view/template/common/createXML.tpl</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/system/library/cart/user.php</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/controller/common/excelTools.php</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/view/template/common/column_left.tpl</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/controller/common/excel.php</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/excelTools.php</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/controller/common/column_left.php</file>
         </group>
     </open-files>
 </project-private>

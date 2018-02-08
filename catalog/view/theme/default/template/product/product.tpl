@@ -29,16 +29,13 @@
         <div class="<?php echo $class; ?>">
           <?php if (isset($images) || isset($thumbs)) { ?>
             <?php if ($thumb || $images) { ?>
-            <ul class="thumbnails">
-              <?php if ($thumb) { ?>
-              <li><a class="thumbnail" href="<?php echo $popup; ?>" title="<?php echo $heading_title; ?>"><img class="zoom" src="<?php echo $thumb; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" data-help="Вы можете использовать колесико мыши для увеличения/уменьшения изображения." /></a></li>
-              <?php } ?>
+              <div class="sp-wrap">   
               <?php if ($images) { ?>
               <?php foreach ($images as $image) { ?>
-              <li class="image-additional"><a class="thumbnail" href="<?php echo $image['popup']; ?>" title="<?php echo $heading_title; ?>"> <img src="<?php echo $image['thumb']; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></li>
+              <a href="<?php echo $image['popup']; ?>" title="<?php echo $heading_title; ?>"> <img src="<?php echo $image['popup']; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a>
               <?php } ?>
               <?php } ?>
-            </ul>
+              </div>
             <?php } ?>
           <?php } ?>
           <ul class="nav nav-tabs">
@@ -551,17 +548,8 @@
     <?php echo $column_right; ?></div>
 </div>
 <script src="catalog/view/javascript/clipboard.min.js" type="text/javascript"></script>
-<!-- PhotoSwipe Core CSS file -->
-<link rel="stylesheet" href="catalog/view/javascript/jquery/PhSw/src/PhotoSwipe/photoswipe.css"> 
-<!-- PhotoSwipe Skin CSS file (styling of UI - buttons, caption, etc.) -->
-<link rel="stylesheet" href="catalog/view/javascript/jquery/PhSw/src/PhotoSwipe/default-skin/default-skin.css"> 
-<!-- PhotoSwipe Core JS file -->
-<script src="catalog/view/javascript/jquery/PhSw/src/PhotoSwipe/photoswipe.min.js"></script> 
-<!-- PhotoSwipe UI JS file -->
-<script src="catalog/view/javascript/jquery/PhSw/src/PhotoSwipe/photoswipe-ui-default.min.js"></script>
-<!-- jqPhotoSwipe JS file -->
-<script src="catalog/view/javascript/jquery/PhSw/src/jqPhotoSwipe.min.js"></script>
-<script src='catalog/view/javascript/jquery/zoomsl-3.0.min.js'></script>
+
+
 <script type="text/javascript"><!--
 $('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
 	$.ajax({
@@ -761,24 +749,9 @@ $(document).ready(function() {
 //--></script>
 
 <script type="text/javascript">
-$(document).ready(function () {
-//for commit
-	$(".thumbnails a").jqPhotoSwipe({
-		forceSingleGallery: true,
-        });
-});    
-</script>
-
-<script type="text/javascript">
-   jQuery(function(){
-        $(".zoom").imagezoomsl({
-	zoomrange: [1, 10],
-        magnifiersize: [350, 350],
-        cursorshadeborder: "2px solid #000",
-        magnifiereffectanimate: "fadeIn",
-        statusdivopacity: "1"
-        });
-   });   
+     $(window).load(function() {
+		$('.sp-wrap').smoothproducts();
+	});
 </script>
 
 <script type="text/javascript">
