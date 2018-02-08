@@ -372,14 +372,14 @@ class ControllerProductProduct extends Controller {
                             }
                         }
                         if(isset($product_info['note'])){
-                            $data['note'] = ($product_info['note']=='')?'---':$product_info['note'];
+                            $data['note'] = ($product_info['note']=='')?'':$product_info['note'];
                         } else {
-                            $data['note'] = '---';
+                            $data['note'] = '';
                         }
                         if(isset($product_info['dop'])){
-                            $data['dop'] = ($product_info['dop']=='')?'---':$product_info['dop'];
+                            $data['dop'] = ($product_info['dop']=='')?'':$product_info['dop'];
                         } else {
-                            $data['dop'] = '---';
+                            $data['dop'] = '';
                         }
 			$data['reward'] = $product_info['reward'];
 			$data['points'] = $product_info['points'];

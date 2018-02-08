@@ -179,12 +179,21 @@
             <?php } else { ?>
                 <li>Модельный ряд: <?php echo $model_row; ?></li>
             <?php }?>
-            <li>Внутренний номер: <?php echo $vin; ?></li>
-            <li>Каталожный номер: <?php echo $cat_numb!==""?$cat_numb:"---"; ?></li>
-            <li>Применимость: <?php echo $compability!==""?$compability:"---"; ?></li>
-            <li>Примечание: <?php echo $note!==""?$note:"---"; ?></li>
-            <li>Дополнительная информация: <?php echo $dop!==""?$dop:"---"; ?></li>
-            <li>Состояние: <?php echo $condition!==""?$condition:"---"; ?></li>
+            <?php if ($cat_numb) { ?>
+                <li>Каталожный номер: <?php echo $cat_numb; ?></li>
+            <?php }?>
+            <?php if ($compability) { ?>
+                <li>Применимость: <?php echo $compability; ?></li>
+            <?php }?>
+            <?php if ($note) { ?>
+                <li>Примечание: <?php echo $note; ?></li>
+            <?php }?>
+            <?php if ($dop) { ?>
+                <li>Дополнительная информация: <?php echo $dop; ?></li>
+            <?php }?>
+            <?php if ($condition) { ?>
+                <li>Состояние: <?php echo $condition; ?></li>
+            <?php }?>
             <?php if((isset($adress)) && ($adress!='')) { ?>
                 <li>Склад: <a href="index.php?route=information/information&information_id=5" target="blank"><?php echo $adress; ?></a></li>
             <?php } ?>
