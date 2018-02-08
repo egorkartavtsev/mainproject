@@ -14,13 +14,16 @@
   <ul id="menu">
     <?php if($uType === 'adm') { ?>
         <li id="menu-avito">
-            <a class="parent"><i class="fa fa-diamond fw"></i> <span>Работа с Авито</span></a>
+            <a class="parent"><i class="fa fa-diamond fw"></i> <span>Работа с автозагрузкой</span></a>
             <ul>
                 <li>
-                    <a href="index.php?route=common/avito/settings&token=<?php echo $token_excel;?>"><span>Настройки</span></a>
+                    <a href="index.php?route=common/avito/settings&token=<?php echo $token_excel;?>"><span>Настройки Авито</span></a>
                 </li>
                 <li>
-                    <a href="index.php?route=common/avito/categories&token=<?php echo $token_excel;?>"><span>Категории</span></a>
+                    <a href="index.php?route=common/avito/categories&token=<?php echo $token_excel;?>"><span>Категории Авито</span></a>
+                </li>
+                <li>
+                    <a href="index.php?route=common/dashboard&token=<?php echo $token_excel;?>"><span>Скачать прайс-лист Drom</span></a>
                 </li>
             </ul>
         </li>

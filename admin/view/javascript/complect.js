@@ -217,9 +217,10 @@
         })
     }
     
-    function sub_temp($token){
-        jQuery.post("index.php?route=common/desctemp&token="+$token,"temp="+encodeURIComponent(jQuery("#desctempl").val()));
+    function sub_temp($div_id, $temp_id){
+        jQuery.post("index.php?route=common/desctemp&token="+getURLVar('token'), {temp: jQuery("#"+$div_id).val(), temp_id: $temp_id});
         location.reload();
+        
     }
     
     function app_temp($token){

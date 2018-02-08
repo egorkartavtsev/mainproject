@@ -2,6 +2,7 @@
 
 class ControllerCommonAvito extends Controller {
     public function categories(){
+        //коммент для теста веток
         $this->load->language('common/addprod');
         $this->document->setTitle('Работа с категориями avito');
         
