@@ -179,6 +179,7 @@
             <?php } else { ?>
                 <li>Модельный ряд: <?php echo $model_row; ?></li>
             <?php }?>
+            <li>Внутренний номер: <?php echo $vin; ?></li>
             <?php if ($cat_numb) { ?>
                 <li>Каталожный номер: <?php echo $cat_numb; ?></li>
             <?php }?>
