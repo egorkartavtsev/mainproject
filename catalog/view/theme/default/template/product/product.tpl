@@ -22,7 +22,7 @@
       <div id="success_box"></div>
       <div class="row">
         <?php if ($column_left || $column_right) { ?>
-        <?php $class = 'col-sm-6'; ?>
+        <?php $class = 'col-sm-8'; ?>
         <?php } else { ?>
         <?php $class = 'col-sm-8'; ?>
         <?php } ?>
@@ -154,7 +154,7 @@
           </div>
         </div>
         <?php if ($column_left || $column_right) { ?>
-        <?php $class = 'col-sm-6'; ?>
+        <?php $class = 'col-sm-4'; ?>
         <?php } else { ?>
         <?php $class = 'col-sm-4'; ?>
         <?php } ?>
