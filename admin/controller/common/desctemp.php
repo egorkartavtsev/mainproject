@@ -15,10 +15,11 @@ class ControllerCommonDescTemp extends Controller {
             $data['token'] = $this->session->data['token'];
             $data['ckeditor'] = $this->config->get('config_editor_default');
             $this->load->model('common/tempdesc');
-            $data['description'] = $this->model_common_tempdesc->getTemp(1);
+            $data['description_prod'] = $this->model_common_tempdesc->getTemp(1);
+            $data['description_avito'] = $this->model_common_tempdesc->getTemp(2);
             
             if(isset($this->request->post['temp'])){
-                $this->model_common_tempdesc->saveTemp(1, $this->request->post['temp']);
+                $this->model_common_tempdesc->saveTemp($this->request->post['temp_id'], $this->request->post['temp']);
             }
             
             $this->response->setOutput($this->load->view('common/tempdesc', $data));
