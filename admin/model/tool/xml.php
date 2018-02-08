@@ -7,6 +7,12 @@ class ModelToolXml extends Model {
         $sup = 0;
         foreach($xmls->Ad as $ad){
             if(in_array($data['vin'], (array)$ad)){
+                if($data['price']<$settings['price']){
+                    $dom=dom_import_simplexml($xmls->Ad[$sup]->Description);
+                    $dom->parentNode->removeChild($dom);
+                    $xmls->saveXML('../Avito/ads.xml');
+                    return 0;
+                }
                 $this->updateAd($data, $sup, $xmls);
                 return 0;
             } else{ 
@@ -24,7 +30,6 @@ class ModelToolXml extends Model {
         $stock = $this->db->query("SELECT * FROM ".DB_PREFIX."stocks WHERE name = '".$data['stock']."'");
         //-----------------------------------------
         $templ = htmlspecialchars_decode($this->model_common_avito->getDescTempl());
-        $desc = '<![CDATA[';
         /************************/
             $templ = str_replace('%podcat%', $data['podcat'], $templ);
             $templ = str_replace('%brand%', $data['brandname'], $templ);
@@ -38,9 +43,8 @@ class ModelToolXml extends Model {
             $templ = str_replace('%compabil%', $data['compability'], $templ);
             $templ = str_replace('%note%', $data['note'], $templ);
             $templ = str_replace('%dopinfo%', $data['dop'], $templ);
+            $templ = str_replace('%weekend%', $weekend, $templ);
         /************************/
-            $desc.= $templ;
-        $desc.= ']]>';
         
         //-----------------------------------------
         $ad = $xmls->addChild('Ad');
@@ -62,7 +66,12 @@ class ModelToolXml extends Model {
             $aid = $this->model_common_avito->getPCID($data['podcat']);
             $ad->addChild('TypeId', $aid);
             $ad->addChild('Title', $data['avitoname']);
-            $ad->addChild('Description', $desc);
+            
+            $desc = $ad->addChild('Description', $desc);
+            $node = dom_import_simplexml($desc);
+            $no   = $node->ownerDocument; 
+            $node->appendChild($no->createCDATASection($templ));
+            
             $ad->addChild('Price', $data['price']);
             /******************************/
             $images = $ad->addChild('Images');
@@ -82,6 +91,36 @@ class ModelToolXml extends Model {
     }
     
     public function updateAd($data, $id, $xmls) {
+        $this->load->model('common/avito');
+        $this->load->model('product/product');
+        $settings = $this->model_common_avito->getSetts();
+        $stock = $this->db->query("SELECT * FROM ".DB_PREFIX."stocks WHERE name = '".$data['stock']."'");
+        $weekend = $data['stok']=='KM'?'СБ, ВС - выходной':'СБ 11:00-16:00 , ВС - выходной';
+        //-----------------------------------------
+        $templ = htmlspecialchars_decode($this->model_common_avito->getDescTempl());
+        /************************/
+            $templ = str_replace('%podcat%', $data['podcat'], $templ);
+            $templ = str_replace('%brand%', $data['brandname'], $templ);
+            $templ = str_replace('%modrow%', $data['mrname'], $templ);
+            $templ = str_replace('%trbrand%', $data['trbrand'], $templ);
+            $templ = str_replace('%trmodrow%', $data['trmodrow'], $templ);
+            $templ = str_replace('%stock%', $stock->row['adress'], $templ);
+            $templ = str_replace('%vin%', $data['vin'], $templ);
+            $templ = str_replace('%catn%', $data['catN'], $templ);
+            $templ = str_replace('%condit%', $data['cond'], $templ);
+            $templ = str_replace('%compabil%', $data['compability'], $templ);
+            $templ = str_replace('%note%', $data['note'], $templ);
+            $templ = str_replace('%dopinfo%', $data['dop'], $templ);
+            $templ = str_replace('%weekend%', $weekend, $templ);
+    /******************************************************************/
+        $dom=dom_import_simplexml($xmls->Ad[$id]->Description);
+        $dom->parentNode->removeChild($dom);
+    //-----------------------------------------------------------------
+        $desc = $xmls->Ad[$id]->addChild('Description', $desc);
+        $node = dom_import_simplexml($desc);
+        $no   = $node->ownerDocument;
+        $node->appendChild($no->createCDATASection($templ));
+    //------------------------------------------------------------------
         $xmls->Ad[$id]->Price = $data['price'];
         $xmls->Ad[$id]->Title = $data['avitoname'];
         $aid = $this->model_common_avito->getPCID($data['podcat']);
@@ -89,8 +128,19 @@ class ModelToolXml extends Model {
         $xmls->saveXML('../Avito/ads.xml');
     }
     
-    public function removeAd($id, $xmls) {
-        
+    public function findToRemove($vin) {
+        $xmls = simplexml_load_file('../Avito/ads.xml');
+        $sup = 0;
+        foreach($xmls->Ad as $ad){
+            if(in_array($vin, (array)$ad)){
+                $dom=dom_import_simplexml($xmls->Ad[$sup]->Description);
+                $dom->parentNode->removeChild($dom);
+                $xmls->saveXML('../Avito/ads.xml');
+                return 0;
+            } else{ 
+                ++$sup;
+            }
+        }
     }
     
 }
