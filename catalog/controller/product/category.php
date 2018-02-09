@@ -323,13 +323,13 @@ class ControllerProductCategory extends Controller {
                                         $compability = $result['compability'];
                                     }
                                     else{
-                                        $compability = '---';
+                                        $compability = '';
                                     }
                                     if ($result['note'] != ''){
                                         $note = $result['note'];
                                     }
                                     else{
-                                        $note = '---';
+                                        $note = '';
                                     }
                                     
                                     if($i){
@@ -355,13 +355,13 @@ class ControllerProductCategory extends Controller {
                                         $compability = $result['compability'];
                                     }
                                     else{
-                                        $compability = '---';
+                                        $compability = '';
                                     }
                                     if ($result['note'] != ''){
                                         $note = $result['note'];
                                     }
                                     else{
-                                        $note = '---';
+                                        $note = '';
                                     }
                                     $data['products'][] = array(
                                             'product_id'  => $result['product_id'],

@@ -102,12 +102,20 @@
             <div class="image"><a href="<?php echo $product['href']; ?>"><img src="<?php echo $product['thumb']; ?>" alt="<?php echo $product['name']; ?>" title="<?php echo $product['name']; ?>" class="img-responsive" /></a></div>
             <div>
               <div class="caption">
-                 <h4><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></h4>
+                <h4><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></h4>
                     <p>Внутренний номер: <?php echo $product['description']; ?></p>
-                    <p>Каталожный номер: <?php echo $product['catN']; ?></p>
-                    <p>Примечание: <?php echo $product['note']; ?></p>
-                    <p>Применимость: <?php echo $product['compability']; ?></p>
-                    <p><b>Состояние:</b> <?php echo $product['cond']; ?></p>
+                    <?php if ($product['catN']) { ?>
+                        <p>Каталожный номер: <?php echo $product['catN']; ?></p>
+                    <?php }?>
+                    <?php if ($product['note']) { ?>
+                        <p>Примечание: <?php echo $product['note']; ?></p>
+                    <?php }?>
+                    <?php if ($product['compability']) { ?>
+                        <p>Применимость: <?php echo $product['compability']; ?></p>
+                    <?php }?>
+                    <?php if ($product['cond']) { ?>
+                        <p><b>Состояние:</b> <?php echo $product['cond']; ?></p>
+                    <?php }?>
                     <p class="price"><b>Цена: <?php echo $product['price']; ?></b></p>
                 <!--<h4><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></h4>
                 <p><?php echo $product['description']; ?></p>
