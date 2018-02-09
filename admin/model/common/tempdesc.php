@@ -8,8 +8,10 @@ class ModelCommonTempDesc extends Model {
     
     public function saveTemp($temp_id, $temp_text){
         if($temp_id==2){
-            $temp_text = str_replace("b", "strong", $temp_text);
-            $temp_text = str_replace("/b", "/strong", $temp_text);
+            $temp_text = str_replace("<b>", "<strong>", $temp_text);
+            $temp_text = str_replace("&lt;b&gt;", "&lt;strong&gt;", $temp_text);
+            $temp_text = str_replace("</b>", "</strong>", $temp_text);
+            $temp_text = str_replace("&lt;/b&gt;", "&lt;/strong&gt;", $temp_text);
         }
         $query = $this->db->query("UPDATE ".DB_PREFIX."text_template SET text = '".$temp_text."' WHERE id = ".(int)$temp_id);
     }

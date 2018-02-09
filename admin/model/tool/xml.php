@@ -5,6 +5,8 @@ class ModelToolXml extends Model {
     public function findAd($data) {
         $xmls = simplexml_load_file('../Avito/ads.xml');
         $sup = 0;
+        $this->load->model('common/avito');
+        $settings = $this->model_common_avito->getSetts();
         foreach($xmls->Ad as $ad){
             if(in_array($data['vin'], (array)$ad)){
                 if($data['price']<$settings['price']){
@@ -28,6 +30,9 @@ class ModelToolXml extends Model {
         $this->load->model('product/product');
         $settings = $this->model_common_avito->getSetts();
         $stock = $this->db->query("SELECT * FROM ".DB_PREFIX."stocks WHERE name = '".$data['stock']."'");
+        $weekend = $data['stock']=='KM'?'СБ, ВС - выходной':'СБ 11:00-16:00 , ВС - выходной';
+        $phone = $data['stock']=='KM'?'+7 (908) 825-52-40':'+7 (912) 475-08-70';
+        $img = $data['stock']=='KM'?'KM.jpg':'shop.jpg';
         //-----------------------------------------
         $templ = htmlspecialchars_decode($this->model_common_avito->getDescTempl());
         /************************/
@@ -62,12 +67,13 @@ class ModelToolXml extends Model {
             }
             $ad->addChild('Region', 'Челябинская область');
             $ad->addChild('City', 'Магнитогорск');
+            $ad->addChild('ContactPhone', $phone);
             $ad->addChild('Category', 'Запчасти и аксессуары');
             $aid = $this->model_common_avito->getPCID($data['podcat']);
             $ad->addChild('TypeId', $aid);
             $ad->addChild('Title', $data['avitoname']);
             
-            $desc = $ad->addChild('Description', $desc);
+            $desc = $ad->addChild('Description');
             $node = dom_import_simplexml($desc);
             $no   = $node->ownerDocument; 
             $node->appendChild($no->createCDATASection($templ));
@@ -79,14 +85,18 @@ class ModelToolXml extends Model {
             $image->addAttribute('url', HTTP_CATALOG.'image/'.$data['main-image']);
             /*****************************/
             $photos = $this->model_product_product->getPhotos($data['pid']);
+            $count=1;
             if(!empty($photos)){
                 foreach ($photos as $photo) {
-                    if($photo['img']!=$data['main-image']){
+                    if($photo['img']!=$data['main-image'] && $count<=3){
                         $image = $images->addChild('Image');
                         $image->addAttribute('url', HTTP_CATALOG.'image/'.$photo['img']);
+                        ++$count;
                     }
                 }
             }
+            $image = $images->addChild('Image');
+            $image->addAttribute('url', HTTP_CATALOG.'image/'.$img);
         $xmls->saveXML('../Avito/ads.xml');
     }
     
@@ -95,7 +105,8 @@ class ModelToolXml extends Model {
         $this->load->model('product/product');
         $settings = $this->model_common_avito->getSetts();
         $stock = $this->db->query("SELECT * FROM ".DB_PREFIX."stocks WHERE name = '".$data['stock']."'");
-        $weekend = $data['stok']=='KM'?'СБ, ВС - выходной':'СБ 11:00-16:00 , ВС - выходной';
+        $weekend = $data['stock']=='KM'?'СБ, ВС - выходной':'СБ 11:00-16:00 , ВС - выходной';
+        $phone = $data['stock']=='KM'?'+7 (908) 825-52-40':'+7 (912) 475-08-70';
         //-----------------------------------------
         $templ = htmlspecialchars_decode($this->model_common_avito->getDescTempl());
         /************************/
@@ -116,12 +127,13 @@ class ModelToolXml extends Model {
         $dom=dom_import_simplexml($xmls->Ad[$id]->Description);
         $dom->parentNode->removeChild($dom);
     //-----------------------------------------------------------------
-        $desc = $xmls->Ad[$id]->addChild('Description', $desc);
+        $desc = $xmls->Ad[$id]->addChild('Description');
         $node = dom_import_simplexml($desc);
         $no   = $node->ownerDocument;
         $node->appendChild($no->createCDATASection($templ));
     //------------------------------------------------------------------
         $xmls->Ad[$id]->Price = $data['price'];
+        $xmls->Ad[$id]->ContactPhone = $phone;
         $xmls->Ad[$id]->Title = $data['avitoname'];
         $aid = $this->model_common_avito->getPCID($data['podcat']);
         $xmls->Ad[$id]->TypeId = $aid;
@@ -133,7 +145,7 @@ class ModelToolXml extends Model {
         $sup = 0;
         foreach($xmls->Ad as $ad){
             if(in_array($vin, (array)$ad)){
-                $dom=dom_import_simplexml($xmls->Ad[$sup]->Description);
+                $dom=dom_import_simplexml($xmls->Ad[$sup]);
                 $dom->parentNode->removeChild($dom);
                 $xmls->saveXML('../Avito/ads.xml');
                 return 0;
