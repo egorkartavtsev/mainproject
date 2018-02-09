@@ -28,6 +28,8 @@ class ModelToolXml extends Model {
         $this->load->model('product/product');
         $settings = $this->model_common_avito->getSetts();
         $stock = $this->db->query("SELECT * FROM ".DB_PREFIX."stocks WHERE name = '".$data['stock']."'");
+        $weekend = $data['stok']=='KM'?'СБ, ВС - выходной':'СБ 11:00-16:00 , ВС - выходной';
+        $phone = $data['stok']=='KM'?'+7 (908) 825-52-40':'+7 (912) 475-08-70';
         //-----------------------------------------
         $templ = htmlspecialchars_decode($this->model_common_avito->getDescTempl());
         /************************/
@@ -62,6 +64,7 @@ class ModelToolXml extends Model {
             }
             $ad->addChild('Region', 'Челябинская область');
             $ad->addChild('City', 'Магнитогорск');
+            $ad->addChild('ContactPhone', $phone);
             $ad->addChild('Category', 'Запчасти и аксессуары');
             $aid = $this->model_common_avito->getPCID($data['podcat']);
             $ad->addChild('TypeId', $aid);
@@ -96,6 +99,7 @@ class ModelToolXml extends Model {
         $settings = $this->model_common_avito->getSetts();
         $stock = $this->db->query("SELECT * FROM ".DB_PREFIX."stocks WHERE name = '".$data['stock']."'");
         $weekend = $data['stok']=='KM'?'СБ, ВС - выходной':'СБ 11:00-16:00 , ВС - выходной';
+        $phone = $data['stok']=='KM'?'+7 (908) 825-52-40':'+7 (912) 475-08-70';
         //-----------------------------------------
         $templ = htmlspecialchars_decode($this->model_common_avito->getDescTempl());
         /************************/
@@ -122,6 +126,7 @@ class ModelToolXml extends Model {
         $node->appendChild($no->createCDATASection($templ));
     //------------------------------------------------------------------
         $xmls->Ad[$id]->Price = $data['price'];
+        $xmls->Ad[$id]->ContactPhone = $phone;
         $xmls->Ad[$id]->Title = $data['avitoname'];
         $aid = $this->model_common_avito->getPCID($data['podcat']);
         $xmls->Ad[$id]->TypeId = $aid;
@@ -133,7 +138,7 @@ class ModelToolXml extends Model {
         $sup = 0;
         foreach($xmls->Ad as $ad){
             if(in_array($vin, (array)$ad)){
-                $dom=dom_import_simplexml($xmls->Ad[$sup]->Description);
+                $dom=dom_import_simplexml($xmls->Ad[$sup]);
                 $dom->parentNode->removeChild($dom);
                 $xmls->saveXML('../Avito/ads.xml');
                 return 0;
