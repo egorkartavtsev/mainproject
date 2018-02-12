@@ -94,7 +94,7 @@ class ModelTiresdiscTiresdisc extends Model {
     public function createProd($prod, $photos) {
         $params = $this->takeDBParam($prod['cat']);
         if(!empty($photos)){
-            $image = $this->setPhotos($prod['vin'], $photos);
+            $image = 'catalog/demo/production/'.$prod['vin'].'/'.$this->setPhotos($prod['vin'], $photos);
         } else {
             $image = '';
         }
@@ -111,7 +111,7 @@ class ModelTiresdiscTiresdisc extends Model {
         foreach ($params as $key => $value) {
             $sql.= $key." = '".$prod[$key]."', ";
         }
-        $sql.="image = 'catalog/demo/production/".$prod['vin']."/".$image."' ";
+        $sql.="image = '".$image."' ";
 //        exit(var_dump($sql));
         
         $this->db->query($sql);
