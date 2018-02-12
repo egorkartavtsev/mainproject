@@ -287,13 +287,13 @@ class ControllerProductBrand extends Controller{
                                     $note = $result['note'];
                                 }
                                 else{
-                                    $note = '---';
+                                    $note = '';
                                 }
                                 if (isset($result['compability']) && ($result['compability'] != '')){
                                     $compability = $result['compability'];
                                 }
                                 else{
-                                    $compability = '---';
+                                    $compability = '';
                                 }
                                 
                                 $data['products'][] = array(

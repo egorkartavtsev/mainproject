@@ -48,9 +48,15 @@
               <div class="caption">
                   <h4><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></h4>
                     <p>Внутренний номер: <?php echo $product['description']; ?></p>
-                    <p>Каталожный номер: <?php echo $product['catN']; ?></p>
-                    <p>Примечание: <?php echo $product['note']; ?></p>
-                    <p>Применимость: <?php echo $product['compability']; ?></p>
+                    <?php if ($product['catN']) { ?>
+                        <p>Каталожный номер: <?php echo $product['catN']; ?></p>
+                    <?php }?>
+                    <?php if ($product['note']) { ?>
+                        <p>Примечание: <?php echo $product['note']; ?></p>
+                    <?php }?>
+                    <?php if ($product['compability']) { ?>
+                        <p>Применимость: <?php echo $product['compability']; ?></p>
+                    <?php }?>
                     <p class="price"><b>Цена: <?php echo $product['price']; ?></b></p>
               </div>
               <div class="button-group">

@@ -255,21 +255,21 @@ class ControllerProductSearch extends Controller {
                                     $catN = $result['cat_numb'];
                                 }
                                 else{
-                                    $catN = 'без номера';
+                                    $catN = '';
                                 }
                                 
                                 if (isset($result['note']) && ($result['note'] != '')){
                                     $note = $result['note'];
                                 }
                                 else{
-                                    $note = '---';
+                                    $note = '';
                                 }
                                 
                                 if (isset($result['compability']) && ($result['compability'] != '')){
                                     $compability = $result['compability'];
                                 }
                                 else{
-                                    $compability = '---';
+                                    $compability = '';
                                 }
                                 
                                 

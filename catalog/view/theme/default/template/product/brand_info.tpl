@@ -106,10 +106,18 @@
                   <div class="caption">
                     <h4><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></h4>
                     <p><b>Внутренний номер:</b> <?php echo $product['description']; ?></p>
-                    <p><b>Каталожный номер:</b> <?php echo $product['catN']; ?></p>
-                    <p><b>Примечание:</b> <?php echo $product['note']; ?></p>
-                    <p>Применимость: <?php echo $product['compability']; ?></p>
-                    <p><b>Состояние:</b> <?php echo $product['cond']; ?></p>
+                    <?php if ($product['catN']) { ?>
+                        <p>Каталожный номер: <?php echo $product['catN']; ?></p>
+                    <?php }?>
+                    <?php if ($product['note']) { ?>
+                        <p>Примечание: <?php echo $product['note']; ?></p>
+                    <?php }?>
+                    <?php if ($product['compability']) { ?>
+                        <p>Применимость: <?php echo $product['compability']; ?></p>
+                    <?php }?>
+                    <?php if ($product['cond']) { ?>
+                        <p><b>Состояние:</b> <?php echo $product['cond']; ?></p>
+                    <?php }?>
                     <p class="price"><b>Цена: <?php echo $product['price']; ?></b></p>
                     <p><b><?php echo $product['comp']; ?></b></p>
                     <!--<?php if ($product['rating']) { ?>
