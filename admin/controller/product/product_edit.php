@@ -26,7 +26,7 @@ class ControllerProductProductEdit extends Controller {
             if($img['img']===$data['mainimage']){
                 $data['images'][] = array(
                     'image'         => $img['img'],
-                    'sort_order'    => $img['sort_order'],
+                    'sort_order'    => 0,
                     'thumb'         => $this->model_tool_image->resize($img['img'], 100, 100),
                     'lid'           => $local_id,
                     'main'          => TRUE
@@ -34,7 +34,7 @@ class ControllerProductProductEdit extends Controller {
             } else {
                 $data['images'][] = array(
                     'image' => $img['img'],
-                    'sort_order'    => $img['sort_order'],
+                    'sort_order'    => $img['sort_order']==0?'1':$img['sort_order'],
                     'thumb' => $this->model_tool_image->resize($img['img'], 100, 100),
                     'lid'   => $local_id,
                     'main' => FALSE
