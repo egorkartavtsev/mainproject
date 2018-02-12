@@ -716,40 +716,53 @@ class ModelCatalogProduct extends Model {
                         . "WHERE 1 ";
             //exit(var_dump($reqwords));
             if(count($reqwords)==1){
-                $query.="AND (0 OR p.sku = '".$this->db->escape($reqwords[0])."' OR LOCATE ('".$this->db->escape($reqwords[0])."', p.isbn)  OR p.category = '".$this->db->escape($reqwords[0])."' OR p.podcateg = '".$this->db->escape($reqwords[0])."' OR LOCATE ('" . $this->db->escape($reqwords[0]) . "', pd.name)) ";
+                $query.="AND (p.sku = '".$this->db->escape($reqwords[0])."' OR LOCATE ('".$this->db->escape($reqwords[0])."', p.isbn)  OR p.category = '".$this->db->escape($reqwords[0])."' OR p.podcateg = '".$this->db->escape($reqwords[0])."' OR LOCATE ('" . $this->db->escape($reqwords[0]) . "', pd.name)) ";
             } elseif (count($reqwords)>1) {
                 foreach ($reqwords as $word){
-                    $query.="AND LOCATE ('" . $this->db->escape($word) . "', pd.name) ";
+                    $query.="AND (p.sku = '".$this->db->escape($word)."' OR LOCATE ('".$this->db->escape($word)."', p.isbn)  OR p.category = '".$this->db->escape($word)."' OR p.podcateg = '".$this->db->escape($word)."' OR LOCATE ('" . $this->db->escape($word) . "', pd.name)) ";
                 }
             }
             $query.="AND status = 1 ";
             $query.="AND quantity > 0 ";
+//            exit($query);
             $result = $this->db->query($query);
             return $result->rows;
         }
         
         public function findAlters($request) {
-            $search = explode(" ", $request);
-            $resreq = '';
+            $search = explode(" ", trim($request));
+            $resReq = '';
+            $exceptions = array('задний', 'передний', 'верхний', 'нижний', 'левый', 'правый', 'центральный', 'задние', 'передние', 'верхние', 'нижние', 'левые', 'правые', 'центральные', 'задняя', 'передняя', 'верхняя', 'нижняя', 'левая', 'правая', 'центральная', 'заднее', 'переднее', 'верхнее', 'нижнее', 'левое', 'правое', 'центральное');
+            
             foreach ($search as $word) {
-                $sup1 = $this->db->query("SELECT name FROM ".DB_PREFIX."category_description WHERE LOCATE('".$word."', alters)");
-                if(empty($sup1->row)){
-                    $sup2 = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE LOCATE('".$word."', transcript)");
-                    if(empty($sup2->row)){
-                        if(!stristr($resreq, $word)){
-                            $resreq.= $word.' ';
+                if(!in_array($word, $exceptions) && trim($word)!==''){
+                    $sup = $this->db->query("SELECT name FROM ".DB_PREFIX."category_description WHERE LOCATE('".$word."', alters) ");
+                    if(empty($sup->row)){
+                        $sup1 = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE LOCATE('".$word."', transcript) ");
+                        if(empty($sup1->row)){
+                            if(!strpos($resReq, $word)){
+                                $resReq.= $word.' ';
+                            }
+                        } else {
+                            $resReq.= $sup1->row['name'].' ';
                         }
                     } else {
-                        if(!stristr($resreq, $sup2->row['name'])){
-                            $resreq.= $sup2->row['name'].' ';
-                        }
+                        if(!strpos($resReq, $sup->row['name'])){
+                                $resReq.= $sup->row['name'].' ';
+                            }
                     }
                 } else {
-                    if(!stristr($resreq, $sup1->row['name'])){
-                            $resreq.= $sup1->row['name'].' ';
+                    if(trim($word)!==''){
+                        if(!strpos($resReq, $word)){
+                            $resReq.= $word.' ';
                         }
+                    }
                 }
             }
-            return $resreq;
+            
+            
+//            echo var_dump($sup1->rows).'<br>';
+//            exit($resReq);
+            return trim($resReq);
         }
 }
