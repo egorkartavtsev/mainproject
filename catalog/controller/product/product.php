@@ -419,10 +419,19 @@ class ControllerProductProduct extends Controller {
 			$this->load->model('tool/image');
                         
                         if (isset($product_info['image']) && $product_info['image']!=''){
+                            $data['images'] = array();
                             if ($product_info['image']) {
                                     $data['popup'] = $this->model_tool_image->resize($product_info['image'], 1024, 768);
+                                    $data['images'][] = array(
+                                            'popup' => $this->model_tool_image->resize($product_info['image'], 1024, 768),
+                                            'thumb' => $this->model_tool_image->resize($product_info['image'], $this->config->get($this->config->get('config_theme') . '_image_additional_width'), $this->config->get($this->config->get('config_theme') . '_image_additional_height'))
+                                    );
                             } else {
-                                    $data['popup'] = $this->model_tool_image->resize('no_image.png', $this->config->get('config_image_popup_width'), $this->config->get('config_image_popup_height'));;
+                                    $data['popup'] = $this->model_tool_image->resize('no_image.png', $this->config->get('config_image_popup_width'), $this->config->get('config_image_popup_height'));
+                                    $data['images'][] = array(
+                                            'popup' => $this->model_tool_image->resize('no_image.png', 1024, 768),
+                                            'thumb' => $this->model_tool_image->resize('no_image.png', $this->config->get($this->config->get('config_theme') . '_image_additional_width'), $this->config->get($this->config->get('config_theme') . '_image_additional_height'))
+                                    );
                             }
 
                             if ($product_info['image']) {
@@ -432,15 +441,16 @@ class ControllerProductProduct extends Controller {
                                     $data['thumb'] = '';
                             }
 
-                            $data['images'] = array();
-
+                            
                             $results = $this->model_catalog_product->getProductImages($this->request->get['product_id']);
                             
                             foreach ($results as $result) {
-                                    $data['images'][] = array(
-                                            'popup' => $this->model_tool_image->resize($result['image'], 1024, 768),
-                                            'thumb' => $this->model_tool_image->resize($result['image'], $this->config->get($this->config->get('config_theme') . '_image_additional_width'), $this->config->get($this->config->get('config_theme') . '_image_additional_height'))
-                                    );
+                                    if($result['image']!== $product_info['image']){
+                                        $data['images'][] = array(
+                                                'popup' => $this->model_tool_image->resize($result['image'], 1024, 768),
+                                                'thumb' => $this->model_tool_image->resize($result['image'], $this->config->get($this->config->get('config_theme') . '_image_additional_width'), $this->config->get($this->config->get('config_theme') . '_image_additional_height'))
+                                        );
+                                    }
                             }
                         }
                         $data['entry_compl'] = $this->language->get('entry_compl');
