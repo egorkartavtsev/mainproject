@@ -732,37 +732,59 @@ class ModelCatalogProduct extends Model {
         public function findAlters($request) {
             $search = explode(" ", trim($request));
             $resReq = '';
+            $reqwords = array();
             $exceptions = array('задний', 'передний', 'верхний', 'нижний', 'левый', 'правый', 'центральный', 'задние', 'передние', 'верхние', 'нижние', 'левые', 'правые', 'центральные', 'задняя', 'передняя', 'верхняя', 'нижняя', 'левая', 'правая', 'центральная', 'заднее', 'переднее', 'верхнее', 'нижнее', 'левое', 'правое', 'центральное');
-            
             foreach ($search as $word) {
-                if(!in_array($word, $exceptions) && trim($word)!==''){
-                    $sup = $this->db->query("SELECT name FROM ".DB_PREFIX."category_description WHERE LOCATE('".$word."', alters) ");
-                    if(empty($sup->row)){
-                        $sup1 = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE LOCATE('".$word."', transcript) ");
-                        if(empty($sup1->row)){
-                            if(!strpos($resReq, $word)){
-                                $resReq.= $word.' ';
+                if(!in_array($word, $exceptions)){
+                    $q = $this->db->query("SELECT name FROM ".DB_PREFIX."category_description WHERE LOCATE('".$word."', alters)");
+                    if(!empty($q->rows)){
+                        foreach($q->rows as $row){
+                            if(!in_array($row['name'], $reqwords)){
+                                $reqwords[] = $row['name'];
                             }
-                        } else {
-                            $resReq.= $sup1->row['name'].' ';
                         }
                     } else {
-                        if(!strpos($resReq, $sup->row['name'])){
-                                $resReq.= $sup->row['name'].' ';
-                            }
-                    }
-                } else {
-                    if(trim($word)!==''){
-                        if(!strpos($resReq, $word)){
-                            $resReq.= $word.' ';
+                        if(!in_array($word, $reqwords)){
+                            $reqwords[] = $word;
                         }
                     }
                 }
+                
             }
-            
-            
-//            echo var_dump($sup1->rows).'<br>';
-//            exit($resReq);
+            echo var_dump($reqwords).'<br>';
+            exit($resReq);
             return trim($resReq);
+        }
+        
+        public function searchVariants($request) {
+            $exceptions = array('задний', 'передний', 'верхний', 'нижний', 'левый', 'правый', 'центральный', 'задние', 'передние', 'верхние', 'нижние', 'левые', 'правые', 'центральные', 'задняя', 'передняя', 'верхняя', 'нижняя', 'левая', 'правая', 'центральная', 'заднее', 'переднее', 'верхнее', 'нижнее', 'левое', 'правое', 'центральное');
+            $search = explode(" ", $request);
+            $result = array(
+                'category'  => array(),
+                'brand'     => array()
+            );
+            $sql = "SELECT name FROM ".DB_PREFIX."category_description WHERE ";
+            
+            
+            foreach ($search as $word) {
+                if(trim($word)!==''){
+                    $sup = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE LOCATE('".$word."', transcript) OR LOCATE('".$word."', name) ");
+                    if(!empty($sup->rows)){
+                        $result['brand'][] = $sup->row['name'];
+                    } else {
+                        $sql.= "(LOCATE('".$word."', alters) OR LOCATE('".$word."', name)) AND ";
+                    }
+                }
+            }
+            $sql.= "1";
+            $sup = $this->db->query($sql);
+            if(!empty($sup->rows)){
+                foreach ($sup->rows as $row) {
+                    if(!in_array($row['name'], $result)){
+                        $result['category'][] =  $row['name'];
+                    }
+                }
+            }
+            return $result;
         }
 }

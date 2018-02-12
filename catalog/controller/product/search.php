@@ -11,7 +11,7 @@ class ControllerProductSearch extends Controller {
 
 		if (isset($this->request->get['search'])) {
 			$search = $this->request->get['search'];
-                        $search = $this->model_catalog_product->findAlters($search);
+                        //$search = $this->model_catalog_product->findAlters($search);
 		} else {
 			$search = '';
 		}
@@ -524,4 +524,30 @@ class ControllerProductSearch extends Controller {
                 
 		$this->response->setOutput($this->load->view('product/search', $data));
 	}
+        
+        public function getVariants() {
+            $request = htmlspecialchars($this->request->post['request'], ENT_QUOTES);
+            $request = str_replace("\\", "", $request);
+            $this->load->model('catalog/product');
+            $variants = $this->model_catalog_product->searchVariants($request);
+            $result = '<li class="dropdown-header">Возможно вы ищите это:</li>';
+            $i=0;
+            if(!empty($variants['category'])){
+                foreach ($variants['category'] as $word){
+                    if(!empty($variants['brand'])){
+                        foreach ($variants['brand'] as $value) {
+                            $result.= '<li class="srcItem" id="srcItem'.$i.'" onclick="fillSearchField(\''.$i.'\')">'.trim($word).' '.$value.'</li>';
+                            ++$i;
+                        }
+                    } else {
+                        $result.= '<li class="srcItem" id="srcItem'.$i.'" onclick="fillSearchField(\''.$i.'\')">'.trim($word).'</li>';
+                        ++$i;
+                    }
+                    
+                }
+            } else {
+                $result = '<li class="dropdown-header">Ничего не найдено. Попробуйте изменить запрос</li>';
+            }
+            echo $result;
+        }
 }

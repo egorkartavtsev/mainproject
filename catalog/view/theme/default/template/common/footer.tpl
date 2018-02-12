@@ -24,12 +24,22 @@
 <script src="catalog/view/javascript/common.js" type="text/javascript"></script>-->
 <script type="text/javascript">
     VK.Widgets.Group("vk_groups", {mode: 3}, 91414223);
-    
+    function fillSearchField($id){
+        var text = $("#srcItem"+$id).text();
+        $("#srcField").val(text);
+    }
 </script>
-<!--
-OpenCart is open source software and you are free to remove the powered by OpenCart if you want, but its generally accepted practise to make a small donation.
-Please donate via PayPal to donate@opencart.com
-//-->
+<style>
+    .srcItem{
+        padding: 3px 15px;
+        cursor: pointer;
+    }
+    .srcItem:hover{
+        padding: 5px 15px;
+        background: #cccccc;
+        color: #444040;
+    }
+</style>
 
 <!-- Theme created by Welford Media for OpenCart 2.0 www.welfordmedia.co.uk -->
 <!-- BEGIN JIVOSITE CODE {literal} -->

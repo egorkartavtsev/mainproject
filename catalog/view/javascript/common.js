@@ -23,6 +23,30 @@ function getURLVar(key) {
 }
 
 $(document).ready(function() {
+    
+    
+        // Searchbox
+        $("input[name*='search']").on('input', function(){
+            if($(this).val()!==''){
+                $.ajax({
+                    url: "index.php?route=product/search/getVariants",
+                    statbox: "igdhje83565",
+                    method: "POST",
+                    data:
+                    {
+                        request: $(this).val()
+                    },
+                    success:function(data){
+                        $("#searchResult").html(data);
+                    }      
+                });
+                $("#search").addClass('open');
+            } else {
+                $("#search").removeClass('open');
+            }
+        });
+        
+    
 	// Highlight any found errors
 	$('.text-danger').each(function() {
 		var element = $(this).parent().parent();
