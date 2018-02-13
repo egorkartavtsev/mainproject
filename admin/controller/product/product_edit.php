@@ -123,6 +123,22 @@ class ControllerProductProductEdit extends Controller {
             $data['clink'] = $this->url->link('complect/complect/edit', 'token=' . $this->session->data['token'] . '&complect=' . $comp['id'], true);
         }
         
+        if($data['avitoname']==''){
+            $brand = $this->db->query("SELECT transcript FROM ".DB_PREFIX."brand WHERE name = '".$data['brand']."'");
+            $squery = $this->db->query("SELECT transcript FROM ".DB_PREFIX."brand WHERE name = '".$data['model']."'");
+            $sname = '';
+            $str = explode(" ", $data['pcat']);
+            $sname.= $str[0];
+            if(isset($str[1])){
+                $sname.= ' '.$str[1];
+            }
+            $sname.= ' '.$data['brand'].' '.$data['model'];
+            if($squery->row['transcript']!='' || $brand->row['transcript']!=''){
+                $sname.= ' / '.$brand->row['transcript'].' '.$squery->row['transcript'];
+            }
+            $data['avitoname'] = $sname;
+        }
+        
         $this->response->setOutput($this->load->view('product/product_edit', $data));
     }
     
