@@ -334,8 +334,8 @@ class ControllerProductTiredisc extends Controller {
 //        $this->document->setKeywords($product_info['meta_keyword']);
         
         $this->document->addLink($this->url->link('catalog/tiredisc/tire', 'product' . $this->request->get['product']), 'canonical');
-        $this->document->addScript('catalog/view/javascript/jquery/magnific/jquery.magnific-popup.min.js');
-        $this->document->addStyle('catalog/view/javascript/jquery/magnific/magnific-popup.css');
+        $this->document->addScript('catalog/view/javascript/jquery/Smoothproducts/js/smoothproducts.min.js');
+        $this->document->addStyle('catalog/view/javascript/jquery/Smoothproducts/css/smoothproducts.css');
         $this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment.js');
         $this->document->addScript('catalog/view/javascript/jquery/datetimepicker/locale/'.$this->session->data['language'].'.js');
         $this->document->addScript('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
@@ -477,8 +477,8 @@ class ControllerProductTiredisc extends Controller {
 //        $this->document->setKeywords($product_info['meta_keyword']);
         
         $this->document->addLink($this->url->link('catalog/tiredisc/disc', 'product' . $this->request->get['product']), 'canonical');
-        $this->document->addScript('catalog/view/javascript/jquery/magnific/jquery.magnific-popup.min.js');
-        $this->document->addStyle('catalog/view/javascript/jquery/magnific/magnific-popup.css');
+        $this->document->addScript('catalog/view/javascript/jquery/Smoothproducts/js/smoothproducts.min.js');
+        $this->document->addStyle('catalog/view/javascript/jquery/Smoothproducts/css/smoothproducts.css');
         $this->document->addScript('catalog/view/javascript/jquery/datetimepicker/moment.js');
         $this->document->addScript('catalog/view/javascript/jquery/datetimepicker/locale/'.$this->session->data['language'].'.js');
         $this->document->addScript('catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
