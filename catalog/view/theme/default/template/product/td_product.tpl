@@ -13,16 +13,13 @@
         <div class="col-sm-8">
           <?php if (isset($images) || isset($thumbs)) { ?>
             <?php if ($thumb || $images) { ?>
-            <ul class="thumbnails">
-              <?php if ($thumb) { ?>
-              <li><a class="thumbnail" href="<?php echo $popup; ?>" title="<?php echo $heading_title; ?>"><img src="<?php echo $thumb; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></li>
-              <?php } ?>
-              <?php if ($images) { ?>
-              <?php foreach ($images as $image) { ?>
-              <li class="image-additional"><a class="thumbnail" href="<?php echo $image['popup']; ?>" title="<?php echo $heading_title; ?>"> <img src="<?php echo $image['thumb']; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a></li>
-              <?php } ?>
-              <?php } ?>
-            </ul>
+            <div class="sp-wrap">   
+                <?php if ($images) { ?>
+                <?php foreach ($images as $image) { ?>
+                <a href="<?php echo $image['popup']; ?>" title="<?php echo $heading_title; ?>"> <img src="<?php echo $image['popup']; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a>
+                <?php } ?>
+                <?php } ?>
+            </div>
             <?php } ?>
           <?php } ?>
           <div class="tab-content">
@@ -288,16 +285,11 @@ $(document).ready(function() {
 //--></script>
 
 <script type="text/javascript">
-    $(document).ready(function() {
-	$('.thumbnails').magnificPopup({
-		type:'image',
-		delegate: 'a',
-		gallery: {
-			enabled:true
-		}
+     $(window).load(function() {
+		$('.sp-wrap').smoothproducts();
 	});
-    });
 </script>
+
 
 <script type="text/javascript">
     function XmlHttp()
