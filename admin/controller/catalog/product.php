@@ -514,6 +514,11 @@ class ControllerCatalogProduct extends Controller {
 				}
 			}
                         
+                        $now = time();
+                        $added = strtotime($result['date_added']);
+                        $dateDif = abs($added-$now);
+                        $dateRes = floor($dateDif/(60*60*24));
+                        
                         $quer = $this->db->query("SELECT * FROM ".DB_PREFIX."sales_info WHERE sku = '".$result['sku']."'");
                         $saleDate = '';
                         if(!empty($quer->row)){
@@ -536,6 +541,7 @@ class ControllerCatalogProduct extends Controller {
                                     'model'      => $result['length'],
                                     'price'      => $result['price'],
                                     'date_added' => $result['date_added'],
+                                    'dateDif'    => $dateRes,
                                     'category'   => $category,
                                     'special'    => $special,
                                     'quantity'   => $result['quantity'],

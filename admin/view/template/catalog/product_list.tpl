@@ -178,6 +178,7 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_date_added; ?>">Дата создания</a>
                     <?php } ?></td>
+                  <?php if($utype == 'adm') { ?><td class="text-left">Дней на складе</td><?php }?>
                   <td class="text-right"><?php echo $column_action; ?></td>
                 </tr>
               </thead>
@@ -227,6 +228,16 @@
                   <td class="text-left"><?php echo $product['saled']; ?></td>
                   <?php if($utype == 'adm') { ?><td class="text-left"><?php echo $product['manager']; ?></td><?php }?>
                   <td class="text-left"><?php echo DateTime::createFromFormat('Y-m-d H:i:s', $product['date_added'])->format('d.‌​m.Y'); ?></td>
+                  <?php if($utype == 'adm') { ?>
+                    <td class="text-left">
+                        <?
+                            if($product['dateDif']>=361){$class='label label-danger';}
+                            elseif($product['dateDif']<361 && $product['dateDif']>=181){$class='label label-warning';}
+                            elseif($product['dateDif']<181 && $product['dateDif']>=91){$class='label label-info';}
+                            elseif($product['dateDif']<91 && $product['dateDif']>=0){$class='';}
+                        ?>
+                        <span class="<?php echo $class;?>"><?php echo $product['dateDif'];?></span>
+                    </td><?php }?>
                   <td class="text-right"><a href="<?php echo $product['edit'];?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
                 </tr>
                 <?php } ?>

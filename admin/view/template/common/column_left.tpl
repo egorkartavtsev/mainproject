@@ -14,6 +14,16 @@
   <ul id="menu">
     <?php if($uType === 'adm') { ?>
         <li id="menu-avito">
+            <a class="parent"><i class="fa fa-pencil-square-o fw"></i> <span>Отчёты<label class="label label-defaulte">(NEW)</label></span></a>
+            <ul>
+                <li>
+                    <a href="index.php?route=report/donor&token=<?php echo $token_excel;?>"><span>Донор</span></a>
+                </li>
+            </ul>
+        </li>
+    <?php } ?>
+    <?php if($uType === 'adm') { ?>
+        <li id="menu-avito">
             <a class="parent"><i class="fa fa-diamond fw"></i> <span>Работа с автозагрузкой</span></a>
             <ul>
                 <li>
