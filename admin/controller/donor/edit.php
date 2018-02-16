@@ -140,7 +140,7 @@ class ControllerDonorEdit extends Controller {
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
         $data['token_add'] = $this->session->data['token'];
-        
+        $data['utype'] = $this->session->data['uType'];
         $this->response->setOutput($this->load->view('donor/edit', $data));
     }
     

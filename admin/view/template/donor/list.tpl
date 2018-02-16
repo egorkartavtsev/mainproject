@@ -32,9 +32,11 @@
                     <td>Трансмиссия</td>
                     <td>Привод</td>
                     <td>Цвет кузова</td>
-                    <td>Стоимость</td>
-                    <td>К-во деталей</td>
-                    <td>Цена деталей</td>
+                    <?php if($utype=='adm') { ?>
+                        <td>Стоимость</td>
+                        <td>К-во деталей</td>
+                        <td>Цена деталей</td>
+                    <?php }?>
                     <td>Действие</td>
                 </tr>
             </thead>
@@ -55,9 +57,11 @@
                         <td><?php echo $donor['trmiss'];?></td>
                         <td><?php echo $donor['priv'];?></td>
                         <td><?php echo $donor['color'];?></td>
-                        <td><?php echo $donor['price'];?></td>
-                        <td><?php echo $donor['quant'];?></td>
-                        <td><?php echo $donor['totalp'];?></td>
+                        <?php if($utype=='adm') { ?>
+                            <td><?php echo $donor['price'];?></td>
+                            <td><?php echo $donor['quant'];?></td>
+                            <td><?php echo $donor['totalp'];?></td>
+                        <?php }?>
                         <td>
                             <a href="<?php echo $donor['show'];?>" class="btn btn-primary"><i class="fa fa-eye"></i></a>
                             <a href="<?php echo $donor['edit'];?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>

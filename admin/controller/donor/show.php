@@ -8,7 +8,7 @@ class ControllerDonorShow extends Controller {
         $data['donor'] = $this->model_common_donor->getDonorShow($this->request->get['numb']);
         $this->load->model('tool/image');
         $this->document->setTitle($data['donor']['name']);
-
+        $data['utype'] = $this->session->data['uType'];
         $data['heading_title'] = $data['donor']['name'];
 
         $data['breadcrumbs'] = array();

@@ -168,10 +168,12 @@
         <button id="donorSubmit" class="btn btn-success col-md-3">Сохранить</button>
                         <div class="clearfix"></div>
                         <div class="clearfix"><p></p></div>
+                        <?php if($utype=='adm') { ?>
         <div class="well well-sm col-sm-12">
             <p>Общее количество деталей: <span class="label label-success"><?php echo $donor['quant'];?></span></p>
             <p>Общяя стоимость деталей: <span class="label label-success"><?php echo $donor['totalp'];?></span></p>
         </div>
+                        <?php } ?>
         <table class="table table-bordered table-hover table-responsive">
               <thead>
                 <tr>

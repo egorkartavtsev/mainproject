@@ -45,11 +45,13 @@
                     </ul>
                 <?php } ?>
             <?php } ?>
-        </div>            
-        <div class="well well-sm col-md-3">
-            <p>Общее количество деталей: <span class="label label-success"><?php echo $donor['quant'];?></span></p>
-            <p>Общяя стоимость деталей: <span class="label label-success"><?php echo $donor['totalp'];?></span></p>
         </div>
+        <?php if($utype=='adm') { ?>
+            <div class="well well-sm col-md-3">
+                <p>Общее количество деталей: <span class="label label-success"><?php echo $donor['quant'];?></span></p>
+                <p>Общяя стоимость деталей: <span class="label label-success"><?php echo $donor['totalp'];?></span></p>
+            </div>
+        <?php }?>
         </div>
         
         <table class="table table-bordered table-hover table-responsive">
