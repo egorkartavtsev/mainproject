@@ -246,11 +246,11 @@ class ControllerProductSearch extends Controller {
 					$tax = false;
 				}
 
-				if ($this->config->get('config_review_status')) {
-					$rating = (int)$result['rating'];
-				} else {
-					$rating = false;
-				}
+//				if ($this->config->get('config_review_status')) {
+//					$rating = (int)$result['rating'];
+//				} else {
+//					$rating = false;
+//				}
                                 if ($result['cat_numb'] != ''){
                                     $catN = $result['cat_numb'];
                                 }
