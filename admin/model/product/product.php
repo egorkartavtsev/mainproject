@@ -245,11 +245,24 @@ class ModelProductProduct extends Model {
                     . "isbn = '".$this->db->escape($product['catN'])."' "
                 . "WHERE product_id = ".(int)$this->db->escape($product['pid']);
         $this->db->query($query);
-        
+        $tag = $brand.', '.$product['model'].', '.$product['modRow'].', '.$product['podcat'].', '.$name;
+        $this->load->model('common/tempdesc');
+        $description = $this->model_common_tempdesc->getTemp(1);
+        $description = str_replace("%mark%", $brand, $description);
+        $description = str_replace("%model%", $product['model'], $description);
+        $description = str_replace("%mr%", $product['modRow'], $description);
+        $description = str_replace("%podcat%", $product['podcat'], $description);
+        $description = str_replace("%prim%", $product['note'], $description);
         //update name
         $this->db->query("UPDATE ".DB_PREFIX."product_description "
                 . "SET "
-                    . "name = '".$this->db->escape($name)."' "
+                    . "name = '".$this->db->escape($name)."', "
+                    . "description = '".$description."', "
+                    . "tag =  '".$tag."', "
+                    . "meta_title = '" . $name . "', "
+                    . "meta_h1 = '" . $name . "', "
+                    . "meta_description = '" . $description . "', "
+                    . "meta_keyword = '" . $tag . "' "
                 . "WHERE product_id = ".(int)$this->db->escape($product['pid']));
         
         //update images

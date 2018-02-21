@@ -60,11 +60,12 @@ class ModelToolXml extends Model {
             $ad->addChild('ListingFee', $settings['listingfree']);
             $ad->addChild('AdStatus', $settings['adstatus']);
             $ad->addChild('AllowEmail', $settings['allowemail']);
-            if($settings['managername']!=''){
-                $ad->addChild('ManagerName', $this->session->data['username']);
-            } else {
-                $ad->addChild('ManagerName', $data['manager']);
-            }
+            $ad->addChild('ManagerName', 'MGN-AUTO');
+//            if($settings['managername']!=''){
+//                $ad->addChild('ManagerName', $this->session->data['username']);
+//            } else {
+//                $ad->addChild('ManagerName', $data['manager']);
+//            }
             $ad->addChild('Region', 'Челябинская область');
             $ad->addChild('City', 'Магнитогорск');
             $ad->addChild('ContactPhone', $phone);
@@ -132,6 +133,7 @@ class ModelToolXml extends Model {
         $no   = $node->ownerDocument;
         $node->appendChild($no->createCDATASection($templ));
     //------------------------------------------------------------------
+        $xmls->Ad[$id]->ManagerName = 'MGN-AUTO';
         $xmls->Ad[$id]->Price = $data['price'];
         $xmls->Ad[$id]->ContactPhone = $phone;
         $xmls->Ad[$id]->Title = $data['avitoname'];
