@@ -15,6 +15,7 @@
         <form action="index.php?route=common/edit_model&token=<?php echo $token_em;?>" method='post'>
             <input type='text' name='newname' value="<?php echo $modname; ?>"/>
             <input type='hidden' name='pointer' value="<?php echo $modID; ?>"/>
+            <input type='hidden' name='oldname' value="<?php echo $oldname; ?>"/>
             <input type="submit" value="Сохранить" />
         </form>
     </div>

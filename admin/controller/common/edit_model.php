@@ -6,12 +6,38 @@ private $error = array();
         $data = $this->getLayout();
         $this->load->model('common/edit_model');
         if(isset($this->request->post['newname'])){
-            $sup = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE id = '".$this->request->post['pointer']."'");
-            $repn = $this->db->query("SELECT name, product_id FROM ".DB_PREFIX."product_description WHERE LOCATE('".$sup->row['name']."', name) ");
-            $this->db->query("UPDATE ".DB_PREFIX."product SET length = '".$this->request->post['newname']."' WHERE length = '".$sup->row['name']."'");
+            $oldname = $this->request->post['oldname'];
+            $sup = $this->db->query("SELECT name, id FROM ".DB_PREFIX."brand WHERE parent_id = '".$this->request->post['pointer']."'");
+            if(!empty($sup->rows)){
+                foreach ($sup->rows as $mr) {
+                    $newmr = str_replace($oldname, $this->request->post['newname'], $mr['name']);
+//                    exit($newmr);
+                    $this->db->query("UPDATE ".DB_PREFIX."product SET length = '".$newmr."', model = '".$this->request->post['newname']."' WHERE length = '".$mr['name']."'");
+                    $this->db->query("UPDATE ".DB_PREFIX."brand "
+                    . "SET name = '".$newmr."' "
+                    . "WHERE id = '".$mr['id']."'");
+                }
+            } else {
+                $this->db->query("UPDATE ".DB_PREFIX."product SET length = '".$this->request->post['newname']."' WHERE length = '".$sup->row['name']."'");
+            }
+            /*---------------------------------------------*/
+            $repn = $this->db->query("SELECT name, product_id, description, tag FROM ".DB_PREFIX."product_description WHERE LOCATE('".$oldname."', name) ");
             foreach ($repn->rows as $value) {
-                $newname = str_replace($sup->row['name'], $this->request->post['newname'], $value['name']);
-                $this->db->query("UPDATE ".DB_PREFIX."product_description SET name = '".$newname."', meta_h1 = '".$newname."', meta_title = '".$newname."' WHERE product_id = '".$value['product_id']."'");
+                $newname = str_replace($oldname, $this->request->post['newname'], $value['name']);
+                $newname = str_replace(">", "-", $newname);
+                $newname = str_replace("'", "\'", $newname);
+                $newdesc = str_replace($oldname, $this->request->post['newname'], $value['description']);
+                $newdesc = str_replace("'", "\'", $newdesc);
+                $newtag = str_replace($oldname, $this->request->post['newname'], $value['tag']);
+                $this->db->query("UPDATE ".DB_PREFIX."product_description SET "
+                                    . "name = '".$newname."', "
+                                 . "meta_h1 = '".$newname."', "
+                              . "meta_title = '".$newname."', "
+                                     . "tag = '".$newtag."', "
+                            . "meta_keyword = '".$newtag."', "
+                             . "description = '".$newdesc."', "
+                        . "meta_description = '".$newdesc."' "
+                    . "WHERE product_id = '".$value['product_id']."'");
             }
             $this->db->query("UPDATE ".DB_PREFIX."brand "
                     . "SET name = '".$this->request->post['newname']."' "
@@ -118,6 +144,8 @@ private $error = array();
         $data['token_em'] = $this->session->data['token'];
         $data['modID'] = $this->request->get['mod'];
         $data['modname'] = $this->request->get['modname'];
+        $data['oldname'] = $this->request->get['modname'];
+        
         $this->response->setOutput($this->load->view('common/edit_model_form', $data));
         
     }
