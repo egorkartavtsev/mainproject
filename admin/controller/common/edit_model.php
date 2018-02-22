@@ -6,6 +6,7 @@ private $error = array();
         $data = $this->getLayout();
         $this->load->model('common/edit_model');
         if(isset($this->request->post['newname'])){
+            $prods = array();
             $oldname = $this->request->post['oldname'];
             $sup = $this->db->query("SELECT name, id FROM ".DB_PREFIX."brand WHERE parent_id = '".$this->request->post['pointer']."'");
             if(!empty($sup->rows)){
@@ -17,11 +18,37 @@ private $error = array();
                     . "SET name = '".$newmr."' "
                     . "WHERE id = '".$mr['id']."'");
                 }
+                $query = $this->db->query("SELECT "
+                        . "length AS modRow, "
+                        . "sku AS vin, "
+                        . "weight AS stock, "
+                        . "manufacturer_id AS brand, "
+                        . "isbn AS catN, "
+                        . "jan AS note, "
+                        . "podcateg AS podcat, "
+                        . "compability, "
+                        . "width AS dop, "
+                        . "upc AS cond "
+                    . "FROM ".DB_PREFIX."product "
+                    . "WHERE model = '".$this->request->post['newname']."' AND manufacturer_id != '0'");
             } else {
-                $this->db->query("UPDATE ".DB_PREFIX."product SET length = '".$this->request->post['newname']."' WHERE length = '".$sup->row['name']."'");
+                $this->db->query("UPDATE ".DB_PREFIX."product SET length = '".$this->request->post['newname']."' WHERE length = '".$oldname."'");
+                $query = $this->db->query("SELECT "
+                        . "length AS modRow, "
+                        . "sku AS vin, "
+                        . "weight AS stock, "
+                        . "manufacturer_id AS brand, "
+                        . "isbn AS catN, "
+                        . "jan AS note, "
+                        . "podcateg AS podcat, "
+                        . "compability, "
+                        . "width AS dop, "
+                        . "upc AS cond "
+                    . "FROM ".DB_PREFIX."product "
+                    . "WHERE length = '".$this->request->post['newname']."' AND manufacturer_id != '0' ");
             }
             /*---------------------------------------------*/
-            $repn = $this->db->query("SELECT name, product_id, description, tag FROM ".DB_PREFIX."product_description WHERE LOCATE('".$oldname."', name) ");
+            $repn = $this->db->query("SELECT pd.name, pd.product_id, pd.description, pd.tag FROM ".DB_PREFIX."product_description pd WHERE LOCATE('".$oldname."', pd.name) ");
             foreach ($repn->rows as $value) {
                 $newname = str_replace($oldname, $this->request->post['newname'], $value['name']);
                 $newname = str_replace(">", "-", $newname);
@@ -42,7 +69,9 @@ private $error = array();
             $this->db->query("UPDATE ".DB_PREFIX."brand "
                     . "SET name = '".$this->request->post['newname']."' "
                     . "WHERE id = '".$this->request->post['pointer']."'");
-            //exit($this->request->post['pointer']);
+            $this->load->model('tool/xml');
+            $this->model_tool_xml->UpdateXMLDesc($query->rows);
+//            exit(var_dump($query->rows));
         }
         $brands = $this->model_common_edit_model->getBrands(0);
         foreach ($brands as $brand) {
