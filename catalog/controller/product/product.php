@@ -392,6 +392,7 @@ class ControllerProductProduct extends Controller {
                         $data['compability'] = $product_info['compability'];
                         //exit(var_dump($product_info));
                         $data['note'] = $product_info['note'];
+                        $data['ean'] = $product_info['ean'];
                         $data['condition'] = $product_info['con_p'];
                         $data['no_prod'] = FALSE;
                         $data['sendLink'] = $this->url->link('product/product', 'product_id='.$product_id);

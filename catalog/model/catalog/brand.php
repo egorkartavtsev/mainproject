@@ -52,6 +52,7 @@ class ModelCatalogBrand extends Model {
                     . "pd.name AS name, "
                     . "p.sku AS vin, "
                     . "p.upc AS con_p, "
+                    . "p.ean AS ean, "
                     . "p.jan AS note, "
                     . "p.isbn AS catN, "
                     . "p.price AS price, "
@@ -96,6 +97,7 @@ class ModelCatalogBrand extends Model {
                 'product_id' => $prod['product_id'],
                 'minimum' => $prod['minimum'],
                 'note' => $prod['jan'],
+                'ean'=> $prod['ean'],
                 'name' => $prod['name'],
                 'description' => $prod['description'],
                 'price' => $prod['price'],

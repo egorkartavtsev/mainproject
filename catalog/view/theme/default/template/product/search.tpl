@@ -54,6 +54,9 @@
                     <?php if ($product['note']) { ?>
                         <p>Примечание: <?php echo $product['note']; ?></p>
                     <?php }?>
+                    <?php if ($product['ean']) { ?>
+                        <p>Тип: <?php echo $product['ean']; ?></p>
+                    <?php }?>
                     <?php if ($product['compability']) { ?>
                         <p>Применимость: <?php echo $product['compability']; ?></p>
                     <?php }?>

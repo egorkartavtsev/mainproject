@@ -192,6 +192,9 @@
             <?php if ($dop) { ?>
                 <li>Дополнительная информация: <?php echo $dop; ?></li>
             <?php }?>
+            <?php if ($ean) { ?>
+                <li>Тип: <?php echo $ean; ?></li>
+            <?php }?>
             <?php if ($condition) { ?>
                 <li>Состояние: <?php echo $condition; ?></li>
             <?php }?>

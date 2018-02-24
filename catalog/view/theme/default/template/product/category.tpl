@@ -113,6 +113,9 @@
                     <?php if ($product['compability']) { ?>
                         <p>Применимость: <?php echo $product['compability']; ?></p>
                     <?php }?>
+                    <?php if ($product['ean']) { ?>
+                        <p>Тип: <?php echo $product['ean']; ?></p>
+                    <?php }?>
                     <?php if ($product['cond']) { ?>
                         <p><b>Состояние:</b> <?php echo $product['cond']; ?></p>
                     <?php }?>

@@ -306,6 +306,7 @@ class ControllerProductBrand extends Controller{
                                         'note'        => $result['note'],
                                         'compability' => $compability,
                                         'catN'        => $result['catN'],
+                                        'ean'         => $result['ean'],
                                         'cond'        => $result['con_p'],
 					'price'       => $result['price'],
 					'minimum'     => ($result['minimum'] > 0) ? $result['minimum'] : 1,
