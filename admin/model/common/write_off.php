@@ -33,39 +33,13 @@ class ModelCommonWriteoff extends Model {
     public function sale($prods, $id_invoice) {
         $results = '';
         $this->load->model('tool/xml');
+        $this->load->model("tool/complect");
         foreach ($prods as $data) {
+            $reqComplect = $this->model_tool_complect->isCompl($data['vin']);
             $results.= $data['vin'].',';
             $query = $this->db->query("SELECT product_id, comp FROM ".DB_PREFIX."product WHERE sku = '".$data['vin']."'");
             $product_id = $query->row['product_id'];
             $heading = $query->row['comp'];
-            
-            if($heading!=''){
-                $comp_price = 0;
-                $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE comp = '".$heading."' OR sku = '".$heading."' ");
-                foreach ($sup->rows as $value) {
-                    $comp_price+=$value['price'];
-                }
-                $comp_price = $comp_price*0.9;
-                //okruglenie
-                if($comp_price<500){
-                    $rvr = $comp_price%10;
-                    if($rvr>0){ 
-                        $rvr = 10 - $rvr;
-                        $comp_price = $comp_price + $rvr;
-                    }
-                } else {
-                    $rvr = $comp_price%100;
-                    $rvr = 50 - $rvr;
-                    $comp_price = $comp_price + $rvr;
-                }
-            //---------------
-                $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$comp_price."' WHERE heading = '".$heading."' ");
-                $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$comp_price."' WHERE sku = '".$heading."' ");
-                $sup = $this->db->query("SELECT link FROM ".DB_PREFIX."complects WHERE heading = '".$heading."' ");
-                if(isset($sup->row['link'])){
-                    $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$comp_price."' WHERE sku = '".$sup->row['link']."' ");
-                }
-            }
 
             if ($this->db->query("INSERT INTO ".DB_PREFIX."sales_info "
                     . "SET "
@@ -102,22 +76,23 @@ class ModelCommonWriteoff extends Model {
                 }
                 
                 /*если головной*/
-                $query = "SELECT * FROM ".DB_PREFIX."complects WHERE heading = '".$data['vin']."' ";
-                $arr = $this->db->query($query);
-                if(!empty($arr->row)){
+                if($reqComplect && $reqComplect['heading']){
                     $this->db->query("UPDATE ".DB_PREFIX."product SET comp='' WHERE comp = '".$data['vin']."'");
                     $this->db->query("DELETE FROM ".DB_PREFIX."complects WHERE heading = '".$data['vin']."' ");
                 }
                 
                 if($endq===0){
                     $this->db->query("DELETE FROM ".DB_PREFIX."product_image WHERE product_id = ".(int)$product_id);
-                    $this->db->query("UPDATE ".DB_PREFIX."product SET quantity = '".$endq."', status = 0, image = '', comp='' WHERE product_id = '".$product_id."'");
+                    $this->db->query("UPDATE ".DB_PREFIX."product SET quantity = '".$endq."', status = 0, image = '', comp='', comp_price='' WHERE product_id = '".$product_id."'");
                     $dir = DIR_IMAGE."catalog/demo/production/".$data['vin']."/";
                     if(is_dir($dir)){
                         $this->removeDirectory($dir);
                     }
+                    if($reqComplect){
+                        $this->model_tool_complect->compReprice($reqComplect['complect']['heading']);
+                    }
                 } else {
-                    $this->db->query("UPDATE ".DB_PREFIX."product SET quantity = '".$endq."', status = 1, comp = '' WHERE product_id = '".$product_id."'");
+                    $this->db->query("UPDATE ".DB_PREFIX."product SET quantity = '".$endq."' WHERE product_id = '".$product_id."'");
                 }
             }
         }

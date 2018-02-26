@@ -261,6 +261,7 @@ class ModelCommonAddProd extends Model {
     public function updateDB($products) {
 //        exit(var_dump($products));
         $result = '';
+        $this->load->model('tool/complect');
         foreach ($products as $key => $row) {
             $result.= $key.',';
             if(!isset($row['compability'])){
@@ -314,6 +315,7 @@ class ModelCommonAddProd extends Model {
                         . "comp = '".$row['heading']."', "
                         . "compability = '".trim($row['compability'])."' "
                     . "WHERE product_id = ".(int)$key);
+                $this->model_tool_complect->repriceById($key);
             }
             if(trim($row['compability'])!=''){
                 $arrCpb = explode("; ", trim($row['compability']));

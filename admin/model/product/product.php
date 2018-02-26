@@ -126,95 +126,7 @@ class ModelProductProduct extends Model {
                     $name = $product['podcat'].' '.$brand.' '.$product['modRow'];
                 }
             }
-        }
-        
-        //pereschet ceny komplecta
-            if($product['complect']!=''){
-                $query = $this->db->query("SELECT * FROM ".DB_PREFIX."complects WHERE heading = '".$product['vin']."' ");
-                if(empty($query->row)){
-                    $query = $this->db->query("SELECT * FROM ".DB_PREFIX."complects WHERE heading = '".$product['complect']."' ");
-                    $sale = $query->row['sale'];
-                    if($sale == 0){
-                        $sale = 15;
-                    }
-                    $link = $query->row['link'];
-                    $qcomp = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE comp = '".$product['complect']."' AND product_id != '".$product['pid']."' OR sku = '".$product['complect']."' AND product_id != '".$product['pid']."'");
-                    $items = $qcomp->rows;
-                    $price = $product['price'];
-                    foreach($items as $item){
-                        $price+=$item['price'];
-                    }
-                    $supsale = 100 - $sale;
-                    $supsale = $supsale/100;
-                    $price = ceil($price*$supsale);
-                    //okruglenie
-                        if($price<500){
-                            $rvr = $price%100;
-                            if($rvr>0){
-                                $rvr = 50 - $rvr;
-                                $price = $price + $rvr;
-                                if($sale%10!=0){
-                                    $helper = $price%100;
-                                    $price = $price+(100-$helper);
-                                }
-                            }
-                        } else {
-                            $rvr = $price%100;
-                            $rvr = 100 - $rvr;
-                            $price = $price + $rvr;
-                            if($sale%10!=0){
-                                $helper = $price%100;
-                                $price = $price+(100-$helper);
-                            }
-                        }
-                    //---------------
-                    $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$price."' WHERE link = '".$link."' ");
-                    $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE sku = '".$link."'");
-                    $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE sku = '".$product['complect']."'");
-                } else {
-                    $sale = $query->row['sale'];
-                    if($sale == 0){
-                        $sale = 15;
-                    }
-                    $link = $query->row['link'];
-                    $qcomp = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE comp = '".$product['vin']."' ");
-                    $items = $qcomp->rows;
-                    $price = $product['price'];
-                    foreach($items as $item){
-                        $price+=$item['price'];
-                    }
-                    $supsale = 100 - $sale;
-                    $supsale = $supsale/100;
-                    $price = ceil($price*$supsale);
-                    //okruglenie
-                        if($price<500){
-                            $rvr = $price%100;
-                            if($rvr>0){
-                                $rvr = 50 - $rvr;
-                                $price = $price + $rvr;
-                                if($sale%10!=0){
-                                    $helper = $price%100;
-                                    $price = $price+(100-$helper);
-                                }
-                            }
-                        } else {
-                            $rvr = $price%100;
-                            $rvr = 100 - $rvr;
-                            $price = $price + $rvr;
-                            if($sale%10!=0){
-                                $helper = $price%100;
-                                $price = $price+(100-$helper);
-                            }
-                        }
-                    //---------------
-                    $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$price."' WHERE link = '".$link."' ");
-                    $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE sku = '".$link."'");
-                    $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE sku = '".$product['vin']."'");
-                }
-            }
-            
-        //--------------------------
-        
+        }      
         
         $pcat_id = $this->getPCID($product['podcat']);
         $category = $this->getCategoryName($product['category']);
@@ -245,6 +157,8 @@ class ModelProductProduct extends Model {
                     . "isbn = '".$this->db->escape($product['catN'])."' "
                 . "WHERE product_id = ".(int)$this->db->escape($product['pid']);
         $this->db->query($query);
+        
+        //update name
         $tag = $brand.', '.$product['model'].', '.$product['modRow'].', '.$product['podcat'].', '.$name;
         $this->load->model('common/tempdesc');
         $description = $this->model_common_tempdesc->getTemp(1);
@@ -253,7 +167,6 @@ class ModelProductProduct extends Model {
         $description = str_replace("%mr%", $product['modRow'], $description);
         $description = str_replace("%podcat%", $product['podcat'], $description);
         $description = str_replace("%prim%", $product['note'], $description);
-        //update name
         $this->db->query("UPDATE ".DB_PREFIX."product_description "
                 . "SET "
                     . "name = '".$this->db->escape($name)."', "
@@ -312,6 +225,9 @@ class ModelProductProduct extends Model {
                 $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand (product_id, brand_id) VALUES (".(int)$this->db->escape($product['pid']).", '".(int)$this->getMId(trim($cpbItem))."')");
             }
         }
+        
+        $this->load->model("tool/complect");
+        $this->model_tool_complect->compReprice($product['vin']);
     }   
     
     public function getCatId($param) {
