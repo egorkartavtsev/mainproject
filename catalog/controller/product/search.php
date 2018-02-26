@@ -11,7 +11,6 @@ class ControllerProductSearch extends Controller {
 
 		if (isset($this->request->get['search'])) {
 			$search = $this->request->get['search'];
-                        //$search = $this->model_catalog_product->findAlters($search);
 		} else {
 			$search = '';
 		}

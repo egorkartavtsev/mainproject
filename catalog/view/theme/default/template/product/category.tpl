@@ -103,9 +103,11 @@
             <div>
               <div class="caption">
                 <h4><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></h4>
-                    <p>Внутренний номер: <?php echo $product['description']; ?></p>
-                    <?php if ($product['catN']) { ?>
-                        <p>Каталожный номер: <?php echo $product['catN']; ?></p>
+                    <?php if ($ean && $ean=='Б/У') { ?>
+                        <p><b>Внутренний номер:</b> <?php echo $product['description']; ?></p>
+                        <?php if ($product['catN']) { ?>
+                            <p>Каталожный номер: <?php echo $product['catN']; ?></p>
+                        <?php }?>
                     <?php }?>
                     <?php if ($product['note']) { ?>
                         <p>Примечание: <?php echo $product['note']; ?></p>
