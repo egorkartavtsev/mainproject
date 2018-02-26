@@ -225,16 +225,16 @@ class ModelToolXml extends Model {
     }
     
     public function UpdateXMLDesc($prods) {
+        $xmls = simplexml_load_file('../Avito/ads.xml');
         foreach ($prods as $data) {
-            $brand = $this->db->query("SELECT name, transcript FROM ".DB_PREFIX."brand WHERE id = '".$data['brand']."'");
-            $data['trbrand'] = $brand->row['transcript'];
-            $data['brandname'] = $brand->row['name'];
-            $data['trmodrow'] = '';
-            $data['mrname'] = $data['modRow'];
-            $xmls = simplexml_load_file('../Avito/ads.xml');
             $id = 0;
             foreach($xmls->Ad as $ad){
                 if(in_array($data['vin'], (array)$ad)){
+                    $brand = $this->db->query("SELECT name, transcript FROM ".DB_PREFIX."brand WHERE id = '".$data['brand']."'");
+                    $data['trbrand'] = $brand->row['transcript'];
+                    $data['brandname'] = $brand->row['name'];
+                    $data['trmodrow'] = '';
+                    $data['mrname'] = $data['modRow'];
                     $this->load->model('common/avito');
                     $stock = $this->db->query("SELECT * FROM ".DB_PREFIX."stocks WHERE name = '".$data['stock']."'");
                     $weekend = $data['stock']=='KM'?'СБ, ВС - выходной':'СБ 11:00-16:00 , ВС - выходной';
@@ -278,6 +278,7 @@ class ModelToolXml extends Model {
                         $templ = str_replace('%weekend%', $weekend, $templ);
                 /******************************************************************/
                     $dom=dom_import_simplexml($xmls->Ad[$id]->Description);
+//                    echo var_dump($xmls->Ad[$id]->Description).'<br>';
                     $dom->parentNode->removeChild($dom);
                 //-----------------------------------------------------------------
                     $desc = $xmls->Ad[$id]->addChild('Description');
@@ -290,9 +291,8 @@ class ModelToolXml extends Model {
                 }
             }
         }
+//        exit();
         $xmls->saveXML('../Avito/ads.xml');
-        
-        
     }
     
 }

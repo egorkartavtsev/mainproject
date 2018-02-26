@@ -56,6 +56,8 @@ private $error = array();
                 $newdesc = str_replace($oldname, $this->request->post['newname'], $value['description']);
                 $newdesc = str_replace("'", "\'", $newdesc);
                 $newtag = str_replace($oldname, $this->request->post['newname'], $value['tag']);
+                $newtag = str_replace("'", "\'", $newtag);
+                $newtag = str_replace(">", "-", $newtag);
                 $this->db->query("UPDATE ".DB_PREFIX."product_description SET "
                                     . "name = '".$newname."', "
                                  . "meta_h1 = '".$newname."', "
