@@ -443,6 +443,13 @@ class ControllerProductTiredisc extends Controller {
         $product_info = $this->model_catalog_tiredisc->getProdInfo($pid, 'disk');
         $params = $this->model_catalog_tiredisc->getParams('disk');
         $data = $product_info;
+        if($product_info['complect']!=''){
+            $complect = $this->model_catalog_tiredisc->getCItems($product_info['complect']);
+            $data['complect'] = $complect['items'];
+            $data['whole'] = $complect['whole'];
+            $data['c_price'] = $complect['c_price'];
+            $data['link'] = $complect['link'];
+        }
         $data['parameters'] = $params;
         $query = $this->db->query("SELECT * FROM ".DB_PREFIX."stocks WHERE name = '".$product_info['stock']."' ");
         $data['adress'] = isset($query->row['adress'])?$query->row['adress']:'';
@@ -574,6 +581,7 @@ class ControllerProductTiredisc extends Controller {
         }
         
         $data['sendLink'] = $this->url->link('product/tiredisc/disc', 'product='.$pid);
+        //echo var_dump($data).'<br>';
         $this->response->setOutput($this->load->view('product/td_product', $data));
     }
     

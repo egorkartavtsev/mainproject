@@ -23,6 +23,41 @@
             <?php } ?>
           <?php } ?>
           <div class="tab-content">
+            <?php if(isset($complect)) { ?>
+                  <div class="alert alert-danger" id="complect">
+                    <h3><?php if(!isset($whole) || !$whole) {echo "Деталь продаётся отдельно и будет снята с комплекта: ";} else {echo "Деталь продаётся только в комплекте: ";} ?></h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Название:</th>
+                                <?php if(!$whole) { ?><th>Цена:</th><?php } ?>
+                            </tr>
+                        </thead>
+                        <?php $summ = 0; foreach($complect as $acc) { ?>
+                            <tr>
+                                <td><a href="index.php?route=product/product&product_id=<?php echo $acc['product_id'];?>" target="blank"><?php echo $acc['name'];?></a></td>
+                                <?php $summ+= $acc['price'];?>
+                                <?php if(!$whole) { ?>
+                                    <td><?php echo $acc['price'];?> руб.</td>
+                                    <td><button class="btn btn-primary" onclick="cart.add('<?php echo $acc['product_id']; ?>', '1');"><i class="fa fa-cart-plus"></i></button></td>
+                                <?php } ?>
+                            </tr>
+                        <?php }?>
+                        <?php if(!$whole) { ?>
+                            <tr>
+                                <td style="text-align: right; font-size: 10pt;">Итого:</td>
+                                <td colspan='2' style="text-align: left; font-size: 14pt;"><s><?php echo $summ; ?> руб.</s></td>
+                            </tr>
+                        <?php } ?>
+                        <tr>
+                            <td colspan='3' style="text-align: center; font-size: 14pt;">Цена комплекта <?php if(!$whole) { ?>со скидкой<?php } ?>: <span class="label label-danger"><?php echo $c_price; ?> руб.</span></td>
+                        </tr>
+                        <tr>
+                            <td colspan='3' style="text-align: center;"><button class="btn btn-primary" onclick="cart.add('<?php echo $link; ?>', '1');"><i class="fa fa-cart-plus"></i> Купить весь комплект</button></td>
+                        </tr>
+                    </table>
+                </div>
+            <?php }?>
             <div class="tab-pane active" id="tab-description"><?php echo htmlspecialchars_decode($description); ?></div>
           </div>
         </div>
@@ -44,14 +79,12 @@
             <?php } ?>
             <li><b><?php echo $text_stock; ?></b> <?php echo $stock; ?></li>
           </ul>
-          <?php if ($price) { ?>
+          <?php if ($price!=0) { ?>
           <ul class="list-unstyled">
             <li>
               <h2>Цена: <?php echo $price; ?></h2>
             </li>
           </ul>
-          <?php } ?>
-          
           <hr>
           <!-------------------------------------------->
             <div id="product">
@@ -68,6 +101,9 @@
             </div>
           
           <!------------------------------------------------------------------------------------------------->
+          <?php } else { ?>
+          <div class="alert alert-info"><h4>Информацию о цене данного товара Вы можете уточнить у менеджера</h4></div>
+          <?php } ?>
           
         </div>
       </div>

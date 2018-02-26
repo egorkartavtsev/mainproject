@@ -101,6 +101,7 @@ class ModelCatalogTiredisc extends Model {
             . "pd.name AS name, "
             . "pd.tag AS tags, "
             . "pd.description AS description, "
+            . "p.comp AS complect, "
             . "p.upc AS cond "
         . " FROM ".DB_PREFIX."td_".$table." ".$belong." "
                 . "LEFT JOIN ".DB_PREFIX."product p ON p.sku = ".$belong.".vin "
@@ -116,6 +117,19 @@ class ModelCatalogTiredisc extends Model {
         foreach ($query->rows as $value) {
             $result[] = $value['value'];
         }
+        return $result;
+    }
+    
+    public function getCItems($heading) {
+        $result = array();
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."complects WHERE heading = '".$heading."' OR id = '".$heading."'");
+        $qlink = $this->db->query("SELECT product_id FROM ".DB_PREFIX."product WHERE sku = '".$sup->row['link']."'");
+        $result['whole'] = $sup->row['whole'];
+        $result['c_price'] = $sup->row['price'];
+        $result['link'] = $qlink->row['product_id'];
+        $qitems = $this->db->query("SELECT pd.name, p.price, pd.product_id FROM ".DB_PREFIX."product p LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id WHERE p.sku = '".$sup->row['heading']."' OR p.comp = '".$sup->row['heading']."'");
+        $result['items'] = $qitems->rows;
+//        exit(var_dump($result));
         return $result;
     }
 }
