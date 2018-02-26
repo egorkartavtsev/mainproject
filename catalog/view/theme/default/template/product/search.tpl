@@ -47,7 +47,7 @@
             <div>
               <div class="caption">
                   <h4><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></h4>
-                    <?php if ($ean && $ean=='Б/У') { ?>
+                    <?php if ($product['ean'] && $product['ean']=='Б/У') { ?>
                         <p><b>Внутренний номер:</b> <?php echo $product['description']; ?></p>
                         <?php if ($product['catN']) { ?>
                             <p>Каталожный номер: <?php echo $product['catN']; ?></p>
@@ -61,6 +61,9 @@
                     <?php }?>
                     <?php if ($product['compability']) { ?>
                         <p>Применимость: <?php echo $product['compability']; ?></p>
+                    <?php }?>
+                    <?php if ($product['cond'] && $product['cond']!='-') { ?>
+                        <p><b>Состояние:</b> <?php echo $product['cond']; ?></p>
                     <?php }?>
                     <p class="price"><b>Цена: <?php echo $product['price']; ?></b></p>
               </div>

@@ -65,7 +65,7 @@ class ModelCatalogBrand extends Model {
                 . "WHERE p2b.brand_id = ".$brand_id." "
                     . "AND pd.language_id = 1 "
                     . "AND p.status = 1 "
-                    . "AND p.quantity != 0 ");
+                    . "AND p.quantity != 0 ORDER BY p.date_added DESC");
         return $query->rows;
         
     }    
@@ -81,7 +81,7 @@ class ModelCatalogBrand extends Model {
                     . "ON (p2c.product_id = p.product_id) "
                 . "WHERE p2b.brand_id = '".$brand_id."' "
                     . "AND p2c.category_id = '".$cat_id."' "
-                    . "AND p.quantity != 0 "; 
+                    . "AND p.quantity != 0 ORDER BY p.date_added DESC"; 
         
         $fres = $this->db->query($query);
         

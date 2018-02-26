@@ -258,34 +258,34 @@ class ModelCatalogProduct extends Model {
 		$sql .= " AND p.price != 0";
 		$sql .= " GROUP BY p.product_id";
 
-		$sort_data = array(
-			'pd.name',
-			'p.model',
-			'p.quantity',
-			'p.price',
-			'rating',
-			'p.sort_order',
-			'p.date_added'
-		);
-
-		if (isset($data['sort']) && in_array($data['sort'], $sort_data)) {
-			if ($data['sort'] == 'pd.name' || $data['sort'] == 'p.model') {
-				$sql .= " ORDER BY LCASE(" . $data['sort'] . ")";
-			} elseif ($data['sort'] == 'p.price') {
-				$sql .= " ORDER BY (CASE WHEN special IS NOT NULL THEN special WHEN discount IS NOT NULL THEN discount ELSE p.price END)";
-			} else {
-				$sql .= " ORDER BY " . $data['sort'];
-			}
-		} else {
-			$sql .= " ORDER BY p.sort_order";
-		}
-
-		if (isset($data['order']) && ($data['order'] == 'DESC')) {
-			$sql .= " DESC, LCASE(pd.name) DESC";
-		} else {
-			$sql .= " ASC, LCASE(pd.name) ASC";
-		}
-
+//		$sort_data = array(
+//			'pd.name',
+//			'p.model',
+//			'p.quantity',
+//			'p.price',
+//			'rating',
+//			'p.sort_order',
+//			'p.date_added'
+//		);
+//
+//		if (isset($data['sort']) && in_array($data['sort'], $sort_data)) {
+//			if ($data['sort'] == 'pd.name' || $data['sort'] == 'p.model') {
+//				$sql .= " ORDER BY LCASE(" . $data['sort'] . ")";
+//			} elseif ($data['sort'] == 'p.price') {
+//				$sql .= " ORDER BY (CASE WHEN special IS NOT NULL THEN special WHEN discount IS NOT NULL THEN discount ELSE p.price END)";
+//			} else {
+//				$sql .= " ORDER BY " . $data['sort'];
+//			}
+//		} else {
+//			$sql .= " ORDER BY p.sort_order";
+//		}
+//
+//		if (isset($data['order']) && ($data['order'] == 'DESC')) {
+//			$sql .= " DESC, LCASE(pd.name) DESC";
+//		} else {
+//			$sql .= " ASC, LCASE(pd.name) ASC";
+//		}
+                $sql .= " ORDER BY p.date_added DESC";
 		if (isset($data['start']) || isset($data['limit'])) {
 			if ($data['start'] < 0) {
 				$data['start'] = 0;
@@ -725,7 +725,7 @@ class ModelCatalogProduct extends Model {
                 }
             }
             $query.="AND status = 1 ";
-            $query.="AND quantity > 0 ";
+            $query.="AND quantity > 0 ORDER BY p.date_added DESC";
 //            exit($query);
             $result = $this->db->query($query);
             return $result->rows;

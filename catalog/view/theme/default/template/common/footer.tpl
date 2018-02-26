@@ -27,6 +27,7 @@
     function fillSearchField($id){
         var text = $("#srcItem"+$id).text();
         $("#srcField").val(text);
+        $('header #search input[name=\'search\']').parent().find('button').trigger('click');
     }
 </script>
 <style>
