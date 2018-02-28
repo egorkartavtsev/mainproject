@@ -215,15 +215,10 @@
             <li><?php echo $text_stock; ?> <?php echo $stock; ?></li>
           </ul>
           <!-------------------------------------------->
-          <?php if ($no_prod) { ?>
-            <!-- Button trigger modal -->
-            <span class="label label-danger">
-                Данного товара нет в наличии на складе.
-            </span>
-            
+          <?php if ($price == 0.00) { ?>
             <hr>
                 <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                  Заказать товар
+                  Узнать стоимость товара.
                 </button>
 
                 <!-- Modal -->
@@ -248,37 +243,7 @@
                               <label >Телефон: </label>
                               <input type="text" class="form-control" name='phone' placeholder="Телефон...">
                             </div>
-                            <div class="form-group">
-                              <label >Марка автомобиля: </label>
-                              <select class="form-control" onchange="getChild(this.value, 'mods')" name='mark' placeholder="Марка Вашего авто...">
-                                  <option selected="selected" disabled="disabled">Марка Вашего авто...</option>
-                                  <?php foreach($marks as $mark) { ?>
-                                    <option value="<?php echo $mark['id'];?>"><?php echo $mark['name'];?></option>
-                                  <?php } ?>
-                              </select>
-                            </div>
-                            <div class="form-group">
-                              <label >Модель автомобиля: </label>
-                              <select class="form-control" id="mods" onchange="getChild(this.value, 'mrs')" name='model' placeholder="Модель вашего авто...">
-                                  <option selected="selected" disabled="disabled">Модель Вашего авто...</option>
-                              </select>
-                            </div>
-                            <div class="form-group">
-                              <label >Модельный год автомобиля: </label>
-                              <select class="form-control" id="mrs" name='year' placeholder="Модель вашего авто...">
-                                  <option selected="selected" disabled="disabled">Модельный  год Вашего авто...</option>
-                              </select>
-                            </div>
-                            <div class="form-group">
-                              <label >Объём ДВС: </label>
-                              <input type="text" class="form-control" name='vol' placeholder="Укажите VIN...">
-                            </div>
-                            <div class="form-group">
-                              <label >VIN-номер: </label>
-                              <input type="text" class="form-control" name='vin' placeholder="Укажите VIN...">
-                            </div>
-                            <div class="form-group">
-                              <label>Комментарий: </label>
+                             <label>Комментарий: </label>
                               <textarea class="form-control" name='comment' placeholder="Комментарий к заявке..."></textarea>
                             </div>
                               <input type="hidden" name="suc" value="1" />
