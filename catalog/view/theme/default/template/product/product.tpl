@@ -55,19 +55,24 @@
                         <thead>
                             <tr>
                                 <th>Название:</th>
-                                <?php if(!$whole) { ?><th>Цена:</th><?php } ?>
+                                <?php if(!$whole && $c_price != 0.00) { ?>
+                                <th>Цена:</th>
+                                <?php } ?>
                             </tr>
                         </thead>
                         <?php $summ = 0; foreach($complect as $acc) { ?>
                             <tr>
                                 <td><a href="index.php?route=product/product&product_id=<?php echo $acc['product_id'];?>" target="blank"><?php echo $acc['name'];?></a></td>
+                                <?php if ( $acc['price'] != 0.00 ) { ?>
                                 <?php $summ+= $acc['price'];?>
                                 <?php if(!$whole) { ?>
                                     <td><?php echo $acc['price'];?> руб.</td>
                                     <td><button class="btn btn-primary" onclick="cart.add('<?php echo $acc['product_id']; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i></button></td>
                                 <?php } ?>
+                                <?php } ?>
                             </tr>
                         <?php }?>
+                        <?php if ( $acc['price'] != 0.00 ) { ?>
                         <?php if(!$whole) { ?>
                             <tr>
                                 <td style="text-align: right; font-size: 10pt;">Итого:</td>
@@ -80,6 +85,7 @@
                         <tr>
                             <td colspan='3' style="text-align: center;"><button class="btn btn-primary" onclick="cart.add('<?php echo $link; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i> Купить весь комплект</button></td>
                         </tr>
+                        <?php }?>
                     </table>
                 </div>
             <?php }?>
