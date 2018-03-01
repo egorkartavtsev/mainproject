@@ -530,7 +530,14 @@ private $error = array();
         $update_form = '<div class="alert alert-success col-lg-3" style="margin-left: 25px;">';
             $update_form.= '<h4 id="name'.$product['id'].'">'.$product['name'].' <b>('.$product['vin'].')</b></h4>';
             $update_form.= '<input type="hidden" name="info['.$product['id'].'][vin]" value="'.$product['vin'].'">';
+            $update_form.= '<input type="hidden" name="info['.$product['id'].'][brand]" value="'.$product['brand'].'">';
+            $update_form.= '<input type="hidden" name="info['.$product['id'].'][model]" value="'.$product['model'].'">';
+            $update_form.= '<input type="hidden" name="info['.$product['id'].'][photos]" value="'.$product['photos'].'">';
+            $update_form.= '<input type="hidden" name="info['.$product['id'].'][modRow]" value="'.$product['modRow'].'">';
+            $update_form.= '<input type="hidden" name="info['.$product['id'].'][category]" value="'.$product['category'].'">';
+            $update_form.= '<input type="hidden" name="info['.$product['id'].'][podcat]" value="'.$product['podcat'].'">';
             $update_form.= '<input type="hidden" name="info['.$product['id'].'][name]" value="'.$product['name'].'">';
+            $update_form.= '<input type="hidden" name="info['.$product['id'].'][description]" value="'.$product['description'].'">';
             $update_form.= '<input type="hidden" name="info['.$product['id'].'][uBrand]" value="'.$product['univ']['brand'].'">';
             $update_form.= '<input type="hidden" name="info['.$product['id'].'][uMod]" value="'.$product['univ']['model'].'">';
             $update_form.= '<input type="hidden" name="info['.$product['id'].'][uMR]" value="'.$product['univ']['mr'].'">';
@@ -633,7 +640,8 @@ private $error = array();
     public function updateDB($data) {
         $this->load->model('common/addprod');
         $prods = $this->model_common_addprod->updateDB($data);
-        $this->response->redirect($this->url->link('common/addprod/downloadInvoice', 'token=' . $this->session->data['token'] . '&products=' . $prods, true));
+        //$this->response->redirect($this->url->link('common/addprod/downloadInvoice', 'token=' . $this->session->data['token'] . '&products=' . $prods, true));
+        $this->response->redirect($this->url->link('common/addprod', 'token=' . $this->session->data['token'], true));
     }
     
     public function downloadInvoice() {

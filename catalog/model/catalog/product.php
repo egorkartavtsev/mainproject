@@ -718,10 +718,10 @@ class ModelCatalogProduct extends Model {
                         . "WHERE 1 ";
             //exit(var_dump($reqwords));
             if(count($reqwords)==1){
-                $query.="AND (p.sku = '".$this->db->escape($reqwords[0])."' OR LOCATE ('".$this->db->escape($reqwords[0])."', p.isbn)  OR p.category = '".$this->db->escape($reqwords[0])."' OR p.podcateg = '".$this->db->escape($reqwords[0])."' OR LOCATE ('" . $this->db->escape($reqwords[0]) . "', pd.name) OR LOCATE ('" . $this->db->escape($word) . "', p.compability)) ";
+                $query.="AND (p.sku = '".$this->db->escape($reqwords[0])."' OR LOCATE ('".$this->db->escape($reqwords[0])."', p.isbn)  OR p.category = '".$this->db->escape($reqwords[0])."' OR p.podcateg = '".$this->db->escape($reqwords[0])."' OR LOCATE ('" . $this->db->escape($reqwords[0]) . "', pd.name) OR LOCATE ('" . $this->db->escape($reqwords[0]) . "', p.compability) OR LOCATE ('" . $this->db->escape($reqwords[0]) . "', p.jan)) ";
             } elseif (count($reqwords)>1) {
                 foreach ($reqwords as $word){
-                    $query.="AND (p.sku = '".$this->db->escape($word)."' OR LOCATE ('".$this->db->escape($word)."', p.isbn)  OR p.category = '".$this->db->escape($word)."' OR p.podcateg = '".$this->db->escape($word)."' OR LOCATE ('" . $this->db->escape($word) . "', pd.name) OR LOCATE ('" . $this->db->escape($word) . "', p.compability)) ";
+                    $query.="AND (p.sku = '".$this->db->escape($word)."' OR LOCATE ('".$this->db->escape($word)."', p.isbn)  OR p.category = '".$this->db->escape($word)."' OR p.podcateg = '".$this->db->escape($word)."' OR LOCATE ('" . $this->db->escape($word) . "', pd.name) OR LOCATE ('" . $this->db->escape($word) . "', p.compability) OR LOCATE ('" . $this->db->escape($word) . "', p.jan)) ";
                 }
             }
             $query.="AND status = 1 ";

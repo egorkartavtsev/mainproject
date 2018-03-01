@@ -197,8 +197,9 @@ class ModelCommonAddProd extends Model {
         $this->db->query("INSERT INTO ". DB_PREFIX ."url_alias "
                         . "SET "
                         . "query = 'product_id=".(int)$product_id."'");
-        
+        $photoList = '';
         foreach ($photos as $photo){
+            $photoList.= HTTPS_CATALOG.'image/catalog/demo/production/'.$product['vin']."/".$photo.', ';
                         $this->db->query("INSERT INTO ". DB_PREFIX ."product_image "
                                 . "SET "
                                 . "product_id = ". (int)$product_id .", "
@@ -250,7 +251,13 @@ class ModelCommonAddProd extends Model {
         $info = array(
             'id'        => $product_id,
             'name'      => $name,
-            'photos'    => $photos,
+            'brand'     => $brand,
+            'model'     => $model,
+            'modRow'    => $model_row,
+            'description' => $description,
+            'category'  => $category,
+            'podcat'    => $podcategory,
+            'photos'    => trim($photoList),
             'vin'       => $vin,
             'univ'      => $univ
         );
@@ -262,6 +269,7 @@ class ModelCommonAddProd extends Model {
 //        exit(var_dump($products));
         $result = '';
         $this->load->model('tool/complect');
+        $this->load->model('tool/excel');
         foreach ($products as $key => $row) {
             $result.= $key.',';
             if(!isset($row['compability'])){
@@ -339,6 +347,48 @@ class ModelCommonAddProd extends Model {
                 }
             }
             $this->db->query("UPDATE ".DB_PREFIX."product_description SET name = '".$name."' WHERE product_id = ".(int)$key);
+            $data = array(
+                'avito'         => '',
+                'drom'          => '',
+                'brand'         => $row['brand'],
+                'model'         => $row['model'],
+                'modRow'        => $row['modRow'],
+                'category'      => $row['category'],
+                'podcat'        => $row['podcat'],
+                'name'          => $name,
+                'vin'           => $row['vin'],
+                'cond'          => $row['cond'],
+                'type'          => $row['type'],
+                'note'          => $row['note'],
+                'dop'           => $row['dop'],
+                'catN'          => $row['catn'],
+                'compability'   => $row['compability'],
+                'stock'         => $row['stock'],
+                'stell'         => $row['stell'],
+                'jar'           => $row['jar'],
+                'shelf'         => $row['shelf'],
+                'box'           => $row['box'],
+                'price'         => $row['price']!=''?(int)$row['price']:0,
+                'quant'         => $row['quantity'],
+                'whole'         => '',
+                'donor'         => $row['donor'],
+                'date_added'    => date("d.m.Y"),
+                'photos'        => $row['photos'],
+                'description'   => htmlspecialchars_decode($row['description']),
+                'new'           => TRUE
+            );
+            if($row['heading']=='create'){
+                $data['complect'] = '';
+                $data['cprice'] = $row['compl_price'];
+            } elseif ($row['heading']=='skip') {
+                $data['complect'] = '';
+                $data['cprice'] = '';
+            } else {
+                $data['complect'] = $row['heading'];
+                $data['cprice'] = '';
+            }
+            $this->model_tool_excel->addItem($data, 'prodList');
+            $this->model_tool_excel->addItem($data, 'drom');
         }
 //        exit(var_dump(trim($result)));
         return trim($result);

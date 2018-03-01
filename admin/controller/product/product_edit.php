@@ -224,6 +224,7 @@ class ControllerProductProductEdit extends Controller {
         }
         $data['manager'] = $this->model_product_product->getManager($data['pid']);
         $brand = $this->db->query("SELECT name, transcript FROM ".DB_PREFIX."brand WHERE id = '".$data['brand']."'");
+        $catname = $this->db->query("SELECT name FROM ".DB_PREFIX."category_description WHERE category_id = '".$data['category']."'");
         $squery = $this->db->query("SELECT transcript FROM ".DB_PREFIX."brand WHERE name = '".$data['model']."'");
         $smr = $this->db->query("SELECT name, transcript FROM ".DB_PREFIX."brand WHERE name = '".$data['modRow']."'");
         if($data['avitoname']==''){
@@ -242,12 +243,13 @@ class ControllerProductProductEdit extends Controller {
         $this->model_product_product->updateProduct($data);
         if($this->session->data['uType']=='adm' && $data['allowavito']=='да'){
             $data['trbrand'] = $brand->row['transcript'];
-            $data['brandname'] = $brand->row['name'];
             $data['trmodrow'] = $smr->row['transcript'];
             $data['mrname'] = $smr->row['name'];
             $this->load->model('tool/xml');
             $this->model_tool_xml->findAd($data);
         }
+        $data['brand'] = $brand->row['name'];
+        $data['category'] = $catname->row['name'];
         $this->response->redirect($this->url->link('catalog/product', 'token=' . $this->session->data['token'], true));
     }
     

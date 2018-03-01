@@ -34,6 +34,7 @@ class ModelCommonWriteoff extends Model {
         $results = '';
         $this->load->model('tool/xml');
         $this->load->model("tool/complect");
+        $this->load->model("tool/excel");
         foreach ($prods as $data) {
             $reqComplect = $this->model_tool_complect->isCompl($data['vin']);
             $results.= $data['vin'].',';
@@ -41,7 +42,7 @@ class ModelCommonWriteoff extends Model {
             $product_id = $query->row['product_id'];
             $heading = $query->row['comp'];
 
-            if ($this->db->query("INSERT INTO ".DB_PREFIX."sales_info "
+            $this->db->query("INSERT INTO ".DB_PREFIX."sales_info "
                     . "SET "
                         . "name = '".$data['name']."', "
                         . "invoice = '".$id_invoice."', "
@@ -56,44 +57,38 @@ class ModelCommonWriteoff extends Model {
                         . "reason = '".$data['reason']."', "
                         . "date = '".$data['date']."', "
                         . "date_mod = NOW(), "
-                        . "manager = '".$data['manager']."'")){
-                $this->model_tool_xml->findToRemove($data['vin']);
-                $result = TRUE;
-            } else {
-                $result = FALSE;
-            }
-            
+                        . "manager = '".$data['manager']."'");
             $endq = $data['quan'] - $data['quanfact'];
+            $this->model_tool_xml->findToRemove($data['vin']);
+            
         
-            if ($result){
-                /*если это товар-ссылка на комплект*/
-                $query = "SELECT * FROM ".DB_PREFIX."complects WHERE link = '".$data['vin']."' ";
-                $arr = $this->db->query($query);
-                if(!empty($arr->row)){
-                    $this->db->query("UPDATE ".DB_PREFIX."product SET quantity=0, viewed=0, status=0 WHERE comp = '".$arr->row['heading']."' OR comp = '".$arr->row['id']."'");
-                    $this->db->query("DELETE FROM ".DB_PREFIX."complects WHERE link = '".$data['vin']."' ");
-                    $this->db->query("DELETE FROM ".DB_PREFIX."product WHERE sku = '".$data['vin']."' ");
+            /*если это товар-ссылка на комплект*/
+            $query = "SELECT * FROM ".DB_PREFIX."complects WHERE link = '".$data['vin']."' ";
+            $arr = $this->db->query($query);
+            if(!empty($arr->row)){
+                $this->db->query("UPDATE ".DB_PREFIX."product SET quantity=0, viewed=0, status=0 WHERE comp = '".$arr->row['heading']."' OR comp = '".$arr->row['id']."'");
+                $this->db->query("DELETE FROM ".DB_PREFIX."complects WHERE link = '".$data['vin']."' ");
+                $this->db->query("DELETE FROM ".DB_PREFIX."product WHERE sku = '".$data['vin']."' ");
+            }
+
+            /*если головной*/
+            if($reqComplect && $reqComplect['heading']){
+                $this->db->query("UPDATE ".DB_PREFIX."product SET comp='' WHERE comp = '".$data['vin']."'");
+                $this->db->query("DELETE FROM ".DB_PREFIX."complects WHERE heading = '".$data['vin']."' ");
+            }
+
+            if($endq===0){
+                $this->db->query("DELETE FROM ".DB_PREFIX."product_image WHERE product_id = ".(int)$product_id);
+                $this->db->query("UPDATE ".DB_PREFIX."product SET quantity = '".$endq."', status = 0, image = '', comp='', comp_price='' WHERE product_id = '".$product_id."'");
+                $dir = DIR_IMAGE."catalog/demo/production/".$data['vin']."/";
+                if(is_dir($dir)){
+                    $this->removeDirectory($dir);
                 }
-                
-                /*если головной*/
-                if($reqComplect && $reqComplect['heading']){
-                    $this->db->query("UPDATE ".DB_PREFIX."product SET comp='' WHERE comp = '".$data['vin']."'");
-                    $this->db->query("DELETE FROM ".DB_PREFIX."complects WHERE heading = '".$data['vin']."' ");
+                if($reqComplect){
+                    $this->model_tool_complect->compReprice($reqComplect['complect']['heading']);
                 }
-                
-                if($endq===0){
-                    $this->db->query("DELETE FROM ".DB_PREFIX."product_image WHERE product_id = ".(int)$product_id);
-                    $this->db->query("UPDATE ".DB_PREFIX."product SET quantity = '".$endq."', status = 0, image = '', comp='', comp_price='' WHERE product_id = '".$product_id."'");
-                    $dir = DIR_IMAGE."catalog/demo/production/".$data['vin']."/";
-                    if(is_dir($dir)){
-                        $this->removeDirectory($dir);
-                    }
-                    if($reqComplect){
-                        $this->model_tool_complect->compReprice($reqComplect['complect']['heading']);
-                    }
-                } else {
-                    $this->db->query("UPDATE ".DB_PREFIX."product SET quantity = '".$endq."' WHERE product_id = '".$product_id."'");
-                }
+            } else {
+                $this->db->query("UPDATE ".DB_PREFIX."product SET quantity = '".$endq."' WHERE product_id = '".$product_id."'");
             }
         }
         return $results;
