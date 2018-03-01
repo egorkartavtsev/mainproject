@@ -50,19 +50,19 @@
                     <?php if ($product['ean'] && $product['ean']=='Б/У') { ?>
                         <p><b>Внутренний номер:</b> <?php echo $product['description']; ?></p>
                         <?php if ($product['catN']) { ?>
-                            <p>Каталожный номер: <?php echo $product['catN']; ?></p>
+                            <p><b>Каталожный номер:</b> <?php echo $product['catN']; ?></p>
                         <?php }?>
                     <?php }?>
                     <?php if ($product['note']) { ?>
-                        <p>Примечание: <?php echo $product['note']; ?></p>
+                        <p><b>Примечание:</b> <?php echo $product['note']; ?></p>
                     <?php }?>
                     <?php if ($product['ean']) { ?>
-                        <p>Тип: <?php echo $product['ean']; ?></p>
+                        <p><b>Тип:</b> <?php echo $product['ean']; ?></p>
                     <?php }?>
                     <?php if ($product['compability']) { ?>
-                        <p>Применимость: <?php echo $product['compability']; ?></p>
+                        <p><b>Применимость:</b> <?php echo $product['compability']; ?></p>
                     <?php }?>
-                    <?php if ($product['cond'] && $product['cond']!='-') { ?>
+                    <?php if (isset($product['cond']) && $product['cond']!='-') { ?>
                         <p><b>Состояние:</b> <?php echo $product['cond']; ?></p>
                     <?php }?>
                     <?php if ($product['price'] != 0.00) { ?>
