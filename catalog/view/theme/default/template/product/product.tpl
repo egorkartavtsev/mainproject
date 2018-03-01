@@ -232,11 +232,11 @@
                         <form method='POST' action="">
                           <div class="modal-body">
                             <div class="form-group">
-                              <label >Ваше имя (обязательно): </label>
+                              <label >Ваше имя: </label>
                               <input type="text" class="form-control" name='name' placeholder="Имя...">
                             </div>
                             <div class="form-group">
-                              <label >Ваш e-mail (обязательно): </label>
+                              <label >Ваш e-mail: </label>
                               <input type="email" class="form-control" name='email' placeholder="E-mail...">
                             </div>
                             <div class="form-group">

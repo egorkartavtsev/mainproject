@@ -6,21 +6,10 @@ class ControllerProductProduct extends Controller {
             
                 if (isset($this->request->post['suc'])){
                     $mail = array();
-                    $quer = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE id = ".$this->request->post['mark']);
-                    $mark = $quer->row['name'];
-                    $quer = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE id = ".$this->request->post['model']);
-                    $model = $quer->row['name'];
-                    $quer = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE id = ".$this->request->post['year']);
-                    $mrs = $quer->row['name'];
                     $mail = array(
                         'text' => 'Имя: '.$this->request->post['name'].'; '
                                 . 'Email: '.$this->request->post['email'].'; '
                                 . 'Телефон: '.$this->request->post['phone'].'; '
-                                . 'Марка: '.$mark.'; '
-                                . 'Модель: '.$model.'; '
-                                . 'Год выпуска: '.$mrs.'; '
-                                . 'Объём ДВС: '.$this->request->post['vol'].'; '
-                                . 'VIN: '.$this->request->post['vin'].'; '
                                 . 'Комментарий: '.$this->request->post['comment'],
                         'to' => ADM_EMAIL                        
                     );
