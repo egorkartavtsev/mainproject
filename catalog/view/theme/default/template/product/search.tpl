@@ -65,7 +65,9 @@
                     <?php if ($product['cond'] && $product['cond']!='-') { ?>
                         <p><b>Состояние:</b> <?php echo $product['cond']; ?></p>
                     <?php }?>
+                    <?php if ($product['price'] != 0.00) { ?>
                     <p class="price"><b>Цена: <?php echo $product['price']; ?></b></p>
+                    <?php }?>
               </div>
               <div class="button-group">
                 <button type="button" onclick="cart.add('<?php echo $product['product_id']; ?>', '<?php echo $product['minimum']; ?>');"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo $button_cart; ?></span></button>

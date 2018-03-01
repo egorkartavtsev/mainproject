@@ -121,7 +121,9 @@
                     <?php if ($product['cond'] && $product['cond']!='-') { ?>
                         <p><b>Состояние:</b> <?php echo $product['cond']; ?></p>
                     <?php }?>
+                    <?php if ($product['price'] != 0.00) { ?>
                     <p class="price"><b>Цена: <?php echo $product['price']; ?></b></p>
+                    <?php }?>
                 <!--<h4><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></h4>
                 <p><?php echo $product['description']; ?></p>
                 <?php if ($product['price']) { ?>

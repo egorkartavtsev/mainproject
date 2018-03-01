@@ -55,19 +55,24 @@
                         <thead>
                             <tr>
                                 <th>Название:</th>
-                                <?php if(!$whole) { ?><th>Цена:</th><?php } ?>
+                                <?php if(!$whole && $c_price != 0.00) { ?>
+                                <th>Цена:</th>
+                                <?php } ?>
                             </tr>
                         </thead>
                         <?php $summ = 0; foreach($complect as $acc) { ?>
                             <tr>
                                 <td><a href="index.php?route=product/product&product_id=<?php echo $acc['product_id'];?>" target="blank"><?php echo $acc['name'];?></a></td>
+                                <?php if ( $acc['price'] != 0.00 ) { ?>
                                 <?php $summ+= $acc['price'];?>
                                 <?php if(!$whole) { ?>
                                     <td><?php echo $acc['price'];?> руб.</td>
                                     <td><button class="btn btn-primary" onclick="cart.add('<?php echo $acc['product_id']; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i></button></td>
                                 <?php } ?>
+                                <?php } ?>
                             </tr>
                         <?php }?>
+                        <?php if ( $acc['price'] != 0.00 ) { ?>
                         <?php if(!$whole) { ?>
                             <tr>
                                 <td style="text-align: right; font-size: 10pt;">Итого:</td>
@@ -80,6 +85,7 @@
                         <tr>
                             <td colspan='3' style="text-align: center;"><button class="btn btn-primary" onclick="cart.add('<?php echo $link; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i> Купить весь комплект</button></td>
                         </tr>
+                        <?php }?>
                     </table>
                 </div>
             <?php }?>
@@ -209,15 +215,10 @@
             <li><?php echo $text_stock; ?> <?php echo $stock; ?></li>
           </ul>
           <!-------------------------------------------->
-          <?php if ($no_prod) { ?>
-            <!-- Button trigger modal -->
-            <span class="label label-danger">
-                Данного товара нет в наличии на складе.
-            </span>
-            
+          <?php if ($price == 0.00) { ?>
             <hr>
                 <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                  Заказать товар
+                  Узнать стоимость товара.
                 </button>
 
                 <!-- Modal -->
@@ -242,37 +243,7 @@
                               <label >Телефон: </label>
                               <input type="text" class="form-control" name='phone' placeholder="Телефон...">
                             </div>
-                            <div class="form-group">
-                              <label >Марка автомобиля: </label>
-                              <select class="form-control" onchange="getChild(this.value, 'mods')" name='mark' placeholder="Марка Вашего авто...">
-                                  <option selected="selected" disabled="disabled">Марка Вашего авто...</option>
-                                  <?php foreach($marks as $mark) { ?>
-                                    <option value="<?php echo $mark['id'];?>"><?php echo $mark['name'];?></option>
-                                  <?php } ?>
-                              </select>
-                            </div>
-                            <div class="form-group">
-                              <label >Модель автомобиля: </label>
-                              <select class="form-control" id="mods" onchange="getChild(this.value, 'mrs')" name='model' placeholder="Модель вашего авто...">
-                                  <option selected="selected" disabled="disabled">Модель Вашего авто...</option>
-                              </select>
-                            </div>
-                            <div class="form-group">
-                              <label >Модельный год автомобиля: </label>
-                              <select class="form-control" id="mrs" name='year' placeholder="Модель вашего авто...">
-                                  <option selected="selected" disabled="disabled">Модельный  год Вашего авто...</option>
-                              </select>
-                            </div>
-                            <div class="form-group">
-                              <label >Объём ДВС: </label>
-                              <input type="text" class="form-control" name='vol' placeholder="Укажите VIN...">
-                            </div>
-                            <div class="form-group">
-                              <label >VIN-номер: </label>
-                              <input type="text" class="form-control" name='vin' placeholder="Укажите VIN...">
-                            </div>
-                            <div class="form-group">
-                              <label>Комментарий: </label>
+                             <label>Комментарий: </label>
                               <textarea class="form-control" name='comment' placeholder="Комментарий к заявке..."></textarea>
                             </div>
                               <input type="hidden" name="suc" value="1" />
