@@ -33,7 +33,7 @@
                     <a href="index.php?route=common/avito/categories&token=<?php echo $token_excel;?>"><span>Категории Авито</span></a>
                 </li>
                 <li>
-                    <a href="index.php?route=common/dashboard&token=<?php echo $token_excel;?>"><span>Скачать прайс-лист Drom</span></a>
+                    <a href="index.php?route=common/excel/downloadAllProds&flag=drom&token=<?php echo $token_excel;?>"><span>Скачать прайс-лист Drom</span></a>
                 </li>
             </ul>
         </li>
