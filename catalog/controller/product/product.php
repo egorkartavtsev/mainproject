@@ -364,7 +364,6 @@ class ControllerProductProduct extends Controller {
                         $data['cat_numb'] = $product_info['cat_numb'];
                         $data['vin'] = $product_info['vin'];
                         if (isset($this->request->post['suc'])){
-                            $mail = array();
                             $mail =  'Имя: '.$this->request->post['name'].'; '
                                    . 'Email: '.$this->request->post['email'].'; '
                                    . 'Телефон: '.$this->request->post['phone'].'; '
