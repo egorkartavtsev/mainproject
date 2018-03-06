@@ -247,6 +247,12 @@ class ModelCommonAddProd extends Model {
                         . "brand_id = ".(int)$cpb['id']);
             }
         }
+        $this->db->query("INSERT INTO ".DB_PREFIX."product_history ("
+                . "sku, "
+                . "date_added, "
+                . "manager, "
+                . "type_modify) "
+                . "VALUES ('".$vin."', NOW(), '".$manager."', 'Создание товара')");
         
         $info = array(
             'id'        => $product_id,
@@ -387,8 +393,8 @@ class ModelCommonAddProd extends Model {
                 $data['complect'] = $row['heading'];
                 $data['cprice'] = '';
             }
-            $this->model_tool_excel->addItem($data, 'prodList');
-            $this->model_tool_excel->addItem($data, 'drom');
+//            $this->model_tool_excel->addItem($data, 'prodList');
+//            $this->model_tool_excel->addItem($data, 'drom');
         }
 //        exit(var_dump(trim($result)));
         return trim($result);

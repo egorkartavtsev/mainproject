@@ -1,7 +1,7 @@
 <?php
 
 class ModelToolExcel extends Model {
-    
+    private $emptyRow = array(0);
     private $letters = array(
         'avito'         => 'A',
         'drom'          => 'B',
@@ -52,8 +52,9 @@ class ModelToolExcel extends Model {
         'drom'      => DIR_DWNXL.'auto-parts-MGNAUTO.xls'
     );
 
-/*-------------------------universal tools-----------------------------------*/
-    private function openFile($file) {
+/*---------------------------------- tools -----------------------------------*/
+    private function openFile($flag) {
+        $file = $this->files[$flag];
         $objPHPExcel = PHPExcel_IOFactory::load($file);
         $objPHPExcel->setActiveSheetIndex(0);
         return $objPHPExcel;
@@ -96,109 +97,167 @@ class ModelToolExcel extends Model {
           }
           array_push($array, $item);
         }
-        return count($array);
+        return count($array)+1;
     }
     
-    private function findProdRow($aSheet, $vin) {
-        $result = 0; 
+    private function findProdRow($aSheet, $data, $flag) {
+        $col = $flag=='prodList'?8:4;
+        $result = 1;
         foreach($aSheet->getRowIterator() as $row){
-          $cellIterator = $row->getCellIterator();
-          $item = array();
-          foreach($cellIterator as $cell){
-            array_push($item, $cell->getCalculatedValue());
-          }
-          if($item[8]===$vin){
-              ++$result;
-              return $result;
-          } else {
-              ++$result;
-          }
-        }
-        return FALSE;
-    }
-/*-----------------------------methods----------------------------------------*/
-    
-    public function addItem($data, $flag) {
-        $file = $this->files[$flag];
-        $xls = $this->openFile($file);
-        $xls->setActiveSheetIndex(0);
-        $sheet = $xls->getActiveSheet();
-        $row = $this->getEmptyRow($sheet);
-        $letters = $flag=='drom'?$this->templeDrom:$this->letters;
-        foreach ($letters as $key => $letter) {
-            if($key!=='photos'){$sheet->getColumnDimension($letter.$row)->setAutoSize(true);}
-            $sheet->setCellValueExplicit($letter.$row, $data[$key], PHPExcel_Cell_DataType::TYPE_STRING);
-        }
-        $this->saveFile($file, $xls);
-    }
-    
-    public function updateItem($data, $flag) {
-        $file = $this->files[$flag];
-        $xls = $this->openFile($file);
-        $xls->setActiveSheetIndex(0);
-        $sheet = $xls->getActiveSheet();
-        $row = $this->findProdRow($sheet, $data['vin']);
-        $letters = $flag=='drom'?$this->templeDrom:$this->letters;
-        foreach ($letters as $key => $letter) {
-            if($key!=='photos'){$sheet->getColumnDimension($letter.$row)->setAutoSize(true);}
-            $sheet->setCellValueExplicit($letter.$row, $data[$key], PHPExcel_Cell_DataType::TYPE_STRING);
-        }
-        $this->saveFile($file, $xls);
-    }
-    
-    public function saleItem($vin, $endq) {
-        $file = $this->files['prodList'];
-        $xls = $this->openFile($file);
-        $xls->setActiveSheetIndex(0);
-        $sheet = $xls->getActiveSheet();
-        $row = $this->findProdRow($sheet, $vin);
-        if($row){
-            $sheet->setCellValueExplicit($this->letters['quant'].$row, $endq, PHPExcel_Cell_DataType::TYPE_STRING);
-            if($endq==0){
-                foreach ($this->letters as $letter) {
-                    $sheet
-                                    ->getStyle($letter.$row.':'.$letter.$row)
-                                    ->getFill()
-                                    ->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
-                                    ->getStartColor()
-                                    ->setRGB('DD6666');
+            $cellIterator = $row->getCellIterator();
+            $item = array();
+            foreach($cellIterator as $cell){
+              array_push($item, $cell->getCalculatedValue());
+            }
+            //ищем пустые строки
+            if($item[$col]==NULL || trim($item[$col])===''){
+                if($this->emptyRow[0]===0){array_shift($this->emptyRow);}
+                $this->emptyRow[] = $result;
+                ++$result;
+            } else {
+                //ищем строки товаров 
+                $key = array_search($item[$col], array_column($data, 'vin'));
+                if($key){
+                  $data[$key]['needlyrow'] = $result;
+                  ++$result;
+                } else {
+                  ++$result;
                 }
             }
-            $this->saveFile($file, $xls);
         }
+        if(count($this->emptyRow==1) && $this->emptyRow[0]===0){array_shift($this->emptyRow);}
+        $this->emptyRow[] = $result;
+        return $data;
     }
+/*---------------------------- methods ---------------------------------------*/
     
-    public function refundItem($vin) {
-        $file = $this->files['prodList'];
-        $xls = $this->openFile($file);
-        $xls->setActiveSheetIndex(0);
-        $sheet = $xls->getActiveSheet();
-        $row = $this->findProdRow($sheet, $vin);
-        if($row){
-            $sheet->setCellValueExplicit($this->letters['quant'].$row, 1, PHPExcel_Cell_DataType::TYPE_STRING);
-            if($endq==0){
-                foreach ($this->letters as $letter) {
-                    $sheet
-                                    ->getStyle($letter.$row.':'.$letter.$row)
-                                    ->getFill()
-                                    ->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
-                                    ->getStartColor()
-                                    ->setRGB('DD6666');
+    public function updateItem($data, $flag, $sheet) {
+        $letters = $flag=='drom'?$this->templeDrom:$this->letters;
+        $styleArray = array(
+            'borders' => array(
+                'allborders' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN
+                )
+            )
+        );
+        if(isset($data['needlyrow'])){
+            $row = $data['needlyrow'];
+            if($data['quant']==='0'){
+                switch ($flag) {
+                    case 'drom':
+                        $sheet = $this->deleteItem($row, $sheet);
+                        return $sheet;
+                    break;
+                    case 'prodList':
+                        $sheet = $this->saleItem($row, $data['quant'], $sheet);
+                        return $sheet;
+                    break;
                 }
             }
-            $this->saveFile($file, $xls);
+        } else {
+            $row = array_shift($this->emptyRow);
+            if(empty($this->emptyRow)){
+                $this->emptyRow[] = $row+1;
+            }
         }
+        foreach ($letters as $key => $letter) {
+            if($key!=='photos'){$sheet->getColumnDimension($letter)->setAutoSize(true);}
+            $sheet->setCellValueExplicit($letter.$row, isset($data[$key])?$data[$key]:$sheet->getCell($letter.$row), PHPExcel_Cell_DataType::TYPE_STRING);
+            $sheet->getStyle($letter.$row.':'.$letter.$row)->applyFromArray($styleArray);
+        }
+        return $sheet;
     }
     
-    public function deleteItem($vin) {
-        $file = $this->files['drom'];
-        $xls = $this->openFile($file);
-        $xls->setActiveSheetIndex(0);
-        $sheet = $xls->getActiveSheet();
-        $row = $this->findProdRow($sheet, $vin);
+    public function saleItem($row, $endq, $sheet) {
+        $sheet->setCellValueExplicit($this->letters['quant'].$row, $endq, PHPExcel_Cell_DataType::TYPE_STRING);
+        foreach ($this->letters as $letter) {
+            $sheet
+                ->getStyle($letter.$row.':'.$letter.$row)
+                ->getFill()
+                ->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+                ->getStartColor()
+                ->setRGB('DD6666');
+        }
+        return $sheet;
+    }   
+
+    public function refundItem($row, $sheet, $endq) {
+        $sheet->setCellValueExplicit($this->letters['quant'].$row, $endq, PHPExcel_Cell_DataType::TYPE_STRING);
+        foreach ($this->letters as $letter) {
+            $sheet
+                ->getStyle($letter.$row.':'.$letter.$row)
+                ->getFill()
+                ->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+                ->getStartColor()
+                ->setRGB('ffffff');
+        }
+        return $sheet;
+    }
+    
+    public function deleteItem($row, $sheet) {
         foreach ($this->templeDrom as $letter) {
             $sheet->setCellValueExplicit($letter.$row, '', PHPExcel_Cell_DataType::TYPE_STRING);
         }
-        $this->saveFile($file, $xls);
+        return $sheet;
+    }
+    
+    public function updateFile($flag) {
+        $sup_date = $this->db->query("SELECT MAX(date) AS date FROM ".DB_PREFIX."downloads_history WHERE flag = '".$flag."'");
+        $sup = $this->db->query("SELECT "
+                . "ph.sku AS vin, "
+                . "p.model AS model, "
+                . "p.length AS modRow, "
+                . "p.upc AS cond, "
+                . "p.ean AS type, "
+                . "p.isbn AS catN, "
+                . "p.isbn AS catn, "
+                . "p.jan AS note, "
+                . "p.quantity AS quant, "
+                . "b.name AS brand, "
+                . "pd.name AS name, "
+                . "p.price AS price, "
+                . "p.weight AS stock, "
+                . "p.location AS location, "
+                . "p.width AS dop, "
+                . "p.height AS donor, "
+                . "p.avito AS avito, "
+                . "p.drom AS drom, "
+                . "p.comp AS complect, "
+                . "p.comp_price AS cprice, "
+                . "p.comp_whole AS whole, "
+                . "p.category AS category, "
+                . "p.podcateg AS podcat, "
+                . "p.compability AS compability  "
+                . "FROM ".DB_PREFIX."product_history ph "
+                . "LEFT JOIN ".DB_PREFIX."product p ON ph.sku = p.sku "
+                . "LEFT JOIN ".DB_PREFIX."product_description pd ON pd.product_id = p.product_id "
+                . "LEFT JOIN ".DB_PREFIX."brand b ON b.id = p.manufacturer_id "
+                . "WHERE "
+                    . "ph.date_modify > '".$sup_date->row['date']."' "
+                    . "OR ph.date_sale > '".$sup_date->row['date']."' "
+                    . "OR ph.date_refund > '".$sup_date->row['date']."' "
+                . "GROUP BY ph.sku");
+        if(!empty($sup->rows)){
+            $xls = $this->openFile($flag);
+            $xls->setActiveSheetIndex(0);
+            $sheet = $xls->getActiveSheet();
+            $array = $this->findProdRow($sheet, $sup->rows, $flag);
+//            exit(var_dump($this->emptyRow));
+//            exit(var_dump($array));
+            foreach ($array as $data) {
+                if($flag==='drom'){
+                    $location = explode("/", $data['location']);
+                    $data['stell'] = isset($location[0])?$location[0]:'';
+                    $data['jar'] = isset($location[1])?$location[1]:'';
+                    $data['shelf'] = isset($location[2])?$location[2]:'';
+                    $data['box'] = isset($location[3])?$location[3]:'';
+                    $sheet = $this->updateItem($data, $flag, $sheet);
+                }
+            }
+            $this->saveFile($this->files[$flag], $xls);
+        }
+        //exit(var_dump($this->emptyRow));
+        $this->db->query("INSERT INTO ".DB_PREFIX."downloads_history (flag, manager, date) VALUES ('".$flag."', '".$this->session->data['username']."', NOW())");
+        return $this->files[$flag];
     }
 }

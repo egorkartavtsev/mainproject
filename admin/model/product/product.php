@@ -225,7 +225,12 @@ class ModelProductProduct extends Model {
                 $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand (product_id, brand_id) VALUES (".(int)$this->db->escape($product['pid']).", '".(int)$this->getMId(trim($cpbItem))."')");
             }
         }
-        
+        $this->db->query("INSERT INTO ".DB_PREFIX."product_history ("
+                . "sku, "
+                . "date_modify, "
+                . "manager, "
+                . "type_modify) "
+                . "VALUES ('".$product['vin']."', NOW(), '".$this->getManager($product['pid'])."', 'Обновление товара')");
         $this->load->model("tool/complect");
         $this->model_tool_complect->compReprice($product['vin']);
     }   

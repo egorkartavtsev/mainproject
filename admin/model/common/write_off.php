@@ -61,6 +61,12 @@ class ModelCommonWriteoff extends Model {
             $endq = $data['quan'] - $data['quanfact'];
             $this->model_tool_xml->findToRemove($data['vin']);
             
+            $this->db->query("INSERT INTO ".DB_PREFIX."product_history ("
+                . "sku, "
+                . "date_sale, "
+                . "manager, "
+                . "type_modify) "
+                . "VALUES ('".$data['vin']."', NOW(), '".$data['manager']."', 'Списание товара')");
         
             /*если это товар-ссылка на комплект*/
             $query = "SELECT * FROM ".DB_PREFIX."complects WHERE link = '".$data['vin']."' ";

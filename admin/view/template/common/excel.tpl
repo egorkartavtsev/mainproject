@@ -42,7 +42,7 @@
                     <h3>Выгрузка товаров магазина</h3>
                     <span class="label label-default">Скачайте на жёсткий диск список товаров Вашего магазина</span>
                     <hr>                    
-                    <a href="index.php?route=common/excel/downloadFile&type=prods&token=<?php echo $token_excel;?>" class="btn btn-block btn-danger"><i class="fa fa-download"></i>&nbsp;Выгрузка всех товаров</a>
+                    <a target="blank" href="index.php?route=common/excel/downloadAllProds&flag=prodList&token=<?php echo $token_excel;?>" class="btn btn-block btn-danger"><i class="fa fa-download"></i>&nbsp;Выгрузка всех товаров</a>
                 </div>
                 <div class="col-lg-6">
                     <h3>Скачать шаблон</h3>

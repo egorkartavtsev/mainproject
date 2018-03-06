@@ -4,19 +4,6 @@ class ControllerProductProduct extends Controller {
 
 	public function index() {
             
-                if (isset($this->request->post['suc'])){
-                    $mail = array();
-                    $mail = array(
-                        'text' => 'Имя: '.$this->request->post['name'].'; '
-                                . 'Email: '.$this->request->post['email'].'; '
-                                . 'Телефон: '.$this->request->post['phone'].'; '
-                                . 'Комментарий: '.$this->request->post['comment'],
-                        'to' => ADM_EMAIL                        
-                    );
-                    
-                    $suc = true;
-                }
-                
                 //exit ($suc);
             
 		$this->load->language('product/product');
@@ -376,6 +363,20 @@ class ControllerProductProduct extends Controller {
                         
                         $data['cat_numb'] = $product_info['cat_numb'];
                         $data['vin'] = $product_info['vin'];
+                        if (isset($this->request->post['suc'])){
+                            $mail = array();
+                            $mail =  'Имя: '.$this->request->post['name'].'; '
+                                   . 'Email: '.$this->request->post['email'].'; '
+                                   . 'Телефон: '.$this->request->post['phone'].'; '
+                                   . 'Товар: '.$data['vin']
+                                   . 'Комментарий: '.$this->request->post['comment'];
+                            $headers  = 'From: autorazbor174@mail.ru' . " " 
+                                      . 'Reply-To: autorazbor174@mail.ru' . " "
+                                      . 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+                            $suc = true;
+                            mail('autorazbor174@mail.ru', 'Заявка на деталь с сайта авторазбор174.рф', $mail);
+                            $data['suc_text'] = 'Ваша заявка успешно отправлена';                            
+                        }
                         $query = $this->db->query("SELECT * FROM ".DB_PREFIX."stocks WHERE name = '".$product_info['stock']."' ");
                         $data['adress'] = isset($query->row['adress'])?$query->row['adress']:'';
                         $data['compability'] = $product_info['compability'];
@@ -385,15 +386,6 @@ class ControllerProductProduct extends Controller {
                         $data['condition'] = $product_info['con_p'];
                         $data['no_prod'] = FALSE;
                         $data['sendLink'] = $this->url->link('product/product', 'product_id='.$product_id);
-                        if (isset($suc) && $suc) 
-                        {
-                            if (mail($mail['to'], 'Заявка на деталь с сайта авторазбор174.рф', $mail['text'])){
-                                $data['suc_text'] = 'Ваша заявка успешно отправлена';
-                                //exit(var_dump($data));
-                            }
-                            //else {exit(var_dump($mail));}
-                            
-                        }
                         
 			if ($product_info['quantity'] <= 0) {
 				$data['stock'] = $product_info['stock_status'];
@@ -621,6 +613,7 @@ class ControllerProductProduct extends Controller {
 			}
 
 			$data['recurrings'] = $this->model_catalog_product->getProfiles($this->request->get['product_id']);
+                        
 
 			$this->model_catalog_product->updateViewed($this->request->get['product_id']);
 
@@ -706,6 +699,20 @@ class ControllerProductProduct extends Controller {
 			$data['content_bottom'] = $this->load->controller('common/content_bottom');
 			$data['footer'] = $this->load->controller('common/footer');
 			$data['header'] = $this->load->controller('common/header');
+                        if (isset($this->request->post['suc'])){
+                            $mail = array();
+                            $mail = array(
+                                'text' => 'Имя: '.$this->request->post['name'].';\r\n '
+                                        . 'Email: '.$this->request->post['email'].';\r\n '
+                                        . 'Телефон: '.$this->request->post['phone'].';\r\n '
+                                        . 'Товар: '.$data['vin']
+                                        . 'Комментарий: '.$this->request->post['comment'],
+                                'to' => ADM_EMAIL                        
+                            );
+                            $suc = true;
+							mail($mail['to'], 'Заявка на деталь с сайта авторазбор174.рф', $mail['text']);
+							$data['suc_text'] = 'Ваша заявка успешно отправлена';                            
+                        }
                         
                         $this->response->setOutput($this->load->view('error/not_found', $data));
 		}
