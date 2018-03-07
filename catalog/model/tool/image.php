@@ -37,7 +37,9 @@ class ModelToolImage extends Model {
 
 			if ($width_orig != $width || $height_orig != $height) {
 				$image = new Image(DIR_IMAGE . $image_old);
-                                if(!empty($this->request->get) && $this->request->get['route']!=='common/home' && $this->request->get['route']!=='product/brand/index'){
+                                $arrpath = explode("/", $image_old);
+                                $qname = array_pop($arrpath);
+                                if(isset($arrpath[2]) && $arrpath[2]!=='manufacturer'){
                                     $watermark = new Image(DIR_IMAGE . "watermark.png");
                                     $image->watermark($watermark);
                                 }

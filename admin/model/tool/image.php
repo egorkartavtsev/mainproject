@@ -37,8 +37,12 @@ class ModelToolImage extends Model {
 
 			if ($width_orig != $width || $height_orig != $height) {
 				$image = new Image(DIR_IMAGE . $image_old);
-                                $watermark = new Image(DIR_IMAGE . "watermark.png");
-                                $image->watermark($watermark);
+                                $arrpath = explode("/", $image_old);
+                                $qname = array_pop($arrpath);
+                                if(isset($arrpath[2]) && $arrpath[2]!=='manufacturer'){
+                                    $watermark = new Image(DIR_IMAGE . "watermark.png");
+                                    $image->watermark($watermark);
+                                }
 				$image->resize($width, $height);
 				$image->save(DIR_IMAGE . $image_new);
 			} else {
