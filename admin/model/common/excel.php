@@ -527,7 +527,9 @@
                 }
                 if($filter['prod_on']){
                     if(!$filter['prod_off']){
-                        $query.="AND p.quantity > 1 ";
+                        $query.="AND p.quantity >= 1 ";
+                    } else {
+                        $query.="AND p.quantity >= 0 ";
                     }
                 } else {
                     if($filter['prod_off']){
