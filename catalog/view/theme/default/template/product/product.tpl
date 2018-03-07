@@ -55,7 +55,7 @@
                         <thead>
                             <tr>
                                 <th>Название:</th>
-                                <?php if(!$whole && $c_price != 0.00) { ?>
+                                <?php if(!$whole && $price != 0.00) { ?>
                                 <th>Цена:</th>
                                 <?php } ?>
                             </tr>
