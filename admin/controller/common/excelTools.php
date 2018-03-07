@@ -27,7 +27,14 @@
                     $product['vnutn'] = str_replace("/", "-", $product['vnutn']);
                     $product['price'] = $product['price']!=NULL?$product['price']:0;
                     $product['modr']  = str_replace(">", "-", $product['modr']);
-                    $product['date']  = $product['date']!=NULL?$product['date']:'';
+//                  
+                    if($product['date']==(string)NULL){
+                        $timestamp = date('Y-m-d H:i:s');
+                    } else {
+                        $timestamp = DateTime::createFromFormat('d.‌​m.Y', $product['date'])->format('Y-m-d H:i:s');
+                    }
+                    $product['date']  = $timestamp;
+                    
                     $success = $this->emptyCells($product, $template);
                     if($success){
                         $success = $this->undefinedCells($product, $template);

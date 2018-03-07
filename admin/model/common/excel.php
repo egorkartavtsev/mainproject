@@ -2,7 +2,7 @@
     class ModelCommonExcel extends Model {
         
         public function getProductTemplate() {
-            $query = $this->db->query("SELECT * FROM ".DB_PREFIX."excel_template WHERE 1 ORDER BY id");
+            $query = $this->db->query("SELECT * FROM ".DB_PREFIX."excel_template ORDER BY id");
             $template = array();
             foreach ($query->rows as $row) {
                 $template[$row['id']] = array(
