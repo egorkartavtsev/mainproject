@@ -367,13 +367,14 @@ class ControllerProductProduct extends Controller {
                             $mail =  'Имя: '.$this->request->post['name'].'; '
                                    . 'Email: '.$this->request->post['email'].'; '
                                    . 'Телефон: '.$this->request->post['phone'].'; '
-                                   . 'Товар: '.$data['vin']
+                                   . 'Товар: '.$data['vin'].'; '
+                                   . 'Наименование товара: '.$data['heading_title'].'; ' 
                                    . 'Комментарий: '.$this->request->post['comment'];
                             $headers  = 'From: autorazbor174@mail.ru' . " " 
                                       . 'Reply-To: autorazbor174@mail.ru' . " "
                                       . 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
                             $suc = true;
-                            mail('autorazbor174@mail.ru', 'Заявка на деталь с сайта авторазбор174.рф', $mail);
+                            mail('autorazbor174@mail.ru', 'Заявка на уточнение цены товара с сайта авторазбор174.рф', $mail);
                             $data['suc_text'] = 'Ваша заявка успешно отправлена';                            
                         }
                         $query = $this->db->query("SELECT * FROM ".DB_PREFIX."stocks WHERE name = '".$product_info['stock']."' ");
@@ -704,7 +705,8 @@ class ControllerProductProduct extends Controller {
                                 'text' => 'Имя: '.$this->request->post['name'].';\r\n '
                                         . 'Email: '.$this->request->post['email'].';\r\n '
                                         . 'Телефон: '.$this->request->post['phone'].';\r\n '
-                                        . 'Товар: '.$data['vin']
+                                        . 'Товар: '.$data['vin'].'; '
+                                        . 'Наименование товара: '.$data['heading_title'].'; ' 
                                         . 'Комментарий: '.$this->request->post['comment'],
                                 'to' => ADM_EMAIL                        
                             );
