@@ -374,7 +374,12 @@ class ControllerProductProduct extends Controller {
                                       . 'Reply-To: autorazbor174@mail.ru' . " "
                                       . 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
                             $suc = true;
-                            mail('autorazbor174@mail.ru', 'Заявка на уточнение цены товара с сайта авторазбор174.рф', $mail);
+                            if ($product_info['quantity'] <= 0 && $product_info['price'] != 0.00 ) {
+                                mail('autorazbor174@mail.ru', 'Заявка на заказ товара с сайта авторазбор174.рф', $mail); 
+                            } 
+                            else {
+                                mail('autorazbor174@mail.ru', 'Заявка на уточнение цены товара с сайта авторазбор174.рф', $mail);
+                            } 
                             $data['suc_text'] = 'Ваша заявка успешно отправлена';                            
                         }
                         $query = $this->db->query("SELECT * FROM ".DB_PREFIX."stocks WHERE name = '".$product_info['stock']."' ");

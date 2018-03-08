@@ -215,12 +215,19 @@
             <li><?php echo $text_stock; ?> <?php echo $stock; ?></li>
           </ul>
           <!-------------------------------------------->
-          <?php if ($price == 0.00) { ?>
-            <hr>
-                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                  Узнать стоимость товара
-                </button>
-
+          <?php if ($price == 0.00 || $stock == 0)  { ?>
+                <?php if ($price == 0.00) { ?>
+                    <hr>
+                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                    Узнать стоимость товара
+                    </button>
+                <?php } else { ?>
+                    <h2><?php echo $price; ?></h2>
+                    <hr>
+                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                    Заказать товар
+                    </button>
+                <?php } ?>
                 <!-- Modal -->
                 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                   <div class="modal-dialog" role="document">
