@@ -36,7 +36,7 @@ class ModelToolExcel extends Model {
         'podcat'        => 'A',
         'type'          => 'B',
         'brand'         => 'C',
-        'model'         => 'D',
+        'modRow'        => 'D',
         'vin'           => 'E',
         'note'          => 'F',
         'price'         => 'G',
