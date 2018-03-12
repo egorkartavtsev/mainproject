@@ -45,11 +45,26 @@ class ModelToolExcel extends Model {
         'catn'          => 'J',
         'quant'         => 'K'
     );
+    private $templeARu = array(
+        'vin'           => 'A',
+        'name'          => 'B',
+        'catn'          => 'C',
+        'brand'         => 'D',
+        'description'   => 'E',
+        'type'          => 'F',
+        'price'         => 'G',
+        'status'        => 'H',
+        'note'          => 'I',
+        'photos'        => 'J',
+        'compability'   => 'K',
+        'quant'         => 'L'
+    );
 
     private $extent = array('whole', 'cprice', 'date_added');
     private $files = array(
         'prodList'  => DIR_DWNXL.'prodList.xls',
-        'drom'      => DIR_DWNXL.'auto-parts-MGNAUTO.xls'
+        'drom'      => DIR_DWNXL.'auto-parts-MGNAUTO.xls',
+        'aru'       => DIR_DWNXL.'autoru_parts_autoruxlsx .xlsx'
     );
 
 /*---------------------------------- tools -----------------------------------*/
@@ -81,7 +96,17 @@ class ModelToolExcel extends Model {
     }
     
     private function findProdRow($aSheet, $data, $flag) {
-        $col = $flag=='prodList'?8:4;
+        switch ($flag) {
+            case 'drom':
+                $col = 4;
+            break;
+            case 'aru':
+                $col = 0;
+            break;
+            case 'prodList':
+                $col = 8;
+            break;
+        }
         $result = 1;
         foreach($aSheet->getRowIterator() as $row){
             $cellIterator = $row->getCellIterator();
@@ -111,7 +136,23 @@ class ModelToolExcel extends Model {
     }
     
     private function updateItem($data, $flag, $sheet) {
-        $letters = $flag=='drom'?$this->templeDrom:$this->letters;
+        switch ($flag) {
+            case 'drom':
+                $letters = $this->templeDrom;
+                if($data['quant']==='0'){
+                    $sheet = $this->deleteItem($row, $sheet);
+                }
+            break;
+            case 'prodList':
+                $letters = $this->letters;
+                if($data['quant']==='0'){
+                    $sheet = $this->saleItem($row, $data['quant'], $sheet);
+                }
+            break;
+            case 'aru':
+                $letters = $this->templeARu;
+            break;
+        }
         $styleArray = array(
             'borders' => array(
                 'allborders' => array(
@@ -121,18 +162,6 @@ class ModelToolExcel extends Model {
         );
         if(isset($data['needlyrow'])){
             $row = $data['needlyrow'];
-            if($data['quant']==='0'){
-                switch ($flag) {
-                    case 'drom':
-                        $sheet = $this->deleteItem($row, $sheet);
-                        return $sheet;
-                    break;
-                    case 'prodList':
-                        $sheet = $this->saleItem($row, $data['quant'], $sheet);
-                        return $sheet;
-                    break;
-                }
-            }
         } else {
             $row = array_shift($this->emptyRow);
             if(empty($this->emptyRow)){
@@ -245,6 +274,7 @@ class ModelToolExcel extends Model {
                 . "b.name AS brand, "
                 . "pd.name AS name, "
                 . "p.price AS price, "
+                . "p.status AS status, "
                 . "p.weight AS stock, "
                 . "p.location AS location, "
                 . "p.width AS dop, "
@@ -289,7 +319,17 @@ class ModelToolExcel extends Model {
                             $photos.= HTTP_CATALOG.'image/'.$phot['image'].'; ';
                             $data['photos'] = trim($photos);
                         }
-                    $data['description'] = $this->getDromDescription($data);
+                        $data['description'] = $this->getDromDescription($data);
+                    break;
+                    case 'aru':
+                        $qphot = $this->db->query("SELECT * FROM ".DB_PREFIX."product_image WHERE product_id = '".$data['pid']."' ORDER BY sort_order ");
+                        $photos = '';
+                        foreach ($qphot->rows as $phot) {
+                            $photos.= HTTP_CATALOG.'image/'.$phot['image'].'; ';
+                            $data['photos'] = trim($photos);
+                        }
+                        $data['description'] = $this->getDromDescription($data);
+                        $data['type'] = $data['type']==='Новый'?1:0;
                     break;
                 }
                 $sheet = $this->updateItem($data, $flag, $sheet);

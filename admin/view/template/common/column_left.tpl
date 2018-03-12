@@ -35,6 +35,9 @@
                 <li>
                     <a href="index.php?route=common/excel/downloadAllProds&flag=drom&token=<?php echo $token_excel;?>"><span>Скачать прайс-лист Drom</span></a>
                 </li>
+                <li>
+                    <a href="index.php?route=common/excel/downloadAllProds&flag=aru&token=<?php echo $token_excel;?>"><span>Скачать прайс-лист Auto.RU</span></a>
+                </li>
             </ul>
         </li>
     <?php } ?>
