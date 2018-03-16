@@ -600,6 +600,37 @@ footer h5 {
 h2.price {
 	margin: 0;
 }
+.product-thumb .eanr {
+        width: 53px;
+        height: 33px;
+        background-color: #cc0000;
+        margin-left: auto;
+	margin-right: auto;
+        border: 1px solid #cc0000;
+        border-radius: 15%; 
+        position: absolute;    
+}
+.product-thumb .eanr p {
+        font-size: 200%;
+        color: whitesmoke;
+        margin-top: 5px;
+        margin-left: 5px; 
+}
+.product-thumb .eanb {
+        width: 100px;
+        height: 33px;
+        background-color: #1f90bb;
+        margin-left: auto;
+	margin-right: auto;
+        border: 1px solid #1f90bb;
+        border-radius: 9%; 
+        position: absolute;      
+}
+.product-thumb .eanb p {
+        font-size: 200%;
+        color: whitesmoke;
+        margin-top: 5px;
+        margin-left: 9px; 
 .product-thumb .price {
 	color: #444;
 }
