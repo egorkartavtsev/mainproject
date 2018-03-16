@@ -19,7 +19,7 @@ class ControllerCatalogProduct extends Controller {
 			foreach($query->rows as $prods){
 				echo '<tr>';
 					echo '<td style="border: 1px solid #000;">'.$prods['product_id'].'</td>';
-					echo '<td style="border: 1px solid #000;">'.$prods['sku'].'</td>';
+					echo '<td style="border: 1px solid #000;">'.$prods['vin'].'</td>';
 					echo '<td style="border: 1px solid #000;">'.$prods['date_added'].'</td>';
 				echo '</tr>';
 				++$i;
@@ -519,7 +519,7 @@ class ControllerCatalogProduct extends Controller {
                         $dateDif = abs($added-$now);
                         $dateRes = floor($dateDif/(60*60*24));
                         
-                        $quer = $this->db->query("SELECT * FROM ".DB_PREFIX."sales_info WHERE sku = '".$result['sku']."'");
+                        $quer = $this->db->query("SELECT * FROM ".DB_PREFIX."sales_info WHERE sku = '".$result['vin']."'");
                         $saleDate = '';
                         if(!empty($quer->row)){
                             $saleDate = $quer->row['date'];
@@ -534,11 +534,11 @@ class ControllerCatalogProduct extends Controller {
                                     'saled'      => $saleDate,
                                     'manager'    => $result['manager'],
                                     'name'       => $result['name'],
-                                    'vin'        => $result['sku'],
+                                    'vin'        => $result['vin'],
                                     'location'   => $result['location'],
-                                    'donor'      => $result['height']!=''?'<a target="_blank" href="'.$this->url->link('donor/show', 'token=' . $this->session->data['token'] . '&numb=' . $result['height'] . $url, true).'">'.$result['height'].'</a>':'-',
-                                    'stock'      => isset($result['weight'])?$result['weight']:'не указан',
-                                    'model'      => $result['length'],
+                                    'donor'      => $result['donor']!=''?'<a target="_blank" href="'.$this->url->link('donor/show', 'token=' . $this->session->data['token'] . '&numb=' . $result['donor'] . $url, true).'">'.$result['donor'].'</a>':'-',
+                                    'stock'      => (isset($result['stock'])) && ($result['stock']!=='') && ($result['stock']!=='-')?$result['stock']:'не указан',
+                                    'model'      => $result['modR'],
                                     'price'      => $result['price'],
                                     'date_added' => $result['date_added'],
                                     'dateDif'    => $dateRes,
@@ -1010,12 +1010,12 @@ class ControllerCatalogProduct extends Controller {
 			$data['model'] = '';
 		}
 
-		if (isset($this->request->post['sku'])) {
-			$data['sku'] = $this->request->post['sku'];
+		if (isset($this->request->post['vin'])) {
+			$data['vin'] = $this->request->post['vin'];
 		} elseif (!empty($product_info)) {
-			$data['sku'] = $product_info['sku'];
+			$data['vin'] = $product_info['vin'];
 		} else {
-			$data['sku'] = '';
+			$data['vin'] = '';
 		}
 
 		if (isset($this->request->post['upc'])) {
@@ -1059,11 +1059,11 @@ class ControllerCatalogProduct extends Controller {
 		}
                 
                 if (!empty($product_info)) {
-			$data['weight'] = $product_info['weight'];
-		} elseif (isset($this->request->post['weight'])) {
-			$data['weight'] = $this->request->post['weight'];
+			$data['stock'] = $product_info['stock'];
+		} elseif (isset($this->request->post['stock'])) {
+			$data['stock'] = $this->request->post['stock'];
 		} else {
-			$data['weight'] = '';
+			$data['stock'] = '';
 		}
                 
 		if (isset($this->request->post['location'])) {
@@ -1075,12 +1075,12 @@ class ControllerCatalogProduct extends Controller {
 		}
                 
                 
-                if ((string)$data['weight'] != (string)0) {
+                if ((string)$data['stock'] != (string)0) {
                     
-                    $data['location'] = $data['weight'].'/'.$data['location'];
+                    $data['location'] = $data['stock'].'/'.$data['location'];
                     
                 }
-                //exit($data['weight'].'<hr>'.$data['location']);
+                //exit($data['stock'].'<hr>'.$data['location']);
                 
                 
 		if ($this->config->get('config_product_upc_hide') != 0) {
@@ -1245,12 +1245,12 @@ class ControllerCatalogProduct extends Controller {
 			$data['weight_class_id'] = $this->config->get('config_weight_class_id');
 		}
 
-		if (isset($this->request->post['length'])) {
-			$data['length'] = $this->request->post['length'];
+		if (isset($this->request->post['modR'])) {
+			$data['modR'] = $this->request->post['modR'];
 		} elseif (!empty($product_info)) {
-			$data['length'] = $product_info['length'];
+			$data['modR'] = $product_info['modR'];
 		} else {
-			$data['length'] = '';
+			$data['modR'] = '';
 		}
 
 		if (isset($this->request->post['width'])) {
@@ -1261,12 +1261,12 @@ class ControllerCatalogProduct extends Controller {
 			$data['width'] = '';
 		}
 
-		if (isset($this->request->post['height'])) {
-			$data['height'] = $this->request->post['height'];
+		if (isset($this->request->post['donor'])) {
+			$data['donor'] = $this->request->post['donor'];
 		} elseif (!empty($product_info)) {
-			$data['height'] = $product_info['height'];
+			$data['donor'] = $product_info['donor'];
 		} else {
-			$data['height'] = '';
+			$data['donor'] = '';
 		}
 
 		$this->load->model('localisation/length_class');
@@ -1410,7 +1410,7 @@ class ControllerCatalogProduct extends Controller {
 						'price_prefix'            => $product_option_value['price_prefix'],
 						'points'                  => $product_option_value['points'],
 						'points_prefix'           => $product_option_value['points_prefix'],
-						'weight'                  => $product_option_value['weight'],
+						'stock'                  => $product_option_value['stock'],
 						'weight_prefix'           => $product_option_value['weight_prefix']
 					);
 				}
@@ -1737,7 +1737,7 @@ class ControllerCatalogProduct extends Controller {
 				$json[] = array(
 					'product_id' => $result['product_id'],
 					'name'       => strip_tags(html_entity_decode($result['name'], ENT_QUOTES, 'UTF-8')),
-					'model'      => $result['length'],
+					'model'      => $result['modR'],
 					'option'     => $option_data,
 					'price'      => $result['price']
 				);

@@ -64,7 +64,7 @@ class ModelToolExcel extends Model {
     private $files = array(
         'prodList'  => DIR_DWNXL.'prodList.xls',
         'drom'      => DIR_DWNXL.'auto-parts-MGNAUTO.xls',
-        'aru'       => DIR_DWNXL.'autoru_parts_autoruxlsx.xlsx'
+        'aru'       => DIR_DWNXL.'autoru_parts.xlsx'
     );
 
 /*---------------------------------- tools -----------------------------------*/
@@ -77,6 +77,11 @@ class ModelToolExcel extends Model {
 
     private function saveFile($file, $objPHPExcel) {
         $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
+        $objWriter->save($file);
+    }
+	
+	private function saveFileXLSX($file, $objPHPExcel) {
+        $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel, 'Excel2007');
         $objWriter->save($file);
     }
     
@@ -139,14 +144,14 @@ class ModelToolExcel extends Model {
         switch ($flag) {
             case 'drom':
                 $letters = $this->templeDrom;
-                if($data['quant']==='0'){
-                    $sheet = $this->deleteItem($row, $sheet);
+                if($data['quant']==='0' && isset($data['needlyrow'])){
+                    $sheet = $this->deleteItem($data['needlyrow'], $sheet);
                 }
             break;
             case 'prodList':
                 $letters = $this->letters;
-                if($data['quant']==='0'){
-                    $sheet = $this->saleItem($row, $data['quant'], $sheet);
+                if($data['quant']==='0' && isset($data['needlyrow'])){
+                    $sheet = $this->saleItem($data['needlyrow'], $data['quant'], $sheet);
                 }
             break;
             case 'aru':
@@ -203,6 +208,7 @@ class ModelToolExcel extends Model {
     }
     
     private function deleteItem($row, $sheet) {
+		//exit(var_dump($row));
         foreach ($this->templeDrom as $letter) {
             $sheet->setCellValueExplicit($letter.$row, '', PHPExcel_Cell_DataType::TYPE_STRING);
         }
@@ -335,7 +341,11 @@ class ModelToolExcel extends Model {
                 $sheet = $this->updateItem($data, $flag, $sheet);
 //                exit(var_dump($data));
             }
-            $this->saveFile($this->files[$flag], $xls);
+			if($flag === 'aru'){
+				$this->saveFileXLSX($this->files[$flag], $xls);
+			} else {
+				$this->saveFile($this->files[$flag], $xls);
+			}
         }
         $this->db->query("INSERT INTO ".DB_PREFIX."downloads_history (flag, manager, date) VALUES ('".$flag."', '".$this->session->data['username']."', NOW())");
         return $this->files[$flag];

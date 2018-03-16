@@ -10,7 +10,7 @@ class ModelCommonRefund extends Model {
         }
     }
     public function updateDataBase($info) {
-        $pq = $this->db->query("SELECT product_id FROM ".DB_PREFIX."product WHERE sku = '".$info['sku']."'");
+        $pq = $this->db->query("SELECT product_id FROM ".DB_PREFIX."product WHERE vin = '".$info['sku']."'");
         $product_id = $pq->row['product_id'];
                 
             $dir = DIR_IMAGE . 'catalog/demo/production/'.$info['sku'];

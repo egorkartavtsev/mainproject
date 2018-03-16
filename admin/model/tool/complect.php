@@ -6,7 +6,7 @@ class ModelToolComplect extends Model {
         $sup = $this->isCompl($vin);
         if($sup){
             $price = 0;
-            $query = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE sku = '".$sup['complect']['heading']."' OR comp = '".$sup['complect']['heading']."'");
+            $query = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE vin = '".$sup['complect']['heading']."' OR comp = '".$sup['complect']['heading']."'");
             foreach ($query->rows as $item) {
                 $price+=$item['price'];
             }
@@ -19,8 +19,8 @@ class ModelToolComplect extends Model {
             }
             $price+=$rup - $price%100;
             $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$price."' WHERE link = '".$sup['complect']['link']."' ");
-            $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE sku = '".$sup['complect']['link']."'");
-            $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE sku = '".$sup['complect']['heading']."'");
+            $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE vin = '".$sup['complect']['link']."'");
+            $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE vin = '".$sup['complect']['heading']."'");
         }
     }
     
@@ -34,7 +34,7 @@ class ModelToolComplect extends Model {
     }
     
     public function isCompl($vin) {
-        $sup = $this->db->query("SELECT price, comp FROM ".DB_PREFIX."product WHERE sku = '".$vin."'");
+        $sup = $this->db->query("SELECT price, comp FROM ".DB_PREFIX."product WHERE vin = '".$vin."'");
         $comp = $this->db->query("SELECT * FROM ".DB_PREFIX."complects WHERE heading = '".$sup->row['comp']."' OR heading = '".$vin."'");
         if(empty($comp->row)){
             return FALSE;
@@ -49,8 +49,8 @@ class ModelToolComplect extends Model {
     }
     
     public function repriceById($pid) {
-        $sup = $this->db->query("SELECT sku FROM ".DB_PREFIX."product WHERE product_id = ".(int)$pid);
-        $this->compReprice($sup->row['sku']);
+        $sup = $this->db->query("SELECT vin FROM ".DB_PREFIX."product WHERE product_id = ".(int)$pid);
+        $this->compReprice($sup->row['vin']);
     }
 }
 

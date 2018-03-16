@@ -5,34 +5,34 @@ class ModelProductProduct extends Model {
         $query = "SELECT "
                     . "pd.name AS name, "
                     . "b.name AS brand, "
-                    . "p.manufacturer_id AS brand_id, "
+                    . "p.brand AS brand_id, "
                     . "p.model AS model, "
                     . "p.avitoname AS avitoname, "
                     . "p.status AS status, "
                     . "p.comp_price AS comp_price, "
-                    . "p.height AS donor, "
+                    . "p.donor AS donor, "
                     . "p.comp AS complect, "
-                    . "p.length AS modRow, "
-                    . "p.sku AS vin, "
+                    . "p.modR AS modRow, "
+                    . "p.vin AS vin, "
                     . "p.category AS categ, "
                     . "p.image AS mainimage, "
                     . "p.podcateg AS pcat, "
-                    . "p.upc AS condit, "
-                    . "p.ean AS type, "
-                    . "p.width AS dop, "
-                    . "p.jan AS note, "
+                    . "p.cond AS condit, "
+                    . "p.type AS type, "
+                    . "p.dop AS dop, "
+                    . "p.note AS note, "
                     . "p.compability AS compability, "
-                    . "p.isbn AS catN, "
+                    . "p.catn AS catN, "
                     . "p.location AS location, "
                     . "p.price AS price, "
                     . "p.quantity AS quantity, "
                     . "p.status AS status, "
                     . "p.avito AS avito, "
                     . "p.drom AS drom, "
-                    . "p.weight AS stock "
+                    . "p.stock AS stock "
                 . "FROM ".DB_PREFIX."product p "
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON pd.product_id = p.product_id "
-                . "LEFT JOIN ".DB_PREFIX."brand b ON b.id = p.manufacturer_id "
+                . "LEFT JOIN ".DB_PREFIX."brand b ON b.id = p.brand "
                 . "WHERE p.product_id = ".(int)$pid;
         $arr = $this->db->query($query);
         return $arr->row;
@@ -133,28 +133,28 @@ class ModelProductProduct extends Model {
         //update product
         $query = "UPDATE ".DB_PREFIX."product "
                 . "SET "
-                    . "manufacturer_id = '".$this->db->escape($product['brand'])."', "
+                    . "brand = '".$this->db->escape($product['brand'])."', "
                     . "category = '".$this->db->escape($category)."', "
-                    . "weight = '".$this->db->escape($product['stock'])."', "
+                    . "stock = '".$this->db->escape($product['stock'])."', "
                     . "price = '".$this->db->escape($product['price'])."', "
-                    . "height = '".$this->db->escape($product['donor'])."', "
+                    . "donor = '".$this->db->escape($product['donor'])."', "
                     . "avitoname = '".$this->db->escape($product['avitoname'])."', "
                     . "model = '".$this->db->escape($product['model'])."', "
                     . "podcateg = '".$this->db->escape($product['podcat'])."', "
-                    . "upc = '".$this->db->escape($product['cond'])."', "
-                    . "ean = '".$this->db->escape($product['type'])."', "
-                    . "width = '".$this->db->escape($product['dop'])."', "
+                    . "cond = '".$this->db->escape($product['cond'])."', "
+                    . "type = '".$this->db->escape($product['type'])."', "
+                    . "dop = '".$this->db->escape($product['dop'])."', "
                     . "quantity = '".$this->db->escape($product['quant'])."', "
                     . "status = '".$this->db->escape($product['status'])."', "
-                    . "jan = '".$this->db->escape($product['note'])."', "
+                    . "note = '".$this->db->escape($product['note'])."', "
                     . "compability = '".$this->db->escape($product['compability'])."', "
                     . "avito = '".$this->db->escape($product['avito'])."', "
                     . "drom = '".$this->db->escape($product['drom'])."', "
-                    . "length = '".$this->db->escape($product['modRow'])."', "
+                    . "modR = '".$this->db->escape($product['modRow'])."', "
                     . "location = '".$this->db->escape($product['stell'])."/".$this->db->escape($product['jar'])."/".$this->db->escape($product['shelf'])."/".$this->db->escape($product['box'])."/"."', "
                     . "image = '".$this->db->escape($product['main-image'])."', "
-                    . "sku = '".$this->db->escape($product['vin'])."', "
-                    . "isbn = '".$this->db->escape($product['catN'])."' "
+                    . "vin = '".$this->db->escape($product['vin'])."', "
+                    . "catn = '".$this->db->escape($product['catN'])."' "
                 . "WHERE product_id = ".(int)$this->db->escape($product['pid']);
         $this->db->query($query);
         
@@ -196,8 +196,8 @@ class ModelProductProduct extends Model {
             if(!$univ['model']){
                 $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand (product_id, brand_id) VALUES (".(int)$this->db->escape($product['pid']).", '".(int)$this->db->escape($model_id)."')");
                 if(!$univ['mr']){
-                    $modR = $this->db->query("SELECT length FROM ".DB_PREFIX."product WHERE product_id = ".(int)$this->db->escape($product['pid']));
-                    $modR = $modR->row['length'];
+                    $modR = $this->db->query("SELECT modR FROM ".DB_PREFIX."product WHERE product_id = ".(int)$this->db->escape($product['pid']));
+                    $modR = $modR->row['modR'];
                     $modR_id = $this->getMId($modR);
                     $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand (product_id, brand_id) VALUES (".(int)$this->db->escape($product['pid']).", '".(int)$this->db->escape($modR_id)."')");
                 } else {
@@ -241,8 +241,8 @@ class ModelProductProduct extends Model {
     }
     
     public function getVin($pid) {
-        $quer = $this->db->query("SELECT sku FROM ".DB_PREFIX."product WHERE product_id = '".$pid."'");
-        return $quer->row['sku'];
+        $quer = $this->db->query("SELECT vin FROM ".DB_PREFIX."product WHERE product_id = '".$pid."'");
+        return $quer->row['vin'];
     }
     
     public function findCompl($head) {
@@ -275,7 +275,7 @@ class ModelProductProduct extends Model {
     }
     
     private function recountCompl($heading){
-        $supIt = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE sku = '".$heading."' OR comp = '".$heading."' ");
+        $supIt = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE vin = '".$heading."' OR comp = '".$heading."' ");
         $supCp = $this->db->query("SELECT * FROM ".DB_PREFIX."complects WHERE heading = '".$heading."' ");
         $price = 0;
         
@@ -307,8 +307,8 @@ class ModelProductProduct extends Model {
             }
         //---------------
         $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$price."' WHERE link = '".$supCp->row['link']."' ");
-        $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE sku = '".$supCp->row['link']."'");
-        $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE sku = '".$heading."'");
+        $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE vin = '".$supCp->row['link']."'");
+        $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE vin = '".$heading."'");
     }
     
     public function getManager($id) {

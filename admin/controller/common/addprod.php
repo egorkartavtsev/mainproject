@@ -358,133 +358,6 @@ private $error = array();
         echo $podcs;
     }
     
-    public function prodToDB() {
-        $data = $this->getLayout();
-        
-        $product = array();
-        $product = $this->request->post;
-        
-        /*************************************************************************************/
-        $query = $this->db->query("SELECT name FROM ".DB_PREFIX."brand "
-                                . "WHERE id = ".$product['brand_id']);
-        $product['brand'] = $query->row['name'];
-        
-        $query = $this->db->query("SELECT name FROM ".DB_PREFIX."brand "
-                                . "WHERE id = ".$product['model_id']);
-        $product['model'] = $query->row['name'];
-        
-        $query = $this->db->query("SELECT name FROM ".DB_PREFIX."brand "
-                                . "WHERE id = ".$product['modelRow_id']);
-        $product['modelRow'] = $query->row['name'];
-        
-        $query = $this->db->query("SELECT name FROM ".DB_PREFIX."category_description "
-                                . "WHERE category_id = ".$product['category_id']." AND language_id = 1");
-        $product['category'] = $query->row['name'];
-        
-        $query = $this->db->query("SELECT name FROM ".DB_PREFIX."category_description "
-                                . "WHERE category_id = ".$product['podcat_id']." AND language_id = 1");
-        $product['podcat'] = $query->row['name'];
-        /***********************************************************************************/
-        
-        $product['name'] = $product['podcat'].' '.$product['brand'].' '.$product['modelRow'];
-        
-        $dir = DIR_IMAGE . 'catalog/demo/production/'.$product['vin'];
-        $photos = array();
-        $files = scandir($dir);
-        $con = count($files);
-        for($i = 2; $i < $con; $i++){
-            $photos[] = $files[$i];
-        }
-        $product['image'] = 'catalog/demo/production/'.$product['vin']."/".$photos[0];
-        
-        $product['description'] = "<h4>Авторазбор174.рф</h6> предлагает Вам приобрести "
-                                .$product['name']." для автомобиля "
-                                .$product['brand']." ".$product['modelRow']." со склада в г.Магнитогорске. " 
-                                ."Авторазбор автозапчасти б/у для ".$product['brand']." ".$product['modelRow'];
-        
-        $tag = $product['brand'].', '.$product['model'].', '.$product['modelRow'].', '.$product['podcat'].', '.$product['name'].', '.$product['catn'];
-        
-        $this->db->query("INSERT INTO ".DB_PREFIX."product "
-                        . "SET "
-                        . "`manufacturer_id` = '". $product['brand_id'] ."', "
-                        . "`model` = '". $product['model'] ."', "
-                        . "`jan` = '". $product['prim'] ."', "
-                        . "`sku` = '". $product['vin'] ."', "
-                        . "`upc` = '". $product['fix'] ."', "
-                        . "`ean` = '". $product['type'] ."', "
-                        . "`location` = '".$product['sklad']."/".$product['stell']."/".$product['yarus']."/".$product['polka']."/".$product['korobka']."', "
-                        . "`isbn` = '". $product['catn'] ."', "
-                        . "`mpn` = ' ', "
-                        . "`weight` = 0, "
-                        . "`price` = ". $product['price'] .", "
-                        . "`image` = '". $product['image'] ."', "
-                        . "`quantity` = ".$product['quant'].", "
-                        . "`length` = '".$product['modelRow']."', "
-                        . "`width` = '".$product['avito']."', "
-                        . "`height` = '".$product['drom']."', "
-                        . "`status` = 1, "
-                        . "`date_added` = NOW(), "
-                        . "`date_available` = NOW(), "
-                        . "`date_modified` = NOW(), "
-                        . "`stock_status_id` = 7");
-        
-        $product_id = $this->db->getLastId();
-                
-        $this->db->query("INSERT INTO " . DB_PREFIX . "product_description "
-                            . "SET "
-                            . "product_id = '" . (int)$product_id . "', "
-                            . "language_id = 1, "
-                            . "name = '" . $product['name'] ."', "
-                            . "description = '".$product['description']."', "
-                            . "tag =  '".$tag."', "
-                            . "meta_title = '" . $product['name'] . "', "
-                            . "meta_h1 = '" . $product['name'] . "', "
-                            . "meta_description = '" . $tag . "', "
-                            . "meta_keyword = '" . $tag . "'");
-        
-        $this->db->query("INSERT INTO ". DB_PREFIX ."product_to_store "
-                        . "SET "
-                        . "product_id = '".(int)$product_id."',"
-                        . "store_id = 0");
-        
-        $this->db->query("INSERT INTO " . DB_PREFIX . "product_to_category SET "
-                                        . "product_id = '" . (int)$product_id . "', "
-                                        . "category_id = '" . (int)$product['category_id'] . "'");
-                        
-        $this->db->query("INSERT INTO " . DB_PREFIX . "product_to_category SET "
-                                        . "product_id = '" . (int)$product_id . "', "
-                                        . "category_id = '" . (int)$product['podcat_id'] . "'");
-        
-        $this->db->query("INSERT INTO ". DB_PREFIX ."url_alias "
-                        . "SET "
-                        . "query = 'product_id=".(int)$product_id."'");
-        
-        foreach ($photos as $photo){
-                        $this->db->query("INSERT INTO ". DB_PREFIX ."product_image "
-                                . "SET "
-                                . "product_id = ". (int)$product_id .", "
-                                . "image = 'catalog/demo/production/".$product['vin']."/".$photo."' ");
-                    }
-        
-        $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand "
-                        . "SET "
-                        . "product_id = ". (int)$product_id .", "
-                        . "brand_id = ".$product['brand_id']);            
-        
-        $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand "
-                        . "SET "
-                        . "product_id = ". (int)$product_id .", "
-                        . "brand_id = ".$product['model_id']);
-        $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand "
-                        . "SET "
-                        . "product_id = ". (int)$product_id .", "
-                        . "brand_id = ".$product['modelRow_id']);
-        
-        $data['status'] = 3;
-        //exit(var_dump($products));
-        $this->response->setOutput($this->load->view('common/addprod', $data));
-    }
-    
     public function getLayout() {
 
 
@@ -662,7 +535,7 @@ private $error = array();
     
     public function constructInfo($products) {
         $prod_info = array();
-        $sql = 'SELECT p.price, pd.name, p.sku AS vin, p.quantity, p.location, p.weight, p.comp FROM '.DB_PREFIX.'product p LEFT JOIN '.DB_PREFIX.'product_description pd ON p.product_id = pd.product_id WHERE 0 ';
+        $sql = 'SELECT p.price, pd.name, p.vin AS vin, p.quantity, p.location, p.weight, p.comp FROM '.DB_PREFIX.'product p LEFT JOIN '.DB_PREFIX.'product_description pd ON p.product_id = pd.product_id WHERE 0 ';
         $query = $this->db->query("SELECT firstname, lastname FROM ".DB_PREFIX."user WHERE user_id = '".$this->session->data['user_id']."'");
         $manager = $query->row['firstname'].' '.$query->row['lastname'];
         $info = array(

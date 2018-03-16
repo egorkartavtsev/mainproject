@@ -31,8 +31,8 @@ class ModelReportDonor extends Model{
                 //-----------------------
                     . "p.product_id AS pid, "
                     . "p.image AS image, "
-                    . "p.sku AS vin, "
-                    . "p.weight AS stock, "
+                    . "p.vin AS vin, "
+                    . "p.stock AS stock, "
                     . "p.location AS location, "
                     . "p.price AS price, "
                     . "p.category AS category, "
@@ -44,9 +44,9 @@ class ModelReportDonor extends Model{
                     . "pd.name AS itemname "
                 //-----------------------
                 ."FROM `".DB_PREFIX."product` p "
-                ."LEFT JOIN `".DB_PREFIX."sales_info` si ON si.sku = p.sku "
+                ."LEFT JOIN `".DB_PREFIX."sales_info` si ON si.sku = p.vin "
                 ."LEFT JOIN `".DB_PREFIX."product_description` pd ON pd.product_id = p.product_id "
-                ."WHERE p.height = '".$request."'";
+                ."WHERE p.donor = '".$request."'";
         $iquer = $this->db->query($sql);
         $tableCurr = '<div class="clearfix"></div>
                       <div class="clearfix"><p></p></div>

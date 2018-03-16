@@ -104,7 +104,7 @@ class ModelCommonDonor extends Model {
     public function getProds($donor){
         $query = $this->db->query("SELECT * FROM ".DB_PREFIX."product p "
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
-                . "WHERE p.height = '".$donor."'");
+                . "WHERE p.donor = '".$donor."'");
         
         $results = array();
         

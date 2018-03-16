@@ -10,13 +10,17 @@ class ModelCommonWriteoff extends Model {
                     . "p.product_id AS id, "
                     . "p.quantity AS quan, "
                     . "p.price AS price, "
-                    . "p.weight AS stock, "
+                    . "p.stock AS stock, "
                     . "p.location AS location, "
-                    . "p.sku AS vin "
+                    . "p.stell AS stell, "
+                    . "p.jar AS jar, "
+                    . "p.shelf AS shelf, "
+                    . "p.box AS box, "
+                    . "p.vin AS vin "
                 . "FROM ".DB_PREFIX."product p "
                 . "LEFT JOIN ".DB_PREFIX."product_description pd "
                     . "ON pd.product_id = p.product_id "
-                . "WHERE p.sku = '".$vin."' ");
+                . "WHERE p.vin = '".$vin."' ");
         //exit(var_dump($query->row));
         return $query->row;
     }
@@ -38,7 +42,7 @@ class ModelCommonWriteoff extends Model {
         foreach ($prods as $data) {
             $reqComplect = $this->model_tool_complect->isCompl($data['vin']);
             $results.= $data['vin'].',';
-            $query = $this->db->query("SELECT product_id, comp FROM ".DB_PREFIX."product WHERE sku = '".$data['vin']."'");
+            $query = $this->db->query("SELECT product_id, comp FROM ".DB_PREFIX."product WHERE vin = '".$data['vin']."'");
             $product_id = $query->row['product_id'];
             $heading = $query->row['comp'];
 
@@ -74,7 +78,7 @@ class ModelCommonWriteoff extends Model {
             if(!empty($arr->row)){
                 $this->db->query("UPDATE ".DB_PREFIX."product SET quantity=0, viewed=0, status=0 WHERE comp = '".$arr->row['heading']."' OR comp = '".$arr->row['id']."'");
                 $this->db->query("DELETE FROM ".DB_PREFIX."complects WHERE link = '".$data['vin']."' ");
-                $this->db->query("DELETE FROM ".DB_PREFIX."product WHERE sku = '".$data['vin']."' ");
+                $this->db->query("DELETE FROM ".DB_PREFIX."product WHERE vin = '".$data['vin']."' ");
             }
 
             /*если головной*/
