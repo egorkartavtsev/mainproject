@@ -23,7 +23,7 @@
             <?php } ?>
           <?php } ?>
           <div class="tab-content">
-            <?php if(isset($complect) && strlen($complect)>0) { ?>
+            <?php if(isset($complect) && $complect!=='') { ?>
                   <div class="alert alert-danger" id="complect">
                     <h3><?php if(!isset($whole) || !$whole) {echo "Деталь продаётся отдельно и будет снята с комплекта: ";} else {echo "Деталь продаётся только в комплекте: ";} ?></h3>
                     <table class="table">
