@@ -506,6 +506,10 @@
           </div>
         </fieldset>
         <?php echo $captcha; ?>
+        <div>
+            <input type="checkbox">
+            <label>Я соглашаюсь на обработку своих персональных данных.</label>
+        </div>
         <?php if ($text_agree) { ?>
         <div class="buttons">
           <div class="pull-right"><?php echo $text_agree; ?>

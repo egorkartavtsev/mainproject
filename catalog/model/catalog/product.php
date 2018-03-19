@@ -1,8 +1,8 @@
 <?php
 class ModelCatalogProduct extends Model {
-	public function updateViewed($product_id) {
-		$this->db->query("UPDATE " . DB_PREFIX . "product SET viewed = (viewed + 1) WHERE product_id = '" . (int)$product_id . "'");
-	}
+	//public function updateViewed($product_id) {
+	//	$this->db->query("UPDATE " . DB_PREFIX . "product SET viewed = (viewed + 1) WHERE product_id = '" . (int)$product_id . "'");
+	//}
         
         public function getModelID($name) {
             $query = $this->db->query("SELECT id FROM ".DB_PREFIX."brand WHERE name = '".$name."'");
@@ -20,20 +20,20 @@ class ModelCatalogProduct extends Model {
                 $query = $this->db->query("SELECT DISTINCT *, "
                         . "pd.name AS name, "
                         . "p.image, "
-                        . "p.jan AS note, "
-                        . "p.upc AS con_p, "
-                        . "p.isbn AS cat_numb, "
+                        . "p.note AS note, "
+                        . "p.cond AS con_p, "
+                        . "p.catn AS cat_numb, "
                         . "p.compability AS compability, "
-                        . "p.sku AS vin, "
-                        . "p.ean AS ean, "
+                        . "p.vin AS vin, "
+                        . "p.type AS ean, "
                         . "p.comp AS comp, "
-                        . "p.width AS dop, "
-                        . "p.weight AS stock, "
+                        . "p.dop AS dop, "
+                        . "p.stock AS stock, "
                         . "p.model AS model, "
-                        . "p.length AS model_row, "
+                        . "p.modR AS model_row, "
                         . "(SELECT b.name "
                             . "FROM " . DB_PREFIX . "brand b "
-                            . "WHERE b.id = p.manufacturer_id) AS manufacturer, "
+                            . "WHERE b.id = p.brand) AS manufacturer, "
 
                         . "(SELECT price "
                             . "FROM " . DB_PREFIX . "product_discount pd2 "
@@ -55,18 +55,8 @@ class ModelCatalogProduct extends Model {
 
                         . "(SELECT ss.name "
                             . "FROM " . DB_PREFIX . "stock_status ss "
-                            . "WHERE ss.stock_status_id = p.stock_status_id "
+                            . "WHERE ss.stock_status_id = p.jar "
                                 . "AND ss.language_id = '" . (int)$this->config->get('config_language_id') . "') AS stock_status, "
-
-                        . "(SELECT wcd.unit "
-                            . "FROM " . DB_PREFIX . "weight_class_description wcd "
-                            . "WHERE p.weight_class_id = wcd.weight_class_id "
-                                . "AND wcd.language_id = '" . (int)$this->config->get('config_language_id') . "') AS weight_class, "
-
-                        . "(SELECT lcd.unit "
-                            . "FROM " . DB_PREFIX . "length_class_description lcd "
-                            . "WHERE p.length_class_id = lcd.length_class_id "
-                            . "AND lcd.language_id = '" . (int)$this->config->get('config_language_id') . "') AS length_class, "
 
                         . "(SELECT AVG(rating) AS total "
                             . "FROM " . DB_PREFIX . "review r1 "
@@ -85,7 +75,7 @@ class ModelCatalogProduct extends Model {
                             . "LEFT JOIN " . DB_PREFIX . "product_to_store p2s "
                                 . "ON (p.product_id = p2s.product_id) "
                             . "LEFT JOIN " . DB_PREFIX . "manufacturer m "
-                                . "ON (p.manufacturer_id = m.manufacturer_id) "
+                                . "ON (p.brand = m.manufacturer_id) "
                             . "WHERE p.product_id = '" . (int)$product_id . "' "
                                 . "AND pd.language_id = '" . (int)$this->config->get('config_language_id') . "' "
                                 . "AND p.status = '1' AND p.date_available <= NOW() "
@@ -106,31 +96,32 @@ class ModelCatalogProduct extends Model {
 				'meta_keyword'     => $query->row['meta_keyword'],
 				'tag'              => $query->row['tag'],
 				'model'            => $query->row['model'],
-				'sku'              => $query->row['sku'],
-				'upc'              => $query->row['upc'],
-				'ean'              => $query->row['ean'],
-				'jan'              => $query->row['jan'],
-				'isbn'             => $query->row['isbn'],
-				'mpn'              => $query->row['mpn'],
+				'sku'              => $query->row['vin'],
+				'upc'              => $query->row['cond'],
+				'ean'              => $query->row['type'],
+				'jan'              => $query->row['note'],
+				'isbn'             => $query->row['catn'],
+				'mpn'              => $query->row['stell'],
 				'location'         => $query->row['location'],
 				'quantity'         => $query->row['quantity'],
 				'stock_status'     => $query->row['stock_status'],
 				'image'            => $query->row['image'],
-				'manufacturer_id'  => $query->row['manufacturer_id'],
+				'manufacturer_id'  => $query->row['brand'],
 				'manufacturer'     => $query->row['manufacturer'],
-				'price'            => ($query->row['discount'] ? $query->row['discount'] : $query->row['price']),
+				'price'            => $query->row['price'],
+                                //($query->row['discount'] ? $query->row['discount'] : 
 				'special'          => $query->row['special'],
 				'reward'           => $query->row['reward'],
 				'points'           => $query->row['points'],
-				'tax_class_id'     => $query->row['tax_class_id'],
+				//'tax_class_id'     => $query->row['tax'],
 				'date_available'   => $query->row['date_available'],
-				'weight'           => $query->row['weight'],
-				'weight_class_id'  => $query->row['weight_class_id'],
-				'length'           => $query->row['length'],
+				'weight'           => $query->row['stock'],
+				
+				'length'           => $query->row['modR'], 
 				'width'            => $query->row['width'],
-				'height'           => $query->row['height'],
-				'length_class_id'  => $query->row['length_class_id'],
-				'subtract'         => $query->row['subtract'],
+				'height'           => $query->row['donor'],
+				
+				//'subtract'         => $query->row['subtract'], используется в getProductOptions
 				'rating'           => round($query->row['rating']),
 				'reviews'          => $query->row['reviews'] ? $query->row['reviews'] : 0,
 				'minimum'          => $query->row['minimum'],
@@ -138,15 +129,15 @@ class ModelCatalogProduct extends Model {
 				'status'           => $query->row['status'],
 				'date_added'       => $query->row['date_added'],
 				'date_modified'    => $query->row['date_modified'],
-				'viewed'           => $query->row['viewed'],
+				//'viewed'           => $query->row['viewed'],удалить
                                 
-                                'model_row'        => $query->row['model_row'],
-                                'cat_numb'         => $query->row['cat_numb'],
+                                'model_row'        => $query->row['modR'],
+                                'cat_numb'         => $query->row['catn'],
                                 'vin'              => $query->row['vin'],
                                 'stock'            => $query->row['stock'],
                                 'note'             => $query->row['note'],
-                                'dop'             => $query->row['dop'],
-                                'con_p'            => $query->row['con_p'],
+                                'dop'              => $query->row['dop'],
+                                'con_p'            => $query->row['cond'],
 			);
 		} else {
 			return false;
@@ -155,10 +146,10 @@ class ModelCatalogProduct extends Model {
 
 	public function getProducts($data = array()) {
 		$sql = "SELECT p.product_id, "
-                        . "p.sku AS vin, "
-                        . "p.upc AS con_p, "
+                        . "p.vin AS vin, "
+                        . "p.cond AS con_p, "
                         . "p.compability AS compability, "
-                        . "p.isbn AS catN, "
+                        . "p.catn AS catN, "
                         . " (SELECT AVG(rating) AS total FROM " . DB_PREFIX . "review r1 WHERE r1.product_id = p.product_id AND r1.status = '1' GROUP BY r1.product_id) AS rating, (SELECT price FROM " . DB_PREFIX . "product_discount pd2 WHERE pd2.product_id = p.product_id AND pd2.customer_group_id = '" . (int)$this->config->get('config_customer_group_id') . "' AND pd2.quantity = '1' AND ((pd2.date_start = '0000-00-00' OR pd2.date_start < NOW()) AND (pd2.date_end = '0000-00-00' OR pd2.date_end > NOW())) ORDER BY pd2.priority ASC, pd2.price ASC LIMIT 1) AS discount, (SELECT price FROM " . DB_PREFIX . "product_special ps WHERE ps.product_id = p.product_id AND ps.customer_group_id = '" . (int)$this->config->get('config_customer_group_id') . "' AND ((ps.date_start = '0000-00-00' OR ps.date_start < NOW()) AND (ps.date_end = '0000-00-00' OR ps.date_end > NOW())) ORDER BY ps.priority ASC, ps.price ASC LIMIT 1) AS special";
 
 		if (!empty($data['filter_category_id'])) {
@@ -240,19 +231,19 @@ class ModelCatalogProduct extends Model {
 
 			if (!empty($data['filter_name'])) {
 				$sql .= " OR LCASE(p.model) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
-				$sql .= " OR LCASE(p.sku) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
-				$sql .= " OR LCASE(p.upc) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
-				$sql .= " OR LCASE(p.ean) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
-				$sql .= " OR LCASE(p.jan) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
-				$sql .= " OR LCASE(p.isbn) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
-				$sql .= " OR LCASE(p.mpn) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
+				$sql .= " OR LCASE(p.vin) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
+				$sql .= " OR LCASE(p.cond) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
+				$sql .= " OR LCASE(p.type) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
+				$sql .= " OR LCASE(p.note) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
+				$sql .= " OR LCASE(p.catn) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
+				$sql .= " OR LCASE(p.stell) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
 			}
 
 			$sql .= ")";
 		}
 
 		if (!empty($data['filter_manufacturer_id'])) {
-			$sql .= " AND p.manufacturer_id = '" . (int)$data['filter_manufacturer_id'] . "'";
+			$sql .= " AND p.brand = '" . (int)$data['filter_manufacturer_id'] . "'";
 		}
 
 		$sql .= " AND p.price != 0";
@@ -388,7 +379,7 @@ class ModelCatalogProduct extends Model {
 		$product_data = $this->cache->get('product.popular.' . (int)$this->config->get('config_language_id') . '.' . (int)$this->config->get('config_store_id') . '.' . $this->config->get('config_customer_group_id') . '.' . (int)$limit);
 
 		if (!$product_data) {
-			$query = $this->db->query("SELECT p.product_id FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_to_store p2s ON (p.product_id = p2s.product_id) WHERE p.status = '1' AND p.date_available <= NOW() AND p2s.store_id = '" . (int)$this->config->get('config_store_id') . "' ORDER BY p.viewed DESC, p.date_added DESC LIMIT " . (int)$limit);
+			$query = $this->db->query("SELECT p.product_id FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_to_store p2s ON (p.product_id = p2s.product_id) WHERE p.status = '1' AND p.date_available <= NOW() AND p2s.store_id = '" . (int)$this->config->get('config_store_id') . "' ORDER BY p.viewes DESC, p.date_added DESC LIMIT " . (int)$limit);
 
 			foreach ($query->rows as $result) {
 				$product_data[$result['product_id']] = $this->getProduct($result['product_id']);
@@ -463,7 +454,7 @@ class ModelCatalogProduct extends Model {
 					'name'                    => $product_option_value['name'],
 					'image'                   => $product_option_value['image'],
 					'quantity'                => $product_option_value['quantity'],
-					'subtract'                => $product_option_value['subtract'],
+					//'subtract'                => $product_option_value['subtract'],
 					'price'                   => $product_option_value['price'],
 					'price_prefix'            => $product_option_value['price_prefix'],
 					'weight'                  => $product_option_value['weight'],
@@ -507,7 +498,7 @@ class ModelCatalogProduct extends Model {
                         $prods = $this->db->query("SELECT * FROM ".DB_PREFIX."product p "
                                 . "LEFT JOIN ".DB_PREFIX."product_description pd "
                                     . "ON pd.product_id = p.product_id "
-                                . "WHERE p.comp = '".$sup->row['heading']."' OR p.sku = '".$sup->row['heading']."' ORDER BY pd.name ");
+                                . "WHERE p.comp = '".$sup->row['heading']."' OR p.vin = '".$sup->row['heading']."' ORDER BY pd.name ");
                         $complect['complect'] = $prods->rows;
                         
                         $complect['compl_price'] = $sup->row['price'];
@@ -518,7 +509,7 @@ class ModelCatalogProduct extends Model {
                         $prods = $this->db->query("SELECT * FROM ".DB_PREFIX."product p "
                                 . "LEFT JOIN ".DB_PREFIX."product_description pd "
                                     . "ON pd.product_id = p.product_id "
-                                . "WHERE p.comp = '".$query->row['comp']."' OR p.sku = '".$query->row['comp']."' ORDER BY pd.name ");
+                                . "WHERE p.comp = '".$query->row['comp']."' OR p.vin = '".$query->row['comp']."' ORDER BY pd.name ");
                         $complect['complect'] = $prods->rows;
                         
                         foreach ($prods->rows as $prod) {
@@ -647,19 +638,19 @@ class ModelCatalogProduct extends Model {
 
 			if (!empty($data['filter_name'])) {
 				$sql .= " OR LCASE(p.model) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
-				$sql .= " OR LCASE(p.sku) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
-				$sql .= " OR LCASE(p.upc) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
-				$sql .= " OR LCASE(p.ean) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
-				$sql .= " OR LCASE(p.jan) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
-				$sql .= " OR LCASE(p.isbn) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
-				$sql .= " OR LCASE(p.mpn) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
+				$sql .= " OR LCASE(p.vin) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
+				$sql .= " OR LCASE(p.cond) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
+				$sql .= " OR LCASE(p.type) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
+				$sql .= " OR LCASE(p.note) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
+				$sql .= " OR LCASE(p.catn) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
+				$sql .= " OR LCASE(p.stell) = '" . $this->db->escape(utf8_strtolower($data['filter_name'])) . "'";
 			}
 
 			$sql .= ")";
 		}
 
 		if (!empty($data['filter_manufacturer_id'])) {
-			$sql .= " AND p.manufacturer_id = '" . (int)$data['filter_manufacturer_id'] . "'";
+			$sql .= " AND p.brand = '" . (int)$data['filter_manufacturer_id'] . "'";
 		}
 
 		$query = $this->db->query($sql);
@@ -704,12 +695,12 @@ class ModelCatalogProduct extends Model {
             $query = "SELECT "
                     . "p.product_id AS product_id, "
                     . "pd.name AS name, "
-                    . "p.sku AS vin, "
+                    . "p.vin AS vin, "
                     . "p.image AS image, "
-                    . "p.jan AS note, "
-                    . "p.ean AS ean, "
+                    . "p.note AS note, "
+                    . "p.type AS ean, "
                     . "p.compability AS compability, "
-                    . "p.isbn AS cat_numb, "
+                    . "p.catn AS cat_numb, "
                     . "p.price AS price, "
                     . "p.minimum AS minimum "
                     . "FROM ".DB_PREFIX."product_description pd "
@@ -718,10 +709,10 @@ class ModelCatalogProduct extends Model {
                         . "WHERE 1 ";
             //exit(var_dump($reqwords));
             if(count($reqwords)==1){
-                $query.="AND (p.sku = '".$this->db->escape($reqwords[0])."' OR LOCATE ('".$this->db->escape($reqwords[0])."', p.isbn)  OR p.category = '".$this->db->escape($reqwords[0])."' OR p.podcateg = '".$this->db->escape($reqwords[0])."' OR LOCATE ('" . $this->db->escape($reqwords[0]) . "', pd.name) OR LOCATE ('" . $this->db->escape($reqwords[0]) . "', p.compability) OR LOCATE ('" . $this->db->escape($reqwords[0]) . "', p.jan)) ";
+                $query.="AND (p.vin = '".$this->db->escape($reqwords[0])."' OR LOCATE ('".$this->db->escape($reqwords[0])."', p.catn)  OR p.category = '".$this->db->escape($reqwords[0])."' OR p.podcateg = '".$this->db->escape($reqwords[0])."' OR LOCATE ('" . $this->db->escape($reqwords[0]) . "', pd.name) OR LOCATE ('" . $this->db->escape($reqwords[0]) . "', p.compability) OR LOCATE ('" . $this->db->escape($reqwords[0]) . "', p.note)) ";
             } elseif (count($reqwords)>1) {
                 foreach ($reqwords as $word){
-                    $query.="AND (p.sku = '".$this->db->escape($word)."' OR LOCATE ('".$this->db->escape($word)."', p.isbn)  OR p.category = '".$this->db->escape($word)."' OR p.podcateg = '".$this->db->escape($word)."' OR LOCATE ('" . $this->db->escape($word) . "', pd.name) OR LOCATE ('" . $this->db->escape($word) . "', p.compability) OR LOCATE ('" . $this->db->escape($word) . "', p.jan)) ";
+                    $query.="AND (p.vin = '".$this->db->escape($word)."' OR LOCATE ('".$this->db->escape($word)."', p.catn)  OR p.category = '".$this->db->escape($word)."' OR p.podcateg = '".$this->db->escape($word)."' OR LOCATE ('" . $this->db->escape($word) . "', pd.name) OR LOCATE ('" . $this->db->escape($word) . "', p.compability) OR LOCATE ('" . $this->db->escape($word) . "', p.note)) ";
                 }
             }
             $query.="AND status = 1 ";

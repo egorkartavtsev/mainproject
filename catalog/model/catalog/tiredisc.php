@@ -8,16 +8,16 @@ class ModelCatalogTiredisc extends Model {
                     . "p.product_id AS pid, "
                     . "pd.name AS name, "
                     . "p.image AS image, "
-                    . "p.sku AS vin, "
+                    . "p.vin AS vin, "
                     . "p.price AS price, "
-                    . "p.ean AS type, "
-                    . "p.upc AS cond, "
+                    . "p.type AS type, "
+                    . "p.cond AS cond, "
                     . "disc.image AS dImage, "
                     . "tire.image AS tImage "
                 . "FROM ".DB_PREFIX."product p "
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
-                . "LEFT JOIN ".DB_PREFIX."td_disc disc ON p.sku = disc.vin "
-                . "LEFT JOIN ".DB_PREFIX."td_tires tire ON p.sku = tire.vin "
+                . "LEFT JOIN ".DB_PREFIX."td_disc disc ON p.vin = disc.vin "
+                . "LEFT JOIN ".DB_PREFIX."td_tires tire ON p.vin = tire.vin "
                 . "WHERE p.status='1' AND p.product_id = tire.link OR p.status='1' AND p.product_id = disc.link ";
         $list = $this->db->query($query);
         
@@ -30,13 +30,13 @@ class ModelCatalogTiredisc extends Model {
                     . "p.product_id AS pid, "
                     . "pd.name AS name, "
                     . "p.image AS image, "
-                    . "p.sku AS vin, "
+                    . "p.vin AS vin, "
                     . "p.price AS price, "
-                    . "p.ean AS type, "
-                    . "p.upc AS cond "
+                    . "p.type AS type, "
+                    . "p.cond AS cond "
                 . "FROM ".DB_PREFIX."product p "
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
-                . "LEFT JOIN ".DB_PREFIX."td_tires tire ON p.sku = tire.vin "
+                . "LEFT JOIN ".DB_PREFIX."td_tires tire ON p.vin = tire.vin "
                 . "WHERE p.product_id = tire.link ";
         if(!empty($filter)){
             foreach ($filter as $field => $value) {
@@ -56,13 +56,13 @@ class ModelCatalogTiredisc extends Model {
                     . "p.product_id AS pid, "
                     . "pd.name AS name, "
                     . "p.image AS image, "
-                    . "p.sku AS vin, "
+                    . "p.vin AS vin, "
                     . "p.price AS price, "
-                    . "p.ean AS type, "
-                    . "p.upc AS cond "
+                    . "p.type AS type, "
+                    . "p.cond AS cond "
                 . "FROM ".DB_PREFIX."product p "
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
-                . "LEFT JOIN ".DB_PREFIX."td_disc disc ON p.sku = disc.vin "
+                . "LEFT JOIN ".DB_PREFIX."td_disc disc ON p.vin = disc.vin "
                 . "WHERE p.product_id = disc.link ";
         if(!empty($filter)){
             foreach ($filter as $field => $value) {
@@ -94,17 +94,17 @@ class ModelCatalogTiredisc extends Model {
         }
         $sql.="p.image AS image, "
             . "p.price AS price, "
-            . "p.width AS stock, "
-            . "p.ean AS type, "
-            . "p.sku AS vin, "
+            . "p.stock AS stock, "
+            . "p.type AS type, "
+            . "p.vin AS vin, "
             . "p.quantity AS quantity, "
             . "pd.name AS name, "
             . "pd.tag AS tags, "
             . "pd.description AS description, "
             . "p.comp AS complect, "
-            . "p.upc AS cond "
+            . "p.cond AS cond "
         . " FROM ".DB_PREFIX."td_".$table." ".$belong." "
-                . "LEFT JOIN ".DB_PREFIX."product p ON p.sku = ".$belong.".vin "
+                . "LEFT JOIN ".DB_PREFIX."product p ON p.vin = ".$belong.".vin "
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON pd.product_id = p.product_id "
                 . "WHERE p.product_id = ".(int)$pid;
         $result = $this->db->query($sql);

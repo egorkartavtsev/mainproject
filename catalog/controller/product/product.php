@@ -389,6 +389,7 @@ class ControllerProductProduct extends Controller {
                         $data['note'] = $product_info['note'];
                         $data['ean'] = $product_info['ean'];
                         $data['condition'] = $product_info['con_p'];
+                        $data['price'] = $product_info['price'];
                         $data['no_prod'] = FALSE;
                         $data['sendLink'] = $this->url->link('product/product', 'product_id='.$product_id);
                         
@@ -457,7 +458,11 @@ class ControllerProductProduct extends Controller {
 //                            }
                         }
                         //exit(var_dump($data['complect']));
-			if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
+                        
+    //ФОРМИРОВАНИЕ ЦЕНЫ ИЗ СТАРОЙ ТАБЛИЦИ ПРОДУКТОВ С УЧЕТОМ НДС И СКИДОК!! ФУНКЦИИ: getProductDiscounts; getProductOptions
+                        
+			/*
+                        if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
 				$data['price'] = $this->currency->format($this->tax->calculate($product_info['price'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 			} else {
 				$data['price'] = false;
@@ -482,10 +487,11 @@ class ControllerProductProduct extends Controller {
 			foreach ($discounts as $discount) {
 				$data['discounts'][] = array(
 					'quantity' => $discount['quantity'],
-					'price'    => $this->currency->format($this->tax->calculate($discount['price'], $product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency'])
+					'price'    => $this->currency->format($this->tax->calculate($discount['price'],$product_info['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency'])
 				);
 			}
-
+                                       
+                       
 			$data['options'] = array();
 
 			foreach ($this->model_catalog_product->getProductOptions($this->request->get['product_id']) as $option) {
@@ -520,7 +526,8 @@ class ControllerProductProduct extends Controller {
 					'required'             => $option['required']
 				);
 			}
-
+                        */                   
+    //ЗАФИКСИРОВАЛИ     
 			if ($product_info['minimum']) {
 				$data['minimum'] = $product_info['minimum'];
 			} else {
@@ -565,7 +572,12 @@ class ControllerProductProduct extends Controller {
 				} else {
 					$image = $this->model_tool_image->resize('placeholder.png', $this->config->get($this->config->get('config_theme') . '_image_related_width'), $this->config->get($this->config->get('config_theme') . '_image_related_height'));
 				}
-
+                                if ($result['price']) {
+                                   $price = $result['price'];
+                                } else {
+                                   $price = false; 
+                                }
+                                /*
 				if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
 					$price = $this->currency->format($this->tax->calculate($result['price'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 				} else {
@@ -589,17 +601,17 @@ class ControllerProductProduct extends Controller {
 				} else {
 					$rating = false;
 				}
-
+                                */
 				$data['products'][] = array(
 					'product_id'  => $result['product_id'],
 					'thumb'       => $image,
 					'name'        => $result['name'],
 					'description' => utf8_substr(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8')), 0, $this->config->get($this->config->get('config_theme') . '_product_description_length')) . '..',
 					'price'       => $price,
-					'special'     => $special,
-					'tax'         => $tax,
+					//'special'     => $special,
+					//'tax'         => $tax,
 					'minimum'     => $result['minimum'] > 0 ? $result['minimum'] : 1,
-					'rating'      => $rating,
+					//'rating'      => $rating,
 					'href'        => $this->url->link('product/product', 'product_id=' . $result['product_id'])
 				);
 			}
@@ -620,7 +632,7 @@ class ControllerProductProduct extends Controller {
 			$data['recurrings'] = $this->model_catalog_product->getProfiles($this->request->get['product_id']);
                         
 
-			$this->model_catalog_product->updateViewed($this->request->get['product_id']);
+			//$this->model_catalog_product->updateViewed($this->request->get['product_id']);
 
 			$data['column_left'] = $this->load->controller('common/column_left');
 			$data['column_right'] = $this->load->controller('common/column_right');

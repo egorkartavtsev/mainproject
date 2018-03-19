@@ -232,7 +232,8 @@ class ControllerProductSearch extends Controller {
 				} else {
 					$price = false;
 				}
-
+                                //Старая версия таблици. 
+                                /**
 				if (isset($result['special'])) {
 					$special = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 				} else {
@@ -244,7 +245,7 @@ class ControllerProductSearch extends Controller {
 				} else {
 					$tax = false;
 				}
-
+                                **/
 //				if ($this->config->get('config_review_status')) {
 //					$rating = (int)$result['rating'];
 //				} else {
@@ -287,8 +288,8 @@ class ControllerProductSearch extends Controller {
                                         'ean'         => $ean,
 					'note'        => $note,
 					'price'       => $price,
-					'special'     => $special,
-					'tax'         => $tax,
+					//'special'     => $special,
+					//'tax'         => $tax,
 					'minimum'     => ($result['minimum'] > 0) ? $result['minimum'] : 1,
 //					'rating'      => $rating,
 					'href'        => $this->url->link('product/product', 'product_id=' . $result['product_id'] . $url)
