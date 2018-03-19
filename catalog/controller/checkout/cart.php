@@ -95,29 +95,29 @@ class ControllerCheckoutCart extends Controller {
 				}
 
 				$option_data = array();
-
-				foreach ($product['option'] as $option) {
-					if ($option['type'] != 'file') {
-						$value = $option['value'];
-					} else {
-						$upload_info = $this->model_tool_upload->getUploadByCode($option['value']);
-
-						if ($upload_info) {
-							$value = $upload_info['name'];
-						} else {
-							$value = '';
-						}
-					}
-
-					$option_data[] = array(
-						'name'  => $option['name'],
-						'value' => (utf8_strlen($value) > 20 ? utf8_substr($value, 0, 20) . '..' : $value)
-					);
-				}
+//
+//				foreach ($product['option'] as $option) {
+//					if ($option['type'] != 'file') {
+//						$value = $option['value'];
+//					} else {
+//						$upload_info = $this->model_tool_upload->getUploadByCode($option['value']);
+//
+//						if ($upload_info) {
+//							$value = $upload_info['name'];
+//						} else {
+//							$value = '';
+//						}
+//					}
+//
+//					$option_data[] = array(
+//						'name'  => $option['name'],
+//						'value' => (utf8_strlen($value) > 20 ? utf8_substr($value, 0, 20) . '..' : $value)
+//					);
+//				}
 
 				// Display prices
 				if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
-					$unit_price = $this->tax->calculate($product['price'], $product['tax_class_id'], $this->config->get('config_tax'));
+					$unit_price = $product['price'];
 					
 					$price = $this->currency->format($unit_price, $this->session->data['currency']);
 					$total = $this->currency->format($unit_price * $product['quantity'], $this->session->data['currency']);
@@ -182,13 +182,13 @@ class ControllerCheckoutCart extends Controller {
 			$this->load->model('extension/extension');
 
 			$totals = array();
-			$taxes = $this->cart->getTaxes();
+			//$taxes = $this->cart->getTaxes();
 			$total = 0;
 			
 			// Because __call can not keep var references so we put them into an array. 			
 			$total_data = array(
 				'totals' => &$totals,
-				'taxes'  => &$taxes,
+				'taxes'  => array(),
 				'total'  => &$total
 			);
 			
@@ -352,16 +352,16 @@ class ControllerCheckoutCart extends Controller {
 				$this->load->model('extension/extension');
 
 				$totals = array();
-				$taxes = $this->cart->getTaxes();
+				//$taxes = $this->cart->getTaxes();
 				$total = 0;
-		
+                                
 				// Because __call can not keep var references so we put them into an array. 			
 				$total_data = array(
 					'totals' => &$totals,
-					'taxes'  => &$taxes,
+					//'taxes'  => &$taxes,
 					'total'  => &$total
 				);
-
+                                
 				// Display prices
 				if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
 					$sort_order = array();
@@ -373,7 +373,7 @@ class ControllerCheckoutCart extends Controller {
 					}
 
 					array_multisort($sort_order, SORT_ASC, $results);
-
+                                        /*
 					foreach ($results as $result) {
 						if ($this->config->get($result['code'] . '_status')) {
 							$this->load->model('extension/total/' . $result['code']);
@@ -382,7 +382,7 @@ class ControllerCheckoutCart extends Controller {
 							$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
 						}
 					}
-
+                                        */
 					$sort_order = array();
 
 					foreach ($totals as $key => $value) {
@@ -456,16 +456,16 @@ class ControllerCheckoutCart extends Controller {
 			$this->load->model('extension/extension');
 
 			$totals = array();
-			$taxes = $this->cart->getTaxes();
+			//$taxes = $this->cart->getTaxes();
 			$total = 0;
-
+                       
 			// Because __call can not keep var references so we put them into an array. 			
 			$total_data = array(
 				'totals' => &$totals,
-				'taxes'  => &$taxes,
+				'taxes'  => array(),
 				'total'  => &$total
 			);
-
+                        
 			// Display prices
 			if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
 				$sort_order = array();

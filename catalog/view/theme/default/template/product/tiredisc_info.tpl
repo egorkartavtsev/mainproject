@@ -65,7 +65,7 @@
         </div>
       </div>
         <div class="row">
-        <?php if ($products) { ?>
+        <?php if (isset($products)) { ?>
           <?php foreach ($products as $product) { ?>
             <div class="product-layout product-list col-xs-12">
               <div class="product-thumb">
