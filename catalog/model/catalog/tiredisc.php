@@ -123,11 +123,11 @@ class ModelCatalogTiredisc extends Model {
     public function getCItems($heading) {
         $result = array();
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."complects WHERE heading = '".$heading."' OR id = '".$heading."'");
-        $qlink = $this->db->query("SELECT product_id FROM ".DB_PREFIX."product WHERE sku = '".$sup->row['link']."'");
+        $qlink = $this->db->query("SELECT product_id FROM ".DB_PREFIX."product WHERE vin = '".$sup->row['link']."'");
         $result['whole'] = $sup->row['whole'];
         $result['c_price'] = $sup->row['price'];
         $result['link'] = $qlink->row['product_id'];
-        $qitems = $this->db->query("SELECT pd.name, p.price, pd.product_id FROM ".DB_PREFIX."product p LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id WHERE p.sku = '".$sup->row['heading']."' OR p.comp = '".$sup->row['heading']."'");
+        $qitems = $this->db->query("SELECT pd.name, p.price, pd.product_id FROM ".DB_PREFIX."product p LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id WHERE p.vin = '".$sup->row['heading']."' OR p.comp = '".$sup->row['heading']."'");
         $result['items'] = $qitems->rows;
 //        exit(var_dump($result));
         return $result;

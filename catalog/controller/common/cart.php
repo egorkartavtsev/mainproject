@@ -5,18 +5,18 @@ class ControllerCommonCart extends Controller {
 
 		// Totals
 		$this->load->model('extension/extension');
-                /*
+                
 		$totals = array();
 		//$taxes = $this->cart->getTaxes();
 		$total = 0;
-
+               
 		// Because __call can not keep var references so we put them into an array.
 		$total_data = array(
 			'totals' => &$totals,
-			//'taxes'  => &$taxes,
+			'taxes' => array(),
 			'total'  => &$total
 		);
-		*/	
+			
 		// Display prices
 		if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
 			$sort_order = array();
@@ -28,7 +28,7 @@ class ControllerCommonCart extends Controller {
 			}
 
 			array_multisort($sort_order, SORT_ASC, $results);
-                        /*
+                        
 			foreach ($results as $result) {
 				if ($this->config->get($result['code'] . '_status')) {
 					$this->load->model('extension/total/' . $result['code']);
@@ -37,7 +37,7 @@ class ControllerCommonCart extends Controller {
 					$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
 				}
 			}
-                        */
+                        
 			$sort_order = array();
 
 			foreach ($totals as $key => $value) {
