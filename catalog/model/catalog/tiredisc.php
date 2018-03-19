@@ -54,6 +54,7 @@ class ModelCatalogTiredisc extends Model {
         $result = array();
         $query = "SELECT "
                     . "p.product_id AS pid, "
+                    . "p.minimum AS minimum, "
                     . "pd.name AS name, "
                     . "p.image AS image, "
                     . "p.vin AS vin, "
