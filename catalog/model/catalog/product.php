@@ -493,7 +493,7 @@ class ModelCatalogProduct extends Model {
                 
                 if (!empty($query->row)){
                     $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."complects "
-                                . "WHERE heading = '".$query->row['sku']."'");
+                                . "WHERE heading = '".$query->row['vin']."'");
                     if(!empty($sup->row)){
                         $prods = $this->db->query("SELECT * FROM ".DB_PREFIX."product p "
                                 . "LEFT JOIN ".DB_PREFIX."product_description pd "
@@ -514,7 +514,7 @@ class ModelCatalogProduct extends Model {
                         
                         foreach ($prods->rows as $prod) {
                             $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."complects "
-                                . "WHERE heading = '".$prod['sku']."'");
+                                . "WHERE heading = '".$prod['vin']."'");
                             if(!empty($sup->row)){
                                 $complect['compl_price'] = $sup->row['price'];
                                 $complect['link'] = $sup->row['link'];

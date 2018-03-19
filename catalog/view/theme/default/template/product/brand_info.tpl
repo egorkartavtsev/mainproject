@@ -101,6 +101,18 @@
           <?php foreach ($products as $product) { ?>
             <div class="product-layout product-list col-xs-12">
               <div class="product-thumb">
+                    <?php if ($product['ean']){ ?>
+                        <?php if ($product['ean']=='Б/У') { ?> 
+                            <div class="eanr">
+                            <p><?php echo $product['ean']; ?><p>
+                            </div>
+                        <?php }?>
+                        <?php if ($product['ean']=='Новый') { ?> 
+                            <div class="eanb">
+                            <p><?php echo $product['ean']; ?><p>
+                            </div>
+                        <?php }?>
+                   <?php }?>
                 <div class="image"><a href="<?php echo $product['href']; ?>"><img src="<?php echo $product['thumb']; ?>" alt="<?php echo $product['name']; ?>" title="<?php echo $product['name']; ?>" class="img-responsive" /></a></div>
                 <div>
                   <div class="caption">
