@@ -443,7 +443,8 @@ class ControllerProductTiredisc extends Controller {
         $product_info = $this->model_catalog_tiredisc->getProdInfo($pid, 'disk');
         $params = $this->model_catalog_tiredisc->getParams('disk');
         $data = $product_info;
-        if($product_info['complect']!=''){
+//        exit(var_dump($product_info));
+        if(strlen($product_info['complect'])>0){
             $complect = $this->model_catalog_tiredisc->getCItems($product_info['complect']);
             $data['complect'] = $complect['items'];
             $data['whole'] = $complect['whole'];

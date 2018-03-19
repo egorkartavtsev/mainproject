@@ -23,14 +23,14 @@
             <?php } ?>
           <?php } ?>
           <div class="tab-content">
-            <?php if(isset($complect)) { ?>
+            <?php if(isset($complect) && strlen($complect)>0) { ?>
                   <div class="alert alert-danger" id="complect">
                     <h3><?php if(!isset($whole) || !$whole) {echo "Деталь продаётся отдельно и будет снята с комплекта: ";} else {echo "Деталь продаётся только в комплекте: ";} ?></h3>
                     <table class="table">
                         <thead>
                             <tr>
                                 <th>Название:</th>
-                                <?php if(!$whole) { ?><th>Цена:</th><?php } ?>
+                                <?php if(isset($whole) && !$whole) { ?><th>Цена:</th><?php } ?>
                             </tr>
                         </thead>
                         <?php $summ = 0; foreach($complect as $acc) { ?>
