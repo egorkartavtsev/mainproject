@@ -5,7 +5,7 @@
             $prod = $this->db->query("SELECT pd.name AS name FROM ".DB_PREFIX."product p "
                     . "LEFT JOIN ".DB_PREFIX."product_description pd "
                         . "ON pd.product_id = p.product_id"
-                    . " WHERE p.sku = '".$vin."' ");
+                    . " WHERE p.vin = '".$vin."' ");
             return $prod->row;
         }
         
@@ -19,7 +19,7 @@
             $this->db->query($query);
             $query = "DELETE FROM ".DB_PREFIX."complects WHERE id = '".$id."' ";
             $this->db->query($query);
-            $query = "DELETE FROM ".DB_PREFIX."product WHERE sku = '".$ar->row['link']."' ";
+            $query = "DELETE FROM ".DB_PREFIX."product WHERE vin = '".$ar->row['link']."' ";
             $this->db->query($query);
         }
         
@@ -34,7 +34,7 @@
                 'sale'      => $query_comp->row['sale']
             );
             
-            $query = 'SELECT p.sku AS vin, pd.name AS name, p.price AS price '
+            $query = 'SELECT p.vin AS vin, pd.name AS name, p.price AS price '
                    . 'FROM '.DB_PREFIX.'product p '
                    . 'LEFT JOIN '.DB_PREFIX.'product_description pd '
                         . 'ON pd.product_id = p.product_id '
@@ -54,12 +54,12 @@
         
         public function create($name, $price, $heading, $complect=0, $whole, $sale=0) {
             
-            $quer = $this->db->query("SELECT * FROM ".DB_PREFIX."product WHERE sku = '".$heading."'");
+            $quer = $this->db->query("SELECT * FROM ".DB_PREFIX."product WHERE vin = '".$heading."'");
             $image = $quer->row['image'];
             $link = uniqid('complect');
             $complects = $complect!=0?$complect:array();
         /*создаём пустой товар для обозначения комплекта*/
-            $this->db->query("INSERT INTO ".DB_PREFIX."product (sku, price, status, quantity, viewed, image, date_added) VALUES ('".$link."', ".(int)$price.", 0, 1, 0, '".$image."', NOW())");
+            $this->db->query("INSERT INTO ".DB_PREFIX."product (vin, price, status, quantity, viewed, image, date_added) VALUES ('".$link."', ".(int)$price.", 0, 1, 0, '".$image."', NOW())");
             $prod = $this->db->getLastId();
             $this->db->query("INSERT INTO ".DB_PREFIX."product_description (name, language_id, product_id) VALUES ('Комплект: ".$name."', 1, ".$prod.")");
             $this->db->query("INSERT INTO ".DB_PREFIX."product_to_store (product_id, store_id) VALUES (".(int)$prod.", 0)");
@@ -74,22 +74,22 @@
                     . "SET comp = '".$comp_id."', "
                     . "comp_price = '".(int)$price."', "
                     . "comp_whole = ".(int)$whole." "
-                    . "WHERE sku = '".$heading."'";
+                    . "WHERE vin = '".$heading."'";
             $this->db->query($quer);
         /*привязываем комплектующие к головному товару*/
             $price = 0;
             foreach ($complects as $com){
                 if($com!==''){
-                    $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE sku = '".$com."'");
+                    $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE vin = '".$com."'");
                     $price+= $sup->row['price'];
                     $quer = "UPDATE ".DB_PREFIX."product "
                         . "SET comp = '".$heading."', "
                             . "image = '".$image."' "
-                        . "WHERE sku = '".$com."'";
+                        . "WHERE vin = '".$com."'";
                     $this->db->query($quer);
                 }
             }
-            $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE sku = '".$heading."' ");
+            $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE vin = '".$heading."' ");
             $price+= $sup->row['price'];
             $sale = $sale==0?15:$sale;
             $supsale = 100 - $sale;
@@ -117,13 +117,13 @@
                 }
             //---------------
             $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$price."' WHERE heading = '".$heading."'");
-            $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE sku = '".$link."'");
-            $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE sku = '".$heading."'");
+            $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE vin = '".$link."'");
+            $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE vin = '".$heading."'");
         }
         
         public function editComplect($id, $name, $price, $heading, $complect=0, $whole, $sale=0) {
             
-            $quer = $this->db->query("SELECT * FROM ".DB_PREFIX."product WHERE sku = '".$heading."'");
+            $quer = $this->db->query("SELECT * FROM ".DB_PREFIX."product WHERE vin = '".$heading."'");
             $image = $quer->row['image'];
             $query = $this->db->query("SELECT * FROM ".DB_PREFIX."complects WHERE id = '".$id."'");
             
@@ -138,25 +138,25 @@
             $this->db->query($quer);
             $quer = "UPDATE ".DB_PREFIX."product "
                     . "SET comp = '".$id."' "
-                    . "WHERE sku = '".$heading."'";
+                    . "WHERE vin = '".$heading."'";
             $this->db->query($quer);
             
-            $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE `sku` = '".$query->row['link']."' ");
-            $this->db->query("UPDATE ".DB_PREFIX."product SET comp_whole = '".$whole."' WHERE `sku` = '".$heading."' ");
+            $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE `vin` = '".$query->row['link']."' ");
+            $this->db->query("UPDATE ".DB_PREFIX."product SET comp_whole = '".$whole."' WHERE `vin` = '".$heading."' ");
             $price = 0;
             foreach ($complect as $com){
                 if($com!==''){
-                    $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE sku = '".$com."'");
+                    $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE vin = '".$com."'");
                     $price+= $sup->row['price'];
                     $quer = "UPDATE ".DB_PREFIX."product "
                         . "SET comp = '".$heading."', "
                             . "image = '".$image."' "
-                        . "WHERE sku = '".$com."'";
+                        . "WHERE vin = '".$com."'";
                     $this->db->query($quer);
                 }
             }
             
-            $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE sku = '".$heading."' ");
+            $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE vin = '".$heading."' ");
             $price+= $sup->row['price'];
             $sale = $sale==0?15:$sale;
             $supsale = 100 - $sale;
@@ -184,8 +184,8 @@
                 }
             //---------------
             $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$price."' WHERE heading = '".$heading."'");
-            $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE sku = '".$query->row['link']."'");
-            $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE sku = '".$heading."'");
+            $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE vin = '".$query->row['link']."'");
+            $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE vin = '".$heading."'");
         }
         
         public function getTotalComplects() {
