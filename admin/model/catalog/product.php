@@ -60,7 +60,7 @@ class ModelCatalogProduct extends Model {
                 }
                 
                 if (isset($data['filter_donor']) && !is_null($data['filter_donor'])) {
-                    $sql .= " AND LOCATE ('" . $this->db->escape($data['filter_donor']) . "', p.height)";
+                    $sql .= " AND LOCATE ('" . $this->db->escape($data['filter_donor']) . "', p.donor)";
                 }
 
 		if (!empty($data['filter_name'])) {
@@ -79,7 +79,7 @@ class ModelCatalogProduct extends Model {
 			$sql .= " AND p.vin LIKE '" . $this->db->escape($data['filter_vin']) . "%'";
 		}
                 if (isset($data['filter_catn']) && !is_null($data['filter_catn'])) {
-			$sql .= " AND LOCATE('" . $this->db->escape($data['filter_catn']) . "', p.isbn)";
+			$sql .= " AND LOCATE('" . $this->db->escape($data['filter_catn']) . "', p.catn)";
 		}
                 
               
@@ -364,7 +364,7 @@ class ModelCatalogProduct extends Model {
 		}
                 
                 if (isset($data['filter_donor']) && !is_null($data['filter_donor'])) {
-			$sql .= " AND LOCATE ('" . $this->db->escape($data['filter_donor']) . "', p.height) AND p.model != '' ";
+			$sql .= " AND LOCATE ('" . $this->db->escape($data['filter_donor']) . "', p.donor) AND p.model != '' ";
 		}
                 
 		if (!empty($data['filter_name'])) {
@@ -372,7 +372,7 @@ class ModelCatalogProduct extends Model {
 		}
                 
                 if (!empty($data['filter_catn'])) {
-			$sql .= " AND LOCATE('" . $this->db->escape($data['filter_catn']) . "', p.isbn)";
+			$sql .= " AND LOCATE('" . $this->db->escape($data['filter_catn']) . "', p.catn)";
 		}
 
 		if (!empty($data['filter_model'])) {

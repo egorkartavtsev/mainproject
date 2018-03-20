@@ -293,7 +293,7 @@ class ModelToolExcel extends Model {
                 . "p.podcateg AS podcat, "
                 . "p.compability AS compability  "
                 . "FROM ".DB_PREFIX."product_history ph "
-                . "LEFT JOIN ".DB_PREFIX."product p ON ph.sku = p.sku "
+                . "LEFT JOIN ".DB_PREFIX."product p ON ph.sku = p.vin "
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON pd.product_id = p.product_id "
                 . "LEFT JOIN ".DB_PREFIX."brand b ON b.id = p.manufacturer_id "
                 . "WHERE "

@@ -59,7 +59,7 @@
             $link = uniqid('complect');
             $complects = $complect!=0?$complect:array();
         /*создаём пустой товар для обозначения комплекта*/
-            $this->db->query("INSERT INTO ".DB_PREFIX."product (vin, price, status, quantity, viewed, image, date_added) VALUES ('".$link."', ".(int)$price.", 0, 1, 0, '".$image."', NOW())");
+            $this->db->query("INSERT INTO ".DB_PREFIX."product (vin, price, status, quantity, viewes, image, date_added) VALUES ('".$link."', ".(int)$price.", 0, 1, 0, '".$image."', NOW())");
             $prod = $this->db->getLastId();
             $this->db->query("INSERT INTO ".DB_PREFIX."product_description (name, language_id, product_id) VALUES ('Комплект: ".$name."', 1, ".$prod.")");
             $this->db->query("INSERT INTO ".DB_PREFIX."product_to_store (product_id, store_id) VALUES (".(int)$prod.", 0)");

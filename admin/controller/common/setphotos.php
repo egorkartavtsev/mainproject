@@ -11,13 +11,13 @@ private $error = array();
         
         public function upload() {
             
-            $piq = $this->db->query("SELECT `product_id` FROM ".DB_PREFIX."product WHERE `sku` = '".$_POST['vin']."'");
+            $piq = $this->db->query("SELECT `product_id` FROM ".DB_PREFIX."product WHERE `vin` = '".$_POST['vin']."'");
 			//exit(var_dump($piq));
 			if (!empty($piq->rows)) {
 				$product_id = $piq->row['product_id'];
 				/**************************************/
 				$vins = array();
-				$query = $this->db->query("SELECT `sku` AS vin FROM ".DB_PREFIX."product WHERE 1");
+				$query = $this->db->query("SELECT `vin` AS vin FROM ".DB_PREFIX."product WHERE 1");
 				$vins = $query->rows;
 				/*************************************/
 				$uploaddir = DIR_IMAGE.'catalog/demo/production/';
@@ -140,7 +140,7 @@ private $error = array();
 							
 							$name++;
 							$data['success_message'] = 'Фотографии загружены и прикреплены.';
-							$this->db->query("UPDATE `oc_product` SET `image` = 'catalog/demo/production/".$vin."/0.jpg' WHERE `sku` = '".$vin."'");
+							$this->db->query("UPDATE `oc_product` SET `image` = 'catalog/demo/production/".$vin."/0.jpg' WHERE `vin` = '".$vin."'");
 						}                   
 					}
 					
@@ -435,7 +435,7 @@ private $error = array();
                         . "`manufacturer_id` = '". $product['brand_id'] ."', "
                         . "`model` = '". $product['model'] ."', "
                         . "`jan` = '". $product['prim'] ."', "
-                        . "`sku` = '". $product['vin'] ."', "
+                        . "`vin` = '". $product['vin'] ."', "
                         . "`upc` = '". $product['fix'] ."', "
                         . "`ean` = '". $product['type'] ."', "
                         . "`location` = '".$product['sklad']."/".$product['stell']."/".$product['yarus']."/".$product['polka']."/".$product['korobka']."', "
