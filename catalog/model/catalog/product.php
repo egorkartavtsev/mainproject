@@ -27,14 +27,23 @@ class ModelCatalogProduct extends Model {
                         . "p.vin AS vin, "
                         . "p.type AS ean, "
                         . "p.comp AS comp, "
+                        . "p.price as price, "
                         . "p.dop AS dop, "
                         . "p.stock AS stock, "
                         . "p.model AS model, "
                         . "p.modR AS model_row, "
+                        //. "c.whole AS com_whole, "
+                        //. "c.price AS com_price,"
                         . "(SELECT b.name "
                             . "FROM " . DB_PREFIX . "brand b "
                             . "WHERE b.id = p.brand) AS manufacturer, "
-
+                        . "(SELECT c.whole "
+                            . "FROM " . DB_PREFIX . "complects c "
+                            . "WHERE c.heading = p.vin OR c.heading = p.comp) AS com_whole, "
+                        . "(SELECT c.price "
+                            . "FROM " . DB_PREFIX . "complects c "
+                            . "WHERE c.heading = p.vin OR c.heading = p.comp) AS com_price, "
+                        /*//------------------------------
                         . "(SELECT price "
                             . "FROM " . DB_PREFIX . "product_discount pd2 "
                             . "WHERE pd2.product_id = p.product_id "
@@ -47,7 +56,7 @@ class ModelCatalogProduct extends Model {
                             . "WHERE ps.product_id = p.product_id "
                                 . "AND ps.customer_group_id = '" . (int)$this->config->get('config_customer_group_id') . "' "
                                 . "AND ((ps.date_start = '0000-00-00' OR ps.date_start < NOW()) AND (ps.date_end = '0000-00-00' OR ps.date_end > NOW())) ORDER BY ps.priority ASC, ps.price ASC LIMIT 1) AS special, "
-
+                        // -------------------------------*/
                         . "(SELECT points "
                             . "FROM " . DB_PREFIX . "product_reward pr "
                             . "WHERE pr.product_id = p.product_id "
@@ -69,9 +78,12 @@ class ModelCatalogProduct extends Model {
                                 . "AND r2.status = '1' GROUP BY r2.product_id) AS reviews, "
 
                         . "p.sort_order "
-                            . "FROM " . DB_PREFIX . "product p "
+                        
+                        . "FROM " . DB_PREFIX . "product p "
                             . "LEFT JOIN " . DB_PREFIX . "product_description pd "
                                 . "ON (p.product_id = pd.product_id) "
+                            //. "LEFT JOIN ". DB_PREFIX . "complects c "
+                            //    . "ON (p.vin = c.heading OR p.comp = c.heading) "
                             . "LEFT JOIN " . DB_PREFIX . "product_to_store p2s "
                                 . "ON (p.product_id = p2s.product_id) "
                             . "LEFT JOIN " . DB_PREFIX . "manufacturer m "
@@ -81,7 +93,7 @@ class ModelCatalogProduct extends Model {
                                 . "AND p.status = '1' AND p.date_available <= NOW() "
                                 . "AND p2s.store_id = '" . (int)$this->config->get('config_store_id') . "'");
                 
-                        //exit(var_dump($query));
+                            //exit(var_dump($query));
                 
 		if ($query->num_rows) {
 			return array(
@@ -109,8 +121,10 @@ class ModelCatalogProduct extends Model {
 				'manufacturer_id'  => $query->row['brand'],
 				'manufacturer'     => $query->row['manufacturer'],
 				'price'            => $query->row['price'],
+                                'com_price'        => $query->row['com_price'],
+                                'com_whole'        => $query->row['com_whole'],
                                 //($query->row['discount'] ? $query->row['discount'] : 
-				'special'          => $query->row['special'],
+				//'special'          => $query->row['special'],
 				'reward'           => $query->row['reward'],
 				'points'           => $query->row['points'],
 				//'tax_class_id'     => $query->row['tax'],
@@ -150,6 +164,7 @@ class ModelCatalogProduct extends Model {
                         . "p.cond AS con_p, "
                         . "p.compability AS compability, "
                         . "p.catn AS catN, "
+                        . "p.comp AS comp, "
                         . " (SELECT AVG(rating) AS total FROM " . DB_PREFIX . "review r1 WHERE r1.product_id = p.product_id AND r1.status = '1' GROUP BY r1.product_id) AS rating, (SELECT price FROM " . DB_PREFIX . "product_discount pd2 WHERE pd2.product_id = p.product_id AND pd2.customer_group_id = '" . (int)$this->config->get('config_customer_group_id') . "' AND pd2.quantity = '1' AND ((pd2.date_start = '0000-00-00' OR pd2.date_start < NOW()) AND (pd2.date_end = '0000-00-00' OR pd2.date_end > NOW())) ORDER BY pd2.priority ASC, pd2.price ASC LIMIT 1) AS discount, (SELECT price FROM " . DB_PREFIX . "product_special ps WHERE ps.product_id = p.product_id AND ps.customer_group_id = '" . (int)$this->config->get('config_customer_group_id') . "' AND ((ps.date_start = '0000-00-00' OR ps.date_start < NOW()) AND (ps.date_end = '0000-00-00' OR ps.date_end > NOW())) ORDER BY ps.priority ASC, ps.price ASC LIMIT 1) AS special";
 
 		if (!empty($data['filter_category_id'])) {
@@ -702,6 +717,13 @@ class ModelCatalogProduct extends Model {
                     . "p.compability AS compability, "
                     . "p.catn AS cat_numb, "
                     . "p.price AS price, "
+                    . "p.comp AS comp, "
+                    . "(SELECT c.whole "
+                        . "FROM " . DB_PREFIX . "complects c "
+                        . "WHERE c.heading = p.vin OR c.heading = p.comp) AS com_whole, "
+                    . "(SELECT c.price "
+                        . "FROM " . DB_PREFIX . "complects c "
+                        . "WHERE c.heading = p.vin OR c.heading = p.comp) AS com_price, "
                     . "p.minimum AS minimum "
                     . "FROM ".DB_PREFIX."product_description pd "
                         . "LEFT JOIN ".DB_PREFIX."product p "

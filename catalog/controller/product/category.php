@@ -274,6 +274,7 @@ class ControllerProductCategory extends Controller {
                         } else {
                             $product_total = $this->model_catalog_product->getTotalProducts($filter_data);
                             $results = $this->model_catalog_product->getProducts($filter_data);
+                            //exit (var_dump($results));
                         }
                         
 
@@ -284,14 +285,31 @@ class ControllerProductCategory extends Controller {
 				} else {
 					$image = $this->model_tool_image->resize('placeholder.png', $this->config->get($this->config->get('config_theme') . '_image_product_width'), $this->config->get($this->config->get('config_theme') . '_image_product_height'));
 				}
-                                
-                                // СТАРАЯ ТАБЛИЦА ПРОДУКТОВ
+                                                               
                                 if ($result['price']) {
                                    $price = $result['price'];
                                 } else {
                                    $price = false; 
                                 }
-                                    
+                                
+                                 if ($result['com_whole']) {
+                                   $com_whole = $result['com_whole'];
+                                } else {
+                                   $com_whole = false; 
+                                } 
+                                
+                                if ($result['comp']) {
+                                   $comp = $result['comp'];
+                                } else {
+                                   $comp = false; 
+                                } 
+                                
+                                if ($result['com_price']) {
+                                   $com_price = $result['com_price'];
+                                } else {
+                                   $com_price = false; 
+                                }
+                                // СТАРАЯ ТАБЛИЦА ПРОДУКТОВ
 				/*if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
 					$price = /*$this->currency->format($this->tax->calculate($result['price'],$result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
 				} else {
@@ -351,6 +369,9 @@ class ControllerProductCategory extends Controller {
                                             'note'        => $result['jan'],
                                             'ean'         => $result['ean'],
                                             'price'       => $price,
+                                            'com_whole'   => $com_whole,
+                                            'comp'        => $comp,
+                                            'com_price'   => $com_price,
                                             //'special'     => $special,
                                             //'tax'         => $tax,
                                             'minimum'     => ($result['minimum'] > 0) ? $result['minimum'] : 1,
@@ -382,6 +403,9 @@ class ControllerProductCategory extends Controller {
                                             'note'        => $result['jan'],
                                             'ean'         => $result['ean'],
                                             'price'       => $price,
+                                            'com_whole'   => $com_whole,
+                                            'comp'        => $comp,
+                                            'com_price'   => $com_price,
                                             //'special'     => $special,
                                             //'tax'         => $tax,
                                             'minimum'     => ($result['minimum'] > 0) ? $result['minimum'] : 1,

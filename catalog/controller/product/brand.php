@@ -275,7 +275,7 @@ class ControllerProductBrand extends Controller{
                                 if($result['comp']!=''){
                                     $comp = $this->language->get('comp');
                                 } else{
-                                    $comp = '';
+                                    $comp = false;
                                     //exit(var_dump($results));
                                 }
                                 if ($result['image']) {
@@ -295,6 +295,17 @@ class ControllerProductBrand extends Controller{
                                 else{
                                     $compability = '';
                                 }
+                                 if ($result['com_whole']) {
+                                   $com_whole = $result['com_whole'];
+                                } else {
+                                   $com_whole = false; 
+                                } 
+                                                            
+                                if ($result['com_price']) {
+                                   $com_price = $result['com_price'];
+                                } else {
+                                   $com_price = false; 
+                                }
                                 
                                 $data['products'][] = array(
                                     
@@ -309,6 +320,9 @@ class ControllerProductBrand extends Controller{
                                         'ean'         => $result['ean'],
                                         'cond'        => $result['con_p'],
 					'price'       => $result['price'],
+                                        'com_whole'   => $com_whole,
+                                        'comp'        => $comp,
+                                        'com_price'   => $com_price,
 					'minimum'     => ($result['minimum'] > 0) ? $result['minimum'] : 1,
                                         'comp'        => $comp,
 					'href'        => $this->url->link('product/product', 'brand_id=' . $this->request->get['brand_id'] . '&product_id=' . $result['product_id'] . $url)

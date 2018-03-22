@@ -42,19 +42,20 @@
       <div class="row">
         <?php foreach ($products as $product) { ?>
         <div class="product-layout product-list col-xs-12">
-          <div class="product-thumb">
-              <?php if ($product['ean']){ ?>
+          <div class="label-thumd">
+            <?php if ($product['ean']){ ?>
                 <?php if ($product['ean']=='Б/У') { ?> 
-                    <div class="eanr">
-                        <p><?php echo $product['ean']; ?><p>
-                    </div>
+                    <div class="eanr">Б/У</div>
                 <?php }?>
                 <?php if ($product['ean']=='Новый') { ?> 
-                    <div class="eanb">
-                        <p><?php echo $product['ean']; ?><p>
-                    </div>
+                    <div class="eanb">Новый</div>
                 <?php }?>
             <?php }?>
+            <?php if ($product['comp']){ ?>
+                <div class="whole">Комплект</div>
+            <?php }?>
+            </div>  
+          <div class="product-thumb">
             <div class="image"><a href="<?php echo $product['href']; ?>"><img src="<?php echo $product['thumb']; ?>" alt="<?php echo $product['name']; ?>" title="<?php echo $product['name']; ?>" class="img-responsive" /></a></div>
             <div>
               <div class="caption">
@@ -77,9 +78,11 @@
                     <?php if (isset($product['cond']) && $product['cond']!='-') { ?>
                         <p><b>Состояние:</b> <?php echo $product['cond']; ?></p>
                     <?php }?>
-                    <?php if ($product['price'] != 0.00) { ?>
-                    <p class="price"><b>Цена: <?php echo $product['price']; ?></b></p>
-                    <?php }?>
+                    <?php if ($product['com_whole'] == 1 && $product['com_price'] != 0)  { ?>
+                        <p class="price"><b>Цена комплекта: <?php echo $product['com_price']; ?></b></p>
+                    <?php } elseif ($product['price'] != 0.00) { ?>
+                        <p class="price"><b>Цена: <?php echo $product['price']; ?></b></p>
+                    <?php }?>   
               </div>
               <div class="button-group">
                 <button type="button" onclick="cart.add('<?php echo $product['product_id']; ?>', '<?php echo $product['minimum']; ?>');"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo $button_cart; ?></span></button>
