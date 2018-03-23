@@ -907,6 +907,10 @@ class ControllerCommonColumnLeft extends Controller {
                             'td-lib' => $this->language->get('td-lib'),
                             'td-create' => $this->language->get('td-create')
                         );
+                        
+                        //Libraries
+                        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."libraries ");
+                        $data['librs'] = $sup->rows;
 			return $this->load->view('common/column_left', $data);
 		}
 	}
