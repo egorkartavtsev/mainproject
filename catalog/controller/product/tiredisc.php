@@ -63,7 +63,8 @@ class ControllerProductTiredisc extends Controller {
 				}
                                                                 
                                 $data['products'][] = array(
-                                        
+                                        'product_id' => $result['pid'],
+                                        'minimum' => $result['minimum'],
                                         'name' => $result['name'],
                                         'vin' => $result['vin'],
                                         'price' => $result['price'],
@@ -168,7 +169,8 @@ class ControllerProductTiredisc extends Controller {
 				}
                                                                 
                                 $data['products'][] = array(
-                                        
+                                        'product_id' => $result['pid'],
+                                        'minimum' => $result['minimum'],
                                         'name' => $result['name'],
                                         'vin' => $result['vin'],
                                         'price' => $result['price'],
