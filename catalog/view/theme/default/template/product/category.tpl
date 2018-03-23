@@ -98,19 +98,27 @@
       <div class="row">
         <?php foreach ($products as $product) { ?>
         <div class="product-layout product-list col-xs-12">
-            <div class="product-thumb">
+            <div class="label-thumd">
             <?php if ($product['ean']){ ?>
                 <?php if ($product['ean']=='Б/У') { ?> 
                     <div class="eanr">
-                        <p><?php echo $product['ean']; ?><p>
+                        Б/У
                     </div>
                 <?php }?>
                 <?php if ($product['ean']=='Новый') { ?> 
                     <div class="eanb">
-                        <p><?php echo $product['ean']; ?><p>
+                        Новый
                     </div>
                 <?php }?>
             <?php }?>
+            <?php if ($product['comp']){ ?>
+                <div class="whole">
+                    Комплект
+                </div>
+            <?php }?>
+            </div>
+            <div class="product-thumb">
+            <!---->
             <div class="image"><a href="<?php echo $product['href']; ?>"><img src="<?php echo $product['thumb']; ?>" alt="<?php echo $product['name']; ?>" title="<?php echo $product['name']; ?>" class="img-responsive" /></a></div>
             <div>
               <div class="caption">
@@ -133,9 +141,11 @@
                     <?php if ($product['cond'] && $product['cond']!='-') { ?>
                         <p><b>Состояние:</b> <?php echo $product['cond']; ?></p>
                     <?php }?>
-                    <?php if ($product['price'] != 0.00) { ?>
-                    <p class="price"><b>Цена: <?php echo $product['price']; ?></b></p>
-                    <?php }?>
+                    <?php if ($product['com_whole'] == 1 && $product['com_price'] != 0)  { ?>
+                        <p class="price"><b>Цена комплекта: <?php echo $product['com_price']; ?></b></p>
+                    <?php } elseif ($product['price'] != 0.00) { ?>
+                        <p class="price"><b>Цена: <?php echo $product['price']; ?></b></p>
+                    <?php }?>   
                 <!--<h4><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></h4>
                 <p><?php echo $product['description']; ?></p>
                 <?php if ($product['price']) { ?>

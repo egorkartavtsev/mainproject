@@ -100,7 +100,20 @@
         <?php if ($products) { ?>
           <?php foreach ($products as $product) { ?>
             <div class="product-layout product-list col-xs-12">
-              <div class="product-thumb">
+                <div class="label-thumd">
+                    <?php if ($product['ean']){ ?>
+                        <?php if ($product['ean']=='Б/У') { ?> 
+                            <div class="eanr">Б/У</div>
+                        <?php }?>
+                        <?php if ($product['ean']=='Новый') { ?> 
+                        <div class="eanb">Новый</div>
+                        <?php }?>
+                    <?php }?>
+                    <?php if ($product['comp']){ ?>
+                        <div class="whole">Комплект</div>
+                    <?php }?>
+                </div>  
+                <div class="product-thumb">
                     <?php if ($product['ean']){ ?>
                         <?php if ($product['ean']=='Б/У') { ?> 
                             <div class="eanr">
@@ -135,9 +148,11 @@
                     <?php if ($product['cond'] && $product['cond']!='-') { ?>
                         <p><b>Состояние:</b> <?php echo $product['cond']; ?></p>
                     <?php }?>
-                    <?php if ($product['price'] != 0.00) { ?>
-                    <p class="price"><b>Цена: <?php echo $product['price']; ?></b></p>
-                    <?php }?>
+                    <?php if ($product['com_whole'] == 1 && $product['com_price'] != 0)  { ?>
+                        <p class="price"><b>Цена комплекта: <?php echo $product['com_price']; ?></b></p>
+                    <?php } elseif ($product['price'] != 0.00) { ?>
+                        <p class="price"><b>Цена: <?php echo $product['price']; ?></b></p>
+                    <?php }?> 
                     <p><b><?php echo $product['comp']; ?></b></p>
                     <!--<?php if ($product['rating']) { ?>
                     <div class="rating">

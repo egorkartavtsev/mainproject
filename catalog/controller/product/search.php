@@ -219,7 +219,7 @@ class ControllerProductSearch extends Controller {
                         //exit(var_dump($byvin));
 			$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
 			$results = $this->model_catalog_product->searchProducts($filter_data['filter_name'], $byvin);
-                        
+                        //exit (var_dump($results));
 			foreach ($results as $result) {
 				if ($result['image']) {
 					$image = $this->model_tool_image->resize($result['image'], $this->config->get($this->config->get('config_theme') . '_image_product_width'), $this->config->get($this->config->get('config_theme') . '_image_product_height'));
@@ -232,6 +232,23 @@ class ControllerProductSearch extends Controller {
 				} else {
 					$price = false;
 				}
+                                 if ($result['com_whole']) {
+                                   $com_whole = $result['com_whole'];
+                                } else {
+                                   $com_whole = false; 
+                                } 
+                                
+                                if ($result['comp']) {
+                                   $comp = $result['comp'];
+                                } else {
+                                   $comp = ''; 
+                                } 
+                                
+                                if ($result['com_price']) {
+                                   $com_price = $result['com_price'];
+                                } else {
+                                   $com_price = false; 
+                                }
                                 //Старая версия таблици. 
                                 /**
 				if (isset($result['special'])) {
@@ -288,6 +305,9 @@ class ControllerProductSearch extends Controller {
                                         'ean'         => $ean,
 					'note'        => $note,
 					'price'       => $price,
+                                        'com_whole'   => $com_whole,
+                                        'comp'        => $comp,
+                                        'com_price'   => $com_price,
 					//'special'     => $special,
 					//'tax'         => $tax,
 					'minimum'     => ($result['minimum'] > 0) ? $result['minimum'] : 1,

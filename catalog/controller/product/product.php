@@ -390,6 +390,9 @@ class ControllerProductProduct extends Controller {
                         $data['ean'] = $product_info['ean'];
                         $data['condition'] = $product_info['con_p'];
                         $data['price'] = $product_info['price'];
+                        $data['comp'] = $product_info['comp'];
+                        $data['com_whole'] = $product_info['com_whole'];
+                        $data['com_price'] = $product_info['com_price'];
                         $data['no_prod'] = FALSE;
                         $data['sendLink'] = $this->url->link('product/product', 'product_id='.$product_id);
                         
@@ -565,7 +568,7 @@ class ControllerProductProduct extends Controller {
 			$data['products'] = array();
 
 			$results = $this->model_catalog_product->getProductRelated($this->request->get['product_id']);
-
+                        
 			foreach ($results as $result) {
 				if ($result['image']) {
 					$image = $this->model_tool_image->resize($result['image'], $this->config->get($this->config->get('config_theme') . '_image_related_width'), $this->config->get($this->config->get('config_theme') . '_image_related_height'));
@@ -576,6 +579,22 @@ class ControllerProductProduct extends Controller {
                                    $price = $result['price'];
                                 } else {
                                    $price = false; 
+                                }
+                                  if ($result['com_whole']) {
+                                   $com_whole = $result['com_whole'];
+                                } else {
+                                   $com_whole = false; 
+                                } 
+                                
+                                if ($result['comp']) {
+                                   $comp = $result['comp'];
+                                } else {
+                                   $comp = false; 
+                                } 
+                                if ($result['com_price']) {
+                                   $com_price = $result['com_price'];
+                                } else {
+                                   $com_price = false; 
                                 }
                                 /*
 				if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
@@ -608,6 +627,9 @@ class ControllerProductProduct extends Controller {
 					'name'        => $result['name'],
 					'description' => utf8_substr(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8')), 0, $this->config->get($this->config->get('config_theme') . '_product_description_length')) . '..',
 					'price'       => $price,
+                                        'com_whole'   => $com_whole,
+                                        'comp'        => $comp,
+                                        'com_price'   => $com_price,
 					//'special'     => $special,
 					//'tax'         => $tax,
 					'minimum'     => $result['minimum'] > 0 ? $result['minimum'] : 1,
@@ -615,7 +637,7 @@ class ControllerProductProduct extends Controller {
 					'href'        => $this->url->link('product/product', 'product_id=' . $result['product_id'])
 				);
 			}
-
+                       
 			$data['tags'] = array();
 
 			if ($product_info['tag']) {

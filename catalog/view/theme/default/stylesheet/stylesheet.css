@@ -600,37 +600,51 @@ footer h5 {
 h2.price {
 	margin: 0;
 }
-.product-thumb .eanr {
-        width: 53px;
-        height: 33px;
+.label-thumd {
+        width: auto;
+        height: auto;
+        box-sizing: border-box;
+        position: absolute;
+        z-index: 5;
+        }
+.label-thumd .eanr {
+        width: auto;
+        height: auto;
+        box-sizing: border-box;
         background-color: #cc0000;
-        margin-left: auto;
-	margin-right: auto;
-        border: 1px solid #cc0000;
+        border: 5px solid #cc0000;
         border-radius: 15%; 
-        position: absolute;    
-}
-.product-thumb .eanr p {
+        position: relative;
+        float: left;
         font-size: 200%;
         color: whitesmoke;
-        margin-top: 5px;
-        margin-left: 5px; 
+        white-space: nowrap;
 }
-.product-thumb .eanb {
-        width: 100px;
-        height: 33px;
+.label-thumd .eanb {
+        width: auto;
+        height: auto;
+        box-sizing: border-box;
         background-color: #1f90bb;
-        margin-left: auto;
-	margin-right: auto;
-        border: 1px solid #1f90bb;
+        border: 5px solid #1f90bb;
         border-radius: 9%; 
-        position: absolute;      
-}
-.product-thumb .eanb p {
+        position: relative;
+        float: left;
         font-size: 200%;
         color: whitesmoke;
-        margin-top: 5px;
-        margin-left: 9px;
+        white-space: nowrap;
+}
+.label-thumd .whole {
+        width: auto;
+        height: auto;
+        box-sizing: border-box;
+        background-color: #fbb450;
+        border: 5px solid #fbb450;
+        border-radius: 5%; 
+        position: relative;
+        float: left;
+        font-size: 200%;
+        color: whitesmoke;
+        white-space: nowrap;
 }
 .product-thumb .price {
 	color: #444;
