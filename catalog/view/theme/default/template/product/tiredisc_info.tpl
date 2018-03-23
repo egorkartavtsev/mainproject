@@ -79,9 +79,9 @@
                     <p class="price"><b>Цена: <?php echo $product['price']; ?></b></p>
                   </div>
                   <div class="button-group">
-                    <button type="button" onclick="cart.add('<?php echo $product['product_id']; ?>', '<?php echo $product['minimum']; ?>');"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo $button_cart; ?></span></button>
-                    <button type="button" data-toggle="tooltip" title="Хочу" onclick="wishlist.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-heart"></i></button>
-                    <button type="button" data-toggle="tooltip" title="В сравнение" onclick="compare.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-exchange"></i></button>
+                    <button type="button" onclick="cart.add('<?php echo $product['pid']; ?>', '<?php echo $product['minimum']; ?>');"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo $button_cart; ?></span></button>
+                    <button type="button" data-toggle="tooltip" title="Хочу" onclick="wishlist.add('<?php echo $product['pid']; ?>');"><i class="fa fa-heart"></i></button>
+                    <button type="button" data-toggle="tooltip" title="В сравнение" onclick="compare.add('<?php echo $product['pid']; ?>');"><i class="fa fa-exchange"></i></button>
                   </div>
                 </div>
               </div>
