@@ -22,31 +22,50 @@
       <div id="success_box"></div>
       <div class="row">
         <?php if ($column_left || $column_right) { ?>
-        <?php $class = 'col-sm-8'; ?>
+            <?php $class = 'col-sm-8'; ?>
         <?php } else { ?>
-        <?php $class = 'col-sm-8'; ?>
+            <?php $class = 'col-sm-8'; ?>
         <?php } ?>
         <div class="<?php echo $class; ?>">
-          <?php if (isset($images) || isset($thumbs)) { ?>
-            <?php if ($thumb || $images) { ?>
-              <div class="sp-wrap">   
-              <?php if ($images) { ?>
-              <?php foreach ($images as $image) { ?>
-              <a href="<?php echo $image['popup']; ?>" title="<?php echo $heading_title; ?>"> <img src="<?php echo $image['popup']; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a>
-              <?php } ?>
-              <?php } ?>
-              </div>
+            <div class="label-thumd">
+            <?php if ($ean){ ?>
+                <?php if ($ean=='Б/У') { ?> 
+                    <div class="eanr">
+                        Б/У
+                    </div>
+                <?php }?>
+                <?php if ($ean=='Новый') { ?> 
+                    <div class="eanb">
+                        Новый
+                    </div>
+                <?php }?>
+            <?php }?>
+            <?php if ($comp){ ?>
+                <div class="whole">
+                    Комплект
+                </div>
+            <?php }?>
+            </div>
+            <?php if (isset($images) || isset($thumbs)) { ?>
+                <?php if ($thumb || $images) { ?>
+                    <div class="sp-wrap">
+                        <?php if ($images) { ?>
+                           <?php foreach ($images as $image) { ?>
+                                <a href="<?php echo $image['popup']; ?>" title="<?php echo $heading_title; ?>"> <img src="<?php echo $image['popup']; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a>
+                            <?php } ?>
+                        <?php } ?>
+                    </div>
+                 <?php } ?>
             <?php } ?>
-          <?php } ?>
-          <ul class="nav nav-tabs">
-            <li class="active"><a href="#tab-description" data-toggle="tab"><?php echo $tab_description; ?></a></li>
-            <?php if ($attribute_groups) { ?>
-            <li><a href="#tab-specification" data-toggle="tab"><?php echo $tab_attribute; ?></a></li>
-            <?php } ?>
-            <?php if ($review_status) { ?>
-            <li><a href="#tab-review" data-toggle="tab"><?php echo $tab_review; ?></a></li>
-            <?php } ?>
-          </ul>
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab-description" data-toggle="tab"><?php echo $tab_description; ?></a></li>
+                <?php if ($attribute_groups) { ?>
+                    <li><a href="#tab-specification" data-toggle="tab"><?php echo $tab_attribute; ?></a></li>
+                <?php } ?>
+                <?php if ($review_status) { ?>
+                    <li><a href="#tab-review" data-toggle="tab"><?php echo $tab_review; ?></a></li>
+                <?php } ?>
+            </ul>
           <div class="tab-content">
             <?php if(isset($complect) && $c_id!='') { ?>
                 <div class="alert alert-danger" id="complect">
@@ -64,27 +83,27 @@
                             <tr>
                                 <td><a href="index.php?route=product/product&product_id=<?php echo $acc['product_id'];?>" target="blank"><?php echo $acc['name'];?></a></td>
                                 <?php if ( $price != 0.00 ) { ?>
-                                <?php $summ+= $acc['price'];?>
-                                <?php if(!$whole) { ?>
-                                    <td><?php echo $acc['price'];?> руб.</td>
-                                    <td><button class="btn btn-primary" onclick="cart.add('<?php echo $acc['product_id']; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i></button></td>
-                                <?php } ?>
+                                    <?php $summ+= $acc['price'];?>
+                                    <?php if(!$whole) { ?>
+                                        <td><?php echo $acc['price'];?> руб.</td>
+                                        <td><button class="btn btn-primary" onclick="cart.add('<?php echo $acc['product_id']; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i></button></td>
+                                    <?php } ?>
                                 <?php } ?>
                             </tr>
                         <?php }?>
                         <?php if ( $price != 0.00 ) { ?>
-                        <?php if(!$whole) { ?>
+                            <?php if(!$whole) { ?>
+                                <tr>
+                                   <td style="text-align: right; font-size: 10pt;">Итого:</td>
+                                   <td colspan='2' style="text-align: left; font-size: 14pt;"><s><?php echo $summ; ?> руб.</s></td>
+                                </tr>
+                            <?php } ?>
                             <tr>
-                                <td style="text-align: right; font-size: 10pt;">Итого:</td>
-                                <td colspan='2' style="text-align: left; font-size: 14pt;"><s><?php echo $summ; ?> руб.</s></td>
+                                <td colspan='3' style="text-align: center; font-size: 14pt;">Цена комплекта <?php if(!$whole) { ?>со скидкой<?php } ?>: <span class="label label-danger"><?php echo $c_price; ?> руб.</span></td>
                             </tr>
-                        <?php } ?>
-                        <tr>
-                            <td colspan='3' style="text-align: center; font-size: 14pt;">Цена комплекта <?php if(!$whole) { ?>со скидкой<?php } ?>: <span class="label label-danger"><?php echo $c_price; ?> руб.</span></td>
-                        </tr>
-                        <tr>
-                            <td colspan='3' style="text-align: center;"><button class="btn btn-primary" onclick="cart.add('<?php echo $link; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i> Купить весь комплект</button></td>
-                        </tr>
+                            <tr>
+                                <td colspan='3' style="text-align: center;"><button class="btn btn-primary" onclick="cart.add('<?php echo $link; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i> Купить весь комплект</button></td>
+                            </tr>
                         <?php }?>
                     </table>
                 </div>

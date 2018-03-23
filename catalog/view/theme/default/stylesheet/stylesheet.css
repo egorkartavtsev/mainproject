@@ -602,9 +602,10 @@ h2.price {
 }
 .label-thumd {
         width: auto;
-        height: 30px;
+        height: auto;
         box-sizing: border-box;
         position: absolute;
+        z-index: 5;
         }
 .label-thumd .eanr {
         width: auto;
