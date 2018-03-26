@@ -133,7 +133,7 @@ class ControllerProductProductEdit extends Controller {
                 $sname.= ' '.$str[1];
             }
             $sname.= ' '.$data['brand'].' '.$data['modRow'];
-            if($squery->row['transcript']!='' || $brand->row['transcript']!=''){
+            if((isset($squery->row['transcript']) && $squery->row['transcript']!='') || (isset($squery->row['transcript']) && $brand->row['transcript']!='')){
                 $sname.= ' / '.$brand->row['transcript'].' '.$squery->row['transcript'];
             }
             $data['avitoname'] = $sname;

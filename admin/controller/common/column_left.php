@@ -911,6 +911,7 @@ class ControllerCommonColumnLeft extends Controller {
                         //Libraries
                         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."libraries ");
                         $data['librs'] = $sup->rows;
+                        //exit(var_dump($data['librs']));
 			return $this->load->view('common/column_left', $data);
 		}
 	}

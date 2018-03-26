@@ -135,7 +135,7 @@ class ModelToolExcel extends Model {
                 }
             }
         }
-        if(count($this->emptyRow==1) && $this->emptyRow[0]===0){array_shift($this->emptyRow);}
+        if(count($this->emptyRow)==1 && $this->emptyRow[0]===0){array_shift($this->emptyRow);}
         $this->emptyRow[] = $result;
         return $data;
     }

@@ -27,7 +27,7 @@
                         </li>
                         <?php foreach($librs as $lib) { ?>
                             <li>
-                                <a href="index.php?route=setting/libraries/edit&lib=<?php $lib['library_id']?>&token=<?php echo $token_excel;?>"><span><b>Библиотека:</b> <?php echo $lib['text'];?></span></a>
+                                <a href="index.php?route=setting/libraries/edit&lib=<?php echo $lib['library_id']?>&token=<?php echo $token_excel;?>"><span><b>Библиотека:</b> <?php echo $lib['text'];?></span></a>
                             </li>
                         <?php } ?>
                     </ul>

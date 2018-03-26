@@ -56,9 +56,7 @@ private $error = array();
 						$vin = $this->request->post['vin'];
 						$uploadtmpdir = DIR_IMAGE . "tmp/";
 						$uploaddir.=$vin.'/';
-						
-						$watermark = imagecreatefrompng(DIR_IMAGE . "watermark.png");
-			
+									
 						$photo = array();
 
 						$i = 0;
@@ -118,10 +116,6 @@ private $error = array();
 
 							$marge_right = 10;
 							$marge_bottom = 10;
-							$sx = imagesx($watermark);
-							$sy = imagesy($watermark);
-
-							imagecopy($dest, $watermark, imagesx($dest) - $sx - $marge_right, imagesy($dest) - $sy - $marge_bottom, 0, 0, imagesx($watermark), imagesy($watermark));
 
 							imagejpeg($dest, $uploadtmpdir . $file['name'], 90);
 							imagedestroy($dest);
@@ -169,8 +163,7 @@ private $error = array();
             exit('введите внутренний номер');
         }
         
-        $watermark = imagecreatefrompng(DIR_IMAGE . "watermark.png");
-        
+              
         $photo = array();
         
         $i = 0;
@@ -230,10 +223,6 @@ private $error = array();
             
             $marge_right = 10;
             $marge_bottom = 10;
-            $sx = imagesx($watermark);
-            $sy = imagesy($watermark);
-            
-            imagecopy($dest, $watermark, imagesx($dest) - $sx - $marge_right, imagesy($dest) - $sy - $marge_bottom, 0, 0, imagesx($watermark), imagesy($watermark));
             
             imagejpeg($dest, $uploadtmpdir . $file['name'], 90);
             imagedestroy($dest);
