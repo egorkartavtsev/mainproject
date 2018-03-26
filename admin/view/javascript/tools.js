@@ -25,7 +25,7 @@ function addOption(){
 $(document).ready(function() {
     //show cilds of items fill
     $(document).on( "click", "tr[id*='fill']", function() {
-        var level = $(this).attr('item_level');
+        var level = $(this).parent().parent().attr('level');
         var parent = $(this).attr('fill_id');
         var curRow = $(this);
         level = ++level;

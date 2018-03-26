@@ -14,12 +14,14 @@
         <group>
             <file>file:/D:/OpenServer/domains/mgnauto/admin/controller/setting/prodtypes.php</file>
             <file>file:/D:/OpenServer/domains/mgnauto/admin/model/tool/product.php</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/catalog/model/catalog/product.php</file>
             <file>file:/D:/OpenServer/domains/mgnauto/admin/controller/setting/libraries.php</file>
             <file>file:/D:/OpenServer/domains/mgnauto/admin/model/tool/layout.php</file>
             <file>file:/D:/OpenServer/domains/mgnauto/admin/view/javascript/tools.js</file>
             <file>file:/D:/OpenServer/domains/mgnauto/admin/model/tool/translate.php</file>
             <file>file:/D:/OpenServer/domains/mgnauto/admin/view/template/setting/prodtype.tpl</file>
             <file>file:/D:/OpenServer/domains/mgnauto/admin/view/template/setting/librEdit.tpl</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/catalog/model/catalog/brand.php</file>
             <file>file:/D:/OpenServer/domains/mgnauto/admin/view/template/setting/libraries.tpl</file>
         </group>
     </open-files>
