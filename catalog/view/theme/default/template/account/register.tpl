@@ -506,10 +506,25 @@
           </div>
         </fieldset>
         <?php echo $captcha; ?>
-        <div>
-            <input type="checkbox">
-            <label>Я соглашаюсь на обработку своих персональных данных.</label>
+       
+        <!-- Large modal -->
+        <p> Нажимая на кнопу "Продолжить" вы даете <a data-toggle="modal" data-target=".bd-example-modal-lg">согласие на обработку персональных данных.</a></p>
+        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Соглашение на обработку персональных данных.</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Текс Соглашения.</p>
+                   </div>
+                </div>
+            </div>
         </div>
+        
         <?php if ($text_agree) { ?>
         <div class="buttons">
           <div class="pull-right"><?php echo $text_agree; ?>
@@ -533,6 +548,11 @@
       <?php echo $content_bottom; ?></div>
     <?php echo $column_right; ?></div>
 </div>
+<script type="text/javascript">
+$('#myModal').on('shown.bs.modal', function () {
+  $('#myInput').trigger('focus')
+})
+</script>
 <script type="text/javascript"><!--
 // Sort the custom fields
 $('#account .form-group[data-sort]').detach().each(function() {
