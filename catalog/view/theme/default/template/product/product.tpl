@@ -69,7 +69,7 @@
           <div class="tab-content">
             <?php if(isset($complect) && $c_id!='') { ?>
                 <div class="alert alert-danger" id="complect">
-                    <h3><?php if(!isset($whole) || !$whole) {echo $entry_compl;} else {echo "Деталь продаётся только в комплекте: ";} ?></h3>
+                    <h3><?php if(!isset($whole) || !$whole) { echo $entry_compl;} else { echo "Деталь продаётся только в комплекте: ";} ?></h3>
                     <table class="table">
                         <thead>
                             <tr>
@@ -102,7 +102,7 @@
                                 <td colspan='3' style="text-align: center; font-size: 14pt;">Цена комплекта <?php if(!$whole) { ?>со скидкой<?php } ?>: <span class="label label-danger"><?php echo $c_price; ?> руб.</span></td>
                             </tr>
                             <tr>
-                                <td colspan='3' style="text-align: center;"><button class="btn btn-primary" onclick="cart.add('<?php echo $link; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i> Купить весь комплект</button></td>
+                                <td colspan='3' style="text-align: center;"><button class="btn btn-primary" onclick="cart.add('<?php echo $id_comp_ref; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i> Купить весь комплект</button></td>
                             </tr>
                         <?php }?>
                     </table>
