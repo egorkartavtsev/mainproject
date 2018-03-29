@@ -449,11 +449,13 @@ class ControllerProductProduct extends Controller {
                         //$data['token'] = $this->session->data['token'];
                         //exit(var_dump($complect_arr));
                         if($complect_arr){
+                            $data['id_comp_ref'] = isset($complect_arr['id_comp_ref'])?$complect_arr['id_comp_ref']:NULL;
                             $data['c_id'] = isset($complect_arr['c_id'])?$complect_arr['c_id']:NULL;
                             $data['c_price'] = isset($complect_arr['compl_price'])?$complect_arr['compl_price']:NULL;
                             $data['link'] = isset($complect_arr['link'])?$complect_arr['link']:NULL;
                             $data['complect'] = isset($complect_arr['complect'])?$complect_arr['complect']:NULL;
                             $data['whole'] = isset($complect_arr['whole'])?$complect_arr['whole']:NULL;
+                            
                             //exit(var_dump($data['complect']));
 //                            $data['c_list'] = '';
 //                            foreach ($data['complect'] as $acc){

@@ -509,13 +509,18 @@ class ModelCatalogProduct extends Model {
                 if (!empty($query->row)){
                     $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."complects "
                                 . "WHERE heading = '".$query->row['vin']."'");
+                    
                     if(!empty($sup->row)){
                         $prods = $this->db->query("SELECT * FROM ".DB_PREFIX."product p "
                                 . "LEFT JOIN ".DB_PREFIX."product_description pd "
                                     . "ON pd.product_id = p.product_id "
                                 . "WHERE p.comp = '".$sup->row['heading']."' OR p.vin = '".$sup->row['heading']."' ORDER BY pd.name ");
+                        $comp_ref = $this->db->query("SELECT * FROM ".DB_PREFIX."product "
+                                . "WHERE vin = '".$sup->row['link']."'");
+                           
+                        $complect['id_comp_ref'] = $comp_ref->row['product_id'];
+                        //exit(var_dump($complect['id_comp_ref']));
                         $complect['complect'] = $prods->rows;
-                        
                         $complect['compl_price'] = $sup->row['price'];
                         $complect['link'] = $sup->row['link'];
                         $complect['whole'] = $sup->row['whole'];
@@ -525,12 +530,19 @@ class ModelCatalogProduct extends Model {
                                 . "LEFT JOIN ".DB_PREFIX."product_description pd "
                                     . "ON pd.product_id = p.product_id "
                                 . "WHERE p.comp = '".$query->row['comp']."' OR p.vin = '".$query->row['comp']."' ORDER BY pd.name ");
+//                         $comp_ref = $this->db->query("SELECT * FROM ".DB_PREFIX."product "
+//                                . "WHERE vin = '".$sup->row['link']."'");
                         $complect['complect'] = $prods->rows;
-                        
+//                        $complect['id_comp_ref'] = $comp_ref->row['product_id'];
+//                        
                         foreach ($prods->rows as $prod) {
                             $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."complects "
                                 . "WHERE heading = '".$prod['vin']."'");
+                            
                             if(!empty($sup->row)){
+                                $comp_ref = $this->db->query("SELECT * FROM ".DB_PREFIX."product "
+                                . "WHERE vin = '".$sup->row['link']."'");
+                                $complect['id_comp_ref'] = $comp_ref->row['product_id'];
                                 $complect['compl_price'] = $sup->row['price'];
                                 $complect['link'] = $sup->row['link'];
                                 $complect['whole'] = $sup->row['whole'];
