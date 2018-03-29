@@ -49,10 +49,10 @@ $(document).ready(function() {
         }
     })
     //show cilds of items fill
-    $(document).on( "click", "tr[id*='fill']", function() {
-        var level = $(this).parent().parent().attr('level');
-        var parent = $(this).attr('fill_id');
-        var curRow = $(this);
+    $(document).on( "click", "td[td_type=fillName]", function() {
+        var level = $(this).parent().parent().parent().attr('level');
+        var parent = $(this).parent().attr('fill_id');
+        var curRow = $(this).parent();
         level = ++level;
         var cObject = $("[level="+level+"]");
         ajax({
@@ -200,21 +200,27 @@ $(document).ready(function() {
     });
     //delete fill
     $(document).on( "click", "[btn_type=deleteFill]", function() {
+        var row = $(this).parent().parent();
+        var fill_id = row.attr('fill_id');
             ajax({
               url:"index.php?route=setting/libraries/deleteFill&token="+getURLVar('token'),
-              statbox:"status",
               method:"POST",
               data: {
-                  id: $(this).parent().parent().attr('fill_id')
+                  id: fill_id
               },
-              success:function(data){
-                  alert(data);
+              success:function(result){
+                  if(result === '1'){
+                      alert('Успешно удалено. Данный элемент больше не будет отображаться в списках.');
+                      row.remove('tr');
+                  } else {
+                      alert('Удаление данного элемента невозможно. В базе существуют связи с этим элементом.');
+                  }
               }
-            })
+            });
     })
     //add new fill on item
     $(document).on( "click", "[id*='addItem']", function() {
-        $(this).parent().parent().before('<tr><td td_type="fillName" parent="'+$(this).attr("fill-parent")+'"><input type="text" class="form-control" id="newName"></td><td><button class="btn btn-success" btn_type="saveNewFillName"><i class="fa fa-floppy-o" ></i></button></td></tr>');
+        $(this).parent().parent().before('<tr><td td_type="newfillName" parent="'+$(this).attr("fill-parent")+'"><input type="text" class="form-control" id="newName"></td><td><button class="btn btn-success" btn_type="saveNewFillName"><i class="fa fa-floppy-o" ></i></button></td></tr>');
     })
     //delete Option from type
     $(document).on( "click", "[id='delOpt']", function() {
@@ -240,7 +246,7 @@ $(document).ready(function() {
           statbox:"status",
           method:"POST",
           data: {
-              parent: parent.parent().find("td[td_type='fillName']").attr("parent"),
+              parent: parent.parent().find("td[td_type='newfillName']").attr("parent"),
               itemId: parent.parent().parent().parent().attr("item-id"),
               libraryId: parent.parent().parent().parent().parent().attr("library-id"),
               name: parent.parent().find("#newName").val()
@@ -251,8 +257,9 @@ $(document).ready(function() {
               return FALSE;
             } else {
               parent.html('<button class="btn btn-info" btn_type="changeFill"><i class="fa fa-pencil" ></i></button><button class="btn btn-danger" btn_type="deleteFill"><i class="fa fa-trash-o"></i></button>');
-              parent.parent().find("td[td_type='fillName']").html(parent.parent().find("#newName").val());
+              parent.parent().find("td[td_type='newfillName']").html(parent.parent().find("#newName").val());
               parent.parent().attr('fill_id', data);
+              parent.parent().find('[td_type=newfillName]').attr('td_type', 'fillName');
               parent.parent().attr('id', 'fill'+data);
             }
           }

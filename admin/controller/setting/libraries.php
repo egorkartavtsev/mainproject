@@ -74,9 +74,9 @@ class ControllerSettingLibraries extends Controller {
         $this->load->model('tool/product');
         $res = $this->model_tool_product->deleteFill($id);
         if($res){
-            echo 'Успешно удалено. Данный элемент больше не будет отображаться в списках.';
+            echo '1';
         } else {
-            echo 'Удаление данного элемента невозможно. В базе существуют связи с этим элементом.';
+            echo '0';
         }
     }
     

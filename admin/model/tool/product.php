@@ -125,6 +125,7 @@ class ModelToolProduct extends Model {
             $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE parent_id = '".$id."'");
             if(empty($sup->rows)){
                 $this->db->query("DELETE FROM ".DB_PREFIX."lib_fills WHERE id = '".$id."'");
+                return TRUE;
             }
             else {
                 return FALSE;
