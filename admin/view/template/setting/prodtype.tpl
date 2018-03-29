@@ -22,7 +22,7 @@
                     </tr>
                   <? } ?>
               </table>
-              <button class="btn btn-block btn-success" onclick=""><i class="fa fa-plus-circle"></i> создать новый тип товара</button>
+              <button class="btn btn-block btn-success" id="createType"><i class="fa fa-plus-circle"></i> создать новый тип товара</button>
           </div>
       </div>
       <div class="col-md-9" >

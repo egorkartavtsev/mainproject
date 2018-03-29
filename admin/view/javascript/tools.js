@@ -6,6 +6,7 @@ function showStructOptions($parent){
       data: {id: $parent},
       success:function(data){
           $("#options").removeAttr('hidden');
+          $("#options").attr('type_id', $parent);
           $("#options").html(data);
       }
     })
@@ -18,11 +19,35 @@ function addOption(){
       data: {},
       success:function(data){
           $("#options").find("#newOpt").attr('disabled', 'true');
-          $("#options").find("h4").after(data);
+          $("#newOpt").after(data);
       }
     })
 }
 $(document).ready(function() {
+    //change type of option
+    $(document).on( "change", "[id=field_typeOption]", function() {
+        var mainDiv = $(this).parent().parent();
+        switch($(this).val()){
+            case 'input':
+                mainDiv.find("[id=def_valOption]").removeAttr('disabled');
+                mainDiv.find("[id=librariesOption]").attr('disabled', 'true');
+                mainDiv.find("[id=librariesOption]").attr('hidden', 'true');
+                mainDiv.find("[id=valsOption]").attr('disabled', 'true');
+                break
+            case 'select':
+                mainDiv.find("[id=librariesOption]").attr('disabled', 'true');
+                mainDiv.find("[id=librariesOption]").attr('hidden', 'true');
+                mainDiv.find("[id=def_valOption]").attr('disabled', 'true');
+                mainDiv.find("[id=valsOption]").removeAttr('disabled');
+                break
+            case 'library':
+                mainDiv.find("[id=librariesOption]").removeAttr('disabled');
+                mainDiv.find("[id=librariesOption]").removeAttr('hidden');
+                mainDiv.find("[id=def_valOption]").attr('disabled', 'true');
+                mainDiv.find("[id=valsOption]").attr('disabled', 'true');
+                break
+        }
+    })
     //show cilds of items fill
     $(document).on( "click", "tr[id*='fill']", function() {
         var level = $(this).parent().parent().attr('level');
@@ -47,19 +72,85 @@ $(document).ready(function() {
     });
     //translate option name
     $(document).on( "input", "#textOption", function() {
-        ajax({
-          url:"index.php?route=setting/prodtypes/translateOption&token="+getURLVar('token'),
-          statbox:"status",
-          method:"POST",
-          data: {
-              text: $(this).val()
-          },
-          success:function(data){
-              $(this).parent().find("#nameOption").removeAttr('disabled');
-              $(this).parent().find("#nameOption").val(data);
-          }
-        })
+        if($(this).parent().parent().find("[id=oldOption]").val()==='0'){
+            var goal = $(this).parent().find("[id=nameOption]");
+            ajax({
+              url:"index.php?route=setting/prodtypes/translateOption&token="+getURLVar('token'),
+              statbox:"status",
+              method:"POST",
+              data: {
+                  text: $(this).val()
+              },
+              success:function(data){
+                  goal.text(data);
+              }
+            })
+        }
     });
+    //delete new option
+    $(document).on('click', '[id=delNewOpt]', function(){
+        $(this).parent().parent().remove('div');
+        $("#newOpt").removeAttr('disabled');
+    })
+    //create new type
+    $(document).on('click', '[id=createType]', function(){
+        var table = $(this).parent().parent().find("tbody");
+        var tableHTML = table.html();
+        table.html(tableHTML+'<tr><td><input id="newTypeName" type="text" class="form-control" placeholder="Введите название типа продукта."/></td><td><button class="btn btn-info" id="saveNewType"><i class="fa fa-floppy-o"></i></button></td></tr>');
+    })
+    //save new type
+    $(document).on('click', '[id=saveNewType]', function(){
+        var input = $(this).parent().parent().find("input[id=newTypeName]");
+        ajax({
+            url:"index.php?route=setting/prodtypes/saveNewType&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data: {
+                data: input.val(),
+            },
+            success:function(data){
+                input.parent().parent().html('<td>'+input.val()+'</td><td><button class="btn btn-block btn-info" onclick="showStructOptions(\''+data+'\')"><i class="fa fa-pencil"></i></button></td>');
+            }
+        });
+    })
+    //save option
+    $(document).on('click', '#saveOpt', function(){
+        var optionDiv = $(this).parent();
+        var fieldText = optionDiv.find("[id=textOption]").val();
+        var formArr = '';
+        $(this).parent().find("[id*=Option]").each(function(){
+            formArr = formArr + " " + $( this ).attr('id') + ": " + ($( this ).val()===''?$( this ).text():$( this ).val()) + ", ";
+        });
+        ajax({
+            url:"index.php?route=setting/prodtypes/saveOption&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data: {
+                data: formArr,
+                type_id: $('#options').attr('type_id')
+            },
+            success:function(data){
+                if(optionDiv.find("[id=oldOption]").val()=='0'){
+                    if(optionDiv.find("[id=field_typeOption]").val()!=='library'){
+                        $("#optHeader").after('<span class="label label-success">'+fieldText+'</span>&nbsp;');
+                    } else {
+                        $("#optHeader").after('<span class="label label-success">Новое библиотечное свойство добавлено</span>&nbsp;');
+                        optionDiv.html(data);
+                    }
+                    $("#newOpt").removeAttr('disabled');
+                }
+                optionDiv.attr('class', 'alert alert-success');
+                alert('Сохранено');
+            }
+        });
+    })
+    $(document).on( "input", "[id*='Option']", function() {
+        $(this).parent().parent().attr('class', 'alert alert-warning');
+    })
+    $(document).on( "change", "[id*='Option']", function() {
+        $(this).parent().parent().attr('class', 'alert alert-warning');
+    })
+    
     //translate libr name
     $(document).on( "input", "#libr_text", function() {
         ajax({
@@ -74,18 +165,8 @@ $(document).ready(function() {
           }
         })
     });
-    $(document).on( "change", "#typeOption", function() {
-        $(this).parent().parent().find("#valsOption").removeAttr('disabled');
-        $(this).parent().parent().find("#defOption").removeAttr('placeholder');
-        $(this).parent().parent().find("#defOption").attr('disabled', 'true');
-    });
-    $(document).on( "change", "#typeOption", function() {
-        $(this).parent().parent().find("#valsOption").removeAttr('disabled');
-        $(this).parent().parent().find("#defOption").removeAttr('placeholder');
-        $(this).parent().parent().find("#defOption").attr('disabled', 'true');
-    });
     
-    //chenge fill name
+    //change fill name
     $(document).on( "click", "[btn_type=changeFill]", function() {
         var old_name = $(this).parent().parent().find("td[td_type='fillName']");
         old_name.html('<input type="text" class="form-control" id="newName" value="'+old_name.text()+'">');
@@ -134,6 +215,22 @@ $(document).ready(function() {
     //add new fill on item
     $(document).on( "click", "[id*='addItem']", function() {
         $(this).parent().parent().before('<tr><td td_type="fillName" parent="'+$(this).attr("fill-parent")+'"><input type="text" class="form-control" id="newName"></td><td><button class="btn btn-success" btn_type="saveNewFillName"><i class="fa fa-floppy-o" ></i></button></td></tr>');
+    })
+    //delete Option from type
+    $(document).on( "click", "[id='delOpt']", function() {
+        ajax({
+              url:"index.php?route=setting/prodtypes/deleteOption&token="+getURLVar('token'),
+              statbox:"status",
+              method:"POST",
+              data: {
+                  name: $(this).parent().find('[id="nameOption"]'),
+                  type_id: $('#options').attr('type_id')
+              },
+              success:function(data){
+                  $(this).parent().remove('div');
+                  alert('Свойство успешно отвязано от данной структуры');
+              }
+            })
     })
     //save new fill on item
     $(document).on( "click", "[btn_type=saveNewFillName]", function() {

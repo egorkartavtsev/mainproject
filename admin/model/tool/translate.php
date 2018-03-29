@@ -10,10 +10,10 @@ class ModelToolTranslate extends Model{
         'з'  =>  'z', 'и'  =>  'i', 'к'  =>  'k', 'л'  =>  'l', 'м'  =>  'm', 'н'  =>  'n', 'о'  =>  'o', 'п'  =>  'p',
         'р'  =>  'r', 'с'  =>  's', 'т'  =>  't', 'у'  =>  'u', 'ф'  =>  'f', 'х'  =>  'h', 'ц'  =>  'c', 'ч'  =>  'c',
         'ш'  =>  's', 'щ'  =>  's', 'ь'  =>  '', 'ы'  =>  'y', 'ъ'  =>  '', 'э'  =>  'e', 'ю'  =>  'u', 'я' =>  'a',
-        ' '  =>  '_'
+        ' '  =>  '_', 'й'  =>  'y', 'Й'  =>  'y'
     );
     
-    private $bansign = array('!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '/', '\\', '+', '-', '.', ',', '~', '?', '№', '"', '`', '\'', '<', '>', ';', ':');
+    private $bansign = array('!', '@', '#', '=', '$', '%', '^', '&', '*', '(', ')', '/', '\\', '+', '-', '.', ',', '~', '?', '№', '"', '`', '\'', '<', '>', ';', ':');
     
     public function validation($string){
         foreach($this->bansign as $sign){
@@ -26,6 +26,7 @@ class ModelToolTranslate extends Model{
         $transStr = $string;
         foreach ($this->letters as $let => $trans) {
             $transStr = str_replace($let, $trans, $transStr);
+            $transStr = str_replace($this->bansign, '', $transStr);
         }
         return $transStr;
     }

@@ -14,13 +14,18 @@ class ModelToolProduct extends Model {
         return $temp;
     }
     
+    public function getLibrs(){
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."libraries ");
+        return $sup->rows;
+    }
+    
     public function getStructures() {
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."product_type ");
         return $sup->rows;
     }
     
     public function getOptions($type) {
-        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE type_id = '".$type."'");
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE type_id = '".$type."' ORDER BY sort_order ");
         return $sup->rows;
     }
     
@@ -74,7 +79,7 @@ class ModelToolProduct extends Model {
             $result['struct'][] = $item;
             ++$count;
         }
-        $supF = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE parent_id = 0 AND library_id = '".$id."'");
+        $supF = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE parent_id = 0 AND library_id = '".$id."' ORDER BY name");
         $result['mainFills'] = $supF->rows;
         if($count>=12 || $count==0){
             $class = 'col-md-1';
@@ -88,7 +93,7 @@ class ModelToolProduct extends Model {
     }
     
     public function getChildFills($parent) {
-        $supF = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE parent_id = '".$parent."'");
+        $supF = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE parent_id = '".$parent."' ORDER BY name ");
         return $supF->rows;
     }
     
@@ -127,6 +132,92 @@ class ModelToolProduct extends Model {
         } else {
             return FALSE;
         }
-        
+    }
+    
+    public function saveOption($data) {
+        $sql = '';
+        $result = TRUE;
+        switch ($data['old']) {
+            case '1':
+                $sql.="UPDATE ".DB_PREFIX."type_lib SET ";
+                foreach ($data as $key => $value) {
+                    if($key!=='old' && $key!=='type_id'){
+                        $sql.= $key." = '".$value."', ";
+                    }
+                }
+                $sql.="type_id = '".$data['type_id']."' WHERE name = '".$data['name']."' ";
+                $this->db->query($sql);
+                break;
+            case '0':
+                $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE name = '".$data['name']."' AND type_id = '".$data['type_id']."' ");
+                $allow = empty($sup->row)?TRUE:FALSE;
+                if($allow){
+                    $isColumn = $this->hasColumn($data['name']);
+                    switch ($data['field_type']) {
+                        case 'input':
+                            $sql.= "INSERT INTO ".DB_PREFIX."type_lib SET ";
+                            foreach ($data as $key => $value) {
+                                if($key!=='old' && $key!=='libraries' && $key!=='vals' && $key!=='type_id'){
+                                    $sql.= $key." = '".$value."', ";
+                                }
+                            }
+                            $sql.="type_id = '".$data['type_id']."' ";
+                            $this->db->query($sql);
+                            if(!$isColumn){
+                                $this->db->query("ALTER TABLE `".DB_PREFIX."product` ADD `".$data['name']."` VARCHAR(512) NOT NULL");
+                            }
+                            $result = TRUE;
+                            break;
+                        case 'select':
+                            $sql.= "INSERT INTO ".DB_PREFIX."type_lib SET ";
+                            foreach ($data as $key => $value) {
+                                if($key!=='old' && $key!=='libraries' && $key!=='def_val' && $key!=='required'  && $key!=='type_id'){
+                                    $sql.= $key." = '".$value."', ";
+                                }
+                            }
+                            $sql.="type_id = '".$data['type_id']."' ";
+                            $this->db->query($sql);
+                            if(!$isColumn){
+                                $this->db->query("ALTER TABLE `".DB_PREFIX."product` ADD `".$data['name']."` VARCHAR(512) NOT NULL");
+                            }
+                            $result = TRUE;
+                            break;
+                        case 'library':
+                            $sup = $this->db->query("SELECT l.name AS library_name, ls.name AS name, ls.text AS text, ls.item_id AS item_id FROM ".DB_PREFIX."lib_struct ls LEFT JOIN ".DB_PREFIX."libraries l ON l.library_id = ls.library_id WHERE ls.library_id = '".$data['libraries']."' ");
+                            foreach ($sup->rows as $item) {
+                                $sql = "INSERT INTO ".DB_PREFIX."type_lib SET "
+                                        . "type_id = '".$data['type_id']."', "
+                                        . "name = '".$item['name']."', "
+                                        . "text = '".$item['text']."', "
+                                        . "field_type = '".$data['field_type']."', "
+                                        . "required = '".$data['required']."', "
+                                        . "libraries = '".$item['item_id']."', "
+                                        . "viewed = '".$data['viewed']."' ";
+                                $this->db->query($sql);
+                                $result = $sup->rows;
+                            }
+                            break;
+                    }
+                } else {
+                    $result = FALSE;
+                }
+                break;
+        }
+        return $result;
+    }
+    
+    public function saveType($text) {
+        $this->load->model('tool/translate');
+        $name = $this->model_tool_translate->translate($text);
+        $this->db->query("INSERT INTO ".DB_PREFIX."product_type SET "
+                . "name = '".$name."', "
+                . "text = '".$text."', "
+                . "description = '".$text."' ");
+        $result = $this->db->query('SELECT MAX(type_id) AS id FROM '.DB_PREFIX.'product_type ');
+        return $result->row['id'];
+    }
+    
+    public function deleteOption($name, $type_id) {
+        $this->db->query("UPDATE ".DB_PREFIX."type_lib SET type_id = 0 WHERE name = '".name."' AND type_id = '".$type_id."'");
     }
 }

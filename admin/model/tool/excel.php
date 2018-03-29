@@ -80,8 +80,8 @@ class ModelToolExcel extends Model {
         $objWriter->save($file);
     }
 	
-	private function saveFileXLSX($file, $objPHPExcel) {
-        $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel, 'Excel2007');
+    private function saveFileXLSX($file, $objPHPExcel) {
+        $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel, 'Excel2010');
         $objWriter->save($file);
     }
     
