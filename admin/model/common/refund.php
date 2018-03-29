@@ -35,7 +35,7 @@ class ModelCommonRefund extends Model {
                 . "manager = '".$info['manager']."', "
                 . "reason_refund = '".$info['reason']."', "
                 . "type_modify = 'Возврат товара'")){
-            if($this->db->query("UPDATE ".DB_PREFIX."product SET quantity = '1', status = '1', image='".$image."' WHERE sku = '".$info['sku']."'")){
+            if($this->db->query("UPDATE ".DB_PREFIX."product SET quantity = '1', status = '1', image='".$image."' WHERE vin = '".$info['sku']."'")){
                 if($this->db->query("DELETE FROM ".DB_PREFIX."sales_info WHERE sku = '".$info['sku']."'")){
                     return 'success';
                 } else {

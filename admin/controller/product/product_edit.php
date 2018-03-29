@@ -123,7 +123,7 @@ class ControllerProductProductEdit extends Controller {
             $data['clink'] = $this->url->link('complect/complect/edit', 'token=' . $this->session->data['token'] . '&complect=' . $comp['id'], true);
         }
         
-        if(trim($data['avitoname'])==''){
+        //if(trim($data['avitoname'])==''){
             $brand = $this->db->query("SELECT transcript FROM ".DB_PREFIX."brand WHERE name = '".$data['brand']."'");
             $squery = $this->db->query("SELECT transcript FROM ".DB_PREFIX."brand WHERE name = '".$data['model']."'");
             $sname = '';
@@ -137,7 +137,7 @@ class ControllerProductProductEdit extends Controller {
                 $sname.= ' / '.$brand->row['transcript'].' '.$squery->row['transcript'];
             }
             $data['avitoname'] = $sname;
-        }
+        //}
         
         $this->response->setOutput($this->load->view('product/product_edit', $data));
     }
