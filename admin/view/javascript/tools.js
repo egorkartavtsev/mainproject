@@ -115,10 +115,10 @@ $(document).ready(function() {
     })
     //save option
     $(document).on('click', '#saveOpt', function(){
-        var optionDiv = $(this).parent();
+        var optionDiv = $(this).parent().parent();
         var fieldText = optionDiv.find("[id=textOption]").val();
         var formArr = '';
-        $(this).parent().find("[id*=Option]").each(function(){
+        optionDiv.find("[id*=Option]").each(function(){
             formArr = formArr + " " + $( this ).attr('id') + ": " + ($( this ).val()===''?$( this ).text():$( this ).val()) + ", ";
         });
         ajax({

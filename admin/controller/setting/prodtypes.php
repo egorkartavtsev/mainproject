@@ -56,11 +56,11 @@ class ControllerSettingProdTypes extends Controller {
         $results = $this->model_tool_product->getOptions($this->request->post['id']);
         $options = '';
         $divsOpt = '';
-        $options.='<div type="optHeader><h4"><span id="optHeader">Свойства товара: </span></h4>';
+        $options.='<h4 type="optHeader"><span id="optHeader">Свойства товара: </span>';
         $divsOpt.= '<div class="clearfix"></div><div class="clearfix"><p></p></div><button id="newOpt" class="btn btn-success" onclick="addOption()"><i class="fa fa-plus-circle"></i> создать нововое свойство товара</button><div class="clearfix"></div><div class="clearfix"><p></p></div>';
         if(!empty($results)){
             foreach ($results as $result) {
-                $options.='<span class="label label-success" type-name="'.$result['name'].'">'.$result['text'].($result['field_type']=='library'?'(библиотечное)':'').'</span>&nbsp;';
+                $options.='<span class="label label-success" type-name="'.$result['name'].'">'.$result['text'].($result['field_type']=='library'?'(библиотечное)':'').'</span> ';
                 $divsOpt.= '<div class="alert alert-success">';
                 if($result['field_type']!=='library' && $result['libraries']==='0'){
                         $divsOpt.='<div class="col-md-6">'
@@ -116,7 +116,7 @@ class ControllerSettingProdTypes extends Controller {
                     $divsOpt.= '</div>';
             }
         }
-        $options.='</div>';
+        $options.='</h4>';
         echo $options.$divsOpt;
     }
     

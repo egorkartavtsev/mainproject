@@ -195,8 +195,8 @@ class ModelToolProduct extends Model {
                                         . "libraries = '".$item['item_id']."', "
                                         . "viewed = '".$data['viewed']."' ";
                                 $this->db->query($sql);
-                                $result = $sup->rows;
                             }
+                            return $sup->rows;
                             break;
                     }
                 } else {
