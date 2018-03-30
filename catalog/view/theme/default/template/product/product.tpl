@@ -75,35 +75,86 @@
                             <tr>
                                 <th>Название:</th>
                                 <?php if(!$whole && $price != 0.00) { ?>
-                                <th>Цена:</th>
+                                    <?php  if (!in_array(0, array_column($complect, 'price'))) { ?>
+                                        <th>Цена:</th>
+                                    <?php } ?>
                                 <?php } ?>
                             </tr>
                         </thead>
                         <?php $summ = 0; foreach($complect as $acc) { ?>
                             <tr>
                                 <td><a href="index.php?route=product/product&product_id=<?php echo $acc['product_id'];?>" target="blank"><?php echo $acc['name'];?></a></td>
-                                <?php if ( $price != 0.00 ) { ?>
-                                    <?php $summ+= $acc['price'];?>
-                                    <?php if(!$whole) { ?>
-                                        <td><?php echo $acc['price'];?> руб.</td>
-                                        <td><button class="btn btn-primary" onclick="cart.add('<?php echo $acc['product_id']; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i></button></td>
+                                <?php  if (!in_array(0, array_column($complect, 'price'))) { ?>
+                                    <?php if ( $price != 0.00 ) { ?>
+                                        <?php $summ+= $acc['price'];?>
+                                        <?php if(!$whole) { ?>
+                                            <td><?php echo $acc['price'];?> руб.</td>
+                                            <td><button class="btn btn-primary" onclick="cart.add('<?php echo $acc['product_id']; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i></button></td>
+                                        <?php } ?>
                                     <?php } ?>
-                                <?php } ?>
+                                <?php } ?>    
                             </tr>
                         <?php }?>
-                        <?php if ( $price != 0.00 ) { ?>
-                            <?php if(!$whole) { ?>
+                        <?php  if (!in_array(0, array_column($complect, 'price'))) { ?>
+                                <?php if ( $price != 0.00 ) { ?>
+                                    <?php if(!$whole) { ?>
+                                        <tr>
+                                           <td style="text-align: right; font-size: 10pt;">Итого:</td>
+                                           <td colspan='2' style="text-align: left; font-size: 14pt;"><s><?php echo $summ; ?> руб.</s></td>
+                                        </tr>
+                                    <?php } ?>
+                                    <tr>
+                                        <td colspan='3' style="text-align: center; font-size: 14pt;">Цена комплекта <?php if(!$whole) { ?>со скидкой<?php } ?>: <span class="label label-danger"><?php echo $c_price; ?> руб.</span></td>
+                                    </tr>
                                 <tr>
-                                   <td style="text-align: right; font-size: 10pt;">Итого:</td>
-                                   <td colspan='2' style="text-align: left; font-size: 14pt;"><s><?php echo $summ; ?> руб.</s></td>
+                                    <td colspan='3' style="text-align: center;"><button class="btn btn-primary" onclick="cart.add('<?php echo $id_comp_ref; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i> Купить весь комплект</button></td>
                                 </tr>
-                            <?php } ?>
-                            <tr>
-                                <td colspan='3' style="text-align: center; font-size: 14pt;">Цена комплекта <?php if(!$whole) { ?>со скидкой<?php } ?>: <span class="label label-danger"><?php echo $c_price; ?> руб.</span></td>
-                            </tr>
-                            <tr>
-                                <td colspan='3' style="text-align: center;"><button class="btn btn-primary" onclick="cart.add('<?php echo $id_comp_ref; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i> Купить весь комплект</button></td>
-                            </tr>
+                                <?php }?>
+                        <?php } else { ?>
+                                <tr>
+                                    <td colspan='2' style="text-align: center;"><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal"> Узнать стоимость комплекта</button></td>
+                                </tr>
+                                <!-- Modal -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Вы можете заполнить форму ниже и наши менеджеры свяжутся с Вами.</h4>
+                      </div>
+                        <form method='POST' action="">
+                          <div class="modal-body">
+                            <div class="form-group">
+                              <label >Ваше имя: </label>
+                              <input type="text" class="form-control" name='name' placeholder="Имя...">
+                            </div>
+                            <div class="form-group">
+                              <label >Ваш e-mail: </label>
+                              <input type="email" class="form-control" name='email' placeholder="E-mail...">
+                            </div>
+                            <div class="form-group">
+                              <label >Телефон: </label>
+                              <input type="text" class="form-control" name='phone' placeholder="Телефон...">
+                            </div>
+                             <label>Комментарий: </label>
+                              <textarea class="form-control" name='comment' placeholder="Комментарий к заявке..."></textarea>
+                            </div>
+                              <input type="hidden" name="suc" value="1" />
+                          </div>   
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                            <button type="submit" class="btn btn-danger">Отправить</button>
+                          </div>
+                        </form>
+
+                    </div>
+                  </div>
+                </div>
+                <script type='text/javascript'>
+                      $('#myModal').on('shown.bs.modal', function () {
+                        $('#myInput').focus()
+                      })
+                </script>
                         <?php }?>
                     </table>
                 </div>
