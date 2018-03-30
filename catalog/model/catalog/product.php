@@ -744,7 +744,7 @@ class ModelCatalogProduct extends Model {
                                 . "ON (p.product_id = pd.product_id) "
                             . "LEFT JOIN ". DB_PREFIX . "complects c "
                                 . "ON (p.vin = c.heading OR p.comp = c.heading) "
-                            . "WHERE 1 ";
+                            . "WHERE !LOCATE('complect', vin) ";
             //exit(var_dump($reqwords));
             if(count($reqwords)==1){
                 $query.="AND (p.vin = '".$this->db->escape($reqwords[0])."' OR LOCATE ('".$this->db->escape($reqwords[0])."', p.catn)  OR p.category = '".$this->db->escape($reqwords[0])."' OR p.podcateg = '".$this->db->escape($reqwords[0])."' OR LOCATE ('" . $this->db->escape($reqwords[0]) . "', pd.name) OR LOCATE ('" . $this->db->escape($reqwords[0]) . "', p.compability) OR LOCATE ('" . $this->db->escape($reqwords[0]) . "', p.note)) ";
