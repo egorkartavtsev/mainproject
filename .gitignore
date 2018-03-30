@@ -1,0 +1,12 @@
+/changelog.md
+/system/
+/image/
+/config.php
+/admin/config.php
+/.gitignore
+/Avito/
+/uploadeXcelfiles/
+/downloadXcelFiles/
+/nbproject/
+/nbproject/private/
+/vendor/
