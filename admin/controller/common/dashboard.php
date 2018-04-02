@@ -8,7 +8,21 @@ class ControllerCommonDashboard extends Controller {
 		$data['heading_title'] = $this->language->get('heading_title');
 
 		$data['breadcrumbs'] = array();
-
+                $data['fcItems'] = array();
+                        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."user_customs WHERE user_id = ".(int)$this->user->getId()." ");
+                        if($sup->num_rows){
+                            $items = explode(";", $sup->row['fast_call']);
+                            foreach ($items as $item) {
+                                if(strlen(trim($item))!== 0){
+                                    $query = $this->db->query("SELECT * FROM ".DB_PREFIX."controllers WHERE controller = '".trim($item)."'");
+                                    $data['fcItems'][] = array(
+                                        'href'  => $this->url->link(trim($item), 'token='.$this->session->data['token']),
+                                        'text'  => $query->row['name'],
+                                        'icon'  => $query->row['icon']
+                                    );
+                                }
+                            }
+                        }
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
 			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
