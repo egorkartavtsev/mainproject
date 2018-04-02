@@ -1,7 +1,7 @@
 <?php
 class ModelReportProduct extends Model {
 	public function getProductsViewed($data = array()) {
-		$sql = "SELECT pd.name, p.model, p.viewed FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) WHERE pd.language_id = '" . (int)$this->config->get('config_language_id') . "' AND p.viewed > 0 ORDER BY p.viewed DESC";
+		$sql = "SELECT pd.name, p.model, p.viewes FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) WHERE pd.language_id = '" . (int)$this->config->get('config_language_id') . "' AND p.viewes > 0 ORDER BY p.viewes DESC";
 
 		if (isset($data['start']) || isset($data['limit'])) {
 			if ($data['start'] < 0) {
@@ -21,19 +21,19 @@ class ModelReportProduct extends Model {
 	}
 
 	public function getTotalProductViews() {
-		$query = $this->db->query("SELECT SUM(viewed) AS total FROM " . DB_PREFIX . "product");
+		$query = $this->db->query("SELECT SUM(viewes) AS total FROM " . DB_PREFIX . "product");
 
 		return $query->row['total'];
 	}
 
 	public function getTotalProductsViewed() {
-		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "product WHERE viewed > 0");
+		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "product WHERE viewes > 0");
 
 		return $query->row['total'];
 	}
 
 	public function reset() {
-		$this->db->query("UPDATE " . DB_PREFIX . "product SET viewed = '0'");
+		$this->db->query("UPDATE " . DB_PREFIX . "product SET viewes = '0'");
 	}
 
 	public function getPurchased($data = array()) {

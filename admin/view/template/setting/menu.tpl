@@ -29,9 +29,15 @@
                     <td>
                         <select id="itemIcon-<?php echo $controller['control_id'];?>" class="form-control">
                             <?php foreach($icons as $icon){ ?>
-                              <option value="<?php echo $icon['icon'];?>" <?php $icon['icon']==$controller['icon']?'selected':'';?> >
-                                <?php echo $icon['icon'];?>
-                              </option>
+                                <?php if(trim($icon['icon'])===trim($controller['icon'])){ ?>
+                                  <option value="<?php echo $icon['icon'];?>" selected>
+                                    <?php echo trim($icon['icon']);?>
+                                  </option>
+                                  <?php } else { ?>
+                                  <option value="<?php echo $icon['icon'];?>">
+                                    <?php echo trim($icon['icon']);?>
+                                  </option>
+                                <?php }?>
                             <?php }?>
                         </select>
                     </td>

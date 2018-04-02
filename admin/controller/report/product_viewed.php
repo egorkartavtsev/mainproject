@@ -45,8 +45,8 @@ class ControllerReportProductViewed extends Controller {
 		$results = $this->model_report_product->getProductsViewed($filter_data);
 
 		foreach ($results as $result) {
-			if ($result['viewed']) {
-				$percent = round($result['viewed'] / $product_viewed_total * 100, 2);
+			if ($result['viewes']) {
+				$percent = round($result['viewes'] / $product_viewed_total * 100, 2);
 			} else {
 				$percent = 0;
 			}
@@ -54,7 +54,7 @@ class ControllerReportProductViewed extends Controller {
 			$data['products'][] = array(
 				'name'    => $result['name'],
 				'model'   => $result['model'],
-				'viewed'  => $result['viewed'],
+				'viewed'  => $result['viewes'],
 				'percent' => $percent . '%'
 			);
 		}
