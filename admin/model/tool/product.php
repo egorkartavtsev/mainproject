@@ -221,4 +221,52 @@ class ModelToolProduct extends Model {
     public function deleteOption($name, $type_id) {
         $this->db->query("UPDATE ".DB_PREFIX."type_lib SET type_id = 0 WHERE name = '".name."' AND type_id = '".$type_id."'");
     }
+    
+    public function getItems(){
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."controllers ORDER BY controller");
+        return $sup->rows;
+    }
+    
+    public function getIcons() {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."icon_lib ORDER BY icon");
+        return $sup->rows;
+    }
+    
+    public function saveControllerInfo($info) {
+        $this->db->query("UPDATE ".DB_PREFIX."controllers SET name = '".$info['name']."', icon = '".$info['icon']."' WHERE control_id = '".$info['id']."'");
+    }
+    
+    public function getFCMenuItems($id) {
+        $result = array();
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."user_customs WHERE user_id = ".(int)$id." ");
+        if($sup->num_rows){
+            $items = explode(";", $sup->row['fast_call']);
+            foreach ($items as $item) {
+                if(strlen(trim($item))!== 0){
+                    $query = $this->db->query("SELECT * FROM ".DB_PREFIX."controllers WHERE controller = '".trim($item)."'");
+                    $result[] = array(
+                        'name'  => trim($item),
+                        'text'  => $query->row['name'],
+                        'icon'  => $query->row['icon']
+                    );
+                }
+            }
+        }
+        return $result;
+    }
+    
+    public function addItem($item, $uid) {
+        $sup = $this->db->query("SELECT fast_call FROM ".DB_PREFIX."user_customs WHERE user_id = ".(int)$uid);
+        if($sup->num_rows) {
+            $this->db->query("UPDATE ".DB_PREFIX."user_customs SET fast_call = '".$sup->row['fast_call'].$item.";' WHERE user_id = ".(int)$uid);
+        } else {
+            $this->db->query("INSERT INTO ".DB_PREFIX."user_customs SET fast_call = '".$item.";', user_id = ".(int)$uid);
+        }
+    }
+    
+    public function dropItem($item, $uid) {
+        $sup = $this->db->query("SELECT fast_call FROM ".DB_PREFIX."user_customs WHERE user_id = ".(int)$uid);
+        $newFC = str_replace($item.';', '', $sup->row['fast_call']);
+        $this->db->query("UPDATE ".DB_PREFIX."user_customs SET fast_call = '".$newFC."' WHERE user_id = ".(int)$uid);
+    }
 }

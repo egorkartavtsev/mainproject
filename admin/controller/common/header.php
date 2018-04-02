@@ -133,6 +133,22 @@ class ControllerCommonHeader extends Controller {
 				);
 			}
                         $data['ses_token'] = $this->request->get['token'];
+                        
+                        $data['fcItems'] = array();
+                        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."user_customs WHERE user_id = ".(int)$this->user->getId()." ");
+                        if($sup->num_rows){
+                            $items = explode(";", $sup->row['fast_call']);
+                            foreach ($items as $item) {
+                                if(strlen(trim($item))!== 0){
+                                    $query = $this->db->query("SELECT * FROM ".DB_PREFIX."controllers WHERE controller = '".trim($item)."'");
+                                    $data['fcItems'][] = array(
+                                        'href'  => $this->url->link(trim($item), 'token='.$this->session->data['token']),
+                                        'text'  => $query->row['name'],
+                                        'icon'  => $query->row['icon']
+                                    );
+                                }
+                            }
+                        }
 		}
 
 		return $this->load->view('common/header', $data);

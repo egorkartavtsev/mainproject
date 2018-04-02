@@ -1,9 +1,28 @@
 <?php
 
-class ControllerCommonCreateXML extends Controller {
+class ControllerSettingMenu extends Controller{
+    
+    private $info = array(
+        'this'      => array(
+                'name'  => 'Конструктор меню',
+                'link'  => 'setting/menu'
+        ),
+        'parent'    => array(
+                'name'  => 'Конструкторы',
+                'link'  => 'setting/constructors'
+        ),
+        'description'   => 'Редактирование пунктов меню.'
+    );
+    
     public function index() {
+        $this->load->model('tool/product');
+        $this->load->model('tool/layout');
+        $data = $this->model_tool_layout->getLayout($this->info);
         $ignore = array(
 			'common/dashboard',
+			'common/excelTools',
+			'common/filemanager',
+			'common/column_left',
 			'common/startup',
 			'common/login',
 			'common/logout',
@@ -71,5 +90,19 @@ class ControllerCommonCreateXML extends Controller {
                             }
 			}
 		}
+                $items = $this->model_tool_product->getItems();
+                foreach ($items as $item) {
+                    if($this->user->hasPermission('access', $item['controller'])){
+                        $data['controllers'][] = $item;
+                    }
+                }
+                $data['icons'] = $this->model_tool_product->getIcons();
+        $this->response->setOutput($this->load->view('setting/menu', $data));
+    }
+    
+    public function saveControllerInfo() {
+        $this->load->model('tool/product');
+        $this->model_tool_product->saveControllerInfo($this->request->post);
     }
 }
+

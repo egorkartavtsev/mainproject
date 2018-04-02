@@ -20,6 +20,12 @@
                     <a href="index.php?route=setting/prodtypes&token=<?php echo $token_excel;?>"><span>Типы продуктов</span></a>
                 </li>
                 <li>
+                    <a href="index.php?route=setting/fastCallMenu&token=<?php echo $token_excel;?>"><span>Меню быстрого доступа</span></a>
+                </li>
+                <li>
+                    <a href="index.php?route=setting/menu&token=<?php echo $token_excel;?>"><span>Меню</span></a>
+                </li>
+                <li>
                     <a class="parent">Библиотеки</a>
                     <ul class="collapse">
                         <li>

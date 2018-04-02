@@ -16,6 +16,9 @@
       <button type="button" class="close" data-dismiss="alert">&times;</button>
     </div>
     <?php } ?>
+    <div class="row">
+        <div class="alert alert-success col-sm-12"><h3>Меню:</h3></div>
+    </div>
     <?php foreach ($rows as $row) { ?>
     <div class="row">
       <?php foreach ($row as $dashboard_1) { ?>

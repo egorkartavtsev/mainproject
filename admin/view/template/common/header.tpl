@@ -67,8 +67,17 @@
   <div class="navbar-header">
     <?php if ($logged) { ?>
     <a type="button" id="button-menu" class="pull-left"><i class="fa fa-indent fa-lg"></i></a>
-    <?php } ?>
-    <a href="<?php echo $home; ?>" class="navbar-brand"><img src="view/image/logo.png" alt="<?php echo $heading_title; ?>" title="<?php echo $heading_title; ?>" /></a></div>
+    <div class="hidden-xs pull-right">
+        <div class="col-sm-12">
+            <?php foreach($fcItems as $fc){ ?>
+            <a class="btn btn-success" data-toggle="tooltip" data-placement="bottom" data-original-title="<?php echo $fc['text'];?>" href="<?php echo $fc['href'];?>"><i class="fa <?php echo $fc['icon'];?>"></i></a> 
+            <?php }?>
+            <a href="index.php?route=setting/fastCallMenu&token=<?php echo $ses_token;?>" class="btn btn-info">настроить</a>
+            
+        </div>
+    </div>
+    <?php }  ?>
+    </div>
   <?php if ($logged) { ?>
     <ul class="nav pull-right">
         <li class="dropdown">

@@ -11,6 +11,19 @@ function showStructOptions($parent){
       }
     })
 }
+
+function saveControllerInfo($id){
+    ajax({
+      url:"index.php?route=setting/menu/saveControllerInfo&token="+getURLVar('token'),
+      statbox:"status",
+      method:"POST",
+      data: {id: $id, name: $('#itemName-'+$id).val(), icon: $('#itemIcon-'+$id).val()},
+      success:function(data){
+          alert('Сохранено');
+      }
+    })
+}
+
 function addOption(){
     ajax({
       url:"index.php?route=setting/prodtypes/addOption&token="+getURLVar('token'),
@@ -24,6 +37,41 @@ function addOption(){
     })
 }
 $(document).ready(function() {
+    
+    //add FC item
+    $(document).on("click", "[btn_type=addFCItem]", function(){
+        var thisDiv = $(this).parent();
+        ajax({
+            url:"index.php?route=setting/fastCallMenu/addItem&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data: {item: thisDiv.find('button').attr('nameItem')},
+            success:function(data){
+                thisDiv.find('button').attr('class', 'btn btn-success');
+                thisDiv.find('button').attr('btn_type', 'dropFCItem');
+                $("#FCPrev").html($("#FCPrev").html()+' '+thisDiv.html());
+                thisDiv.find('button').attr('disabled', 'disabled');
+            }
+        })
+    })
+    
+   //drop FC item
+    $(document).on("click", "[btn_type=dropFCItem]", function(){
+        var thisDiv = $(this).parent();
+        var button = $(this);
+        var item = $(this).attr('nameItem');
+        ajax({
+            url:"index.php?route=setting/fastCallMenu/dropItem&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data: {item: item},
+            success:function(data){
+                button.attr('class', 'btn btn-info');
+                button.attr('disabled', 'disabled');
+            }
+        })
+    })
+    
     //change type of option
     $(document).on( "change", "[id=field_typeOption]", function() {
         var mainDiv = $(this).parent().parent();
