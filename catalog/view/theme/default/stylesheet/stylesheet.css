@@ -642,8 +642,8 @@ h2.price {
         border-radius: 5%; 
         position: relative;
         float: left;
-        font-size: 200%;
-        color: whitesmoke;
+        font-size: 130%;
+        color: #0000FF;
         white-space: nowrap;
 }
 .product-thumb .price {
