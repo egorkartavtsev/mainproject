@@ -30,7 +30,12 @@
       </div>
   </div>
 </div>
-<script>
-    
+<script type="text/javascript"><!--
+    $('#myTabs a').click(function (e) {
+      ckeditorInit('prodtypes', getURLVar('token'));
+      e.preventDefault()
+      $(this).tab('show')
+    })
+  //-->
 </script>
 <?php echo $footer; ?>

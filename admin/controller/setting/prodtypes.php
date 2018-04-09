@@ -48,18 +48,26 @@ class ControllerSettingProdTypes extends Controller {
         }
         $data = $this->model_tool_layout->getLayout($this->info);
         $data['templates'] = $this->model_tool_product->getStructures();
+        $data['ckeditor'] = $this->config->get('config_editor_default');
+//        exit(var_dump($data['ckeditor']));
         $this->response->setOutput($this->load->view('setting/prodtype', $data));
     }
     
     public function showOptions() {
         $this->load->model('tool/product');
         $results = $this->model_tool_product->getOptions($this->request->post['id']);
-        $options = '';
+        $info = $this->model_tool_product->getStructInfo($this->request->post['id']);
+        $options = '<div>';
+        $divInfo = '';
         $divsOpt = '';
-        $options.='<h4 type="optHeader"><span id="optHeader">Свойства товара: </span>';
+        $options.= '<ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Свойства</a></li>
+                        <li role="presentation"><a href="#descript" aria-controls="descript" role="tab" data-toggle="tab">Общие</a></li>
+                    </ul>'
+                . '<div class="tab-content"><div role="tabpanel" class="tab-pane active" id="home"><h4 type="optHeader"><span id="optHeader">Свойства товара: </span>';
         $divsOpt.= '<div class="clearfix"></div><div class="clearfix"><p></p></div><button id="newOpt" class="btn btn-success" onclick="addOption()"><i class="fa fa-plus-circle"></i> создать нововое свойство товара</button><div class="clearfix"></div><div class="clearfix"><p></p></div>';
-        if(!empty($results)){
-            foreach ($results as $result) {
+        if(!empty($results['options'])){
+            foreach ($results['options'] as $result) {
                 $options.='<span class="label label-success" type-name="'.$result['name'].'">'.$result['text'].($result['field_type']=='library'?'(библиотечное)':'').'</span> ';
                 $divsOpt.= '<div class="alert alert-success">';
                 if($result['field_type']!=='library' && $result['libraries']==='0'){
@@ -71,9 +79,21 @@ class ControllerSettingProdTypes extends Controller {
                                     . '<select id="field_typeOption" class="form-control">'
                                         . '<option value="input" '.($result['field_type']=='input'?'selected':'').'>Текстовое поле</option>'
                                         . '<option value="select" '.($result['field_type']=='select'?'selected':'').'>Выбор вариантов</option>'
+                                        . '<option value="compability" '.($result['field_type']=='compability'?'selected':'').'>Библиотечная совместимость</option>'
                                     . '</select>'
                                     . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
+                                    . '<select id="librariesOption" class="form-control" disabled>';
+                                    $librs = $this->model_tool_product->getLibrs();
+                                    foreach ($librs as $lib){
+                                        $divsOpt.='<option value="'.$lib['library_id'].'">'.$lib['text'].'</option>';
+                                    }
+                           $divsOpt.= '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
                                     . '<input type="text" id="def_valOption" class="form-control" '.($result['field_type']=='input'?'':'disabled').' value="'.$result['def_val'].'" placeholder="Введите значения свойства по-умолчанию">'
+                                    . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
+                                    . '<select id="unique_fieldOption" class="form-control">'
+                                        . '<option value="0" '.($result['unique_field']=='0'?'selected':'').'>Неуникальное поле</option>'
+                                        . '<option value="1" '.($result['unique_field']=='1'?'selected':'').'>Уникальное поле</option>'
+                                    . '</select>'
                                     . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
                                     . '<button id="saveOpt" class="btn btn-info"><i class="fa fa-floppy-o"></i> сохранить</button>&nbsp;'
                                     . '<button id="delOpt" class="btn btn-danger"><i class="fa fa-trash-o"></i> отвязать</button>'
@@ -91,6 +111,11 @@ class ControllerSettingProdTypes extends Controller {
                                     . '<select id="viewedOption" class="form-control">'
                                         . '<option value="1" '.($result['viewed']=='1'?'selected':'').'>Отображать на витрине</option>'
                                         . '<option value="0" '.($result['viewed']=='0'?'selected':'').'>Не отображать на витрине</option>'
+                                    . '</select>'
+                                    . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
+                                    . '<select id="searchingOption" class="form-control">'
+                                        . '<option value="1" '.($result['searching']=='1'?'selected':'').'>Участвует в поиске</option>'
+                                        . '<option value="0" '.($result['searching']=='0'?'selected':'').'>Не участвует в поиске</option>'
                                     . '</select>'
                                     . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
                                     . '<input type="text" id="sort_orderOption" class="form-control" value="'.$result['sort_order'].'" placeholder="Порядок сортировки">'
@@ -116,8 +141,22 @@ class ControllerSettingProdTypes extends Controller {
                     $divsOpt.= '</div>';
             }
         }
+        $divsOpt.= '</div>';
+        $divInfo.= '<div role="tabpanel" class="tab-pane" id="descript">'
+                    . '<div class="col-lg-12 form-group">'
+                        . '<div class="col-lg-8"><label for="templName">Маска наименования продуктов данного типа:</label>'
+                        . '<input class="form-control" id="templName" type="text" type_id="'.$this->request->post['id'].'" value="'.$info['temp'].'"/></div>'
+                        . '<label>&nbsp;</label><br><button class="btn btn-success" disabled btn_type="tempNameSave"><i class="fa fa-floppy-o"></i></button>'
+                    . '</div>';
+        $divInfo.= '<div class="col-lg-6 form-group">
+                    <label>Шаблон описания продуктов данного типа</label>
+                    <textarea id="desctempl" data-lang="1" class="form-control summernote">'.$info['desctemp'].'</textarea>
+                    <p></p>
+                    <button class="btn btn-primary" btn_type="saveDescTemp">Сохранить</button>
+                  </div>';
+        $divInfo.= '</div>';
         $options.='</h4>';
-        echo $options.$divsOpt;
+        echo $options.$divsOpt.$divInfo;
     }
     
     public function addOption() {
@@ -132,15 +171,21 @@ class ControllerSettingProdTypes extends Controller {
                             . '<option value="input">Текстовое поле</option>'
                             . '<option value="select">Выбор вариантов</option>'
                             . '<option value="library">Привязать библиотеку</option>'
+                            . '<option value="compability">Библиотечная совместимость</option>'
                         . '</select>'
                         . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
-                        . '<select id="librariesOption" class="form-control" disabled hidden="hidden">';
+                        . '<select id="librariesOption" class="form-control" disabled>';
                         $librs = $this->model_tool_product->getLibrs();
                         foreach ($librs as $lib){
                             $result.='<option value="'.$lib['library_id'].'">'.$lib['text'].'</option>';
                         }
                 $result.='</select><div class="clearfix"></div><div class="clearfix"><p></p></div>'
                         . '<input type="text" id="def_valOption" class="form-control" placeholder="Введите значение свойства по умолчанию">'
+                        . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
+                        . '<select id="unique_fieldOption" class="form-control">'
+                            . '<option value="0">Неуникальное поле</option>'
+                            . '<option value="1">Уникальное поле</option>'
+                        . '</select>'
                         . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
                         . '<button id="saveOpt" class="btn btn-info"><i class="fa fa-floppy-o"></i> сохранить</button>&nbsp;'
                         . '<button id="delNewOpt" class="btn btn-danger"><i class="fa fa-trash-o"></i> удалить</button>'
@@ -158,6 +203,11 @@ class ControllerSettingProdTypes extends Controller {
                         . '<select id="viewedOption" class="form-control">'
                             . '<option value="1">Отображать на витрине</option>'
                             . '<option value="0">Не отображать на витрине</option>'
+                        . '</select>'
+                        . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
+                        . '<select id="searchingOption" class="form-control">'
+                            . '<option value="1">Участвует в поиске</option>'
+                            . '<option value="0">Не участвует в поиске</option>'
                         . '</select>'
                         . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
                         . '<input type="text" id="sort_orderOption" class="form-control" placeholder="Порядок сортировки">'
@@ -212,5 +262,17 @@ class ControllerSettingProdTypes extends Controller {
         $type_id = $this->request->post['type_id'];
         $this->load->model('tool/product');
         $this->model_tool_product->deleteOption($name, $type_id);
+    }
+    
+    public function saveTempName() {
+        $this->load->model('tool/product');
+        $this->model_tool_product->saveTempName($this->request->post['tempName'], $this->request->post['type_id']);
+        echo 'ok';
+    }
+    
+    public function saveDT() {
+        $this->load->model('tool/product');
+        
+        echo $this->model_tool_product->saveDT($this->request->post['temp'], $this->request->post['temp_id']);
     }
 }

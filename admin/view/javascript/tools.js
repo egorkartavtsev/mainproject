@@ -9,7 +9,7 @@ function showStructOptions($parent){
           $("#options").attr('type_id', $parent);
           $("#options").html(data);
       }
-    })
+    });
 }
 
 function saveControllerInfo($id){
@@ -21,7 +21,7 @@ function saveControllerInfo($id){
       success:function(data){
           alert('Сохранено');
       }
-    })
+    });
 }
 
 function addOption(){
@@ -34,10 +34,166 @@ function addOption(){
           $("#options").find("#newOpt").attr('disabled', 'true');
           $("#newOpt").after(data);
       }
-    })
+    });
 }
 $(document).ready(function() {
     
+    $(document).on('change', '[name*="complect"]', function(){
+        if($(this).val()==='set'){
+            $('#cHeader').attr('type', 'text');
+        } else {
+            $('#cHeader').attr('type', 'hidden');
+        }
+    })
+    
+    $(document).on('input', '[name*="heading"]', function(){
+        var heading = $(this).val();
+        var input = $(this);
+        if(heading!==''){
+            ajax({
+              url:"index.php?route=tool/formTool/isComplect&token="+getURLVar('token'),
+              statbox:"status",
+              method:"POST",
+              data: {heading: heading},
+              success:function(data){
+                  if(data){
+                      input.attr('class', 'form-control alert-success');
+                  } else {
+                      input.attr('class', 'form-control alert-danger');
+                  }
+              }
+            });
+        } else {
+            input.attr('class', 'form-control');
+        }
+    })
+    $(document).on('click', '[btn_type=compability]', function(){
+        var tc = $(this).parent().parent().find('input').val();
+        $('#totalCpb').text(tc);
+    });
+    //choose cpbItem
+    $(document).on('click', '[span_type=cpbItem]', function(){
+        var tc = $(this).parent().parent().parent().parent().find('#totalCpb');
+        tc.text(tc.text()+$(this).text()+', ');
+    });
+    $(document).on('click', '[btn_type=applyCpb]', function(){
+        var totalCpb = $(this).parent().find('p').text();
+        $('#'+$(this).attr('cpbfield_name')+$(this).attr('cpbfield_id')).val(totalCpb);
+    })
+    //libr select change
+    $(document).on('change', '[select_type=librSelect]', function(){
+        var select = $(this);
+        var fill_id = select.val();
+        var child = select.attr('child');
+        var num = select.parent().parent().attr('num');
+        ajax({
+          url:"index.php?route=tool/formTool/libraryFields&token="+getURLVar('token'),
+          statbox:"status",
+          method:"POST",
+          data: {parent: fill_id, parentName: child, num: num},
+          success:function(data){
+              select.parent().parent().find('[id='+child+']').html(data);
+          }
+        });
+    })
+    
+    //validate unique fields
+    $(document).on('input', '[unique=unique]', function(){
+        var search = $(this).val();
+        if(search!==''){
+            var field = $(this).attr('field');
+            var num = $(this).parent().parent().attr('num');
+            var num = $(this).parent().parent().attr('num');
+            var uDiv = $(this).parent().parent();
+            var fieldText = $(this).parent().find('label').text();
+            var unique = true;
+            $(document).find('input[field='+field+']').each(function(){
+                if($(this).val() === search && $(this).parent().parent().attr('num') !== num){
+                    unique = false;
+                }
+            });
+            if(unique){
+                ajax({
+                    url:"index.php?route=tool/formTool/isUnique&token="+getURLVar('token'),
+                    statbox:"status",
+                    method:"POST",
+                    data: {search: search, field: field},
+                    success:function(data){
+                        unique = data;
+                        if(unique==='true'){
+                            uDiv.attr('class', 'col-lg-12 alert alert-success');
+                        } else {
+                            uDiv.attr('class', 'col-lg-12 alert alert-warning');
+                            alert('Такое значение "'+fieldText+'" уже есть в базе');
+                        }
+                    }
+              });
+            } else {
+                uDiv.attr('class', 'col-lg-12 alert alert-warning');
+                alert('Такое значение "'+fieldText+'" уже есть на странице');
+            }
+        }
+    })
+    //save prodList
+    $(document).on('click', '[btn_type*="saveProd"]', function(){
+        var haveError = true;
+        var errorText = '';
+        var form = $(document).find('form[name*="prod"]');
+        form.find('div[type="product"]').each(function(index){
+            var currDiv = $(this);
+            $(this).find('input[required="required"]').each(function(){
+               if($(this).val()===''){
+                    currDiv.attr('class', 'col-md-12 alert alert-warning');
+                    alert('Не заполнено поле '+$(this).parent().find('label').text());
+                    haveError = false;
+               } else {
+                   currDiv.attr('class', 'col-md-12 alert alert-success');
+               }
+            });
+        });
+        if(haveError){
+            form.submit();
+        }
+    });
+    
+    //option tempName
+    $(document).on('input', '#templName', function(){
+        $(this).parent().parent().find('button').removeAttr('disabled');
+    })
+    
+    //option templName save
+    $(document).on("click", "[btn_type=tempNameSave]", function(){
+        var button = $(this);
+        var tempName = button.parent().find('input').val();
+        var type_id = button.parent().find('input').attr('type_id');
+        ajax({
+            url:"index.php?route=setting/prodtypes/saveTempName&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data: {tempName: tempName, type_id: type_id},
+            success:function(data){
+                button.attr('disabled', 'disabled');
+            }
+        });
+    })
+    
+    //add new product
+    $(document).on("click", "[btn_type=addProduct]", function(){
+        var button = $(this);
+        var type = button.parent().find('select').val();
+        var num = button.attr('num');
+        ajax({
+            url:"index.php?route=product/product_add/addToList&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data: {type: type, num},
+            success:function(data){
+                $("#prodListHeader").after(data);
+                ++num;
+                button.attr('num', num);
+            }
+        });
+    })
     //add FC item
     $(document).on("click", "[btn_type=addFCItem]", function(){
         var thisDiv = $(this).parent();
@@ -52,7 +208,7 @@ $(document).ready(function() {
                 $("#FCPrev").html($("#FCPrev").html()+' '+thisDiv.html());
                 thisDiv.find('button').attr('disabled', 'disabled');
             }
-        })
+        });
     })
     
    //drop FC item
@@ -69,7 +225,7 @@ $(document).ready(function() {
                 button.attr('class', 'btn btn-info');
                 button.attr('disabled', 'disabled');
             }
-        })
+        });
     })
     
     //change type of option
@@ -89,6 +245,12 @@ $(document).ready(function() {
                 mainDiv.find("[id=valsOption]").removeAttr('disabled');
                 break
             case 'library':
+                mainDiv.find("[id=librariesOption]").removeAttr('disabled');
+                mainDiv.find("[id=librariesOption]").removeAttr('hidden');
+                mainDiv.find("[id=def_valOption]").attr('disabled', 'true');
+                mainDiv.find("[id=valsOption]").attr('disabled', 'true');
+                break
+            case 'compability':
                 mainDiv.find("[id=librariesOption]").removeAttr('disabled');
                 mainDiv.find("[id=librariesOption]").removeAttr('hidden');
                 mainDiv.find("[id=def_valOption]").attr('disabled', 'true');

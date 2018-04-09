@@ -25,8 +25,19 @@ class ModelToolProduct extends Model {
     }
     
     public function getOptions($type) {
+        $result = array();
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE type_id = '".$type."' ORDER BY sort_order ");
-        return $sup->rows;
+        $query = $this->db->query("SELECT * FROM ".DB_PREFIX."product_type WHERE type_id = '".$type."'");
+        $result = array(
+            'temp' => $query->row['temp'],
+            'options' => $sup->rows
+        );
+        return $result;
+    }
+    
+    public function getStructInfo($id) {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."product_type WHERE type_id = ".(int)$id);
+        return $sup->row;
     }
     
     public function hasColumn($name) {
@@ -169,6 +180,20 @@ class ModelToolProduct extends Model {
                             }
                             $result = TRUE;
                             break;
+                        case 'compability':
+                            $sql.= "INSERT INTO ".DB_PREFIX."type_lib SET ";
+                            foreach ($data as $key => $value) {
+                                if($key!=='old' && $key!=='def_val' && $key!=='vals' && $key!=='type_id'){
+                                    $sql.= $key." = '".$value."', ";
+                                }
+                            }
+                            $sql.="type_id = '".$data['type_id']."' ";
+                            $this->db->query($sql);
+                            if(!$isColumn){
+                                $this->db->query("ALTER TABLE `".DB_PREFIX."product` ADD `".$data['name']."` VARCHAR(512) NOT NULL");
+                            }
+                            $result = TRUE;
+                            break;
                         case 'select':
                             $sql.= "INSERT INTO ".DB_PREFIX."type_lib SET ";
                             foreach ($data as $key => $value) {
@@ -268,5 +293,32 @@ class ModelToolProduct extends Model {
         $sup = $this->db->query("SELECT fast_call FROM ".DB_PREFIX."user_customs WHERE user_id = ".(int)$uid);
         $newFC = str_replace($item.';', '', $sup->row['fast_call']);
         $this->db->query("UPDATE ".DB_PREFIX."user_customs SET fast_call = '".$newFC."' WHERE user_id = ".(int)$uid);
+    }
+    
+    public function saveTempName($temp, $type) {
+        $this->db->query("UPDATE ".DB_PREFIX."product_type SET temp = '".$temp."' WHERE type_id = ".(int)$type);
+    }
+    
+    public function saveTemp($temp, $type) {
+        return($this->db->query("UPDATE ".DB_PREFIX."product_type SET desctemp = '".$temp."' WHERE type_id = ".(int)$type));
+    }
+    
+    public function oldLinks($pid, $fills) {
+        $brands = array();
+        $categories = array();
+        foreach ($fills as $fid) {
+            $sup = $this->db->query("SELECT b.id AS bid FROM ".DB_PREFIX."lib_fills lf LEFT JOIN ".DB_PREFIX."brand b ON b.name = lf.name WHERE lf.id = ".(int)$fid);
+            if($sup->row['bid']){$brands[] = $sup->row['bid'];}
+        }
+        foreach ($fills as $fid) {
+            $sup = $this->db->query("SELECT cd.category_id AS cid FROM ".DB_PREFIX."lib_fills lf LEFT JOIN ".DB_PREFIX."category_description cd ON cd.name = lf.name WHERE lf.id = ".(int)$fid);
+            if($sup->row['cid']){$categories[] = $sup->row['cid'];}
+        }
+        foreach ($brands as $brand) {
+            $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand SET product_id = ".(int)$pid.", brand_id = ".(int)$brand);
+        }
+        foreach ($categories as $cat) {
+            $this->db->query("INSERT INTO ".DB_PREFIX."product_to_category SET product_id = ".(int)$pid.", category_id = ".(int)$cat);
+        }
     }
 }

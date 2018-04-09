@@ -2,6 +2,15 @@
 
 class ModelToolComplect extends Model {
     
+    public function createComplect($vin, $name) {
+        $link = uniqid('complect');
+        $this->db->query("INSERT INTO ".DB_PREFIX."complects SET heading = '".$vin."', link = '".$link."', name = '".$name."', sale = 10");
+        $this->db->query("INSERT INTO ".DB_PREFIX."product (vin, price, status, quantity, viewes, date_added) VALUES ('".$link."', 0, 0, 1, 0, NOW())");
+        $prod = $this->db->getLastId();
+        $this->db->query("INSERT INTO ".DB_PREFIX."product_description (name, language_id, product_id) VALUES ('Комплект: ".$name."', 1, ".$prod.")");
+        $this->db->query("INSERT INTO ".DB_PREFIX."product_to_store (product_id, store_id) VALUES (".(int)$prod.", 0)");
+    }
+    
     public function compReprice($vin) {
         $sup = $this->isCompl($vin);
         if($sup){
@@ -51,6 +60,18 @@ class ModelToolComplect extends Model {
     public function repriceById($pid) {
         $sup = $this->db->query("SELECT vin FROM ".DB_PREFIX."product WHERE product_id = ".(int)$pid);
         $this->compReprice($sup->row['vin']);
+    }
+    
+    public function constrCompField($num){
+        $result = '<div class="form-group">'
+                    . '<select class="form-control" name="info['.$num.'][complect]">'
+                        . '<option value="skip">Не в комплекте</option>'
+                        . '<option value="create">Головной товар</option>'
+                        . '<option value="set">Комплектующее</option>'
+                    . '</select>'
+                . '<input type="hidden" name="info['.$num.'][heading]" class="form-control" id="cHeader" placeholder="Введите ВН головного товара...">';
+        $result.= '</div>';
+        return $result;
     }
 }
 

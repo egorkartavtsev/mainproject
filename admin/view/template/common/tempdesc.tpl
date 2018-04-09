@@ -16,12 +16,43 @@
 
           <!-- Nav tabs -->
           <ul class="nav nav-tabs" role="tablist">
+            <?php foreach($types as $type){ ?>
+            <li role="presentation"><a href="#dt<?php echo $type['type_id'];?>" aria-controls="dt<?php echo $type['type_id'];?>" role="tab" data-toggle="tab"><?php echo $type['text'];?></a></li>
+            <?php }?>
             <li role="presentation" class="active"><a href="#prod" aria-controls="prod" role="tab" data-toggle="tab">Описание товара на сайте</a></li>
             <li role="presentation"><a href="#avito" aria-controls="avito" role="tab" data-toggle="tab">Описание товара на Авито</a></li>
           </ul>
 
           <!-- Tab panes -->
           <div class="tab-content">
+              <?php foreach($types as $type){ ?>
+                <div role="tabpanel" class="tab-pane" id="dt<?php echo $type['type_id'];?>">
+                  <div class="col-lg-12 form-group">
+                        <div class="col-lg-8"><label for="templName">Маска наименования продуктов данного типа:</label>
+                        <input class="form-control" id="templName" type="text" type_id="<?php echo $type['type_id'];?>" value="<?php echo $type['temp'];?>"/></div>
+                        <label>&nbsp;</label><br><button class="btn btn-success" disabled btn_type="tempNameSave"><i class="fa fa-floppy-o"></i></button>
+                  </div>
+                  <div class="col-lg-6 form-group">
+                      <form action="index.php?route=common/desctemp&token=<?php echo $token_add;?>" method="POST">
+                        <label>Шаблон описания продуктов данного типа:</label>
+                        <textarea name="template" data-lang="1" class="form-control summernote"><?php echo $type['desctemp']; ?></textarea>
+                        <p></p>
+                        <input type="hidden" name="type_id" class='btn btn-primary' value="<?php echo $type['type_id']?>">
+                        <input type="submit" class='btn btn-primary' value="Сохранить">
+                      </form>
+                  </div>
+                    <div class="col-lg-6 alert alert-success">
+                        <table class="table table-bordered">
+                            <?php foreach($type['options'] as $option){ ?>
+                            <tr>
+                                <td><?php echo '%'.$option['name'].'%';?></td>
+                                <td><?php echo $option['text'];?></td>
+                            </tr>
+                            <?php }?>
+                        </table>
+                    </div>
+                </div>
+              <?php }?>
               <div role="tabpanel" class="tab-pane active" id="prod">
                   <div class="col-lg-6">
                     <textarea id="desctempl" data-lang="1" class="form-control summernote"><?php echo (isset($description_prod))?$description_prod : '12321'; ?></textarea>

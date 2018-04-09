@@ -15,11 +15,25 @@ class ControllerCommonDescTemp extends Controller {
             $data['token'] = $this->session->data['token'];
             $data['ckeditor'] = $this->config->get('config_editor_default');
             $this->load->model('common/tempdesc');
+            $this->load->model('tool/product');
+            $data['types'] = array();
+            $types = $this->model_tool_product->getStructures();
+            foreach($types as $type){
+                $options = $this->model_tool_product->getOptions($type['type_id']);
+                $data['types'][] = array(
+                    'type_id' => $type['type_id'],
+                    'text' => $type['text'],
+                    'temp' => $type['temp'],
+                    'desctemp' => $type['desctemp'],
+                    'options' => $options['options']
+                );
+            }
             $data['description_prod'] = $this->model_common_tempdesc->getTemp(1);
             $data['description_avito'] = $this->model_common_tempdesc->getTemp(2);
-            
-            if(isset($this->request->post['temp'])){
-                $this->model_common_tempdesc->saveTemp($this->request->post['temp_id'], $this->request->post['temp']);
+//            exit(var_dump($data['ckeditor']));
+            if(isset($this->request->post['template'])){
+//                exit(var_dump($this->request->post));
+                $this->model_tool_product->saveTemp($this->request->post['template'], $this->request->post['type_id']);
                 $this->response->redirect($this->url->link('common/desctemp', 'token=' . $this->session->data['token'], true));
             }
             

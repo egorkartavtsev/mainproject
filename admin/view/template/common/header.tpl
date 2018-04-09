@@ -11,9 +11,9 @@
 <meta name="keywords" content="<?php echo $keywords; ?>" />
 <?php } ?>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-<script type="text/javascript" src="view/javascript/jquery/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="view/javascript/complect.js"></script>
-<script type="text/javascript" src="view/javascript/tools.js"></script>
+<script type="text/javascript" src="view/javascript/jquery/jquery-2.1.1.min.js?t=<?php echo(microtime(true)); ?>"></script>
+<script type="text/javascript" src="view/javascript/complect.js?t=<?php echo(microtime(true)); ?>"></script>
+<script type="text/javascript" src="view/javascript/tools.js?t=<?php echo(microtime(true)); ?>"></script>
 <script type="text/javascript" src="view/javascript/bootstrap/js/bootstrap.min.js"></script>
 <link href="view/stylesheet/bootstrap.css" type="text/css" rel="stylesheet" />
 <link href="view/javascript/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
@@ -28,7 +28,7 @@
 <?php foreach ($links as $link) { ?>
 <link href="<?php echo $link['href']; ?>" rel="<?php echo $link['rel']; ?>" />
 <?php } ?>
-<script src="view/javascript/common.js" type="text/javascript"></script>
+<script src="view/javascript/common.js?t=<?php echo(microtime(true)); ?>" type="text/javascript"></script>
 <?php foreach ($scripts as $script) { ?>
 <script type="text/javascript" src="<?php echo $script; ?>"></script>
 <?php } ?>
@@ -51,7 +51,7 @@
             f = function () { n.parentNode.insertBefore(s, n); };
         s.type = "text/javascript";
         s.async = true;
-        s.src = "https://mc.yandex.ru/metrika/watch.js";
+        s.src = "https://mc.yandex.ru/metrika/watch.js?t=<?php echo(microtime(true)); ?>";
 
         if (w.opera == "[object Opera]") {
             d.addEventListener("DOMContentLoaded", f, false);

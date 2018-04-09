@@ -23,6 +23,10 @@ Options -Indexes
 # Deny from all
 </FilesMatch>
 
+<FilesMatch ".(\.js|\.css)$">
+    Header unset Cache-Control
+</FilesMatch>
+
 # SEO URL Settings
 RewriteEngine On
 # If your opencart installation does not run on the main web folder make sure you folder it does run in ie. / becomes /shop/
@@ -53,7 +57,7 @@ RewriteRule ^([^?]*) index.php?_route_=$1 [L,QSA]
 # php_value post_max_size 999M
 
 # 5. set max time script can take. uncomment this line if you have a lot of product options or are getting errors where forms are not saving all fields
-php_value max_execution_time 900
+php_value max_execution_time 36900
 
 # 6. set max time for input to be recieved. Uncomment this line if you have a lot of product options or are getting errors where forms are not saving all fields
 # php_value max_input_time 200
