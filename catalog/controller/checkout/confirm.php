@@ -326,7 +326,52 @@ class ControllerCheckoutConfirm extends Controller {
 			$this->load->model('checkout/order');
 
 			$this->session->data['order_id'] = $this->model_checkout_order->addOrder($order_data);
-
+                         
+                        if (isset($this->session->data['order_id'])){
+                            $to = 'autorazbor174@mail.ru';
+                            $subject = 'Оповещение о заказе товара с сайта авторазбор174.рф (Клиент: '. $order_data['email'].')';
+                            $mailClient = "       Информация о клиенте.\r\n"
+                                    .'Имя: '. $order_data['firstname'] .''."\r\n".''
+                                    .'Фамилия: '. $order_data['lastname'] .''."\r\n".''
+                                    .'Email: '. $order_data['email'] .''."\r\n".''
+                                    .'Телефон:'. $order_data['telephone'] .''."\r\n".''
+                                    .'Факс:'. $order_data['fax'] .''."\r\n".''
+                                    . '  ' . "\r\n";
+                            $mailPayment = "       Aдресные данные:\r\n"
+                                    .'Компания: '.  $order_data['payment_company']  .''."\r\n".''
+                                    .'Адрес: '. $order_data['payment_address_1'] .''."\r\n".''
+                                    .'Адрес (дополнительно): '. $order_data['payment_address_2'] .''."\r\n".''
+                                    .'Город:'. $order_data['payment_city'] .''."\r\n".''
+                                    .'Индекс:'. $order_data['payment_postcode'] .''."\r\n".''
+                                    .'Страна: '.  $order_data['payment_country']  .''."\r\n".''
+                                    .'Регион / область: '. $order_data['payment_zone'] .''."\r\n".''
+                                    . '  ' . "\r\n";
+                            $mailTProd ='';
+                            foreach ($order_data['products'] as $product) {
+                                $mailProd = 'Наименование товара: '. $product['name'].''."\r\n"
+                                            .'Количество: '. $product['quantity'].''."\r\n"
+                                            .'Цена за единицу товара: '. $product['price'].''."\r\n"
+                                            .'Суммарная цена: '. $product['total'].''."\r\n"
+                                            . '  ' . "\r\n";
+    		                $mailTProd = $mailTProd. $mailProd;  		   
+                            };
+                            $mailSummation = 
+                                    "       Итого.\r\n"
+                                    .'Сумма заказа: '. $order_data['total'] .''."\r\n".''
+                                    .'Cпособ опалты: '. $order_data['payment_method'] .''."\r\n".''
+                                    .'Способ доставки: '. $order_data['shipping_method'] .''."\r\n".''
+                                    .'Комментарий: '. $order_data['comment'] .''."\r\n".''
+                                    . '  ' . "\r\n";
+                            $mail = $mailClient .$mailPayment. '    Список товаров: '."\r\n". $mailTProd. $mailSummation;
+                            $headers  = 'From: autorazbor174@mail.ru' . " " 
+                                      . 'Reply-To: autorazbor174@mail.ru' . " "
+                                      . 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+                            
+                            mail($to, $subject, $mail, $headers); 
+                                               
+                        }
+                        
+                                
 			$data['text_recurring_item'] = $this->language->get('text_recurring_item');
 			$data['text_payment_recurring'] = $this->language->get('text_payment_recurring');
 
