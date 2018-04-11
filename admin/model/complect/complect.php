@@ -122,7 +122,7 @@
         }
         
         public function editComplect($id, $name, $price, $heading, $complect=0, $whole, $sale=0) {
-            
+            $this->load->model('tool/complect');
             $quer = $this->db->query("SELECT * FROM ".DB_PREFIX."product WHERE vin = '".$heading."'");
             $image = $quer->row['image'];
             $query = $this->db->query("SELECT * FROM ".DB_PREFIX."complects WHERE id = '".$id."'");
@@ -155,37 +155,37 @@
                     $this->db->query($quer);
                 }
             }
-            
-            $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE vin = '".$heading."' ");
-            $price+= $sup->row['price'];
-            $sale = $sale==0?15:$sale;
-            $supsale = 100 - $sale;
-            $supsale = $supsale/100;
-            $price = ceil($price*$supsale);
-            //okruglenie
-                if($price<500){
-                    $rvr = $price%100;
-                    if($rvr>0){
-                        $rvr = 50 - $rvr;
-                        $price = $price + $rvr;
-                        if($sale%10!=0){
-                            $helper = $price%100;
-                            $price = $price+(100-$helper);
-                        }
-                    }
-                } else {
-                    $rvr = $price%100;
-                    $rvr = 100 - $rvr;
-                    $price = $price + $rvr;
-                    if($sale%10!=0){
-                        $helper = $price%100;
-                        $price = $price+(100-$helper);
-                    }
-                }
-            //---------------
-            $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$price."' WHERE heading = '".$heading."'");
-            $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE vin = '".$query->row['link']."'");
-            $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE vin = '".$heading."'");
+            $this->model_tool_complect->compReprice($heading);
+//            $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE vin = '".$heading."' ");
+//            $price+= $sup->row['price'];
+//            $sale = $sale==0?15:$sale;
+//            $supsale = 100 - $sale;
+//            $supsale = $supsale/100;
+//            $price = ceil($price*$supsale);
+//            //okruglenie
+//                if($price<500){
+//                    $rvr = $price%100;
+//                    if($rvr>0){
+//                        $rvr = 50 - $rvr;
+//                        $price = $price + $rvr;
+//                        if($sale%10!=0){
+//                            $helper = $price%100;
+//                            $price = $price+(100-$helper);
+//                        }
+//                    }
+//                } else {
+//                    $rvr = $price%100;
+//                    $rvr = 100 - $rvr;
+//                    $price = $price + $rvr;
+//                    if($sale%10!=0){
+//                        $helper = $price%100;
+//                        $price = $price+(100-$helper);
+//                    }
+//                }
+//            //---------------
+//            $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$price."' WHERE heading = '".$heading."'");
+//            $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE vin = '".$query->row['link']."'");
+//            $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE vin = '".$heading."'");
         }
         
         public function getTotalComplects() {

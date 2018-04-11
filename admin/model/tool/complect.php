@@ -20,13 +20,19 @@ class ModelToolComplect extends Model {
                 $price+=$item['price'];
             }
             $sale = $sup['complect']['sale']==0?15:$sup['complect']['sale'];
-            $price = floor($price*(100-$sale)/100);
-            if($price>500){
+            $supprice = floor($price*(100-$sale)/100);
+            if($supprice>500){
                 $rup = 100;
             } else {
                 $rup = 50;
             }
-            $price+=$rup - $price%100;
+            if($supprice+($rup-($supprice%100))<$price){
+                if(($supprice%100)>0){
+                    $price = $supprice + $rup - $supprice%100;
+                } else {
+                    $price = $supprice;
+                }
+            }
             $this->db->query("UPDATE ".DB_PREFIX."complects SET price = '".$price."' WHERE link = '".$sup['complect']['link']."' ");
             $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE vin = '".$sup['complect']['link']."'");
             $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '".$price."' WHERE vin = '".$sup['complect']['heading']."'");
