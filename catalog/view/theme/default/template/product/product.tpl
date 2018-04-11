@@ -50,7 +50,6 @@
                         Деталь из комплекта
                     </div>
                 <?php }?>
-                <?php }?>
             <?php }?>
             </div>
             <?php if (isset($images) || isset($thumbs)) { ?>
