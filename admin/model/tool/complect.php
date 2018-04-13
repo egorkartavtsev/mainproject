@@ -2,6 +2,18 @@
 
 class ModelToolComplect extends Model {
     
+    public function checkCompl($heading) {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."product WHERE comp = '".$heading."' OR vin = '".$heading."' ");
+        if($sup->num_rows === 1) {
+            
+            $this->db->query("UPDATE ".DB_PREFIX."product SET comp_price = '', comp = '', comp_whole = '' WHERE vin = '".$sup->row['vin']."' ");
+            $this->db->query("DELETE FROM ".DB_PREFIX."complects WHERE heading = '".$heading."'");
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
+    
     public function createComplect($vin, $name) {
         $link = uniqid('complect');
         $this->db->query("INSERT INTO ".DB_PREFIX."complects SET heading = '".$vin."', link = '".$link."', name = '".$name."', sale = 10");

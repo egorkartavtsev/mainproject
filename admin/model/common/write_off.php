@@ -94,7 +94,7 @@ class ModelCommonWriteoff extends Model {
                 if(is_dir($dir)){
                     $this->removeDirectory($dir);
                 }
-                if($reqComplect){
+                if($reqComplect && $this->model_tool_complect->checkCompl($reqComplect['complect']['heading'])){
                     $this->model_tool_complect->compReprice($reqComplect['complect']['heading']);
                 }
             } else {

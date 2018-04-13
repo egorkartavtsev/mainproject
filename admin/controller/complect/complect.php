@@ -141,7 +141,7 @@ class ControllerComplectComplect extends Controller {
                                             <a href="'.$href.'" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="Редактировать">
                                                 <i class="fa fa-pencil"></i>
                                             </a>
-                                            <button onclick="confirm(\'Вы уверены?\') ? writeoff(\'$'.$comp['id'].'\', \''. $this->session->data['token'].'\') : false;"  data-toggle="tooltip" title="" class="btn btn-danger" data-original-title="Раскомплектация">
+                                            <button btn_type="deleteCompl" complId="'.$comp['id'].'"  data-toggle="tooltip" title="" class="btn btn-danger" data-original-title="Раскомплектация">
                                                 <i class="fa fa-trash-o"></i>
                                             </button>
                                         </td>'

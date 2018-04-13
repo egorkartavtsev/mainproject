@@ -46,6 +46,25 @@ $(document).ready(function() {
         }
     })
     
+    $(document).on('click', '[btn_type=deleteCompl]', function(){
+        var id = $(this).attr('complId');
+        var button = $(this);
+        if(confirm('Вы уверены?')){
+            ajax({
+                url:"index.php?route=complect/complect/writeOff&token="+getURLVar('token'),
+                statbox:"status",
+                method:"POST",
+                data:
+                {
+                    id: id
+                },
+                success:function(data){
+                    //document.getElementById('comp'+$id).parentNode.removeChild(document.getElementById('comp'+$id));
+                    button.parent().parent().html('');
+                }
+            })
+        }
+    })
     $(document).on('input', '[name*="heading"]', function(){
         var heading = $(this).val();
         var input = $(this);

@@ -42,7 +42,7 @@
                                             <a href="<?php echo $complect['href'];?>" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="Редактировать">
                                                 <i class="fa fa-pencil"></i>
                                             </a>
-                                            <button onclick="confirm('Вы уверены?') ? writeoff('<?php echo $complect['id']; ?>', '<?php echo $token; ?>') : false;"  data-toggle="tooltip" title="" class="btn btn-danger" data-original-title="Раскомплектация">
+                                            <button btn_type="deleteCompl" complId="<?php echo $complect['id']; ?>"  data-toggle="tooltip" title="" class="btn btn-danger" data-original-title="Раскомплектация">
                                                 <i class="fa fa-trash-o"></i>
                                             </button>
                                         </td>
