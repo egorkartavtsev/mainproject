@@ -123,6 +123,7 @@
               <thead>
                 <tr>
                   <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+                  <td>#</td>
                   <td class="text-center"><?php echo $column_image; ?></td>
                   <td class="text-left"><?php if ($sort == 'pd.name') { ?>
                     <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_name; ?></a>
@@ -191,6 +192,7 @@
                     <?php } else { ?>
                     <input type="checkbox" name="selected[]" value="<?php echo $product['product_id']; ?>" />
                     <?php } ?></td>
+                  <td><a class="btn btn-success" btn_type="descText" desc-target="<?php echo $product['product_id']; ?>" data-toggle="modal" data-target="#proDescription"><i class="fa fa-text-height"></i></a></td>
                   <td class="text-center"><?php if ($product['image']) { ?>
                     <img src="<?php echo $product['image']; ?>" alt="<?php echo $product['name']; ?>" class="img-thumbnail" />
                     <?php } else { ?>
@@ -257,6 +259,19 @@
       </div>
     </div>
   </div>
+  <div class="modal fade" id="proDescription" tabindex="-1" role="dialog" aria-labelledby="proDescriptionLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="cpbModalLabel">Выберите преминимость детали</h4>
+            </div>
+            <div class="modal-body">
+                <p id="proddesctext"></p>
+            </div>
+          </div>
+        </div>
+    </div>
   <script type="text/javascript"><!--
       
       $('#btn-clear-filters').on('click', function(){

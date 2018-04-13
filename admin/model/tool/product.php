@@ -14,6 +14,11 @@ class ModelToolProduct extends Model {
         return $temp;
     }
     
+    public function getDescription($id){
+        $sup = $this->db->query("SELECT description FROM ".DB_PREFIX."product_description WHERE product_id = ".(int)$id);
+        return htmlspecialchars_decode($sup->row['description']);
+    }
+    
     public function getLibrs(){
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."libraries ");
         return $sup->rows;

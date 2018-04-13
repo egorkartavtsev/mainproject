@@ -1747,4 +1747,10 @@ class ControllerCatalogProduct extends Controller {
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
+        
+        public function getDesc() {
+            $id = $this->request->post['id'];
+            $this->load->model('tool/product');
+            echo$this->model_tool_product->getDescription($id);
+        }
 }

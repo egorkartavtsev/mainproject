@@ -46,6 +46,22 @@ $(document).ready(function() {
         }
     })
     
+    $(document).on('click', '[btn_type=descText]', function(){
+        var target = $(this).attr('desc-target');
+        ajax({
+            url:"index.php?route=catalog/product/getDesc&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data:
+            {
+                id: target
+            },
+            success:function(data){
+                $('#proddesctext').html(data);
+            }
+        })
+    })
+    
     $(document).on('click', '[btn_type=deleteCompl]', function(){
         var id = $(this).attr('complId');
         var button = $(this);
