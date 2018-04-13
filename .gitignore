@@ -1,5 +1,8 @@
 /changelog.md
-/system/
+/system/storage/cache/
+/system/storage/download/
+/system/storage/upload/
+/system/storage/logs/
 /image/
 /config.php
 /admin/config.php
