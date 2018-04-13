@@ -620,13 +620,13 @@ class ControllerApiOrder extends Controller {
 					$this->load->model('extension/extension');
 
 					$totals = array();
-					$taxes = $this->cart->getTaxes();
+					//$taxes = $this->cart->getTaxes();
 					$total = 0;
 					
 					// Because __call can not keep var references so we put them into an array. 
 					$total_data = array(
 						'totals' => &$totals,
-						'taxes'  => &$taxes,
+						//'taxes'  => &$taxes,
 						'total'  => &$total
 					);
 			

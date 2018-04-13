@@ -327,7 +327,7 @@ class ControllerCheckoutConfirm extends Controller {
 
 			$this->session->data['order_id'] = $this->model_checkout_order->addOrder($order_data);
                          
-                        if (isset($this->session->data['order_id'])){
+                        
                             $to = 'autorazbor174@mail.ru';
                             $subject = 'Оповещение о заказе товара с сайта авторазбор174.рф (Клиент: '. $order_data['email'].')';
                             $mailClient = "       Информация о клиенте.\r\n"
@@ -369,7 +369,7 @@ class ControllerCheckoutConfirm extends Controller {
                             
                             mail($to, $subject, $mail, $headers); 
                                                
-                        }
+                        
                         
                                 
 			$data['text_recurring_item'] = $this->language->get('text_recurring_item');
