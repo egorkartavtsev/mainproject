@@ -212,6 +212,27 @@ $(document).ready(function() {
         });
     })
     
+    //option tempName
+    $(document).on('change', '#showNav', function(){
+        $(this).parent().parent().find('button').removeAttr('disabled');
+    })
+    
+    //option show to top-navigation save
+    $(document).on("click", "[btn_type=showNavSave]", function(){
+        var button = $(this);
+        var show = button.parent().find('select').val();
+        var type_id = button.parent().find('select').attr('type_id');
+        ajax({
+            url:"index.php?route=setting/prodtypes/saveShowNav&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data: {show: show, type_id: type_id},
+            success:function(data){
+                button.attr('disabled', 'disabled');
+            }
+        });
+    })
+    
     //add new product
     $(document).on("click", "[btn_type=addProduct]", function(){
         var button = $(this);

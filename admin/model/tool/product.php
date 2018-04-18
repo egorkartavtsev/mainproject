@@ -310,8 +310,12 @@ class ModelToolProduct extends Model {
         $this->db->query("UPDATE ".DB_PREFIX."product_type SET temp = '".$temp."' WHERE type_id = ".(int)$type);
     }
     
+    public function saveShowNav($temp, $type) {
+        $this->db->query("UPDATE ".DB_PREFIX."product_type SET top_nav = ".(int)$temp." WHERE type_id = ".(int)$type);
+    }
+    
     public function saveTemp($temp, $type) {
-        return($this->db->query("UPDATE ".DB_PREFIX."product_type SET desctemp = '".$temp."' WHERE type_id = ".(int)$type));
+        $this->db->query("UPDATE ".DB_PREFIX."product_type SET desctemp = '".$temp."' WHERE type_id = ".(int)$type);
     }
     
     public function oldLinks($pid, $fills) {

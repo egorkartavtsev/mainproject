@@ -147,13 +147,16 @@ class ControllerSettingProdTypes extends Controller {
                         . '<div class="col-lg-8"><label for="templName">Маска наименования продуктов данного типа:</label>'
                         . '<input class="form-control" id="templName" type="text" type_id="'.$this->request->post['id'].'" value="'.$info['temp'].'"/></div>'
                         . '<label>&nbsp;</label><br><button class="btn btn-success" disabled btn_type="tempNameSave"><i class="fa fa-floppy-o"></i></button>'
+                    . '</div>'
+                    . '<div class="col-lg-12 form-group">'
+                        . '<div class="col-lg-8"><label for="showNav">Отображение в верхнем меню витрины:</label>'
+                        . '<select class="form-control" id="showNav" type="text" type_id="'.$this->request->post['id'].'">'
+                            . '<option value="0" '.($info['top_nav']==='0'?'selected':'').'>Не отображать</option>'
+                            . '<option value="1" '.($info['top_nav']==='1'?'selected':'').'>Отображать</option>'
+                        . '</select>'
+                        . '</div>'
+                        . '<label>&nbsp;</label><br><button class="btn btn-success" disabled btn_type="showNavSave"><i class="fa fa-floppy-o"></i></button>'
                     . '</div>';
-        $divInfo.= '<div class="col-lg-6 form-group">
-                    <label>Шаблон описания продуктов данного типа</label>
-                    <textarea id="desctempl" data-lang="1" class="form-control summernote">'.$info['desctemp'].'</textarea>
-                    <p></p>
-                    <button class="btn btn-primary" btn_type="saveDescTemp">Сохранить</button>
-                  </div>';
         $divInfo.= '</div>';
         $options.='</h4>';
         echo $options.$divsOpt.$divInfo;
@@ -267,6 +270,12 @@ class ControllerSettingProdTypes extends Controller {
     public function saveTempName() {
         $this->load->model('tool/product');
         $this->model_tool_product->saveTempName($this->request->post['tempName'], $this->request->post['type_id']);
+        echo 'ok';
+    }
+    
+    public function saveShowNav() {
+        $this->load->model('tool/product');
+        $this->model_tool_product->saveShowNav($this->request->post['show'], $this->request->post['type_id']);
         echo 'ok';
     }
     
