@@ -74,6 +74,10 @@
                 <label class="control-label" for="input-brand">Марка, модель, модельный ряд</label>
                 <input type="text" name="filter_brand" value="<?php echo $filter_brand; ?>" placeholder="Марка, модель, модельный ряд" id="input-brand" class="form-control" />
               </div>
+              <div class="form-group">
+                <label class="control-label" for="input-drom">Наличие на дром</label>
+                <select name="filter_drom" id="input-drom" class="form-control"><option value=""> </option><option value="1" <?php if($filter_drom==='1'){echo 'selected';} ?>>Есть</option><option value="0" <?php if($filter_drom==='0'){echo 'selected';} ?>>Нет</option></select>
+              </div>
             </div>
             <div class="col-sm-4">
               <div class="form-group">
@@ -331,6 +335,12 @@ $('#button-filter').on('click', function() {
 
 	if (filter_brand) {
 		url += '&filter_brand=' + encodeURIComponent(filter_brand);
+	}
+        
+        var filter_drom = $('select[name=\'filter_drom\']').val();
+
+	if (filter_drom) {
+		url += '&filter_drom=' + encodeURIComponent(filter_drom);
 	}
 
 	var filter_category = $('select[name=\'filter_category\']').val();

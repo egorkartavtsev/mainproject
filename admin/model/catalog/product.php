@@ -59,6 +59,15 @@ class ModelCatalogProduct extends Model {
                     $sql .= " AND LOCATE ('" . $this->db->escape($data['filter_brand']) . "', pd.name)";
                 }
                 
+                
+                if (isset($data['filter_drom'])) {
+                    if($data['filter_drom']==='1'){ 
+                        $sql .= " AND p.drom!='' ";
+                    } elseif ($data['filter_drom']==='0'){
+                        $sql .= " AND p.drom = '' ";
+                    }
+                }
+                
                 if (isset($data['filter_donor']) && !is_null($data['filter_donor'])) {
                     $sql .= " AND LOCATE ('" . $this->db->escape($data['filter_donor']) . "', p.donor)";
                 }
@@ -360,19 +369,24 @@ class ModelCatalogProduct extends Model {
 		$sql .= " WHERE pd.language_id = '" . (int)$this->config->get('config_language_id') . "'";
                 
                 if (isset($data['filter_brand']) && !is_null($data['filter_brand'])) {
-			$sql .= " AND LOCATE ('" . $this->db->escape($data['filter_brand']) . "', pd.name)";
-		}
+                    $sql .= " AND LOCATE ('" . $this->db->escape($data['filter_brand']) . "', pd.name)";
+                }
+                
+                
+                if (isset($data['filter_drom'])) {
+                    if($data['filter_drom']==='1'){ 
+                        $sql .= " AND p.drom!='' ";
+                    } elseif ($data['filter_drom']==='0'){
+                        $sql .= " AND p.drom = '' ";
+                    }
+                }
                 
                 if (isset($data['filter_donor']) && !is_null($data['filter_donor'])) {
-			$sql .= " AND LOCATE ('" . $this->db->escape($data['filter_donor']) . "', p.donor) AND p.model != '' ";
-		}
-                
+                    $sql .= " AND LOCATE ('" . $this->db->escape($data['filter_donor']) . "', p.donor)";
+                }
+
 		if (!empty($data['filter_name'])) {
 			$sql .= " AND pd.name LIKE '" . $this->db->escape($data['filter_name']) . "%'";
-		}
-                
-                if (!empty($data['filter_catn'])) {
-			$sql .= " AND LOCATE('" . $this->db->escape($data['filter_catn']) . "', p.catn)";
 		}
 
 		if (!empty($data['filter_model'])) {
@@ -382,17 +396,18 @@ class ModelCatalogProduct extends Model {
 		if (isset($data['filter_price']) && !is_null($data['filter_price'])) {
 			$sql .= " AND p.price LIKE '" . $this->db->escape($data['filter_price']) . "%'";
 		}
-		
+                
                 if (isset($data['filter_vin']) && !is_null($data['filter_vin'])) {
 			$sql .= " AND p.vin LIKE '" . $this->db->escape($data['filter_vin']) . "%'";
 		}
-                
-		if (isset($data['filter_quantity']) && !is_null($data['filter_quantity'])) {
-			$sql .= " AND p.quantity = '" . (int)$data['filter_quantity'] . "'";
+                if (isset($data['filter_catn']) && !is_null($data['filter_catn'])) {
+			$sql .= " AND LOCATE('" . $this->db->escape($data['filter_catn']) . "', p.catn)";
 		}
-
-    if (isset($data['filter_category']) && !is_null($data['filter_category'])) {
-			$sql .= " AND p2c.category_id = '" . (int)$data['filter_category'] . "'";
+                
+              
+                
+                if (isset($data['filter_quantity']) && !is_null($data['filter_quantity'])) {
+			$sql .= " AND p.quantity = '" . (int)$data['filter_quantity'] . "'";
 		}
 
 		if (isset($data['filter_status']) && !is_null($data['filter_status'])) {
@@ -407,8 +422,13 @@ class ModelCatalogProduct extends Model {
 			}
 		}
 
+                if (!empty($data['filter_category'])) {
+                    $sql .= " AND p2c.category_id = '" . (int)$data['filter_category'] . "'";
+                }
+                $sql .= " AND !LOCATE('complect', vin)";
 		$query = $this->db->query($sql);
-
+                
+		//exit(var_dump($query));
 		return $query->row['total'];
 	}
 

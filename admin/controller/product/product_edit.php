@@ -241,15 +241,19 @@ class ControllerProductProductEdit extends Controller {
             $data['avitoname'] = $sname;
         }
         $this->model_product_product->updateProduct($data);
+        $this->load->model('tool/xml');
         if($this->session->data['uType']=='adm' && $data['allowavito']=='да'){
             $data['trbrand'] = $brand->row['transcript'];
             $data['trmodrow'] = $smr->row['transcript'];
             $data['mrname'] = $smr->row['name'];
-            $this->load->model('tool/xml');
             $this->model_tool_xml->findAd($data);
         }
         $data['brand'] = $brand->row['name'];
         $data['category'] = $catname->row['name'];
+        if($data['price']>0){
+            $this->model_tool_xml->findARPart($data);
+        }
+        
         $this->response->redirect($this->url->link('catalog/product', 'token=' . $this->session->data['token'], true));
     }
     

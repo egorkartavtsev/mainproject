@@ -28,8 +28,6 @@ class ControllerCommonDescTemp extends Controller {
                     'options' => $options['options']
                 );
             }
-            $data['description_prod'] = $this->model_common_tempdesc->getTemp(1);
-            $data['description_avito'] = $this->model_common_tempdesc->getTemp(2);
 //            exit(var_dump($data['ckeditor']));
             if(isset($this->request->post['template'])){
 //                exit(var_dump($this->request->post));
@@ -37,6 +35,9 @@ class ControllerCommonDescTemp extends Controller {
                 $this->response->redirect($this->url->link('common/desctemp', 'token=' . $this->session->data['token'], true));
             }
             
+            $data['description_prod'] = $this->model_common_tempdesc->getTemp(1);
+            $data['description_avito'] = $this->model_common_tempdesc->getTemp(2);
+            $data['description_drom'] = $this->model_common_tempdesc->getTemp(3);
             $this->response->setOutput($this->load->view('common/tempdesc', $data));
         }
         
@@ -100,5 +101,11 @@ class ControllerCommonDescTemp extends Controller {
                     $data['token_add'] = $this->session->data['token'];
                     return $data;
 
+        }
+        
+        public function netwTempl() {
+            $template = $this->request->post['temp'];
+            $temp_id = $this->request->post['temp_id'];
+            $this->db->query("UPDATE ".DB_PREFIX."text_template SET text = '".$template."' WHERE id = ".(int)$temp_id);
         }
 }

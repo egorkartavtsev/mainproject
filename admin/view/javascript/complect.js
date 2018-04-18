@@ -218,7 +218,7 @@
     }
     
     function sub_temp($div_id, $temp_id){
-        jQuery.post("index.php?route=common/desctemp&token="+getURLVar('token'), {temp: jQuery("#"+$div_id).val(), temp_id: $temp_id});
+        jQuery.post("index.php?route=common/desctemp/netwTempl&token="+getURLVar('token'), {temp: jQuery("#"+$div_id).val(), temp_id: $temp_id});
         window.location.replace("index.php?route=common/desctemp&token="+getURLVar('token'));
     }
     

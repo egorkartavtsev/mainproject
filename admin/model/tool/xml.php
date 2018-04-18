@@ -295,4 +295,164 @@ class ModelToolXml extends Model {
         $xmls->saveXML('../Avito/ads.xml');
     }
     
+    public function findARPart($data) {
+        $xmls = simplexml_load_file('../Avito/autoru.xml');
+        $sup = 0;
+        //exit(var_dump($xmls));        
+        foreach($xmls->part as $part){
+            if(in_array($data['vin'], (array)$part)){
+                if(isset($data['write_off'])){$this->saleARpart($vin, $sup); exit(var_dump($data));}
+                $this->updateARPart($data, $sup, $xmls);
+                return 0;
+            } else{ 
+                ++$sup;
+            }
+        }
+        if($data['price']>0){
+            $this->createARPart($data, $xmls);
+        }
+    }
+    
+    public function createARPart($data, $xmls) {
+        $this->load->model('common/avito');
+        $this->load->model('product/product');
+        $this->load->model('tool/product');
+        if(!isset($data['pid'])){
+            $sup = $this->db->query("SELECT product_id FROM ".DB_PREFIX."product WHERE vin = '".$data['vin']."'");
+            $data['pid']=$sup->row['product_id'];
+        }
+        //exit(var_dump($data));
+        $templ = htmlspecialchars_decode($this->model_tool_product->getDescription($data['pid']));
+        $templ = str_replace("p>", "p> ", $templ);
+        $templ = str_replace($data['vin'], "", $templ);
+        $templ = strip_tags($templ);
+        $templ = str_replace("&nbsp;", " ", $templ);
+        $templ = str_replace("\n", " ", $templ);
+        $templ = preg_replace("/ +/", " ", $templ);
+        //-----------------------------------------
+//        exit(var_dump($xmls));
+        $part = $xmls->addChild('part');
+        
+            $part->addChild('id', $data['vin']);
+            $part->addChild('title', $data['name']);
+            if($data['catN']!==''){
+                $part->addChild('part_number', $data['catN']);
+            }
+            $part->addChild('description', (string)trim($templ));
+            $part->addChild('is_new', ($data['type']==='Новый'?1:0));
+            $part->addChild('price', $data['price']);
+            $part->addChild('manufacturer', $data['brand']);
+            $part->addChild('count', $data['quant']);
+            $avail = $part->addChild('availability');
+                $avail->addChild('isAvailable', $data['status']);
+                if($data['compability']!==''){
+                    $part->addChild('compability', $data['compability']);
+                } else {
+                    $part->addChild('compability', '');
+                }
+            /******************************/
+            $images = $part->addChild('images');
+            $images->addChild('image', HTTP_CATALOG.'image/'.$data['main-image']);
+            /*****************************/
+            $photos = $this->model_product_product->getPhotos($data['pid']);
+            $count=1;
+            if(!empty($photos)){
+                foreach ($photos as $photo) {
+                    if($photo['img']!=$data['main-image'] && $count<=3 && $photo['img']!=''){
+                        $images->addChild('image', HTTP_CATALOG.'image/'.$photo['img']);
+                        ++$count;
+                    }
+                }
+            }
+            /******************************************************/
+            $props = $part->addChild('properties');
+                if($data['cond']!='-'){
+                    $prop = $props->addChild('property', $data['cond']);
+                    $prop->addAttribute('name', 'Состояние');
+                }
+                if($data['note']!='-'){
+                    $prop = $props->addChild('property', $data['note']);
+                    $prop->addAttribute('name', 'Примечание');
+                }
+                if($data['dop']!='-'){
+                    $prop = $props->addChild('property', $data['dop']);
+                    $prop->addAttribute('name', 'Дополнительная информация');
+                }
+        $xmls->saveXML('../Avito/autoru.xml');
+    }
+    
+    public function updateARPart($data, $id, $xmls) {
+        $this->load->model('common/avito');
+        $this->load->model('product/product');
+        $this->load->model('tool/product');
+        if(!isset($data['pid'])){
+            $sup = $this->db->query("SELECT product_id FROM ".DB_PREFIX."product WHERE vin = '".$data['vin']."'");
+            $data['pid']=$sup->row['product_id'];
+        }
+        //-----------------------------------------
+        $templ = htmlspecialchars_decode($this->model_tool_product->getDescription($data['pid']));
+        $templ = str_replace("p>", "p> ", $templ);
+        $templ = str_replace($data['vin'], "", $templ);
+        $templ = strip_tags($templ);
+        $templ = str_replace("&nbsp;", " ", $templ);
+        $templ = str_replace("\n", " ", $templ);
+        $templ = preg_replace("/ +/", " ", $templ);
+        //-----------------------------------------
+    //------------------------------------------------------------------
+        $xmls->part[$id]->manufactutrer = $data['brand'];
+        $xmls->part[$id]->Price = $data['price'];
+        $xmls->part[$id]->title = $data['name'];
+        $xmls->part[$id]->count = $data['quatn'];
+        $xmls->part[$id]->availability->isAvailable = $data['status'];
+        $xmls->part[$id]->description = (string)$templ;
+        $xmls->part[$id]->is_new = $data['type']==='Новый'?1:0;
+        $xmls->part[$id]->compability = $data['compability'];
+        $xmls->part[$id]->title = $data['name'];
+        $xmls->part[$id]->title = $data['name'];
+        
+    /******************************************************************/
+        $domProp=dom_import_simplexml($xmls->part[$id]->properties);
+        $domProp->parentNode->removeChild($domProp);
+    //-----------------------------------------------------------------
+        $props = $xmls->part[$id]->addChild('properties');
+            if($data['cond']!='-'){
+                $prop = $props->addChild('property', $data['cond']);
+                $prop->addAttribute('name', 'Состояние');
+            }
+            if($data['note']!='-'){
+                $prop = $props->addChild('property', $data['note']);
+                $prop->addAttribute('name', 'Примечание');
+            }
+            if($data['dop']!='-'){
+                $prop = $props->addChild('property', $data['dop']);
+                $prop->addAttribute('name', 'Дополнительная информация');
+            }
+        
+    /******************************************************************/
+        $domImg=dom_import_simplexml($xmls->part[$id]->images);
+        $domImg->parentNode->removeChild($domImg);
+    //-----------------------------------------------------------------
+        /******************************/
+            $images = $xmls->part[$id]->addChild('images');
+            $images->addChild('image', HTTP_CATALOG.'image/'.$data['main-image']);
+            /*****************************/
+            $photos = $this->model_product_product->getPhotos($data['pid']);
+            $count=1;
+            if(!empty($photos)){
+                foreach ($photos as $photo) {
+                    if($photo['img']!=$data['main-image'] && $count<=3 && $photo['img']!=''){
+                        $images->addChild('image', HTTP_CATALOG.'image/'.$photo['img']);
+                        ++$count;
+                    }
+                }
+            }
+            /******************************************************/
+        
+        $xmls->saveXML('../Avito/autoru.xml');
+    }
+    
+    public function saleARpart($id, $xmls) {
+        $xmls->part[$id]->availability->isAvailable = 0;
+        $xmls->saveXML('../Avito/autoru.xml');
+    }
 }

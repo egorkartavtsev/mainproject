@@ -21,6 +21,7 @@
             <?php }?>
             <li role="presentation" class="active"><a href="#prod" aria-controls="prod" role="tab" data-toggle="tab">Описание товара на сайте</a></li>
             <li role="presentation"><a href="#avito" aria-controls="avito" role="tab" data-toggle="tab">Описание товара на Авито</a></li>
+            <li role="presentation"><a href="#drom" aria-controls="drom" role="tab" data-toggle="tab">Описание товара на Drom</a></li>
           </ul>
 
           <!-- Tab panes -->
@@ -160,6 +161,72 @@
                               <tr>
                                   <td><p>%weekend%</p></td>
                                   <td><p>Выходные дни</p></td>
+                              </tr>
+                          </tbody>
+                      </table>
+                      <p>
+                          (!!!)Важно: переменные вставляются в текст в том виде, в каком они представлены в таблице! 
+                          Иначе замена переменной значением не произойдёт и описание будет выглядеть не так, как Вы ожидали.
+                      </p>
+                  </div>
+                  <p class="col-lg-12">&nbsp;</p>
+                  <div class="col-lg-12" id='statbox' style="height: 50px; padding-bottom: 15px;"></div>
+              </div>
+              <div role="tabpanel" class="tab-pane" id="drom">
+                  <div class="col-lg-6">
+                    <textarea id="dromtempl" data-lang="1" class="form-control summernote"><?php echo (isset($description_drom))?$description_drom : '12321'; ?></textarea>
+                    <p></p>
+                    <button class='btn btn-primary' onclick="sub_temp('dromtempl', '3')">Сохранить</button>
+                  </div>
+                  <div class="col-lg-6 alert alert-success">
+                      <h3>Таблица регулярных переменных шаблона:</h3>
+                      <table class="table-bordered col-lg-12">
+                          <thead>
+                            <tr>
+                                <td class="col-lg-2">Переменная: </td>
+                                <td>Значение:</td>
+                            </tr>
+                          </thead>
+                          <tbody>
+                              <tr>
+                                  <td><p>%brand%</p></td>
+                                  <td><p>Марка</p></td>
+                              </tr>
+                              <tr>
+                                  <td><p>%modR%</p></td>
+                                  <td><p>Модельный ряд</p></td>
+                              </tr>
+                              <tr>
+                                  <td><p>%model%</p></td>
+                                  <td><p>Модель</p></td>
+                              </tr>
+                              <tr>
+                                  <td><p>%podcateg%</p></td>
+                                  <td><p>Подкатегория</p></td>
+                              </tr>
+                              <tr>
+                                  <td><p>%note%</p></td>
+                                  <td><p>Примечание</p></td>
+                              </tr>
+                              <tr>
+                                  <td><p>%dop%</p></td>
+                                  <td><p>Дополнительная информация</p></td>
+                              </tr>
+                              <tr>
+                                  <td><p>%compabitity%</p></td>
+                                  <td><p>Применимость</p></td>
+                              </tr>
+                              <tr>
+                                  <td><p>%adress%</p></td>
+                                  <td><p>Адрес</p></td>
+                              </tr>
+                              <tr>
+                                  <td><p>%cond%</p></td>
+                                  <td><p>Состояние</p></td>
+                              </tr>
+                              <tr>
+                                  <td><p>%cond%</p></td>
+                                  <td><p>Состояние</p></td>
                               </tr>
                           </tbody>
                       </table>

@@ -60,6 +60,9 @@ class ControllerCatalogProduct extends Controller {
                         if (isset($this->request->get['filter_brand'])) {
 				$url .= '&filter_brand=' . $this->request->get['filter_brand'];
 			}
+                        if (isset($this->request->get['filter_drom'])) {
+				$url .= '&filter_drom=' . $this->request->get['filter_drom'];
+			}
 
 			if (isset($this->request->get['filter_quantity'])) {
 				$url .= '&filter_quantity=' . $this->request->get['filter_quantity'];
@@ -130,6 +133,9 @@ class ControllerCatalogProduct extends Controller {
                         if (isset($this->request->get['filter_brand'])) {
 				$url .= '&filter_brand=' . $this->request->get['filter_brand'];
 			}
+                        if (isset($this->request->get['filter_drom'])) {
+				$url .= '&filter_drom=' . $this->request->get['filter_drom'];
+			}
                         
 			if (isset($this->request->get['filter_quantity'])) {
 				$url .= '&filter_quantity=' . $this->request->get['filter_quantity'];
@@ -195,6 +201,9 @@ class ControllerCatalogProduct extends Controller {
                         
                         if (isset($this->request->get['filter_brand'])) {
 				$url .= '&filter_brand=' . $this->request->get['filter_brand'];
+			}
+                        if (isset($this->request->get['filter_drom'])) {
+				$url .= '&filter_drom=' . $this->request->get['filter_drom'];
 			}
 
 			if (isset($this->request->get['filter_quantity'])) {
@@ -262,6 +271,9 @@ class ControllerCatalogProduct extends Controller {
                         if (isset($this->request->get['filter_brand'])) {
 				$url .= '&filter_brand=' . $this->request->get['filter_brand'];
 			}
+                        if (isset($this->request->get['filter_drom'])) {
+				$url .= '&filter_drom=' . $this->request->get['filter_drom'];
+			}
 
 			if (isset($this->request->get['filter_quantity'])) {
 				$url .= '&filter_quantity=' . $this->request->get['filter_quantity'];
@@ -304,6 +316,11 @@ class ControllerCatalogProduct extends Controller {
 		} else {
 			$filter_donor = null;
 		}
+		if (isset($this->request->get['filter_drom'])) {
+			$filter_drom = $this->request->get['filter_drom'];
+		} else {
+			$filter_drom = null;
+		}
 		if (isset($this->request->get['filter_catn'])) {
 			$filter_catn = $this->request->get['filter_catn'];
 		} else {
@@ -342,6 +359,11 @@ class ControllerCatalogProduct extends Controller {
 			$filter_brand = $this->request->get['filter_brand'];
 		} else {
 			$filter_brand = null;
+		}
+                if (isset($this->request->get['filter_drom'])) {
+			$filter_drom = $this->request->get['filter_drom'];
+		} else {
+			$filter_drom = null;
 		}
 
 		if (isset($this->request->get['filter_quantity'])) {
@@ -415,6 +437,9 @@ class ControllerCatalogProduct extends Controller {
                 if (isset($this->request->get['filter_brand'])) {
 			$url .= '&filter_brand=' . $this->request->get['filter_brand'];
 		}
+                if (isset($this->request->get['filter_drom'])) {
+			$url .= '&filter_drom=' . $this->request->get['filter_drom'];
+		}
 
 		if (isset($this->request->get['filter_quantity'])) {
 			$url .= '&filter_quantity=' . $this->request->get['filter_quantity'];
@@ -466,6 +491,7 @@ class ControllerCatalogProduct extends Controller {
 			'filter_price'	  => $filter_price,
 			'filter_vin'	  => $filter_vin,
 			'filter_brand'	  => $filter_brand,
+			'filter_drom'	  => $filter_drom,
 			'filter_quantity' => $filter_quantity,
                         'filter_category' => $filter_category,
                         'filter_wocat' => $filter_wocat,
@@ -631,6 +657,9 @@ class ControllerCatalogProduct extends Controller {
                 if (isset($this->request->get['filter_brand'])) {
 			$url .= '&filter_brand=' . $this->request->get['filter_brand'];
 		}
+                if (isset($this->request->get['filter_drom'])) {
+			$url .= '&filter_drom=' . $this->request->get['filter_drom'];
+		}
 
 		if (isset($this->request->get['filter_quantity'])) {
 			$url .= '&filter_quantity=' . $this->request->get['filter_quantity'];
@@ -699,6 +728,9 @@ class ControllerCatalogProduct extends Controller {
                 if (isset($this->request->get['filter_brand'])) {
 			$url .= '&filter_brand=' . $this->request->get['filter_brand'];
 		}
+                if (isset($this->request->get['filter_drom'])) {
+			$url .= '&filter_drom=' . $this->request->get['filter_drom'];
+		}
                 
 		if (isset($this->request->get['filter_quantity'])) {
 			$url .= '&filter_quantity=' . $this->request->get['filter_quantity'];
@@ -737,6 +769,7 @@ class ControllerCatalogProduct extends Controller {
 		$data['filter_price'] = $filter_price;
 		$data['filter_vin'] = $filter_vin;
 		$data['filter_brand'] = $filter_brand;
+		$data['filter_drom'] = $filter_drom;
 		$data['filter_quantity'] = $filter_quantity;
 		$data['filter_category'] = $filter_category;
 		$data['filter_wocat'] = $filter_wocat;
@@ -930,6 +963,9 @@ class ControllerCatalogProduct extends Controller {
                 
                 if (isset($this->request->get['filter_brand'])) {
 			$url .= '&filter_brand=' . $this->request->get['filter_brand'];
+		}
+                if (isset($this->request->get['filter_drom'])) {
+			$url .= '&filter_drom=' . $this->request->get['filter_drom'];
 		}
 
 		if (isset($this->request->get['filter_quantity'])) {
@@ -1751,6 +1787,6 @@ class ControllerCatalogProduct extends Controller {
         public function getDesc() {
             $id = $this->request->post['id'];
             $this->load->model('tool/product');
-            echo$this->model_tool_product->getDescription($id);
+            echo $this->model_tool_product->getDescription($id);
         }
 }

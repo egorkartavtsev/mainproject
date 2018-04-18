@@ -15,8 +15,14 @@ class ModelToolProduct extends Model {
     }
     
     public function getDescription($id){
-        $sup = $this->db->query("SELECT description FROM ".DB_PREFIX."product_description WHERE product_id = ".(int)$id);
-        return htmlspecialchars_decode($sup->row['description']);
+        $this->load->model('common/tempdesc');
+        $templ = $this->model_common_tempdesc->getTemp(3);
+        $sup = $this->db->query("SELECT *, (SELECT name FROM oc_brand b WHERE b.id = p.brand) AS brand, (SELECT adress FROM oc_stocks s WHERE s.name = p.stock) AS adress FROM ".DB_PREFIX."product p WHERE product_id = ".(int)$id);
+//        exit(var_dump($sup->row));
+        foreach ($sup->row as $key => $value) {
+            $templ = str_replace('%'.$key.'%', $value, $templ);
+        }
+        return htmlspecialchars_decode($templ);
     }
     
     public function getLibrs(){
