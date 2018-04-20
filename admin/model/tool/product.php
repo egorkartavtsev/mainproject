@@ -93,6 +93,9 @@ class ModelToolProduct extends Model {
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."libraries WHERE library_id = '".$id."'");
         $result['text'] = $sup->row['text'];
         $result['description'] = $sup->row['description'];
+        $result['settings']['top_nav'] = $sup->row['top_nav'];
+        $result['settings']['name'] = $sup->row['text'];
+        $result['settings']['library_id'] = $sup->row['library_id'];
         
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_struct WHERE library_id = '".$id."' ORDER BY item_id");
         $result['struct'] = array();
@@ -310,8 +313,16 @@ class ModelToolProduct extends Model {
         $this->db->query("UPDATE ".DB_PREFIX."product_type SET temp = '".$temp."' WHERE type_id = ".(int)$type);
     }
     
+    public function savelibrName($name, $library_id) {
+        $this->db->query("UPDATE ".DB_PREFIX."libraries SET text = '".$name."' WHERE library_id = ".(int)$library_id);
+    }
+    
     public function saveShowNav($temp, $type) {
         $this->db->query("UPDATE ".DB_PREFIX."product_type SET top_nav = ".(int)$temp." WHERE type_id = ".(int)$type);
+    }
+    
+    public function saveLibrShowNav($show, $library_id) {
+        $this->db->query("UPDATE ".DB_PREFIX."libraries SET top_nav = ".(int)$show." WHERE library_id = ".(int)$library_id);
     }
     
     public function saveTemp($temp, $type) {

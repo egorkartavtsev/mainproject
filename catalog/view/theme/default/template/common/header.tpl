@@ -124,7 +124,7 @@
       <ul class="nav navbar-nav">
     
         
-         <?php foreach ($categories as $category) { ?>
+         <!--<?php foreach ($categories as $category) { ?>
             <?php if ($category['children']) { ?>
             <li class="dropdown visible-xs visible-sm"><a href="<?php echo $category['href']; ?>" class="dropdown-toggle" data-toggle="dropdown"><?php echo $category['name']; ?></a>
               <div class="dropdown-menu">
@@ -143,14 +143,8 @@
                 <li class="visible-xs visible-sm"><a href="<?php echo $category['href']; ?>"><?php echo $category['name']; ?></a></li>
             <?php } ?>
         <?php } ?>
-        <hr class="visible-xs visible-sm">  
-        <?php if ($informations) { ?>
-            <li><a href="/">Автозапчасти</a></li>
-            <li><a href="index.php?route=product/tiredisc">Шины и диски</a></li>
-            <?php foreach ($informations as $information) { ?>
-                <li><a href="<?php echo $information['href']; ?>"><?php echo $information['title']; ?></a></li>
-            <?php } ?>
-        <?php } ?>
+        <hr class="visible-xs visible-sm">--> 
+        <?php echo $menu; ?>
       </ul>
     </div>
   </nav>

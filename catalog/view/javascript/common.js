@@ -24,7 +24,42 @@ function getURLVar(key) {
 
 $(document).ready(function() {
     
-    
+        //smartSearch
+        $(document).on('input', "[type=libSearch]", function(){
+            var input = $(this);
+            $.ajax({
+                url: "index.php?route=catalog/catalog/search",
+                statbox: "igdhje83565",
+                method: "POST",
+                data:
+                {
+                    request: input.val(),
+                    lib_id: input.attr('lib_id')
+                },
+                success:function(data){
+                    $("#sSearchResult").html(data);
+                }      
+            });
+        })
+        
+        //libr childs show
+        $(document).on('change', "[select_type=library]", function(){
+            var select = $(this);
+            $.ajax({
+                url: "index.php?route=catalog/catalog/showLibrChild",
+                statbox: "igdhje83565",
+                method: "POST",
+                data:
+                {
+                    parent: select.val()
+                },
+                success:function(data){
+                    select.parent().parent().find("#"+select.attr('child')).html(data);
+                }      
+            });
+        })
+        
+        
         // Searchbox
         $("input[name*='search']").on('input', function(){
             if($(this).val()!==''){
@@ -126,7 +161,7 @@ $(document).ready(function() {
 		} else if (cols == 1) {
 			$('#content .product-list').attr('class', 'product-layout product-grid col-lg-4 col-md-4 col-sm-6 col-xs-12');
 		} else {
-			$('#content .product-list').attr('class', 'product-layout product-grid col-lg-3 col-md-3 col-sm-6 col-xs-12');
+			$('#content .product-list').attr('class', 'product-layout product-grid col-lg-4 col-md-4 col-sm-6 col-xs-12');
 		}
 
 		$('#list-view').removeClass('active');

@@ -80,5 +80,16 @@ class ControllerSettingLibraries extends Controller {
         }
     }
     
+    public function savelibrName() {
+        $this->load->model('tool/product');
+        $this->model_tool_product->savelibrName($this->request->post['librName'], $this->request->post['library_id']);
+    }
+    
+    public function saveShowNav() {
+        $this->load->model('tool/product');
+        $this->model_tool_product->saveLibrShowNav($this->request->post['show'], $this->request->post['library_id']);
+        echo 'ok';
+    }
+    
 }
 

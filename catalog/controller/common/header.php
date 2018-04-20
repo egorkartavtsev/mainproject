@@ -183,6 +183,7 @@ class ControllerCommonHeader extends Controller {
                         $data['mobile'] = 0;
                     }
                 /**************************************************************/
+                $data['menu'] = $this->load->controller('common/topnav');
 		return $this->load->view('common/header', $data);
 	}
 }

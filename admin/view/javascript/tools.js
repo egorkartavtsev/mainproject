@@ -212,6 +212,27 @@ $(document).ready(function() {
         });
     })
     
+    //libr change Name
+    $(document).on('input', '#librName', function(){
+        $(this).parent().parent().find('button').removeAttr('disabled');
+    })
+    
+    //option templName save
+    $(document).on("click", "[btn_type=librNameSave]", function(){
+        var button = $(this);
+        var tempName = button.parent().find('input').val();
+        var type_id = button.parent().find('input').attr('type_id');
+        ajax({
+            url:"index.php?route=setting/libraries/savelibrName&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data: {librName: tempName, library_id: type_id},
+            success:function(data){
+                button.attr('disabled', 'disabled');
+            }
+        });
+    })
+    
     //option tempName
     $(document).on('change', '#showNav', function(){
         $(this).parent().parent().find('button').removeAttr('disabled');
@@ -227,6 +248,21 @@ $(document).ready(function() {
             statbox:"status",
             method:"POST",
             data: {show: show, type_id: type_id},
+            success:function(data){
+                button.attr('disabled', 'disabled');
+            }
+        });
+    })
+    //option show to top-navigation save
+    $(document).on("click", "[btn_type=librShowNavSave]", function(){
+        var button = $(this);
+        var show = button.parent().find('select').val();
+        var library_id = button.parent().find('select').attr('library_id');
+        ajax({
+            url:"index.php?route=setting/libraries/saveShowNav&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data: {show: show, library_id: library_id},
             success:function(data){
                 button.attr('disabled', 'disabled');
             }

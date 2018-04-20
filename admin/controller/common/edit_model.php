@@ -13,39 +13,39 @@ private $error = array();
                 foreach ($sup->rows as $mr) {
                     $newmr = str_replace($oldname, $this->request->post['newname'], $mr['name']);
 //                    exit($newmr);
-                    $this->db->query("UPDATE ".DB_PREFIX."product SET length = '".$newmr."', model = '".$this->request->post['newname']."' WHERE length = '".$mr['name']."'");
+                    $this->db->query("UPDATE ".DB_PREFIX."product SET modR = '".$newmr."', model = '".$this->request->post['newname']."' WHERE modR = '".$mr['name']."'");
                     $this->db->query("UPDATE ".DB_PREFIX."brand "
                     . "SET name = '".$newmr."' "
                     . "WHERE id = '".$mr['id']."'");
                 }
                 $query = $this->db->query("SELECT "
-                        . "length AS modRow, "
-                        . "sku AS vin, "
-                        . "weight AS stock, "
-                        . "manufacturer_id AS brand, "
-                        . "isbn AS catN, "
-                        . "jan AS note, "
+                        . "modR AS modRow, "
+                        . "vin AS vin, "
+                        . "stock AS stock, "
+                        . "brand AS brand, "
+                        . "catn AS catN, "
+                        . "note AS note, "
                         . "podcateg AS podcat, "
                         . "compability, "
-                        . "width AS dop, "
-                        . "upc AS cond "
+                        . "dop AS dop, "
+                        . "cond AS cond "
                     . "FROM ".DB_PREFIX."product "
-                    . "WHERE model = '".$this->request->post['newname']."' AND manufacturer_id != '0'");
+                    . "WHERE model = '".$this->request->post['newname']."' AND brand != '0'");
             } else {
-                $this->db->query("UPDATE ".DB_PREFIX."product SET length = '".$this->request->post['newname']."' WHERE length = '".$oldname."'");
+                $this->db->query("UPDATE ".DB_PREFIX."product SET modR = '".$this->request->post['newname']."' WHERE modR = '".$oldname."'");
                 $query = $this->db->query("SELECT "
-                        . "length AS modRow, "
-                        . "sku AS vin, "
-                        . "weight AS stock, "
-                        . "manufacturer_id AS brand, "
-                        . "isbn AS catN, "
-                        . "jan AS note, "
+                        . "modR AS modRow, "
+                        . "vin AS vin, "
+                        . "stock AS stock, "
+                        . "brand AS brand, "
+                        . "catn AS catN, "
+                        . "note AS note, "
                         . "podcateg AS podcat, "
                         . "compability, "
-                        . "width AS dop, "
-                        . "upc AS cond "
+                        . "dop AS dop, "
+                        . "cond AS cond "
                     . "FROM ".DB_PREFIX."product "
-                    . "WHERE length = '".$this->request->post['newname']."' AND manufacturer_id != '0' ");
+                    . "WHERE modR = '".$this->request->post['newname']."' AND brand != '0' ");
             }
             /*---------------------------------------------*/
             $repn = $this->db->query("SELECT pd.name, pd.product_id, pd.description, pd.tag FROM ".DB_PREFIX."product_description pd WHERE LOCATE('".$oldname."', pd.name) ");
@@ -117,7 +117,7 @@ private $error = array();
                               success:function(data){document.getElementById('model_row_list').innerHTML=data;}";
                     $view .= '})';
                 $view .= '">'.$model['name'].'</td>';
-                $view .= '<td class="col-lg-5"><input class="form-control" oninput="checkInp(\''.$model['id'].'\');" id="trans'.$model['id'].'" value="'.$model['transcript'].'" placeholder="Введите транскрипцию..." maxlength="64"></td>';
+                $view .= '<td class="col-lg-5"><input class="form-control" oninput="checkInp(\''.$model['id'].'\');" id="trans'.$model['id'].'" value="'.$model['transcript'].'" placeholder="Введите транскрипцию..." maxmodR="64"></td>';
                 $view .= '<td><button class="btn btn-success" onclick="saveTrans(\''.$model['id'].'\');" id="save'.$model['id'].'" disabled><i class="fa fa-floppy-o"></i></button></td>';
                 $view .= '<td id="delete'.$model['id'].'" class="col-lg-1">'
                             . '<button type="button" class="btn btn-danger" onclick="del('.$model['id'].', '.$parentID.');">'

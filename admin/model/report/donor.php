@@ -40,6 +40,7 @@ class ModelReportDonor extends Model{
                     . "p.status AS status, "
                     . "p.date_added AS date_added, "
                     . "si.saleprice AS saleprice, "
+                    . "si.sku AS svin, "
                     . "si.name AS sname, "
                     . "pd.name AS itemname "
                 //-----------------------
@@ -105,7 +106,7 @@ class ModelReportDonor extends Model{
             elseif($dateRes<361 && $dateRes>=181){$class='label label-warning';}
             elseif($dateRes<181 && $dateRes>=91){$class='label label-info';}
             elseif($dateRes<91 && $dateRes>=0){$class='label label-success';}
-            if($item['sname']==NULL){
+            if($item['svin']==NULL){
                 $donor['currItem'][] = $item;
                 $totalItemPrice+=$item['price'];
                 ++$quant;
