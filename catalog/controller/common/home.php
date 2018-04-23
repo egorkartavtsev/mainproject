@@ -20,9 +20,10 @@ class ControllerCommonHome extends Controller {
                 //вытаскиваем всех производителей и кладём на главную
                 
                 
+                $this->load->model('tool/layout');
                 $this->load->model('tool/image');
-        
-                $results = $this->model_catalog_brand->getBrands();
+                $library = 1;
+                $results = $this->model_tool_layout->getLibrary($library);
                 //exit(var_dump($results));
 
                 $data['brands'] = array();
@@ -36,9 +37,9 @@ class ControllerCommonHome extends Controller {
 
                     $data['brands'][] = array(
                         'id' => $result['id'],
-                        'name' => $result['brand_name'],
+                        'name' => $result['name'],
                         'img' => $image,
-                        'href' => $this->url->link('product/brand/info', 'brand_id=' . $result['id'])
+                        'href' => $this->url->link('catalog/catalog/library', 'libr='. $library . '_' . $result['id'])
                     );
 
                 }

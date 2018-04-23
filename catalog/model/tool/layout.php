@@ -211,4 +211,9 @@ class ModelToolLayout extends Model {
         );
         return $result;
     }
+    
+    public function getLibrary($libr) {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE library_id = ".(int)$libr." AND item_id = (SELECT item_id FROM ".DB_PREFIX."lib_struct WHERE library_id = ".(int)$libr." AND parent_id = 0) ORDER BY name ASC ");
+        return $sup->rows;
+    }
 }
