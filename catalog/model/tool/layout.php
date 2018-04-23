@@ -87,8 +87,20 @@ class ModelToolLayout extends Model {
     public function pagination($total, $flag) {
         $pagination = '';
         if($total>$this->config->get('theme_default_product_limit')){
+            
+            if($total<$this->config->get('theme_default_product_limit')*10){
+                $pageCount = ceil($total/$this->config->get('theme_default_product_limit'));
+                $i = 1;
+                $max = $pageCount;
+                while ($i<=$max){
+                    $pagination.= ' <a class="btn btn-default" href="'.$this->url->link('catalog/catalog/products', $flag.'='.$this->request->get[$flag].'&page='.$i).'">'.$i.'</a> ';
+                    ++$i;
+                }
+                return $pagination;
+            }
+            
             $pageCount = ceil($total/$this->config->get('theme_default_product_limit'));
-            $i =$currentPage = isset($this->request->get['page'])?$this->request->get['page']:1;
+            $i = isset($this->request->get['page'])?$this->request->get['page']:1;
             $start = $i==1?1:$this->config->get('theme_default_product_limit')*($i-1)+1;
             $end = $start + $this->config->get('theme_default_product_limit')-1;
             if($i<=6){
