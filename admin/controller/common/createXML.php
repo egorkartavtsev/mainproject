@@ -2,14 +2,21 @@
 
 class ControllerCommonCreateXML extends Controller {
     public function index() {
-        $this->load->model("tool/translate");
-        $replace = array("й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ", "а", "п", "ч", "к", "б", "о");
-        $sup = $this->db->query("SELECT vin, catN FROM ".DB_PREFIX."product WHERE LOCATE(' ', catN) OR LOCATE('*', catN) OR LOCATE('-', catN) OR LOCATE('/', catN)");
-        echo $sup->num_rows.'<br><hr><br>';
-        foreach($sup->rows as $row){
-            echo $row['vin'].' - '.str_replace("", "", $row['catN']).'<br>';
+        $query = array();
+        $sup = $this->db->query("SELECT brand FROM ".DB_PREFIX."product WHERE 1 GROUP BY brand ORDER BY brand");
+        //$this->db->query("UPDATE ".DB_PREFIX."product SET brand = 'SKODA' WHERE brand = 'Bridgestone'");
+        //$this->db->query("UPDATE ".DB_PREFIX."product SET structure = '1' WHERE structure = 'product'");
+        foreach ($sup->rows as $brand){
+            $req = (int)$brand['brand'];
+            if($req){
+                $q = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE id = ".(int)$req);
+                $query[$req] = $q->row['name'];
+            }
         }
-        exit();
+        foreach($query as $key => $name){
+            $this->db->query("UPDATE ".DB_PREFIX."product SET brand = '".$name."' WHERE brand = '".$key."' ");
+        }
+        exit(var_dump($query));
     }
 //    public function index() {
 //        $this->load->model('tool/xml');

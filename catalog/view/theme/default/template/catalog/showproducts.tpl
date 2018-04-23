@@ -7,20 +7,21 @@
               <button type="button" id="grid-view" class="btn btn-default" data-toggle="tooltip" title="Отобразить сеткой"><i class="fa fa-th"></i></button>
             </div>
           </div>
-          <div class="col-md-4 col-xs-6">
+          <div class="col-xs-6">
             <div class="form-group input-group input-group-sm">
               <label class="input-group-addon" for="input-sort">Сортировка:</label>
-              <select id="input-sort" class="form-control" onchange="location = this.value;">
+              <select id="input-sort" class="form-control" onchange="location = this.value;" data-toggle="tooltip" title="Внимание! При изменении порядка сортировки значения фильтра очистятся.">
+                  <option disabled selected>Выберите порядок сортировки</option>
+                  <option value="<?php echo $link?>&sort=price&order=ASC">Цена - сначала дешёвые</option>
+                  <option value="<?php echo $link?>&sort=price&order=DESC">Цена - сначала дорогие</option>
+                  <option value="<?php echo $link?>&sort=type&order=ASC">Тип - сначала Б/У</option>
+                  <option value="<?php echo $link?>&sort=type&order=DESC">Тип - сначала Новые</option>
+                  <option value="<?php echo $link?>&sort=date_added&order=ASC">Дата - сначала старые</option>
+                  <option value="<?php echo $link?>">Дата - сначала новые</option>
               </select>
             </div>
           </div>
-          <div class="col-md-6 col-xs-6">
-            <div class="form-group input-group input-group-sm">
-              <label class="input-group-addon" for="input-limit">Товаров на странице: </label>
-              <select id="input-limit" class="form-control" onchange="location = this.value;">
-              </select>
-            </div>
-          </div>
+
         </div>
         <div class="row">
           <?php foreach($products as $key => $product){ ?>
@@ -71,6 +72,6 @@
           </div>
         </div>
     <?php } else { ?>
-        <?php echo 'Ne naydeno';?>
+        <?php echo '<div class="col-lg-12 text-center"><img src="sad.png" width="150"/><br><h4>К сожалению, ничего не найдено. Позвоните нам, чтобы уточнить наличие детали по телефону.<br><b>+ ‎7 (912) 475 08 70</b></h4></div>';?>
     <?php }?>
 </div>

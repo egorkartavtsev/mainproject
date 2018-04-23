@@ -15,6 +15,11 @@ class ModelToolLayout extends Model {
         return $sup->row['text'];
     }
     
+    public function getTypeName($type) {
+        $sup = $this->db->query("SELECT text FROM ".DB_PREFIX."product_type WHERE type_id = ".(int) $this->db->escape($type));
+        return $sup->row['text'];
+    }
+    
     public function getFillName($fill) {
         $sup = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE id = ".(int) $this->db->escape($fill));
         return $sup->row['name'];
@@ -160,10 +165,11 @@ class ModelToolLayout extends Model {
                     $selects.= '<div class="form-group form-group-sm">'
                                 . '<label for="filter_'.$field['name'].'">'.$field['text'].':</label>
                                    <select id="filter_'.$field['name'].'" class="form-control">'
-                                    . '<option value="" disabled selected>Выберите значение...</option>';
+                                    . '<option value="" disabled selected>Выберите значение...</option>'
+                                    . '<option value="Все товары">Все товары</option>';
                         foreach (explode(";", $field['vals']) as $value) {
                             if(trim($value)!=='' && trim($value)!=='-'){
-                                $selects.= '<option value="'.$value.'">'.$value.'</option>';
+                                $selects.= '<option value="'.trim($value).'">'.trim($value).'</option>';
                             }
                         }                   
                     $selects.= '</select></div>';
@@ -178,9 +184,10 @@ class ModelToolLayout extends Model {
                             $libraries.= '<div class="form-group form-group-sm">'
                                             . '<label for="filter_'.$field['name'].'">'.$field['text'].':</label>'
                                             . '<select id="filter_'.$field['name'].'" class="form-control" select_type="library" child="'.$field['child_item'].'">'
-                                                . '<option value="" disabled selected>Выберите значение...</option>';
+                                                . '<option value="" disabled selected>Выберите значение...</option>'
+                                                . '<option value="Все товары">Все товары</option>';
                                     foreach ($fills->rows as $fill) {
-                                        $libraries.='<option value="'.$fill['id'].'">'.$fill['name'].'</option>';
+                                        $libraries.='<option value="'.trim($fill['name']).'">'.$fill['name'].'</option>';
                                     }
                                  $libraries.= '</select></div>';
                         }
@@ -188,14 +195,14 @@ class ModelToolLayout extends Model {
                 break;
             }
         }
-        $result.= '<h4><b>Фильтры:</b> </h4><div class="col-xs-12"><button class="btn btn-danger btn-block" disabled btn_type="filter">Применить фильтр</button></div>'.$libraries.'<div class="clearfix"></div>'.$selects.'<div class="clearfix"></div>'.$inputs.'<div class="col-xs-12"><button class="btn btn-danger btn-block" disabled btn_type="filter">Применить фильтр</button></div>';
+        $result.= '<h4><b>Фильтры:</b> </h4><div class="col-xs-12"><button class="btn btn-info col-lg-6" onclick="location.reload();">Очистить</button><button class="btn btn-primary col-lg-6" disabled btn_type="filter">Применить</button></div>'.$libraries.'<div class="clearfix"></div>'.$selects.'<div class="clearfix"></div>'.$inputs.'<div class="col-xs-12"><button class="btn btn-primary btn-block" disabled btn_type="filter">Применить фильтр</button></div>';
         return $result;
     }
     
     public function getChilds($par) {
-        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE parent_id = ".(int)$this->db->escape($par)." ORDER BY name ");
-        $curr = $this->db->query("SELECT name, text FROM ".DB_PREFIX."lib_struct WHERE parent_id = (SELECT item_id FROM ".DB_PREFIX."lib_fills WHERE id = ".(int)$this->db->escape($par).")");
-        $query = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_struct WHERE parent_id = (SELECT item_id FROM ".DB_PREFIX."lib_struct WHERE parent_id = (SELECT item_id FROM ".DB_PREFIX."lib_fills WHERE id = ".(int)$this->db->escape($par)."))");
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE parent_id = (SELECT id FROM ".DB_PREFIX."lib_fills WHERE name = '".$this->db->escape($par)."' ) ORDER BY name ");
+        $curr = $this->db->query("SELECT name, text FROM ".DB_PREFIX."lib_struct WHERE parent_id = (SELECT item_id FROM ".DB_PREFIX."lib_fills WHERE id = (SELECT id FROM ".DB_PREFIX."lib_fills WHERE name = '".$this->db->escape($par)."' ))");
+        $query = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_struct WHERE parent_id = (SELECT item_id FROM ".DB_PREFIX."lib_struct WHERE parent_id = (SELECT item_id FROM ".DB_PREFIX."lib_fills WHERE id = (SELECT id FROM ".DB_PREFIX."lib_fills WHERE name = '".$this->db->escape($par)."' )))");
         $result = array(
             'childs' => $sup->rows,
             'currId' => $curr->row['name'],

@@ -45,20 +45,59 @@ $(document).ready(function() {
         //libr childs show
         $(document).on('change', "[select_type=library]", function(){
             var select = $(this);
+            if(select.val()!=='Все товары'){
+                $.ajax({
+                    url: "index.php?route=catalog/catalog/showLibrChild",
+                    statbox: "igdhje83565",
+                    method: "POST",
+                    data:
+                    {
+                        parent: select.val()
+                    },
+                    success:function(data){
+                        select.parent().parent().find("#"+select.attr('child')).html(data);
+                    }      
+                });                
+            }
+        })
+        //filter fields change
+        $(document).on('input', "input[id*='filter']", function(){
+            $(this).parent().parent().find('button').removeAttr('disabled');
+        })
+        $(document).on('change', "select[id*='filter']", function(){
+            $(this).parent().parent().find('button').removeAttr('disabled');
+        })
+        
+        //apply filter
+        $(document).on('click', '[btn_type=filter]', function(){
+            var filter = '';
+            var cond = '';
+            if(getURLVar('type') != ""){
+                cond = '&type='+getURLVar('type')
+            } else {
+                cond = '&libr='+getURLVar('libr')
+            }
+            if(getURLVar('order') != ""){
+                cond+= '&sort='+getURLVar('sort')+'&order='+getURLVar('order')
+            }
+            $("#filterResult").html('<div class="col-lg-12 text-center"><img src="wait.gif" width="100"/><br><h4>Подбираем товары по фильтру. Спасибо за ожидание</h4></div>');
+            $(this).parent().parent().find("[id*='filter']").each(function(){
+                filter = filter + $(this).attr('id')+': '+$(this).val()+'; ';
+            })
             $.ajax({
-                url: "index.php?route=catalog/catalog/showLibrChild",
+                url: "index.php?route=catalog/catalog/applyFilter"+cond,
                 statbox: "igdhje83565",
                 method: "POST",
                 data:
                 {
-                    parent: select.val()
+                    filter: filter
                 },
                 success:function(data){
-                    select.parent().parent().find("#"+select.attr('child')).html(data);
+                    $("#filterResult").html(data);
+                    $('[btn_type=filter]').attr('disabled', 'disabled');
                 }      
             });
         })
-        
         
         // Searchbox
         $("input[name*='search']").on('input', function(){
