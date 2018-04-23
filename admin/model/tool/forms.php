@@ -89,7 +89,7 @@ class ModelToolForms extends Model {
                         $librF.='<div class="form-group-sm col-md-4" id="'.$option['name'].'">'
                               . '</div>'.($sup->row['isparent']?'':'<div class="clearfix"></div>');
                     }else{
-                        $fillsquer = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE item_id = ".(int)$option['libraries']);
+                        $fillsquer = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE item_id = ".(int)$option['libraries']." ORDER BY name ");
                         $librF.='<div class="form-group-sm col-md-4" id="'.$option['name'].'">'
                                 . '<label>'.$option['text'].'</label>'
                                 . '<select class="form-control" name="info['.$num.']['.$option['name'].']" select_type="librSelect" child="'.$sup->row['child'].'">'
@@ -118,7 +118,7 @@ class ModelToolForms extends Model {
             $jsChilds = '';
             $tquery = $this->db->query("SELECT text FROM ".DB_PREFIX."lib_struct WHERE name = '".$fieldName."'");
             $text = $tquery->row['text'];
-            $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE parent_id = ".(int)$parent);
+            $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE parent_id = ".(int)$parent." ORDER BY name");
             if($sup->num_rows){
                 //exit(var_dump($text));
                 $cquery = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_struct WHERE parent_id = ".(int)$sup->row['item_id']);
