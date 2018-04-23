@@ -70,7 +70,7 @@ class ControllerSettingProdTypes extends Controller {
             foreach ($results['options'] as $result) {
                 $options.='<span class="label label-success" type-name="'.$result['name'].'">'.$result['text'].($result['field_type']=='library'?'(библиотечное)':'').'</span> ';
                 $divsOpt.= '<div class="alert alert-success">';
-                if($result['field_type']!=='library' && $result['libraries']==='0'){
+                if($result['field_type']!=='library'){
                         $divsOpt.='<div class="col-md-6">'
                                     . '<input type="text" id="textOption" class="form-control" value="'.$result['text'].'" placeholder="Введите название свойства(по-русски)">'
                                     . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
@@ -95,6 +95,11 @@ class ControllerSettingProdTypes extends Controller {
                                         . '<option value="1" '.($result['unique_field']=='1'?'selected':'').'>Уникальное поле</option>'
                                     . '</select>'
                                     . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
+                                    . '<select id="filterOption" class="form-control">'
+                                        . '<option value="1" '.($result['filter']=='1'?'selected':'').'>Отображать в фильтрах</option>'
+                                        . '<option value="0" '.($result['filter']=='0'?'selected':'').'>Не отображать в фильтрах</option>'
+                                    . '</select>'
+                                    . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
                                     . '<button id="saveOpt" class="btn btn-info"><i class="fa fa-floppy-o"></i> сохранить</button>&nbsp;'
                                     . '<button id="delOpt" class="btn btn-danger"><i class="fa fa-trash-o"></i> отвязать</button>'
                                . '</div>';
@@ -109,7 +114,9 @@ class ControllerSettingProdTypes extends Controller {
                                     . '</select>'
                                     . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
                                     . '<select id="viewedOption" class="form-control">'
-                                        . '<option value="1" '.($result['viewed']=='1'?'selected':'').'>Отображать на витрине</option>'
+                                        . '<option value="1" '.($result['viewed']=='1'?'selected':'').'>Отображать везде на витрине</option>'
+                                        . '<option value="2" '.($result['viewed']=='2'?'selected':'').'>Отображать только в списке товаров</option>'
+                                        . '<option value="3" '.($result['viewed']=='3'?'selected':'').'>Отображать только на странице товарв</option>'
                                         . '<option value="0" '.($result['viewed']=='0'?'selected':'').'>Не отображать на витрине</option>'
                                     . '</select>'
                                     . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
@@ -127,8 +134,15 @@ class ControllerSettingProdTypes extends Controller {
                     $divsOpt.= '<div><h4>'.$result['text'].'</h4><span class="label label-success" id="nameOption">'.$result['name'].'</span>'
                             . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
                             . '<select id="viewedOption" class="form-control">'
-                                . '<option value="1" '.($result['viewed']=='1'?'selected':'').'>Отображать на витрине</option>'
+                                . '<option value="1" '.($result['viewed']=='1'?'selected':'').'>Отображать везде на витрине</option>'
+                                . '<option value="2" '.($result['viewed']=='2'?'selected':'').'>Отображать только в списке товаров</option>'
+                                . '<option value="3" '.($result['viewed']=='3'?'selected':'').'>Отображать только на странице товарв</option>'
                                 . '<option value="0" '.($result['viewed']=='0'?'selected':'').'>Не отображать на витрине</option>'
+                            . '</select>'
+                            . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
+                            . '<select id="filterOption" class="form-control">'
+                                . '<option value="1" '.($result['filter']=='1'?'selected':'').'>Отображать в фильтрах</option>'
+                                . '<option value="0" '.($result['filter']=='0'?'selected':'').'>Не отображать в фильтрах</option>'
                             . '</select>'
                             . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
                             . '<input type="text" id="sort_orderOption" class="form-control" value="'.$result['sort_order'].'" placeholder="Порядок сортировки">'
@@ -143,6 +157,11 @@ class ControllerSettingProdTypes extends Controller {
         }
         $divsOpt.= '</div>';
         $divInfo.= '<div role="tabpanel" class="tab-pane" id="descript">'
+                    . '<div class="col-lg-12 form-group">'
+                        . '<div class="col-lg-8"><label for="typeName">Маска наименования продуктов данного типа:</label>'
+                        . '<input class="form-control" id="typeName" type="text" type_id="'.$this->request->post['id'].'" value="'.$info['text'].'"/></div>'
+                        . '<label>&nbsp;</label><br><button class="btn btn-success" disabled btn_type="typeNameSave"><i class="fa fa-floppy-o"></i></button>'
+                    . '</div>'
                     . '<div class="col-lg-12 form-group">'
                         . '<div class="col-lg-8"><label for="templName">Маска наименования продуктов данного типа:</label>'
                         . '<input class="form-control" id="templName" type="text" type_id="'.$this->request->post['id'].'" value="'.$info['temp'].'"/></div>'
@@ -270,6 +289,12 @@ class ControllerSettingProdTypes extends Controller {
     public function saveTempName() {
         $this->load->model('tool/product');
         $this->model_tool_product->saveTempName($this->request->post['tempName'], $this->request->post['type_id']);
+        echo 'ok';
+    }
+    
+    public function saveTypeName() {
+        $this->load->model('tool/product');
+        $this->model_tool_product->saveTypeName($this->request->post['typeName'], $this->request->post['type_id']);
         echo 'ok';
     }
     

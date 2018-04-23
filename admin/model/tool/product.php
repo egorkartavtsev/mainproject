@@ -313,6 +313,10 @@ class ModelToolProduct extends Model {
         $this->db->query("UPDATE ".DB_PREFIX."product_type SET temp = '".$temp."' WHERE type_id = ".(int)$type);
     }
     
+    public function saveTypeName($temp, $type) {
+        $this->db->query("UPDATE ".DB_PREFIX."product_type SET text = '".$temp."' WHERE type_id = ".(int)$type);
+    }
+    
     public function savelibrName($name, $library_id) {
         $this->db->query("UPDATE ".DB_PREFIX."libraries SET text = '".$name."' WHERE library_id = ".(int)$library_id);
     }
@@ -345,6 +349,26 @@ class ModelToolProduct extends Model {
         }
         foreach ($categories as $cat) {
             $this->db->query("INSERT INTO ".DB_PREFIX."product_to_category SET product_id = ".(int)$pid.", category_id = ".(int)$cat);
+        }
+    }
+    
+    public function getLevelSets($item) {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_struct WHERE item_id = ".(int)$item);
+        return $sup->row;
+    }
+    
+    public function getFillSets($fill) {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE id = ".(int)$fill);
+        return $sup->row;
+    }
+    
+    public function levelSISave($si, $item) {
+        $this->db->query("UPDATE ".DB_PREFIX."lib_struct SET showImg = ".(int)$si." WHERE item_id = ".(int)$item);
+    }
+    
+    public function saveFillSets($fields, $fill) {
+        foreach ($fields as $key => $value) {
+            $this->db->query("UPDATE ".DB_PREFIX."lib_fills SET ".$key." = '".$value."' WHERE id = ".(int)$fill);
         }
     }
 }

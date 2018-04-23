@@ -76,7 +76,7 @@ class ModelToolLayout extends Model {
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."product_type WHERE ".($type?('type_id = '.(int)$type):'1'));
         $result = array();
         foreach ($sup->rows as $type) {
-            $query = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE type_id = ".(int)$type['type_id']." AND viewed = 1 ORDER BY sort_order");
+            $query = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE type_id = ".(int)$type['type_id']." AND (viewed = 1 OR viewed = 2) ORDER BY sort_order");
             foreach ($query->rows as $field) {
                 $result[$type['type_id']][$field['name']] = $field;
             }

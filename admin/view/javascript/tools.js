@@ -211,6 +211,97 @@ $(document).ready(function() {
             }
         });
     })
+    //option tempName
+    $(document).on('input', '#typeName', function(){
+        $(this).parent().parent().find('button').removeAttr('disabled');
+    })
+    
+    //option templName save
+    $(document).on("click", "[btn_type=typeNameSave]", function(){
+        var button = $(this);
+        var typeName = button.parent().find('input').val();
+        var type_id = button.parent().find('input').attr('type_id');
+        ajax({
+            url:"index.php?route=setting/prodtypes/saveTypeName&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data: {typeName: typeName, type_id: type_id},
+            success:function(data){
+                button.attr('disabled', 'disabled');
+            }
+        });
+    })
+    
+    $(document).on('click', '[btn_type=fillSetsSave]', function(){
+        var fields = '';
+        var fill = $(this).attr('fill');
+        $(this).parent().parent().find('input').each(function(){
+            fields+= $(this).attr('id')+': '+$(this).val()+'; ';
+        })
+        fields+= $(this).parent().parent().find('textarea').attr('id')+': '+$(this).parent().parent().find('textarea').val()+'; ';
+        ajax({
+            url:"index.php?route=setting/libraries/saveFillSets&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data: {fields: fields, fill: fill},
+            success:function(data){
+                alert('Сохранено');
+            }
+        });
+    })
+    
+     //change fill name
+    $(document).on( "click", "[btn_type=changeFill]", function() {
+        var button = $(this);
+        ajax({
+            url:"index.php?route=setting/libraries/getFillSets&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data: {fill_id: button.attr('fill')},
+            success:function(data){
+                $('#level-settings').html(data);
+            }
+        });
+    });
+    //save new fill name
+    $(document).on( "click", "[btn_type=saveChangeFillName]", function() {
+        var field = $(this).parent().parent().parent().parent().attr('id');
+        var fill_id = $(this).parent().parent().attr('fill_id');
+        var parent = $(this).parent();
+        ajax({
+          url:"index.php?route=setting/libraries/saveChangeFillName&token="+getURLVar('token'),
+          statbox:"status",
+          method:"POST",
+          data: {
+              id: fill_id,
+              field: field,
+              name: parent.parent().find("#newName").val()
+          },
+          success:function(data){
+            if(data === '0'){
+              alert('Возникла внутренняя ошибка');
+              return FALSE;
+            } else {
+              parent.html('<button class="btn btn-info" btn_type="changeFill"><i class="fa fa-pencil" ></i></button><button class="btn btn-danger" btn_type="deleteFill"><i class="fa fa-trash-o"></i></button>');
+              parent.parent().find("td[td_type='fillName']").html(parent.parent().find("#newName").val());
+            }
+          }
+        })
+        $(this).parent().html('<button class="btn btn-success" btn_type="saveChangeFillName"><i class="fa fa-floppy-o" ></i></button>');
+    });
+    //libr level settings
+    $(document).on("click", "[btn_type=levelSettings]", function(){
+        var button = $(this);
+        ajax({
+            url:"index.php?route=setting/libraries/getLevelSets&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data: {item_id: button.attr('item')},
+            success:function(data){
+                $('#level-settings').html(data);
+            }
+        });
+    })
     
     //libr change Name
     $(document).on('input', '#librName', function(){
@@ -466,39 +557,6 @@ $(document).ready(function() {
               $("#libr_name").val(data);
           }
         })
-    });
-    
-    //change fill name
-    $(document).on( "click", "[btn_type=changeFill]", function() {
-        var old_name = $(this).parent().parent().find("td[td_type='fillName']");
-        old_name.html('<input type="text" class="form-control" id="newName" value="'+old_name.text()+'">');
-        $(this).parent().html('<button class="btn btn-success" btn_type="saveChangeFillName"><i class="fa fa-floppy-o" ></i></button>');
-    });
-    //save new fill name
-    $(document).on( "click", "[btn_type=saveChangeFillName]", function() {
-        var field = $(this).parent().parent().parent().parent().attr('id');
-        var fill_id = $(this).parent().parent().attr('fill_id');
-        var parent = $(this).parent();
-        ajax({
-          url:"index.php?route=setting/libraries/saveChangeFillName&token="+getURLVar('token'),
-          statbox:"status",
-          method:"POST",
-          data: {
-              id: fill_id,
-              field: field,
-              name: parent.parent().find("#newName").val()
-          },
-          success:function(data){
-            if(data === '0'){
-              alert('Возникла внутренняя ошибка');
-              return FALSE;
-            } else {
-              parent.html('<button class="btn btn-info" btn_type="changeFill"><i class="fa fa-pencil" ></i></button><button class="btn btn-danger" btn_type="deleteFill"><i class="fa fa-trash-o"></i></button>');
-              parent.parent().find("td[td_type='fillName']").html(parent.parent().find("#newName").val());
-            }
-          }
-        })
-        $(this).parent().html('<button class="btn btn-success" btn_type="saveChangeFillName"><i class="fa fa-floppy-o" ></i></button>');
     });
     //delete fill
     $(document).on( "click", "[btn_type=deleteFill]", function() {

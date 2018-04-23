@@ -43,7 +43,7 @@ class ControllerSettingLibraries extends Controller {
         $fills = $this->model_tool_product->getChildFills($parent);
         $result = '';
         foreach ($fills as $fill) {
-            $result.='<tr id="fill'.$fill['id'].'" fill_id="'.$fill['id'].'" item_level="'.$level.'"><td td_type="fillName">'.$fill['name'].'</td><td><button class="btn btn-info" btn_type="changeFill"><i class="fa fa-pencil" ></i></button><button class="btn btn-danger" btn_type="deleteFill"><i class="fa fa-trash-o"></i></button></td></td></tr>';
+            $result.='<tr id="fill'.$fill['id'].'" fill_id="'.$fill['id'].'" item_level="'.$level.'"><td td_type="fillName">'.$fill['name'].'</td><td><button class="btn btn-info" btn_type="changeFill" fill="'.$fill['id'].'" type="button" data-toggle="modal" data-target="#settingsLevel" btn_type="levelSettings"><i class="fa fa-pencil" ></i></button><button class="btn btn-danger" btn_type="deleteFill"><i class="fa fa-trash-o"></i></button></td></td></tr>';
         }
         $result.= '<tr><td class="text-center" colspan="2"><button class="btn btn-success" item_level="'.$level.'" id="addItem'.$level.'" fill-parent="'.$parent.'"><i class="fa fa-plus-circle"></i> добавить элемент</button></td></tr>';
         echo $result;
@@ -89,6 +89,78 @@ class ControllerSettingLibraries extends Controller {
         $this->load->model('tool/product');
         $this->model_tool_product->saveLibrShowNav($this->request->post['show'], $this->request->post['library_id']);
         echo 'ok';
+    }
+    
+    public function levelSISave() {
+        $this->load->model('tool/product');
+        $this->model_tool_product->levelSISave($this->request->post['SI'], $this->request->post['item_id']);
+        echo 'ok';
+    }
+    
+    public function getLevelSets() {
+        $this->load->model('tool/product');
+        $sets = $this->model_tool_product->getLevelSets($this->request->post['item_id']);
+        $result = '';
+//        exit(var_dump($sets));
+        $result.= '<div class="col-lg-12 form-group">
+                    <div class="col-lg-8"><label for="">Отображение фотографий на уровне:</label>
+                    <select class="form-control" id="showImg" library_id="">
+                        <option value="0" >Не отображать</option>
+                        <option value="1" '.($sets['showImg']==='0'?'':'selected').'>Отображать</option>
+                    </select>
+                    </div>
+                    <label>&nbsp;</label><br><button class="btn btn-success" btn_type="levelSISave" item="'.$this->request->post['item_id'].'"><i class="fa fa-floppy-o"></i></button>
+                  </div>';
+        echo $result;
+    }
+    
+    public function getFillSets() {
+        $this->load->model('tool/product');
+        $this->load->model('tool/image');
+        $sets = $this->model_tool_product->getFillSets($this->request->post['fill_id']);
+        $result = '';
+        
+        $result.= ' <div class="col-lg-12 form-group">
+                      <label for="name">Название:</label>я
+                      <input class="form-control" id="name" type="text" value="'.$sets['name'].'"/>
+                    </div>';
+        $result.= ' <div class="col-lg-12 form-group">
+                      <label for="avitoId">Категория Авито:</label>
+                      <input class="form-control" id="avitoId" type="text" value="'.$sets['avitoId'].'"/>
+                    </div>';
+        $result.= ' <div class="col-lg-12 form-group">
+                      <label for="prompt">Напоминание:</label>
+                      <input class="form-control" id="prompt" type="text" value="'.$sets['prompt'].'"/>
+                    </div>';
+        $result.= ' <div class="col-lg-12 form-group">
+                      <label for="translate">Синонимы(через ;):</label>
+                      <textarea class="form-control" id="translate">'.$sets['translate'].'</textarea>
+                    </div>';
+        $result.= ' <div class="col-lg-12 form-group">
+                      <label for="image">Фотография:</label><br>
+                      <a href="" id="thumb-image" data-toggle="image" class="img-thumbnail" data-toggle="popover">
+                        <img src="'.$this->model_tool_image->resize($sets['image'], 100, 100).'" />
+                      </a>
+                      <input class="form-control" data-toggle="input-image" id="image" type="hidden" value="'.$sets['image'].'"/>
+                    </div>';
+        $result.= ' <div class="col-lg-12 form-group">
+                        <button class="btn btn-success" fill="'.$sets['id'].'" btn_type="fillSetsSave"><i class="fa fa-floppy-o"></i> сохранить</button>
+                    </div>';
+        echo $result;
+    }
+    
+    public function saveFillSets() {
+        $fill = $this->request->post['fill'];
+        $request = $this->request->post['fields'];
+        $request = explode("; ", $request);
+        foreach ($request as $req) {
+            $sup = explode(":", $req);
+            if(trim($sup[0])!=='' && trim($sup[1])!==''){
+                $fields[trim($sup[0])] = trim($sup[1]);
+            }
+        }
+        $this->load->model('tool/product');
+        $this->model_tool_product->saveFillSets($fields, $fill);
     }
     
 }
