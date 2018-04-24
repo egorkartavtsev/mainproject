@@ -16,7 +16,7 @@ class ModelToolForms extends Model {
         foreach ($this->systemFields as $key => $field) {
             $systemF.= '<div class="form-group-sm col-md-4">'
                         . '<label>'.$field.($key==='vin'?'<span style="color: red;">*</span>':'').'</label>'
-                        . '<input class="form-control" name="info['.$num.']['.$key.']" '.($key==='vin'?'required="required" aria-required="true" unique="unique" field="vin"':'').'/>'
+                        . '<input class="form-control" name="info['.$num.']['.$key.']" '.($key==='vin'?'required="required" aria-required="true" unique="unique" field="vin"':'').' '.($key==='price'?'required="required" aria-required="true" field="price" value="0"':'').' '.($key==='quantity'?'required="required" aria-required="true" value="1" field="quantity"':'').'/>'
                      . '</div>';
         }
         foreach ($sup->rows as $option) {
@@ -312,6 +312,144 @@ class ModelToolForms extends Model {
                 }
             }
         }
+    }
+    
+    public function constructEditForm($info) {
+        $selects = '';
+        $libraries = '';
+        $inputs = '';
+        $compabils = '';
+        $systemF = '';
+        $modal = '';
+        $hiddens = '<input type="hidden" name="manager" value="'.$info['manager'].'" />';        
+        foreach ($this->systemFields as $key => $field) {
+            $systemF.= '<div class="form-group col-md-3">'
+                        . '<label>'.$field.($key==='vin'?'<span style="color: red;">*</span>':'').'</label>'
+                        . '<input class="form-control" name="info['.$key.']" '.($key==='vin'?'required="required" disabled aria-required="true" unique="unique" field="vin"':'').' value="'.$info[$key].'"/>'
+                     . '</div>';
+        }
+        $systemF.= '<div class="form-group col-md-3">'
+                . '<label>Статус</label>'
+                . '<select class="form-control" name="info[status]">'
+                    . '<option value="1">Включено</option>'
+                    . '<option value="0" '.($info['status']=='0'?'selected':'').'>Отключено</option>'
+                . '</select></div><div class="col-lg-12"></div>';
+        foreach ($info as $key => $option) {
+            switch ($option['field_type']) {
+                case 'input':
+                    $inputs.= '<div class="col-md-3 form-group">'
+                                . '<label>'.$option['text'].'</label>'
+                                . '<input class="form-control" name="info['.$key.']" '.($option['required']=='1'?'required="required':'').' value="'.$option['value'].'">'
+                            . '</div>';
+                break;
+                case 'select':
+                    $selects.= '<div class="col-md-3 form-group">'
+                                . '<label>'.$option['text'].'</label>'
+                                . '<select class="form-control" name="info['.$key.']">'
+                                    . '<option value="-">-</option>';
+                        $vals = explode(";", $option['vals']);
+                        foreach ($vals as $val) {
+                            $selects.= '<option value="'.trim($val).'" '.(trim($val)===$option['value']?'selected':'').'>'.trim($val).'</option>';
+                        }
+                    $selects.= '</select></div>';
+                break;
+                case 'library':
+                    $supfills = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE item_id = ".(int)$option['library']." ORDER BY name");
+                    $supitem = $this->db->query("SELECT *, (SELECT name FROM ".DB_PREFIX."lib_struct WHERE parent_id = ".(int)$option['library'].") AS child FROM ".DB_PREFIX."lib_struct WHERE item_id = ".(int)$option['library']);
+                    if($supitem->row['isparent']==='1'){
+                        $dop = 'select_type="librSelect" child="'.$supitem->row['child'].'"';
+                        $endrow='';
+                    } else{$dop = ''; $endrow = '<div class="col-lg-12"></div>';}
+                    $libraries.= '<div class="col-md-3 form-group" id="'.$key.'">'
+                                . '<label>'.$option['text'].'</label>'
+                                . '<select class="form-control" name="info['.$key.']" '.$dop.'>'
+                                    . '<option value="">-</option>';
+                    foreach($supfills->rows as $fill){
+                        $libraries.= '<option value="'.$fill['id'].'" '.($fill['name']===$option['value']?'selected':'').'>'.$fill['name'].'</option>';
+                    }
+                    $libraries.= '</select></div>'.$endrow;
+                break;
+                case 'compability':
+                    $compabils.= '<div class="col-lg-12 form-group">'
+                                    . '<div class="col-md-10">'
+                                        . '<label>'.$option['text'].($option['required']=='1'?'<span style="color: red;">*</span>':'').'</label>'
+                                        . '<input class="form-control" name="info['.$key.']" id="'.$key.'0" '.($option['required']=='1'?'required="required':'').' value="'.$option['value'].'"></div>'
+                                    . '<div class="col-md-1">'
+                                        . '<label>&nbsp;</label><br><a class="btn btn-success" btn_type="compability" data-toggle="modal" data-target="#'.$key.'"><i class="fa fa-search"></i></a>'
+                                    . '</div>'
+                               . '</div>';
+                    $modal.= '<div class="modal fade" id="'.$key.'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">'.$option['description'].'</h4>
+                          </div>
+                          <div class="modal-body"><div class="row" num="compability">';
+                            $sup = $this->db->query("SELECT *, (SELECT name FROM ".DB_PREFIX."lib_struct ls2 WHERE ls2.parent_id = ls1.item_id) AS child FROM ".DB_PREFIX."lib_struct ls1 WHERE library_id = ".(int)$option['library']);
+                            foreach ($sup->rows as $item) {
+                                if($item['parent_id']){
+                                    $modal.='<div class="col-lg-4" id="'.$item['name'].'"></div>';
+                                } else {
+                                    $query = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE item_id = ".(int)$item['item_id']);
+                                    $modal.='<div class="col-lg-4" id="'.$item['name'].'"><label>'.$item['text'].'</label><select class="form-control" select_type="librSelect" child="'.$item['child'].'">';
+                                    $modal.= '<option value="-">-</option>';
+                                    foreach ($query->rows as $value) {
+                                        $modal.= '<option value="'.$value['id'].'">'.$value['name'].'</option>';
+                                    }
+                                    $modal.='</select></div>';
+                                }
+                            }
+                    $modal.= '</div></div>
+                          <div class="modal-footer">
+                            <p id="totalCpb" cpb></p>
+                            <div class="col-lg-12"><hr></div>
+                            <button type="button" class="btn btn-primary" cpbfield_id="0" cpbfield_name="'.$key.'" btn_type="applyCpb">Применить</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>';
+                break;
+            }
+        }
+        return '<div class="well well-sm" num="no-num">'.$systemF.$libraries.$selects.$inputs.$compabils.$hiddens.'<div class="clearfix"></div><div class="clearfix"></div></div>'.$modal;
+    }
+    
+    public function updateProduct($info, $id) {
+        $links = array();
+        $vin = $this->db->query("SELECT vin FROM ".DB_PREFIX."product WHERE product_id = ".(int)$id);
+        $sup = $this->db->query("SELECT temp, desctemp FROM ".DB_PREFIX."product_type WHERE type_id = (SELECT structure FROM ".DB_PREFIX."product WHERE product_id = ".(int)$id.")");
+        $name = $sup->row['temp'];
+        $description = $sup->row['desctemp'];
+        $sql = "UPDATE ".DB_PREFIX."product SET ";
+        foreach ($info['info'] as $key => $value) {
+            if($value!=='-'){
+                if(!array_key_exists($key, $this->systemFields) && $key!=='status'){
+                    $quer = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE id = ".(int)$value);
+                    if($quer->num_rows){
+                        $links[] = $value;
+                        $value = $quer->row['name'];
+                    }
+                }
+                $sql.= $key." = '".$value."', ";
+                $name = str_replace('%'.$key.'%', $value, $name);
+                $description = str_replace('%'.$key.'%', $value, $description);
+            }
+        }
+        $sql.= "date_modified = NOW() "
+                . "WHERE product_id = ".(int)$id;
+        $this->db->query($sql);
+        $this->db->query("UPDATE ".DB_PREFIX."product_description SET name = '".$name."', meta_h1 = '".$name."', meta_title = '".$name."', description = '".$description."' WHERE product_id=".(int)$id);
+        $this->db->query("DELETE FROM ".DB_PREFIX."product_image WHERE product_id = ".(int)$id);
+        foreach($info['image'] as $image){
+            $this->db->query("INSERT INTO ".DB_PREFIX."product_image SET product_id = ".(int)$id.", image = '".$image['img']."', sort_order = '".$image['sort_order']."'");
+        }
+        $this->db->query("DELETE FROM ".DB_PREFIX."product_to_lib WHERE product_id = ".(int)$id);
+        foreach($links as $link){
+            $this->db->query("INSERT INTO ".DB_PREFIX."product_to_lib SET product_id = ".(int)$id.", fill_id = ".(int)$link." ");
+        }
+        
+        $this->db->query("INSERT INTO ".DB_PREFIX."product_history SET sku = '".$vin->row['vin']."', manager = '".$info['manager']."', date_modify = NOW(), type_modify = 'Обновление товара' ");
     }
 }
 

@@ -371,4 +371,18 @@ class ModelToolProduct extends Model {
             $this->db->query("UPDATE ".DB_PREFIX."lib_fills SET ".$key." = '".$value."' WHERE id = ".(int)$fill);
         }
     }
+    
+    public function getProduct($id) {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."product WHERE product_id = ".(int)$id);
+        return $sup->row;
+    }
+    
+    public function getProdImg($id) {
+        $photos = $this->db->query("SELECT * FROM ".DB_PREFIX."product_image WHERE product_id = ".(int)$id." ORDER BY sort_order ");
+        return $photos->rows;
+    }
+    public function getProdName($id) {
+        $name = $this->db->query("SELECT name FROM ".DB_PREFIX."product_description WHERE product_id = ".(int)$id);
+        return $name->row['name'];
+    }
 }

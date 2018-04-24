@@ -12,7 +12,7 @@ class ControllerToolFormTool extends Controller {
         if(!empty($child) && $parent!=='-'){
             if($num==='compability'){
                 if($child['js']!==''){
-                    $result.= '<select class="form-control" name = "'.$fieldName.'" '.$child['js'].'>';
+                    $result.= '<select class="form-control" '.$child['js'].'>';
                     $result.= '<option value="-">-</option>';
                     foreach ($child['fills'] as $fill) {
                         $result.= '<option value="'.$fill['id'].'">'.$fill['name'].'</option>';
@@ -28,7 +28,7 @@ class ControllerToolFormTool extends Controller {
                 if($num !== 'no-num'){
                     $result.= '<select class="form-control" name = "info['.$num.']['.$fieldName.']" '.$child['js'].'>';
                 } else {
-                    $result.= '<select class="form-control" name = "'.$fieldName.'" '.$child['js'].'>';
+                    $result.= '<select class="form-control" name = "info['.$fieldName.']" '.$child['js'].'>';
                 }
                 $result.= '<option value="-">-</option>';
                 foreach ($child['fills'] as $fill) {

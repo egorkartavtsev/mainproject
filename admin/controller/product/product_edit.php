@@ -1,190 +1,32 @@
 <?php
 class ControllerProductProductEdit extends Controller {
     public function index(){
-        $data = $this->setLayout();
-        $uType = $this->session->data['uType'];
-        $uName = $this->session->data['username'];
-        $data['uType'] = $uType;
-        $data['uName'] = $uName;
-        $pid = $this->request->get['product_id'];
+        $this->load->model('tool/product');
         $this->load->model('product/product');
-        
-        $product_info = $this->model_product_product->getInfo($pid);
-        
-        $photos = $this->model_product_product->getPhotos($pid);
-                
-        foreach ($product_info as $key => $cell) {
-            $data[$key] = $cell;
-        }
-        
         $this->load->model('tool/image');
-        
-        $data['placeholder'] = $this->model_tool_image->resize('no_image.png', 100, 100);
-        $local_id = 0;
-        $data['images'] = array();
-        foreach ($photos as $img) {
-            if($img['img']===$data['mainimage']){
-                $data['images'][] = array(
-                    'image'         => $img['img'],
-                    'sort_order'    => 0,
-                    'thumb'         => $this->model_tool_image->resize($img['img'], 100, 100),
-                    'lid'           => $local_id,
-                    'main'          => TRUE
-                );
-            } else {
-                $data['images'][] = array(
-                    'image' => $img['img'],
-                    'sort_order'    => $img['sort_order']==0?'1':$img['sort_order'],
-                    'thumb' => $this->model_tool_image->resize($img['img'], 100, 100),
-                    'lid'   => $local_id,
-                    'main' => FALSE
-                );
-            }
-            ++$local_id;
-        }
-        $data['count'] = $local_id;
-        $data['cond_list'] = '<select name="cond" id="input-cond" class="form-control">';
-            $data['cond_list'].= '<option value="-" '.($product_info['condit']=='-'?'selected':'').'>-</option>';
-            $data['cond_list'].= '<option value="Отличное" '.($product_info['condit']=='Отличное'?'selected':'').'>Отличное</option>';
-            $data['cond_list'].= '<option value="Хорошее" '.($product_info['condit']=='Хорошее'?'selected':'').'>Хорошее</option>';
-            $data['cond_list'].= '<option value="Повреждения" '.($product_info['condit']=='Повреждения'?'selected':'').'>Повреждения</option>';
-        $data['cond_list'].= '</select>';
-        $data['pid'] = $pid;
-        $location = explode("/", $data['location']);
-        $data['stell'] = isset($location[0])?$location[0]:'';
-        $data['jar'] = isset($location[1])?$location[1]:'';
-        $data['shelf'] = isset($location[2])?$location[2]:'';
-        $data['box'] = isset($location[3])?$location[3]:'';
-        $data['cancel'] = $this->url->link('catalog/product', 'token=' . $this->session->data['token'], true);
-        $data['action'] = $this->url->link('product/product_edit/saveForm', 'token=' . $this->session->data['token'] . '&product_id=' . $pid, true);
-        //берём категории
-        $query = $this->db->query("SELECT "
-                . "c.category_id AS id, "
-                . "cd.name AS name "
-                . "FROM ".DB_PREFIX."category c "
-                . "LEFT JOIN ".DB_PREFIX."category_description cd "
-                    . "ON (cd.language_id=1 AND cd.category_id = c.category_id) "
-                . "WHERE c.parent_id = 0 ORDER BY cd.name ");
-
-        $results = $query->rows;
-        $data['category'] = array();
-        foreach ($results as $res) {
-                $data['category'][] = array(
-                    'name' => $res['name'],
-                    'val'  => $res['id']
-                );
-        }
-
-        //берём марки
-        $query = $this->db->query("SELECT id, name, transcript FROM ".DB_PREFIX."brand "
-                                . "WHERE parent_id = 0 ORDER BY name");
-
-        $brands = $query->rows;
-        $data['brands'] = array();
-        foreach ($brands as $res) {
-            $data['brands'][$res['id']] = array(
-            'name' => $res['name'],
-            'val'  => $res['id'],
-            'transcript' => $res['transcript']
+        $this->load->model('tool/forms');
+        $data['uType'] = $this->session->data['uType'];
+        $data['uName'] = $this->session->data['username'];
+        $product = $this->model_tool_product->getProduct($this->request->get['product_id']);
+        $photos = $this->model_tool_product->getProdImg($this->request->get['product_id']);
+        $type = $this->model_tool_product->getOptions($product['structure']);
+        $info = array();
+        foreach ($type['options'] as $field) {
+            $info[$field['name']] = array(
+                'text' => $field['text'],
+                'field_type' => $field['field_type'],
+                'vals' => $field['vals'],
+                'required' => $field['required'],
+                'description' => $field['description'],
+                'value' => $product[$field['name']],
+                'library' => $field['libraries']
             );
         }
-
-        //Берём склады
-        $query = $this->db->query("SELECT name FROM ".DB_PREFIX."stocks WHERE 1");
-        $stocks = $query->rows;
-        foreach ($stocks as $stock) {
-            $data['stocks'][] = $stock['name'];
-        }
-        
-        //берём подкатегории
-        $query = $this->db->query("SELECT cd.name AS name FROM ".DB_PREFIX."category_description cd LEFT JOIN ".DB_PREFIX."category c ON cd.category_id = c.category_id WHERE c.parent_id = ".(int)$this->model_product_product->getCatId($data['categ'])." ORDER BY cd.name ");
-        foreach ($query->rows as $pc) {
-            $data['podcategs'][] = $pc['name'];
-        }
-        
-        //берём модели
-        $query = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE parent_id = ".(int)$data['brand_id']." ORDER BY name ");
-        $models = $query->rows;
-        foreach ($models as $model) {
-            $data['models'][] = $model['name'];
-        }
-        //берём модельные ряды
-        $query = $this->db->query("SELECT id FROM ".DB_PREFIX."brand WHERE name = '".$data['model']."'");
-        $mod_id = isset($query->row['id'])?$query->row['id']:'';
-        $query = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE parent_id = ".(int)$mod_id." ORDER BY name");
-        $modRs = $query->rows;
-        foreach ($modRs as $modR) {
-            $data['modRs'][] = $modR['name'];
-        }
-        //берём комплектность
-        if($data['complect']!='' && $data['comp_price']==''){
-            $comp = $this->model_product_product->getComplect($data['complect']);
-            $data['cname'] = $comp['name'];
-            $data['clink'] = $this->url->link('complect/complect/edit', 'token=' . $this->session->data['token'] . '&complect=' . $comp['id'], true);
-        }
-        
-        //if(trim($data['avitoname'])==''){
-            $brand = $this->db->query("SELECT transcript FROM ".DB_PREFIX."brand WHERE name = '".$data['brand']."'");
-            $squery = $this->db->query("SELECT transcript FROM ".DB_PREFIX."brand WHERE name = '".$data['model']."'");
-            $sname = '';
-            $str = explode(" ", $data['pcat']);
-            $sname.= $str[0];
-            if(isset($str[1])){
-                $sname.= ' '.$str[1];
-            }
-            $sname.= ' '.$data['brand'].' '.$data['modRow'];
-            if((isset($squery->row['transcript']) && $squery->row['transcript']!='') || (isset($squery->row['transcript']) && $brand->row['transcript']!='')){
-                $sname.= ' / '.$brand->row['transcript'].' '.$squery->row['transcript'];
-            }
-            $data['avitoname'] = $sname;
-        //}
-        
-        $this->response->setOutput($this->load->view('product/product_edit', $data));
-    }
-    
-    public function get_model() {
-        $currMod = $this->request->post['currMod'];
-        $brand = $this->request->post['brand'];
-        if(isset($this->request->post['mr'])){
-            $mr = TRUE;
-        } else {
-            $mr = FALSE;
-        }
-        $this->load->model('product/product');
-        $models = $this->model_product_product->getModels($brand, $mr);
-        if (count($models)>1){
-            $result = '<option disabled>Выберите модель</option>';
-        } else {
-            $result = '<option disabled selected>Выберите модель</option>';
-        }
-        $result.='<option val="univ">Универсальный</option>';
-        foreach ($models as $model) {
-            if(($model == $currMod) && (count($models)>1)){
-                $result.= '<option value="'.$model.'" selected >'.$model.'</option>';
-            } else {
-                $result.= '<option value="'.$model.'">'.$model.'</option>';
-            }
-        }
-        echo $result;
-    }
-    
-    public function get_podcat() {
-        $currPC = $this->request->post['currPC'];
-        $cat = $this->request->post['cat'];
-        $this->load->model('product/product');
-        $pcats = $this->model_product_product->getPCs($cat);
-        $result = '';
-        foreach ($pcats as $pcat) {
-            if($pcat == $currPC){
-                $result.= '<option value="'.$pcat.'" selected >'.$pcat.'</option>';
-            } else {
-                $result.= '<option value="'.$pcat.'">'.$pcat.'</option>';
-            }
-        }
-        echo $result;
-    }
-    
-    private function setLayout() {
+        $info['vin'] = $product['vin'];
+        $info['manager'] = $this->session->data['username'];
+        $info['price'] = $product['price'];
+        $info['quantity'] = $product['quantity'];
+        $info['status'] = $product['status'];
         $this->load->language('catalog/product');
         $this->document->setTitle($this->language->get('heading_title'));
 
@@ -198,63 +40,66 @@ class ControllerProductProductEdit extends Controller {
                 'text' => $this->language->get('text_home'),
                 'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
         );
-        
         $data['breadcrumbs'][] = array(
                 'text' => 'Товары',
                 'href' => $this->url->link('catalog/product', 'token=' . $this->session->data['token'], true)
         );
-        
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
-
-        return $data;
-
-    }
-    
-    public function saveForm(){
-        $this->load->model('product/product');
-        $this->load->model('common/avito');
-        $settings = $this->model_common_avito->getSetts();
-        $data = $this->request->post;
-//        exit(var_dump($data));
-        $data['pid'] = $this->request->get['product_id'];
-        if($data['vin']==''){
-            $data['vin'] = $this->model_product_product->getVin($data['pid']);
+        $data['form'] = $this->model_tool_forms->constructEditForm($info);
+        $data['name'] = $this->model_tool_product->getProdName($this->request->get['product_id']);
+        $data['action'] = $this->url->link('product/product_edit/saveForm', 'token='.$this->session->data['token'].'&product_id='.$this->request->get['product_id']);
+        $local_id = 0;
+        foreach($photos as $img){
+            $data['images'][] = array(
+                    'image'         => $img['image'],
+                    'sort_order'    => $img['sort_order'],
+                    'thumb'         => $this->model_tool_image->resize($img['image'], 100, 100),
+                    'lid'           => $local_id,
+                    'main'          => $img['image']==$product['image']?TRUE:FALSE
+                );
+            ++$local_id;
         }
-        $data['manager'] = $this->model_product_product->getManager($data['pid']);
-        $brand = $this->db->query("SELECT name, transcript FROM ".DB_PREFIX."brand WHERE id = '".$data['brand']."'");
-        $catname = $this->db->query("SELECT name FROM ".DB_PREFIX."category_description WHERE category_id = '".$data['category']."'");
-        $squery = $this->db->query("SELECT transcript FROM ".DB_PREFIX."brand WHERE name = '".$data['model']."'");
-        $smr = $this->db->query("SELECT name, transcript FROM ".DB_PREFIX."brand WHERE name = '".$data['modRow']."'");
-        if($data['avitoname']==''){
-            $sname = '';
-            $str = explode(" ", $data['podcat']);
-            $sname.= $str[0];
-            if(isset($str[1])){
-                $sname.= ' '.$str[1];
-            }
-            $sname.= ' '.$brand->row['name'].' '.$data['model'];
-            if($squery->row['transcript']!='' || $brand->row['transcript']!=''){
-                $sname.= ' / '.$brand->row['transcript'].' '.$squery->row['transcript'];
-            }
-            $data['avitoname'] = $sname;
+        $data['mainimage'] = $product['image'];
+        if($product['avitoname']==''){
+            $brtr = $this->db->query("SELECT translate FROM ".DB_PREFIX."lib_fills WHERE name = ".$product['brand']);
+            $mtr = $this->db->query("SELECT translate FROM ".DB_PREFIX."lib_fills WHERE name = ".$product['model']);
+            $data['avitoname'] = $product['podcateg'].' '.$product['brand'].' '.$product['model'].'/'.$brtr->row['translate'].' '.$mtr->row['translate'];
+        } else {
+            $data['avitoname'] = $product['avitoname'];
         }
-        $this->model_product_product->updateProduct($data);
-        $this->load->model('tool/xml');
-        if($this->session->data['uType']=='adm' && $data['allowavito']=='да'){
-            $data['trbrand'] = $brand->row['transcript'];
-            $data['trmodrow'] = $smr->row['transcript'];
-            $data['mrname'] = $smr->row['name'];
-            $this->model_tool_xml->findAd($data);
-        }
-        $data['brand'] = $brand->row['name'];
-        $data['category'] = $catname->row['name'];
-        if($data['price']>0){
-            $this->model_tool_xml->findARPart($data);
+        $data['complect'] = $product['comp'];
+        $data['comp_price'] = $product['comp_price'];
+        //берём комплектность
+        if($data['complect']!='' && $data['comp_price']==''){
+            $comp = $this->model_product_product->getComplect($data['complect']);
+            $data['cname'] = $comp['name'];
+            $data['clink'] = $this->url->link('complect/complect/edit', 'token=' . $this->session->data['token'] . '&complect=' . $comp['id'], true);
         }
         
+        
+        $this->response->setOutput($this->load->view('product/product_edit', $data));
+    }
+    
+    public function saveForm() {
+        $this->load->model('tool/xml');
+        $this->load->model('tool/forms');
+        $this->model_tool_forms->updateProduct($this->request->post, $this->request->get['product_id']);
+        if($this->session->data['uType']==='adm' && $this->request->post['allowavito']==='да'){
+            $this->model_tool_xml->findAd($this->request->post['info']);
+        }
+        $this->model_tool_xml->findARPart($this->request->post['info']);
         $this->response->redirect($this->url->link('catalog/product', 'token=' . $this->session->data['token'], true));
+//        exit(var_dump($this->request->post));
+    }
+    
+    public function setCompl() {
+        $heading = $this->request->post['heading'];
+        $item = $this->request->post['item'];
+        $this->load->model('product/product');
+        $result = $this->model_product_product->setCompl($item, $heading);
+        echo $result;
     }
     
     public function getCompl() {
@@ -276,14 +121,6 @@ class ControllerProductProductEdit extends Controller {
         } else {
             echo 0;
         }
-    }
-    
-    public function setCompl() {
-        $heading = $this->request->post['heading'];
-        $item = $this->request->post['item'];
-        $this->load->model('product/product');
-        $result = $this->model_product_product->setCompl($item, $heading);
-        echo $result;
     }
     
     public function remCompl() {
