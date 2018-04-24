@@ -150,7 +150,8 @@ class ModelCommonAddProd extends Model {
         
         $this->db->query("INSERT INTO ".DB_PREFIX."product "
                         . "SET "
-                        . "`brand` = '". $brand_id ."', "
+                        . "`structure` = 1, "
+                        . "`brand` = '". $brand ."', "
                         . "`model` = '". $model ."', "
                         . "`structure` = 'product', "
                         . "`category` = '". $category ."', "
