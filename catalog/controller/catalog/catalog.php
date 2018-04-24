@@ -76,7 +76,7 @@ class ControllerCatalogCatalog extends Controller{
                 }
                 $list['products'][$prod['product_id']] = array(
                     'thumb' => $image,
-                    'href' => $this->url->link('product/product', 'product_id='.$prod['product_id']),
+                    'href' => $this->url->link('catalog/product', 'product_id='.$prod['product_id']),
                     'name' => $prod['name'],
                     'vin' => $prod['vin'],
                     'type' => $prod['type'],
@@ -296,7 +296,7 @@ class ControllerCatalogCatalog extends Controller{
                 }
                 $list['products'][$prod['product_id']] = array(
                     'thumb' => $image,
-                    'href' => $this->url->link('product/product', 'product_id='.$prod['product_id']),
+                    'href' => $this->url->link('catalog/product', 'product_id='.$prod['product_id']),
                     'name' => $prod['name'],
                     'vin' => $prod['vin'],
                     'type' => $prod['type'],

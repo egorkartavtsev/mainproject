@@ -32,7 +32,7 @@
                             <div class="eanr">Б/У</div>
                         <?php }?>
                         <?php if ($product['type']=='Новый') { ?> 
-                        <div class="eanb">Новый</div>
+                            <div class="eanb">Новый</div>
                         <?php }?>
                     <?php }?>
                     <?php if ($product['comp']){ ?>
