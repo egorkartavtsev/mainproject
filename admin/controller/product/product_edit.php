@@ -63,8 +63,8 @@ class ControllerProductProductEdit extends Controller {
         }
         $data['mainimage'] = $product['image'];
         if($product['avitoname']==''){
-            $brtr = $this->db->query("SELECT translate FROM ".DB_PREFIX."lib_fills WHERE name = ".$product['brand']);
-            $mtr = $this->db->query("SELECT translate FROM ".DB_PREFIX."lib_fills WHERE name = ".$product['model']);
+            $brtr = $this->db->query("SELECT translate FROM ".DB_PREFIX."lib_fills WHERE name = '".$product['brand']."'");
+            $mtr = $this->db->query("SELECT translate FROM ".DB_PREFIX."lib_fills WHERE name = '".$product['model']."'");
             $data['avitoname'] = $product['podcateg'].' '.$product['brand'].' '.$product['model'].'/'.$brtr->row['translate'].' '.$mtr->row['translate'];
         } else {
             $data['avitoname'] = $product['avitoname'];

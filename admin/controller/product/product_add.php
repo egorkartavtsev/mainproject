@@ -34,7 +34,6 @@ class ControllerProductProductAdd extends Controller{
     public function addToList() {
         $this->load->model('tool/forms');
         $form = $this->model_tool_forms->generateAddForm($this->request->post['type'], $this->request->post['num']);
-        $form = '<div class=" col-md-12 alert alert-success" type="product" num="'.$this->request->post['num'].'">'.$form.'</div>';
         echo $form;
     }
 }

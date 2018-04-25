@@ -12,6 +12,7 @@ class ModelToolForms extends Model {
         $librF = '';
         $selectF = '';
         $inputF = '';
+        $modal = '';
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE type_id = ".(int)$id." ORDER BY sort_order");
         foreach ($this->systemFields as $key => $field) {
             $systemF.= '<div class="form-group-sm col-md-4">'
@@ -38,8 +39,8 @@ class ModelToolForms extends Model {
                     $inputF.='<div class="form-group-sm col-md-4"><div class="col-lg-10">'
                         . '<label>'.$option['text'].($option['required']==='1'?'<span style="color: red;">*</span>':'').'</label>'
                         . '<input class="form-control" name="info['.$num.']['.$option['name'].']" id="'.$option['name'].$num.'" '.$description.$required.$unique.' value="'.$option['def_val'].'"/>'
-                    . '</div><div class="col-lg-1"><label>&nbsp;</label><br><a class="btn btn-success" btn_type="compability" '.$description.' data-toggle="modal" data-target="#'.$option['name'].'-'.$num.'"><i class="fa fa-search"></i></a></div></div>'
-                    .'<div class="modal fade" id="'.$option['name'].'-'.$num.'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    . '</div><div class="col-lg-1"><label>&nbsp;</label><br><a class="btn btn-success" btn_type="compability" data-toggle="modal" data-target="#'.$option['name'].'-'.$num.'"><i class="fa fa-search"></i></a></div></div>';
+                    $modal.= '<div class="modal fade" id="'.$option['name'].'-'.$num.'" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
@@ -50,19 +51,19 @@ class ModelToolForms extends Model {
                     $sup = $this->db->query("SELECT *, (SELECT name FROM ".DB_PREFIX."lib_struct ls2 WHERE ls2.parent_id = ls1.item_id) AS child FROM ".DB_PREFIX."lib_struct ls1 WHERE library_id = ".(int)$option['libraries']);
                     foreach ($sup->rows as $item) {
                         if($item['parent_id']){
-                            $inputF.='<div class="col-lg-4" id="'.$item['name'].'"></div>';
+                            $modal.='<div class="col-lg-4" id="'.$item['name'].'"></div>';
                         } else {
                             $query = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE item_id = ".(int)$item['item_id']);
-                            $inputF.='<div class="col-lg-4" id="'.$item['name'].'"><label>'.$item['text'].'</label><select class="form-control" select_type="librSelect" child="'.$item['child'].'">';
-                            $inputF.= '<option value="-">-</option>';
+                            $modal.='<div class="col-lg-4" id="'.$item['name'].'"><label>'.$item['text'].'</label><select class="form-control" select_type="librSelect" child="'.$item['child'].'">';
+                            $modal.= '<option value="-">-</option>';
                             foreach ($query->rows as $value) {
-                                $inputF.= '<option value="'.$value['id'].'">'.$value['name'].'</option>';
+                                $modal.= '<option value="'.$value['id'].'">'.$value['name'].'</option>';
                             }
-                            $inputF.='</select></div>';
+                            $modal.='</select></div>';
                         }
                     }
                     
-                    $inputF.= '</div></div>
+                    $modal.= '</div></div>
                           <div class="modal-footer">
                             <p id="totalCpb" cpb></p>
                             <div class="col-lg-12"><hr></div>
@@ -102,14 +103,14 @@ class ModelToolForms extends Model {
                     break;
             }            
         }
-        $form = $systemF."<div class='col-lg-12'><hr></div>".$librF."<div class='col-lg-12'><hr></div>".$selectF."<div class='col-lg-12'><hr></div>".$inputF."<div class='col-lg-12'><hr></div>";
+        $form = '<div class=" col-md-12 alert alert-success" type="product" num="'.$num.'">'.$systemF."<div class='col-lg-12'><hr></div>".$librF."<div class='col-lg-12'><hr></div>".$selectF."<div class='col-lg-12'><hr></div>".$inputF."<div class='col-lg-12'><hr></div>";
         $form.= $this->model_tool_complect->constrCompField($num)."<div class='col-lg-12'><hr></div>";
         $form.='<div class="form-group-sm col-lg-3" >
             <label for="photos">Прикрепите фотографии:</label>
                     <input name="photo['.$num.'][]" id="photos" class="form-control" type="file" multiple="true">
                 </div>';
         $form.='<input type="hidden" name="info['.$num.'][type_id]" value="'.$id.'">';
-        return $form;
+        return $form.'</div>'.$modal;
     }
     
     public function getLibrChilds($parent, $fieldName){
@@ -129,8 +130,11 @@ class ModelToolForms extends Model {
                     $result['fills'][] = $fill;
                 }
             }
+            $par = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_struct WHERE item_id = (SELECT parent_id FROM ".DB_PREFIX."lib_struct WHERE name = '".$fieldName."') ");
             $result['text'] = isset($text)?$text:'';
             $result['js'] = $jsChilds;
+            $result['item'] = $sup->row['item_id'];
+            $result['parent_name'] = $par->row['name'];
         }
         return $result;
     }
@@ -162,18 +166,18 @@ class ModelToolForms extends Model {
                 if(isset($product[$option['name']])){
                     if($option['field_type']==='library' && $product[$option['name']]!=='-'){
                         $sup = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE id = ".(int)$product[$option['name']]);
-                        $prodItem[$option['name']] = $sup->row['name'];
+                        $prodItem[$option['name']] = trim($sup->row['name']);
                         $prod2Lib[] = $product[$option['name']];
-                        $name = str_replace($option['name'], $sup->row['name'], $name);
+                        $name = str_replace('%'.$option['name'].'%', $sup->row['name'], $name);
                         $description = str_replace('%'.$option['name'].'%', $sup->row['name'], $description);
                         $tags.= $sup->row['name'].', ';
                     } else {
-                        $prodItem[$option['name']] = $product[$option['name']];
+                        $prodItem[$option['name']] = trim($product[$option['name']]);
                         if($product[$option['name']]!=='-'){
-                            $name = str_replace($option['name'], $product[$option['name']], $name);
+                            $name = str_replace('%'.$option['name'].'%', $product[$option['name']], $name);
                             $description = str_replace('%'.$option['name'].'%', $product[$option['name']], $description);
                         } else {
-                            $name = str_replace($option['name'], '', $name);
+                            $name = str_replace('%'.$option['name'].'%', '', $name);
                             $description = str_replace('%'.$option['name'].'%', '', $description);
                         }
                     }
@@ -355,13 +359,16 @@ class ModelToolForms extends Model {
                 break;
                 case 'library':
                     $supfills = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE item_id = ".(int)$option['library']." ORDER BY name");
-                    $supitem = $this->db->query("SELECT *, (SELECT name FROM ".DB_PREFIX."lib_struct WHERE parent_id = ".(int)$option['library'].") AS child FROM ".DB_PREFIX."lib_struct WHERE item_id = ".(int)$option['library']);
+                    $supitem = $this->db->query("SELECT *, "
+                            . "(SELECT name FROM ".DB_PREFIX."lib_struct WHERE parent_id = ".(int)$option['library'].") AS child, "
+                            . "(SELECT name FROM ".DB_PREFIX."lib_struct ls1 WHERE ls1.item_id = ls.parent_id) AS parent "
+                            . "FROM ".DB_PREFIX."lib_struct ls WHERE item_id = ".(int)$option['library']);
                     if($supitem->row['isparent']==='1'){
                         $dop = 'select_type="librSelect" child="'.$supitem->row['child'].'"';
                         $endrow='';
                     } else{$dop = ''; $endrow = '<div class="col-lg-12"></div>';}
                     $libraries.= '<div class="col-md-3 form-group" id="'.$key.'">'
-                                . '<label>'.$option['text'].'</label>'
+                                . '<a class="btn btn-success btn-sm" data-toggle="modal" data-target="#createFillModal" parent="'.($supitem->row['parent']==''?'0':$supitem->row['parent']).'" btn_type="createFill"><i class="fa fa-plus"></i></a><label>  '.$option['text'].'  </label> '
                                 . '<select class="form-control" name="info['.$key.']" '.$dop.'>'
                                     . '<option value="">-</option>';
                     foreach($supfills->rows as $fill){
@@ -412,7 +419,7 @@ class ModelToolForms extends Model {
                 break;
             }
         }
-        return '<div class="well well-sm" num="no-num">'.$systemF.$libraries.$selects.$inputs.$compabils.$hiddens.'<div class="clearfix"></div><div class="clearfix"></div></div>'.$modal;
+        return '<div class="well well-sm" num="prod-edit">'.$systemF.$libraries.$selects.$inputs.$compabils.$hiddens.'<div class="clearfix"></div><div class="clearfix"></div></div>'.$modal;
     }
     
     public function updateProduct($info, $id) {
@@ -450,6 +457,12 @@ class ModelToolForms extends Model {
         }
         
         $this->db->query("INSERT INTO ".DB_PREFIX."product_history SET sku = '".$vin->row['vin']."', manager = '".$info['manager']."', date_modify = NOW(), type_modify = 'Обновление товара' ");
+    }
+    
+    public function createFill($parent, $name) {
+        $sql = $this->db->query("SELECT item_id, library_id FROM ".DB_PREFIX."lib_struct WHERE parent_id = (SELECT item_id FROM ".DB_PREFIX."lib_fills WHERE id=".(int)$parent.") GROUP BY item_id");
+        $this->db->query("INSERT INTO ".DB_PREFIX."lib_fills SET name = '".$name."', item_id=".(int)$sql->row['item_id'].", parent_id=".(int)$parent.", library_id = ".(int)$sql->row['library_id']." ");
+        //exit("INSERT INTO ".DB_PREFIX."lib_fills SET name = '".$name."', item_id=".(int)$sql->row['item_id'].", parent_id=".(int)$parent.", library_id = ".(int)$sql->row['library_id']." ");
     }
 }
 

@@ -38,6 +38,69 @@ function addOption(){
 }
 $(document).ready(function() {
     
+    $(document).on('click', '[btn_type=createFill]', function(){
+        var parent = '';
+        if($(this).attr('parent') == '0'){
+            parent = '0';
+        } else {
+            parent = $('#'+$(this).attr('parent')).find('select').val();
+        }
+        $(document).find('#createFill').attr('parent', parent);
+        $(document).find('#createFill').attr('parent_div', $(this).attr('parent'));
+        //alert(parent);
+    })
+    
+    $(document).on('input', '[id=fillname]', function(){
+        if($(this).val()==''){
+            $('#createFill').attr('disabled', '');
+        } else {
+            $('#createFill').removeAttr('disabled');            
+        }
+    })
+    
+    $(document).on('click', '[btn_type=levelSISave]', function(){
+        var item_id = $(this).attr('item');
+        var si = $(this).parent().find('select').val();
+        ajax({
+            url:"index.php?route=setting/libraries/levelSISave&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data:
+            {
+                SI: si, item_id: item_id
+            },
+            success:function(data){
+                alert('Сохранено');
+            }
+        })
+    })
+    
+    $(document).on('click', '[id=createFill]', function(){
+        var button = $(this);
+        var parent_div = $(this).attr('parent_div');
+        var parent = $(this).attr('parent');
+        var name = $(this).parent().parent().find('input').val();
+        ajax({
+            url:"index.php?route=tool/formTool/createFill&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data:
+            {
+                parent: parent, name: name
+            },
+            success:function(data){
+//                alert(data);
+                if(parent_div!=='0'){
+                    $('#'+parent_div).find('select').trigger('change');
+                } else {
+                    alert('Данное значение будет доступно после перезагрузки страницы');
+                }
+                button.parent().parent().find('input').val('');
+                button.attr('disabled', '');
+            }
+        })
+    })
+    
     $(document).on('change', '[name*="complect"]', function(){
         if($(this).val()==='set'){
             $('#cHeader').attr('type', 'text');
