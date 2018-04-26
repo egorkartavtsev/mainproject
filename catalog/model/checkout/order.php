@@ -233,6 +233,7 @@ class ModelCheckoutOrder extends Model {
 				'date_added'              => $order_query->row['date_added'],
 				'date_modified'           => $order_query->row['date_modified']
 			);
+                        
 		} else {
 			return false;
 		}

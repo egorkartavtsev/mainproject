@@ -70,19 +70,19 @@
                 $price = $data['price']!=NULL?$data['price']:0;
                 $quantity = $data['quant']!=NULL?$data['quant']:0;
                 $date = $data['date']!=''?"'".$data['date']."'":"NOW()";
-                $query = $this->db->query("SELECT id FROM ".DB_PREFIX."brand WHERE name = '".$data['brand']."' ");
+                $query = $this->db->query("SELECT id FROM ".DB_PREFIX."lib_fills WHERE name = '".$data['brand']."' ");
                 $brand_id = $query->row['id'];
                 
-                $query = $this->db->query("SELECT id FROM ".DB_PREFIX."brand WHERE name = '".$data['model']."' ");
+                $query = $this->db->query("SELECT id FROM ".DB_PREFIX."lib_fills WHERE name = '".$data['model']."' ");
                 $mod_id = $query->row['id'];
                 
-                $query = $this->db->query("SELECT id FROM ".DB_PREFIX."brand WHERE name = '".$data['modr']."' ");
+                $query = $this->db->query("SELECT id FROM ".DB_PREFIX."lib_fills WHERE name = '".$data['modr']."' ");
                 $modr_id = $query->row['id'];
                 
-                $query = $this->db->query("SELECT category_id FROM ".DB_PREFIX."category_description WHERE name = '".$data['category']."' ");
+                $query = $this->db->query("SELECT id FROM ".DB_PREFIX."lib_fills WHERE name = '".$data['category']."' ");
                 $cat_id = $query->row['category_id'];
                 
-                $query = $this->db->query("SELECT category_id FROM ".DB_PREFIX."category_description WHERE name = '".$data['podcat']."' ");
+                $query = $this->db->query("SELECT id FROM ".DB_PREFIX."lib_fills WHERE name = '".$data['podcat']."' ");
                 $podcat_id = $query->row['category_id'];
                 
                 $image = ((is_array($images)) && (!empty($images)))?'catalog/demo/production/'.$vin.'/'.$images[0]:' ';
@@ -109,7 +109,7 @@
             /******* окончательно сформированный товар укладываем в базу потаблично *******/
                 $query = "INSERT INTO ".DB_PREFIX."product "
                         . "SET "
-                            . "`brand` = '". $brand_id ."', "
+                            . "`brand` = '". $data['brand'] ."', "
                             . "`model` = '". $data['model'] ."', "
                             . "`category` = '". $data['category'] ."', "
                             . "`podcateg` = '". $data['podcat'] ."', "
@@ -159,35 +159,35 @@
                     . "product_id = '".(int)$product_id."',"
                     . "store_id = 0");
                 
-                $this->db->query("INSERT INTO " . DB_PREFIX . "product_to_category "
+                $this->db->query("INSERT INTO " . DB_PREFIX . "product_to_lib "
                                 . "SET "
                                 . "product_id = '" . (int)$product_id . "', "
-                                . "category_id = '" . (int)$cat_id . "', "
+                                . "fill_id = '" . (int)$cat_id . "', "
                                 . "main_category = 1");
 
-                $this->db->query("INSERT INTO " . DB_PREFIX . "product_to_category "
+                $this->db->query("INSERT INTO " . DB_PREFIX . "product_to_lib "
                                 . "SET "
                                 . "product_id = '" . (int)$product_id . "', "
-                                . "category_id = '" . (int)$podcat_id . "'");
+                                . "fill_id = '" . (int)$podcat_id . "'");
 
                 $this->db->query("INSERT INTO ". DB_PREFIX ."url_alias "
                                 . "SET "
                                 . "query = 'product_id=".(int)$product_id."'");
                 
-                $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand "
+                $this->db->query("INSERT INTO ".DB_PREFIX."product_to_lib "
                                 . "SET "
                                 . "product_id = ". $product_id .", "
-                                . "brand_id = ".$brand_id);
+                                . "fill_id = ".$brand_id);
                 
-                $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand "
+                $this->db->query("INSERT INTO ".DB_PREFIX."product_to_lib "
                                 . "SET "
                                 . "product_id = ". $product_id .", "
-                                . "brand_id = ".$mod_id);
+                                . "fill_id = ".$mod_id);
                 
-                $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand "
+                $this->db->query("INSERT INTO ".DB_PREFIX."product_to_lib "
                                 . "SET "
                                 . "product_id = ". $product_id .", "
-                                . "brand_id = ".$modr_id);
+                                . "fill_id = ".$modr_id);
                 
                 if((!empty($images))){
                     foreach ($images as $file){
@@ -322,7 +322,7 @@
             $query = "SELECT "
                         . "p.avito AS ".$template[0]['name'].", "
                         . "p.drom AS ".$template[1]['name'].", "
-                        . "b.name AS ".$template[2]['name'].", "
+                        . "p.brand AS ".$template[2]['name'].", "
                         . "p.model AS ".$template[3]['name'].", "
                         . "p.modR AS ".$template[4]['name'].", "
                         . "p.category AS ".$template[5]['name'].", "
@@ -336,7 +336,10 @@
                         . "p.catn AS ".$template[13]['name'].", "
                         . "p.compability AS ".$template[14]['name'].", "
                         . "p.stock AS ".$template[15]['name'].", "
-                        . "p.location AS location, "
+                        . "p.stell AS ".$template[16]['name'].", "
+                        . "p.jar AS ".$template[17]['name'].", "
+                        . "p.shelf AS ".$template[18]['name'].", "
+                        . "p.box AS ".$template[19]['name'].", "
                         . "p.price AS ".$template[20]['name'].", "
                         . "p.comp AS ".$template[23]['name'].", "
                         . "p.comp_price AS ".$template[22]['name'].", "
@@ -345,7 +348,6 @@
                         . "p.date_added AS ".$template[26]['name'].", "
                         . "p.quantity AS ".$template[21]['name']." "
                         . "FROM ".DB_PREFIX."product p "
-                        . "LEFT JOIN ".DB_PREFIX."brand b ON p.brand = b.id "
                         . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
                         . "WHERE p.category != '' ";
             $query.=$filter['manager'];
@@ -408,10 +410,10 @@
             for($i = 0; $i<count($prods); ++$i){
                 $locate = explode("/", $prods[$i]['location']);
                 
-                $still = isset($locate[0])?$locate[0]:'';
-                $jar = isset($locate[1])?$locate[1]:'';
-                $shelf = isset($locate[2])?$locate[2]:'';
-                $box = isset($locate[3])?$locate[3]:'';
+                $still = isset($prods[$i]['still'])?$prods[$i]['still']:'';
+                $jar = isset($prods[$i]['jar'])?$prods[$i]['jar']:'';
+                $shelf = isset($prods[$i]['shelf'])?$prods[$i]['shelf']:'';
+                $box = isset($prods[$i]['box'])?$prods[$i]['box']:'';
                     
                 $prods[$i]['still'] = $still;
                 $prods[$i]['jar'] = $jar;

@@ -67,8 +67,8 @@
   <div class="navbar-header">
     <?php if ($logged) { ?>
     <a type="button" id="button-menu" class="pull-left"><i class="fa fa-indent fa-lg"></i></a>
-    <div class="hidden-xs pull-right">
-        <div class="col-sm-12">
+    <div class="hidden-xs pull-left">
+        <div class="col-sm-12 ">
             <?php foreach($fcItems as $fc){ ?>
             <a class="btn btn-success" data-toggle="tooltip" data-placement="bottom" data-original-title="<?php echo $fc['text'];?>" href="<?php echo $fc['href'];?>"><i class="fa <?php echo $fc['icon'];?>"></i></a> 
             <?php }?>
@@ -76,8 +76,13 @@
             
         </div>
     </div>
+        <?php if(isset($notice)){ ?>
+            <div class="alert alert-danger">
+                <?php echo $notice; ?>
+            </div>
+        <?php }  ?>
     <?php }  ?>
-    </div>
+   </div>
   <?php if ($logged) { ?>
     <ul class="nav pull-right">
         <li class="dropdown">

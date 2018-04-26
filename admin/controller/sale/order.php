@@ -8,7 +8,7 @@ class ControllerSaleOrder extends Controller {
 		$this->document->setTitle($this->language->get('heading_title'));
 
 		$this->load->model('sale/order');
-
+                
 		$this->getList();
 	}
 
@@ -24,9 +24,9 @@ class ControllerSaleOrder extends Controller {
 
 	public function edit() {
 		$this->load->language('sale/order');
-
+                
 		$this->document->setTitle($this->language->get('heading_title'));
-
+                
 		$this->load->model('sale/order');
 
 		$this->getForm();
@@ -384,6 +384,7 @@ class ControllerSaleOrder extends Controller {
 	}
 
 	public function getForm() {
+            
 		$data['heading_title'] = $this->language->get('heading_title');
 
 		$data['text_form'] = !isset($this->request->get['order_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
@@ -568,7 +569,7 @@ class ControllerSaleOrder extends Controller {
 			$data['order_products'] = array();
 
 			$products = $this->model_sale_order->getOrderProducts($this->request->get['order_id']);
-
+                        
 			foreach ($products as $product) {
 				$data['order_products'][] = array(
 					'product_id' => $product['product_id'],
@@ -753,7 +754,7 @@ class ControllerSaleOrder extends Controller {
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
-
+                
 		$this->response->setOutput($this->load->view('sale/order_form', $data));
 	}
 
