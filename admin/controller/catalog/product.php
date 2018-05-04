@@ -480,7 +480,7 @@ class ControllerCatalogProduct extends Controller {
 		$data['add'] = $this->url->link('catalog/product/add', 'token=' . $this->session->data['token'] . $url, true);
 		$data['copy'] = $this->url->link('catalog/product/copy', 'token=' . $this->session->data['token'] . $url, true);
 		$data['delete'] = $this->url->link('catalog/product/delete', 'token=' . $this->session->data['token'] . $url, true);
-                $data['go_site'] = HTTPS_CATALOG.'index.php?route=product/product&product_id=';
+                $data['go_site'] = HTTPS_CATALOG.'index.php?route=catalog/product&product_id=';
 		$data['products'] = array();
 
 		$filter_data = array(
@@ -562,13 +562,13 @@ class ControllerCatalogProduct extends Controller {
                                     'manager'    => $result['manager'],
                                     'name'       => $result['name'],
                                     'vin'        => $result['vin'],
-                                    'stell'      => (isset($result['stell'])) && ($result['stell']!=='') && ($result['stell']!=='-')?$result['stell']:'-',
-                                    'jar'        => (isset($result['jar'])) && ($result['jar']!=='') && ($result['jar']!=='-')?$result['jar']:'-',
-                                    'shelf'      => (isset($result['shelf'])) && ($result['shelf']!=='') && ($result['shelf']!=='-')?$result['shelf']:'-',
-                                    'box'        => (isset($result['box'])) && ($result['box']!=='') && ($result['box']!=='-')?$result['box']:'-',
+                                    'stell'      => (isset($result['stell'])) && ($result['stell']!=='')?$result['stell']:'-',
+                                    'jar'        => (isset($result['jar'])) && ($result['jar']!=='')?$result['jar']:'-',
+                                    'shelf'      => (isset($result['shelf'])) && ($result['shelf']!=='')?$result['shelf']:'-',
+                                    'box'        => (isset($result['box'])) && ($result['box']!=='')?$result['box']:'-',
                                     'donor'      => $result['donor']!=''?'<a target="_blank" href="'.$this->url->link('donor/show', 'token=' . $this->session->data['token'] . '&numb=' . $result['donor'] . $url, true).'">'.$result['donor'].'</a>':'-',
                                     'stock'      => (isset($result['stock'])) && ($result['stock']!=='') && ($result['stock']!=='-')?$result['stock']:'не указан',
-                                    'adress'      => (isset($result['adress'])) && ($result['adress']!=='') && ($result['adress']!=='-')?$result['adress']:'не указан',
+                                    'adress'     => (isset($result['adress'])) && ($result['adress']!=='') && ($result['adress']!=='-')?$result['adress']:'не указан',
                                     'model'      => $result['modR'],
                                     'price'      => $result['price'],
                                     'date_added' => $result['date_added'],

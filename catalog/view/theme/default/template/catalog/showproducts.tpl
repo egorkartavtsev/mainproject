@@ -28,10 +28,10 @@
             <div class="product-layout product-list col-xs-12">
                 <div class="label-thumd">
                     <?php if ($product['type']){ ?>
-                        <?php if ($product['type']=='Б/У') { ?> 
+                        <?php if (strnatcasecmp(mb_convert_case($product['type'], MB_CASE_LOWER, "UTF-8"), 'б/у') === 0) { ?> 
                             <div class="eanr">Б/У</div>
                         <?php }?>
-                        <?php if ($product['type']=='Новый') { ?> 
+                        <?php if (strnatcasecmp(mb_convert_case($product['type'], MB_CASE_LOWER, "UTF-8"), 'новый') === 0) { ?> 
                             <div class="eanb">Новый</div>
                         <?php }?>
                     <?php }?>

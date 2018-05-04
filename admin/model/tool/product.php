@@ -171,7 +171,7 @@ class ModelToolProduct extends Model {
                         $sql.= $key." = '".$value."', ";
                     }
                 }
-                $sql.="type_id = '".$data['type_id']."' WHERE name = '".$data['name']."' ";
+                $sql.="type_id = '".$data['type_id']."' WHERE name = '".$data['name']."' AND type_id = '".$data['type_id']."' ";
                 $this->db->query($sql);
                 break;
             case '0':

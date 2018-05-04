@@ -27,7 +27,7 @@ class ModelToolForms extends Model {
                     $description = $option['description']===''?'':'data-toggle="tooltip" data-placement="bottom" data-original-title="'.$option['description'].'"';
                     $required = $option['required']==='1'?' required="required" aria-required="true"':'';
                     $unique = $option['unique_field']==='1'?' unique="unique" field="'.$option['name'].'"':'';
-                    $inputF.='<div class="form-group-sm col-md-4">'
+                    $inputF.='<div class="form-group-sm col-md-3">'
                         . '<label>'.$option['text'].($option['required']==='1'?'<span style="color: red;">*</span>':'').'</label>'
                         . '<input class="form-control" name="info['.$num.']['.$option['name'].']" '.$description.$required.$unique.' value="'.$option['def_val'].'"/>'
                     . '</div>';
@@ -36,7 +36,7 @@ class ModelToolForms extends Model {
                     $description = $option['description']===''?'':'data-toggle="tooltip" data-placement="bottom" data-original-title="'.$option['description'].'"';
                     $required = $option['required']==='1'?' required="required" aria-required="true"':'';
                     $unique = $option['unique_field']==='1'?' unique="unique" field="'.$option['name'].'"':'';
-                    $inputF.='<div class="form-group-sm col-md-4"><div class="col-lg-10">'
+                    $inputF.='<div class="form-group-sm col-md-3"><div class="col-lg-10">'
                         . '<label>'.$option['text'].($option['required']==='1'?'<span style="color: red;">*</span>':'').'</label>'
                         . '<input class="form-control" name="info['.$num.']['.$option['name'].']" id="'.$option['name'].$num.'" '.$description.$required.$unique.' value="'.$option['def_val'].'"/>'
                     . '</div><div class="col-lg-1"><label>&nbsp;</label><br><a class="btn btn-success" btn_type="compability" data-toggle="modal" data-target="#'.$option['name'].'-'.$num.'"><i class="fa fa-search"></i></a></div></div>';
@@ -146,7 +146,7 @@ class ModelToolForms extends Model {
     
     public function saveProdList($prodlist, $photos) {
 //        echo var_dump($prodlist).'<br><hr><br>';
-//        exit(var_dump());
+//        exit(var_dump($photos));
         $this->load->model('tool/product');
         $this->load->model('tool/complect');
         foreach ($prodlist as $num => $product){
