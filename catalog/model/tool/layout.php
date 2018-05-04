@@ -195,7 +195,7 @@ class ModelToolLayout extends Model {
                             $fills = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE item_id = ".(int)$field['libraries']." ORDER BY name ");
                             $libraries.= '<div class="form-group form-group-sm">'
                                             . '<label for="filter_'.$field['name'].'">'.$field['text'].':</label>'
-                                            . '<select id="filter_'.$field['name'].'" class="form-control" select_type="library" child="'.$field['child_item'].'">'
+                                            . '<select id="filter_'.$field['name'].'" class="form-control" select_type="library" child="'.$field['child_item'].'" parent="0">'
                                                 . '<option value="" disabled selected>Выберите значение...</option>'
                                                 . '<option value="Все товары">Все товары</option>';
                                     foreach ($fills->rows as $fill) {
@@ -211,15 +211,17 @@ class ModelToolLayout extends Model {
         return $result;
     }
     
-    public function getChilds($par) {
-        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE parent_id = (SELECT id FROM ".DB_PREFIX."lib_fills WHERE name = '".$this->db->escape($par)."' ) ORDER BY name ");
-        $curr = $this->db->query("SELECT name, text FROM ".DB_PREFIX."lib_struct WHERE parent_id = (SELECT item_id FROM ".DB_PREFIX."lib_fills WHERE id = (SELECT id FROM ".DB_PREFIX."lib_fills WHERE name = '".$this->db->escape($par)."' ))");
-        $query = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_struct WHERE parent_id = (SELECT item_id FROM ".DB_PREFIX."lib_struct WHERE parent_id = (SELECT item_id FROM ".DB_PREFIX."lib_fills WHERE id = (SELECT id FROM ".DB_PREFIX."lib_fills WHERE name = '".$this->db->escape($par)."' )))");
+    public function getChilds($par, $par_id) {
+        $parid = $par_id!=0?'AND parent_id = '.(int)$par_id.' ':'';
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE parent_id = (SELECT id FROM ".DB_PREFIX."lib_fills WHERE name = '".$this->db->escape($par)."' ".$parid." ) ORDER BY name ");
+        $curr = $this->db->query("SELECT name, text FROM ".DB_PREFIX."lib_struct WHERE parent_id = (SELECT item_id FROM ".DB_PREFIX."lib_fills WHERE id = (SELECT id FROM ".DB_PREFIX."lib_fills WHERE name = '".$this->db->escape($par)."' ".$parid."))");
+        $query = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_struct WHERE parent_id = (SELECT item_id FROM ".DB_PREFIX."lib_struct WHERE parent_id = (SELECT item_id FROM ".DB_PREFIX."lib_fills WHERE id = (SELECT id FROM ".DB_PREFIX."lib_fills WHERE name = '".$this->db->escape($par)."' ".$parid.")))");
         $result = array(
             'childs' => $sup->rows,
             'currId' => $curr->row['name'],
             'currText' => $curr->row['text'],
-            'cName' => $query->row['name']
+            'cName' => $query->row['name'],
+            'parent' => $sup->row['parent_id']
         );
         return $result;
     }

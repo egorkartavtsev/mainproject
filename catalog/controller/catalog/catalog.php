@@ -229,8 +229,9 @@ class ControllerCatalogCatalog extends Controller{
         $this->load->model('tool/layout');
         $result = '';
         $parent = $this->request->post['parent'];
-        $info = $this->model_tool_layout->getChilds($parent);
-        $result = '<label for="filter_'.$info['currId'].'">'.$info['currText'].':</label><select class="form-control" id="filter_'.$info['currId'].'" '.($info['cName']?'select_type="library" child="'.$info['cName'].'"':'').'>'
+        $par_id = $this->request->post['par_id'];
+        $info = $this->model_tool_layout->getChilds($parent, $par_id);
+        $result = '<label for="filter_'.$info['currId'].'">'.$info['currText'].':</label><select class="form-control" id="filter_'.$info['currId'].'" '.($info['cName']?'select_type="library" child="'.$info['cName'].'"':'').' parent="'.$info['parent'].'">'
                     . '<option value="" disabled selected>Выберите значение...</option>'
                     . '<option value="Все товары">Все товары</option>';
         foreach ($info['childs'] as $child) {

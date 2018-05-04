@@ -45,6 +45,7 @@ $(document).ready(function() {
         //libr childs show
         $(document).on('change', "[select_type=library]", function(){
             var select = $(this);
+            alert(select.val()+select.attr('parent'));
             if(select.val()!=='Все товары'){
                 $.ajax({
                     url: "index.php?route=catalog/catalog/showLibrChild",
@@ -52,7 +53,8 @@ $(document).ready(function() {
                     method: "POST",
                     data:
                     {
-                        parent: select.val()
+                        parent: select.val(),
+                        par_id: select.attr('parent')
                     },
                     success:function(data){
                         select.parent().parent().find("#"+select.attr('child')).html(data);
