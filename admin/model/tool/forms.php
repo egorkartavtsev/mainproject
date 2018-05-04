@@ -145,13 +145,40 @@ class ModelToolForms extends Model {
     }
     
     public function saveProdList($prodlist, $photos) {
-//        echo var_dump($prodlist).'<br><hr><br>';
-//        exit(var_dump($photos));
         $this->load->model('tool/product');
         $this->load->model('tool/complect');
+        $photo = array();
+        foreach ($prodlist as $num => $product){
+            $i = 0;
+            foreach ($photos['photo']['name'][$num] as $name){
+                $photo[$num][$i]['name'] = $name;
+                ++$i;
+            }
+            $i = 0;
+            foreach ($photos['photo']['type'][$num] as $name){
+                $photo[$num][$i]['type'] = $name;
+                ++$i;
+            }
+            $i = 0;
+            foreach ($photos['photo']['error'][$num] as $name){
+                $photo[$num][$i]['error'] = $name;
+                ++$i;
+            }
+            $i = 0;
+            foreach ($photos['photo']['tmp_name'][$num] as $name){
+                $photo[$num][$i]['tmp_name'] = $name;
+                ++$i;
+            }
+            $i = 0;
+            foreach ($photos['photo']['size'][$num] as $name){
+                $photo[$num][$i]['size'] = $name;
+                ++$i;
+            }
+            
+        }
         foreach ($prodlist as $num => $product){
             //upload photos
-            $this->uploadPhoto($product['vin'], $num, $photos);
+            $this->uploadPhoto($product['vin'], $photo[$num]);
             $prodItem = array();
             $prod2Lib = array();
             //"napolnenie" producta
@@ -235,85 +262,55 @@ class ModelToolForms extends Model {
             $this->db->query("INSERT INTO ".DB_PREFIX."product_to_store (product_id, store_id) VALUES (".(int)$product_id.", 0)");
             //old link-tables
             $this->model_tool_product->oldLinks($product_id, $prod2Lib);
-            
         }
         
     }
     
-    public function uploadPhoto($vin, $num, $photos) {
-        if(isset($photos['photo']['name'][$num])){
-            $uploadtmpdir = DIR_IMAGE . "tmp/";
-            $uploaddir = DIR_IMAGE . "catalog/demo/production/".$vin."/";
-            if(!is_dir($uploaddir)){mkdir($uploaddir);}
-            $photo = array();
-            $i = 0;
-            foreach ($photos['photo']['name'][$num] as $name){
-                $photo[$i]['name'] = $name;
-                ++$i;
-            }
-            $i = 0;
-            foreach ($photos['photo']['type'][$num] as $name){
-                $photo[$i]['type'] = $name;
-                ++$i;
-            }
-            $i = 0;
-            foreach ($photos['photo']['error'][$num] as $name){
-                $photo[$i]['error'] = $name;
-                ++$i;
-            }
-            $i = 0;
-            foreach ($photos['photo']['tmp_name'][$num] as $name){
-                $photo[$i]['tmp_name'] = $name;
-                ++$i;
-            }
-            $i = 0;
-            foreach ($photos['photo']['size'][$num] as $name){
-                $photo[$i]['size'] = $name;
-                ++$i;
-            }
-            $optw = 1200;
-            $name = 0;
-//            exit(var_dump($photo));
-            foreach ($photo as $file){
-                if($file['size']!=='0'){
-                    //--------------//
-                    if ($file['type'] == 'image/jpeg'){
-                        $source = imagecreatefromjpeg ($file['tmp_name']);
-                    }
-                    elseif ($file['type'] == 'image/png'){
-                        $source = imagecreatefrompng ($file['tmp_name']);
-                    }
-                    elseif ($file['type'] == 'image/gif'){
-                        $source = imagecreatefromgif ($file['tmp_name']);
-                    }
-                    else{
-                        exit ('wtf, dude?!');
-                    }
-                   /*****************/
-
-                    $w_src = imagesx($source); 
-                    $h_src = imagesy($source);
-
-                    $ratio = $w_src/$optw;
-                    $w_dest = $optw;
-                    $h_dest = round($h_src/$ratio);
-
-                    $dest = imagecreatetruecolor($optw, $h_dest);
-
-                    imagecopyresampled($dest, $source, 0, 0, 0, 0, $optw, $h_dest, $w_src, $h_src);
-
-
-
-                    imagejpeg($dest, $uploadtmpdir . $file['name'], 90);
-                    imagedestroy($dest);
-                    imagedestroy($source);
-
-                    copy($uploadtmpdir . $file['name'], $uploaddir .$vin.'-'. $name . '.jpg');
-
-                    unlink($uploadtmpdir . $file['name']);
-
-                    $name++;
+    public function uploadPhoto($vin, $photo) {
+        $uploadtmpdir = DIR_IMAGE . "tmp/";
+        $uploaddir = DIR_IMAGE . "catalog/demo/production/".$vin."/";
+        if(!is_dir($uploaddir)){mkdir($uploaddir);}
+        $optw = 1200;
+        $name = 0;
+        foreach ($photo as $file){
+            if($file['size']!=='0'){
+                //--------------//
+                if ($file['type'] == 'image/jpeg'){
+                    $source = imagecreatefromjpeg ($file['tmp_name']);
                 }
+                elseif ($file['type'] == 'image/png'){
+                    $source = imagecreatefrompng ($file['tmp_name']);
+                }
+                elseif ($file['type'] == 'image/gif'){
+                    $source = imagecreatefromgif ($file['tmp_name']);
+                }
+                else{
+                    exit ('wtf, dude?!');
+                }
+               /*****************/
+
+                $w_src = imagesx($source); 
+                $h_src = imagesy($source);
+
+                $ratio = $w_src/$optw;
+                $w_dest = $optw;
+                $h_dest = round($h_src/$ratio);
+
+                $dest = imagecreatetruecolor($optw, $h_dest);
+
+                imagecopyresampled($dest, $source, 0, 0, 0, 0, $optw, $h_dest, $w_src, $h_src);
+
+
+
+                imagejpeg($dest, $uploadtmpdir . $file['name'], 90);
+                imagedestroy($dest);
+                imagedestroy($source);
+
+                copy($uploadtmpdir . $file['name'], $uploaddir .$vin.'-'. $name . '.jpg');
+
+                unlink($uploadtmpdir . $file['name']);
+
+                $name++;
             }
         }
     }
