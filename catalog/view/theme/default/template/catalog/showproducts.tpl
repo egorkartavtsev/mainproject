@@ -56,13 +56,21 @@
                       <?php foreach($product['options'] as $option){ ?>
                         <p><?php echo $option['text'];?>: <?php echo $option['value'];?></p>
                       <?php }?>
+                      <?php if ($product['price'] !== '0') { ?>
                       <p><b>Цена: <?php echo $product['price'];?></b></p>
+                      <?php }?>
                   </div>
                   <div class="button-group">
+                    <?php if ($product['price'] !== '0') { ?>  
                     <button type="button" onclick="cart.add('<?php echo $key; ?>', '1');"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md"> В КОРЗИНУ</span></button>
+                    <?php } else { ?>
+                    <button type="button" data-toggle="modal" data-target="#myModal"><span class="hidden-xs hidden-sm hidden-md"> Узнать стоимость</span></button>
+                      
+                    <?php }?>
                     <button type="button" data-toggle="tooltip" title="Добавить в избранное" onclick="wishlist.add('<?php echo $key; ?>');"><i class="fa fa-heart"></i></button>
                     <button type="button" data-toggle="tooltip" title="Добавить в список сравнения" onclick="compare.add('<?php echo $key; ?>');"><i class="fa fa-exchange"></i></button>
                   </div>
+                  <?php echo $modal_window; ?>  
                 </div>
               </div>
             </div>

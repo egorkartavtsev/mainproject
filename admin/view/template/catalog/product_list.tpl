@@ -204,7 +204,7 @@
                     <?php } ?></td>
                   <td class="text-left"><a href="<?php echo $go_site; ?><?php echo $product['product_id']; ?>" target="blank" data-toggle="tooltip" title="" data-original-title="Перейти к продукту"><?php echo $product['name']; ?></a></td>
                   <td><?php echo $product['vin']; ?></td>
-                  <td><?php echo $product['stock']; ?>/<?php echo $product['stell']; ?>/<?php echo $product['jar']; ?>/<?php echo $product['shelf']; ?>/<?php echo $product['box']; ?></td>
+                  <td><?php echo $product['stock']?>/<?php echo $product['location']; ?></td>
                   <td class="text-left"><?php echo $product['model']; ?></td>
                   <td class="text-right"><?php if ($product['special']) { ?>
                     <span style="text-decoration: line-through;"><?php echo $product['price']; ?></span><br/>

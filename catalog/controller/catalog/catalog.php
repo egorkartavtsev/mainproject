@@ -95,6 +95,7 @@ class ControllerCatalogCatalog extends Controller{
                     }
                 }
             }
+            $list['modal_window'] = $this->load->view('modal_window/modal_window');
             $data['productsDiv'] = $this->load->view('catalog/showproducts', $list);
         //----------------------------------------------------------------------------------
             $this->document->setTitle($this->config->get('config_meta_title'));
@@ -108,6 +109,7 @@ class ControllerCatalogCatalog extends Controller{
             $data['header'] = $this->load->controller('common/header');
         /*-------------------------------------------------------------------------------------------*/
             $this->response->setOutput($this->load->view('catalog/prodslist', $data));
+            //$this->response->setOutput($this->load->view('catalog/product_page', $data));
         } else {
             $this->response->redirect($this->url->link('common/home'));
         }
@@ -229,9 +231,8 @@ class ControllerCatalogCatalog extends Controller{
         $this->load->model('tool/layout');
         $result = '';
         $parent = $this->request->post['parent'];
-        $par_id = $this->request->post['par_id'];
-        $info = $this->model_tool_layout->getChilds($parent, $par_id);
-        $result = '<label for="filter_'.$info['currId'].'">'.$info['currText'].':</label><select class="form-control" id="filter_'.$info['currId'].'" '.($info['cName']?'select_type="library" child="'.$info['cName'].'"':'').' parent="'.$info['parent'].'">'
+        $info = $this->model_tool_layout->getChilds($parent);
+        $result = '<label for="filter_'.$info['currId'].'">'.$info['currText'].':</label><select class="form-control" id="filter_'.$info['currId'].'" '.($info['cName']?'select_type="library" child="'.$info['cName'].'"':'').'>'
                     . '<option value="" disabled selected>Выберите значение...</option>'
                     . '<option value="Все товары">Все товары</option>';
         foreach ($info['childs'] as $child) {

@@ -6,6 +6,8 @@ class ControllerCatalogProduct extends Controller {
             $this->load->language('product/product');
             $this->load->model('catalog/product');
             $this->load->model('product/catalog');
+            $this->load->model('product/product');
+            $this->load->model('tool/layout');
             $this->load->model('tool/product');
             $this->load->model('tool/image');
 //      -----------------------------Выборка данных----------------------------------------------------------------------------------------------------------------------------------------------           
@@ -14,6 +16,11 @@ class ControllerCatalogProduct extends Controller {
             $type = $this->model_tool_product->getType($product['structure']);
             $description = $this->model_tool_product->getDescription($this->request->get['product_id']);
             $complect_arr = $this->model_tool_product->getProductCompls($this->request->get['product_id']);
+            $list['breadcrumbs'][] = array(
+                    'text' => '<i class="fa fa-home"></i>',
+                    'href' => '/'
+            );
+            
 //      ------------------------------Комплекты(Как в старом)------------------------------------------------------------------------------------------------------------------------------------
             if($complect_arr){
                 $data['id_comp_ref'] = isset($complect_arr['id_comp_ref'])?$complect_arr['id_comp_ref']:NULL;
@@ -28,43 +35,27 @@ class ControllerCatalogProduct extends Controller {
                     $type[$key]['value'] = $value;
             }
             //exit(var_dump($type));
-//      ------------------------------Вся инфа(не знаю зачем, но пусть будет)---------------------------------------------------------------------------------------------------------------------        
-            foreach($type AS $key => $value){
-                $info[$key] = $type[$key];
-            }
-            $data['info'] = $info;
-            //exit(var_dump($info));
 //      ------------------------------Отображаемая информация------------------------------------------------------------------------------------------------------------------------------------              
             foreach($type AS $key => $value){
-                if (($type[$key]['viewed'] == 1 || $type[$key]['viewed'] == 3) && $type[$key]['text'] !== '') {
                     $options[$key] = $type[$key];
-                }
             }
             $data['options'] = $options;
-            //exit(var_dump($options));
+            //exit(var_dump($data['options']));
 //      ------------------------------Скрытая информация(Надо переименовать или создать общую структуру и вынести логику отображения в tpl)-----------------------------------------------------------------------------------------------                
-            foreach($type AS $key => $filling){
-                if ($type[$key]['viewed'] == 0 && $type[$key]['text'] !== '') {
-                    $hidden_info[$key] = $type[$key];
-                }
-            }
-            $data['hidden_info'] = $hidden_info;
-            //exit(var_dump($options));
 //      ------------------------------Описание--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------            
             $data['description'] = html_entity_decode($description['description'] , ENT_QUOTES, 'UTF-8');
-            //exit($data['description']);
+            //exit($list['title']);
 //      ------------------------------Осонованя информация--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
             $data['product'] = array(
-                'product_id'  => $product['product_id'],
-               // 'thumb'       => $image,
-                'minimum'     => $product['minimum'] > 0 ? $product['minimum'] : 1,                 
-                'href' => $this->url->link('catalog/product', 'product_id='.$product['product_id']),
-                'name' => $description['name'],
-                'vin' => $product['vin'],
-                'type' => $product['type'],
-                'comp' => $product['comp']==''?FALSE:$product['comp'],
-                'com_whole' => $product['comp_whole'],
-                'price' => $product['price'],
+                'product_id' => $product['product_id'],
+                'minimum'    => $product['minimum'] > 0 ? $product['minimum'] : 1,                 
+                'href'       => $this->url->link('catalog/product', 'product_id='.$product['product_id']),
+                'name'       => $description['name'],
+                'vin'        => $product['vin'],
+                'type'       => $product['type'],
+                'comp'       => $product['comp']==''?FALSE:$product['comp'],
+                'com_whole'  => $product['comp_whole'],
+                'price'      => $product['price'],
             );
 //      -------------------------------Изображения-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------                
             if (isset($product['image']) && $product['image']!=''){
@@ -158,7 +149,6 @@ class ControllerCatalogProduct extends Controller {
                     );
                 }
             }
-            
 //      =====================================Оповещение=======================================================================================================================================               
             $data['recurrings'] = $this->model_catalog_product->getProfiles($this->request->get['product_id']);
             if (isset($this->request->post['suc'])){
@@ -178,12 +168,13 @@ class ControllerCatalogProduct extends Controller {
                 else {
                     mail('autorazbor174@mail.ru', 'Заявка на уточнение цены товара с сайта авторазбор174.рф', $mail);
                 } 
-                $data['suc_text'] = 'Ваша заявка успешно отправлена';                            
-            } 
+                $data['suc_text'] = 'Ваша заявка успешно отправлена';
+            }
 //      =====================================Отправка данных в tpl=============================================================================================================================              
+            $data['modal_window'] = $this->load->view('modal_window/modal_window'); 
             $list['productpage'] = $this->load->view('catalog/oneproduct', $data);
-//      ----------------------------------------------------------------------------------
-            $this->document->setTitle($this->config->get('config_meta_title'));
+//      ---------------------------------------------------------------------------------
+            $this->document->setTitle($description['meta_title']);
             $this->document->setDescription($this->config->get('config_meta_description'));
             $this->document->setKeywords($this->config->get('config_meta_keyword'));
             $this->document->addLink($this->url->link('catalog/product', 'product_id=' . $this->request->get['product_id']), 'canonical');
