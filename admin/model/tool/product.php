@@ -37,7 +37,7 @@ class ModelToolProduct extends Model {
     
     public function getOptions($type) {
         $result = array();
-        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE type_id = '".$type."' ORDER BY sort_order ");
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE type_id = '".$type."' ORDER BY sort_order, lib_id ");
         $query = $this->db->query("SELECT * FROM ".DB_PREFIX."product_type WHERE type_id = '".$type."'");
         $result = array(
             'temp' => $query->row['temp'],

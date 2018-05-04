@@ -13,7 +13,7 @@ class ModelToolForms extends Model {
         $selectF = '';
         $inputF = '';
         $modal = '';
-        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE type_id = ".(int)$id." ORDER BY sort_order");
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE type_id = ".(int)$id." ORDER BY sort_order, lib_id");
         foreach ($this->systemFields as $key => $field) {
             $systemF.= '<div class="form-group-sm col-md-4">'
                         . '<label>'.$field.($key==='vin'?'<span style="color: red;">*</span>':'').'</label>'
@@ -433,6 +433,7 @@ class ModelToolForms extends Model {
         $description = $sup->row['desctemp'];
         $sql = "UPDATE ".DB_PREFIX."product SET ";
         foreach ($info['options'] as $key => $value) {
+            $val = '';
             if($value['value']=='-' || $value['value']==''){
                 $name = str_replace('%'.$key.'%', '', $name);
                 $description = str_replace('%'.$key.'%', '', $description);
@@ -450,10 +451,13 @@ class ModelToolForms extends Model {
                 $sql.= $key." = '".$value['value']."', ";
                 $name = str_replace('%'.$key.'%', $value['value'], $name);
                 $description = str_replace('%'.$key.'%', $value['value'], $description);
+            } elseif ($value['field_type']=='library' && ($value['value']=='-' || $value['value']=='')) {
+                $sql.= $key." = '', ";
             }
         }
         $sql.= "date_modified = NOW() "
                 . "WHERE product_id = ".(int)$id;
+//        exit(var_dump($sql));
         $this->db->query($sql);
         $this->db->query("UPDATE ".DB_PREFIX."product_description SET name = '".$name."', meta_h1 = '".$name."', meta_title = '".$name."', description = '".$description."' WHERE product_id=".(int)$id);
         $this->db->query("DELETE FROM ".DB_PREFIX."product_image WHERE product_id = ".(int)$id);
