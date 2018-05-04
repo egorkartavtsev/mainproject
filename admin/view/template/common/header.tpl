@@ -77,7 +77,7 @@
         </div>
     </div>
         <?php if(isset($notice)){ ?>
-            <div class="alert alert-danger">
+            <div class="alert alert-danger" style="margin-bottom: 0;">
                 <?php echo $notice; ?>
             </div>
         <?php }  ?>
@@ -97,7 +97,7 @@
               </li>
             </ul>
         </li>
-    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><?php if($alerts > 0) { ?><span class="label label-danger pull-left"><?php echo $alerts; ?></span><?php } ?> <i class="fa fa-bell fa-lg"></i></a>
+    <?php if(0){ ?><li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><?php if($alerts > 0) { ?><span class="label label-danger pull-left"><?php echo $alerts; ?></span><?php } ?> <i class="fa fa-bell fa-lg"></i></a>
       <ul class="dropdown-menu dropdown-menu-right alerts-dropdown">
         <li class="dropdown-header"><?php echo $text_order; ?></li>
         <li><a href="<?php echo $processing_status; ?>" style="display: block; overflow: auto;"><span class="label label-warning pull-right"><?php echo $processing_status_total; ?></span><?php echo $text_processing_status; ?></a></li>
@@ -115,7 +115,7 @@
         <li class="dropdown-header"><?php echo $text_affiliate; ?></li>
         <li><a href="<?php echo $affiliate_approval; ?>"><span class="label label-danger pull-right"><?php echo $affiliate_total; ?></span><?php echo $text_approval; ?></a></li>
       </ul>
-    </li>
+    </li><?php }?>
     <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-home fa-lg"></i></a>
       <ul class="dropdown-menu dropdown-menu-right">
         <li class="dropdown-header"><?php echo $text_store; ?></li>

@@ -66,7 +66,7 @@
             </ul>
         </li>
     <?php } ?>
-    <li id="menu-prodtdup">
+    <?php if(0){ ?><li id="menu-prodtdup">
         <a class="parent"><i class="fa fa-arrow-circle-o-up fw"></i> <span><?php echo $tiresdisc['main'];?></span></a>
         <ul>
             <li>
@@ -80,7 +80,7 @@
             </li>
         </ul>
             
-    </li>
+    </li><?php }?>
     <li id="menu-donor">
         <a class="parent"><i class="fa fa fa-car fw"></i> <span>Работа с донорами</span></a>
         <ul>

@@ -385,4 +385,26 @@ class ModelToolProduct extends Model {
         $name = $this->db->query("SELECT name FROM ".DB_PREFIX."product_description WHERE product_id = ".(int)$id);
         return $name->row['name'];
     }
+    
+    public function getProdStructure($info, $id) {
+        $sup = $this->db->query("SELECT structure FROM ".DB_PREFIX."product WHERE product_id = ".(int)$id);
+        $structure = $this->getProdTypeTemplate($sup->row['structure']);
+        $result = array();
+        $result['temp'] = $structure['temp'];
+        $result['desctemp'] = $structure['desctemp'];
+        foreach($structure['options'] as $option){
+            if(isset($info['info'][$option['name']])){
+                $result['options'][$option['name']] = array(
+                    'field_type' => $option['field_type'],
+                    'value' => $info['info'][$option['name']]
+                );
+            }
+        }
+        $result['options']['quantity'] = array('field_type' => 'system', 'value' => $info['info']['quantity']);
+        $result['options']['status'] = array('field_type' => 'system', 'value' => $info['info']['status']);
+        $result['options']['price'] = array('field_type' => 'system', 'value' => $info['info']['price']);
+        $result['options']['image'] = array('field_type' => 'system', 'value' => $info['info']['image']);
+        $result['image'] = $info['image'];
+        return $result;
+    }
 }

@@ -51,9 +51,9 @@ class ModelCatalogProduct extends Model {
 	public function getProducts($data = array()) {
 
                 $sql = "SELECT * FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id)";
-                $sql .= " LEFT JOIN " . DB_PREFIX . "product_to_category p2c ON (p.product_id = p2c.product_id)";
+                //$sql .= " LEFT JOIN " . DB_PREFIX . "product_to_category p2c ON (p.product_id = p2c.product_id)";
 
-                $sql .= " WHERE pd.language_id = '" . (int)$this->config->get('config_language_id') . "' AND p.product_id!=''";
+                $sql .= " WHERE !LOCATE('complect', vin)";
 
                 if (isset($data['filter_brand']) && !is_null($data['filter_brand'])) {
                     $sql .= " AND LOCATE ('" . $this->db->escape($data['filter_brand']) . "', pd.name)";
@@ -150,7 +150,7 @@ class ModelCatalogProduct extends Model {
 
 			$sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
 		}
-                
+                //exit($sql);
 		$query = $this->db->query($sql);
 		return $query->rows;
 	}

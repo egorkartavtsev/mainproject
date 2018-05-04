@@ -47,7 +47,7 @@ class ControllerProductProductEdit extends Controller {
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
         $data['footer'] = $this->load->controller('common/footer');
-        $data['form'] = $this->model_tool_forms->constructEditForm($info);
+        $data['form'] = $this->model_tool_forms->constructEditForm($info, $this->request->get['product_id']);
         $data['name'] = $this->model_tool_product->getProdName($this->request->get['product_id']);
         $data['action'] = $this->url->link('product/product_edit/saveForm', 'token='.$this->session->data['token'].'&product_id='.$this->request->get['product_id']);
         $local_id = 0;
@@ -85,7 +85,9 @@ class ControllerProductProductEdit extends Controller {
     public function saveForm() {
         $this->load->model('tool/xml');
         $this->load->model('tool/forms');
-        $this->model_tool_forms->updateProduct($this->request->post, $this->request->get['product_id']);
+        $this->load->model('tool/product');
+        $info = $this->model_tool_product->getProdStructure($this->request->post, $this->request->get['product_id']);
+        $this->model_tool_forms->updateProduct($info, $this->request->get['product_id']);
         if($this->session->data['uType']==='adm' && $this->request->post['allowavito']==='да'){
             $this->model_tool_xml->findAd($this->request->post['info']);
         }

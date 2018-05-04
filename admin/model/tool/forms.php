@@ -325,7 +325,9 @@ class ModelToolForms extends Model {
         $compabils = '';
         $systemF = '';
         $modal = '';
-        $hiddens = '<input type="hidden" name="manager" value="'.$info['manager'].'" />';        
+        $hiddens = '<input type="hidden" name="manager" value="'.$info['manager'].'" />'; 
+        $lib_links = $this->getLinksArr($this->request->get['product_id']);
+//        exit(var_dump($lib_links));
         foreach ($this->systemFields as $key => $field) {
             $systemF.= '<div class="form-group col-md-3">'
                         . '<label>'.$field.($key==='vin'?'<span style="color: red;">*</span>':'').'</label>'
@@ -358,7 +360,7 @@ class ModelToolForms extends Model {
                     $selects.= '</select></div>';
                 break;
                 case 'library':
-                    $supfills = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE item_id = ".(int)$option['library']." ORDER BY name");
+                    $supfills = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE parent_id = ".(int)$lib_links[$option['library']]['parent']." AND item_id = ".(int)$option['library']." ORDER BY name");
                     $supitem = $this->db->query("SELECT *, "
                             . "(SELECT name FROM ".DB_PREFIX."lib_struct WHERE parent_id = ".(int)$option['library'].") AS child, "
                             . "(SELECT name FROM ".DB_PREFIX."lib_struct ls1 WHERE ls1.item_id = ls.parent_id) AS parent "
@@ -423,24 +425,31 @@ class ModelToolForms extends Model {
     }
     
     public function updateProduct($info, $id) {
+        $this->load->model('tool/product');
         $links = array();
         $vin = $this->db->query("SELECT vin FROM ".DB_PREFIX."product WHERE product_id = ".(int)$id);
         $sup = $this->db->query("SELECT temp, desctemp FROM ".DB_PREFIX."product_type WHERE type_id = (SELECT structure FROM ".DB_PREFIX."product WHERE product_id = ".(int)$id.")");
         $name = $sup->row['temp'];
         $description = $sup->row['desctemp'];
         $sql = "UPDATE ".DB_PREFIX."product SET ";
-        foreach ($info['info'] as $key => $value) {
-            if($value!=='-'){
-                if(!array_key_exists($key, $this->systemFields) && $key!=='status'){
-                    $quer = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE id = ".(int)$value);
-                    if($quer->num_rows){
-                        $links[] = $value;
-                        $value = $quer->row['name'];
-                    }
+        foreach ($info['options'] as $key => $value) {
+            if($value['value']=='-' || $value['value']==''){
+                $name = str_replace('%'.$key.'%', '', $name);
+                $description = str_replace('%'.$key.'%', '', $description);
+            }
+            if($value['field_type']=='library' && ($value['value']!=='-' || $value['value']!=='')){
+                $quer = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE id = ".(int)$value['value']);
+                if($quer->num_rows){
+                    $links[] = $value['value'];
+                    $val = $quer->row['name'];
                 }
-                $sql.= $key." = '".$value."', ";
-                $name = str_replace('%'.$key.'%', $value, $name);
-                $description = str_replace('%'.$key.'%', $value, $description);
+                $sql.= $key." = '".$val."', ";
+                $name = str_replace('%'.$key.'%', $val, $name);
+                $description = str_replace('%'.$key.'%', $val, $description);
+            } elseif ($value['field_type']!=='library' && ($value['value']!=='-' || $value['value']!=='')) {
+                $sql.= $key." = '".$value['value']."', ";
+                $name = str_replace('%'.$key.'%', $value['value'], $name);
+                $description = str_replace('%'.$key.'%', $value['value'], $description);
             }
         }
         $sql.= "date_modified = NOW() "
@@ -463,6 +472,27 @@ class ModelToolForms extends Model {
         $sql = $this->db->query("SELECT item_id, library_id FROM ".DB_PREFIX."lib_struct WHERE parent_id = (SELECT item_id FROM ".DB_PREFIX."lib_fills WHERE id=".(int)$parent.") GROUP BY item_id");
         $this->db->query("INSERT INTO ".DB_PREFIX."lib_fills SET name = '".$name."', item_id=".(int)$sql->row['item_id'].", parent_id=".(int)$parent.", library_id = ".(int)$sql->row['library_id']." ");
         //exit("INSERT INTO ".DB_PREFIX."lib_fills SET name = '".$name."', item_id=".(int)$sql->row['item_id'].", parent_id=".(int)$parent.", library_id = ".(int)$sql->row['library_id']." ");
+    }
+    
+    public function getLinksArr($id) {
+        $result = array();
+        $sup = $this->db->query("SELECT *, lf.name AS value, lf.parent_id AS value_parent FROM ".DB_PREFIX."product_to_lib p2l "
+                . "LEFT JOIN ".DB_PREFIX."lib_fills lf ON p2l.fill_id = lf.id "
+                . "LEFT JOIN ".DB_PREFIX."lib_struct ls ON lf.item_id = ls.item_id "
+                . "WHERE p2l.product_id = ".(int)$id);
+        foreach($sup->rows as $row){
+            $result[$row['item_id']] = array(
+                'id'    => $row['id'],
+                'name' => $row['value'],
+                'parent' => $row['value_parent']
+            );
+//            foreach ($row as $key => $value) {
+//                echo $key.' - '.$value.'<br>';
+//            }
+//            echo '<hr>';
+        }
+//        exit(var_dump($result));
+        return $result;
     }
 }
 

@@ -289,6 +289,13 @@
                             ->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
                             ->getStartColor()
                             ->setRGB('DD6666');
+                    } else {
+                        $sheet
+                            ->getStyle($cell.':'.$cell)
+                            ->getFill()
+                            ->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+                            ->getStartColor()
+                            ->setRGB('FFFFFF');
                     }
                     
                     $sheet->getStyle($cell.':'.$cell)->applyFromArray($styleArray);

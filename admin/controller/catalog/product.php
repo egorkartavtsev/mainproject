@@ -518,6 +518,7 @@ class ControllerCatalogProduct extends Controller {
 
 		$data['categories'] = $this->model_catalog_category->getCategories($filter_data);
                 $data['utype'] = $this->session->data['uType'];
+//                exit(var_dump($results));
 		foreach ($results as $result) {
 
                     $category =  $this->model_catalog_product->getProductCategories($result['product_id']);

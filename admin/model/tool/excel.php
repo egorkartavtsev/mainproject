@@ -152,6 +152,8 @@ class ModelToolExcel extends Model {
                 $letters = $this->letters;
                 if($data['quant']==='0' && isset($data['needlyrow'])){
                     $sheet = $this->saleItem($data['needlyrow'], $data['quant'], $sheet);
+                } elseif($data['quant']!=='0' && isset($data['needlyrow'])){
+                    $sheet = $this->saleItem($data['needlyrow'], $data['quant'], $sheet, 'refund');
                 }
             break;
             case 'aru':
@@ -181,15 +183,24 @@ class ModelToolExcel extends Model {
         return $sheet;
     }
     
-    private function saleItem($row, $endq, $sheet) {
+    private function saleItem($row, $endq, $sheet, $refund=0) {
         $sheet->setCellValueExplicit($this->letters['quant'].$row, $endq, PHPExcel_Cell_DataType::TYPE_STRING);
         foreach ($this->letters as $letter) {
-            $sheet
-                ->getStyle($letter.$row.':'.$letter.$row)
-                ->getFill()
-                ->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
-                ->getStartColor()
-                ->setRGB('DD6666');
+            if($refund){
+                $sheet
+                    ->getStyle($letter.$row.':'.$letter.$row)
+                    ->getFill()
+                    ->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+                    ->getStartColor()
+                    ->setRGB('DD6666');
+            } else {
+                $sheet
+                    ->getStyle($letter.$row.':'.$letter.$row)
+                    ->getFill()
+                    ->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+                    ->getStartColor()
+                    ->setRGB('FFFFFF');
+            }
         }
         return $sheet;
     }   
@@ -281,7 +292,10 @@ class ModelToolExcel extends Model {
                 . "p.price AS price, "
                 . "p.status AS status, "
                 . "p.stock AS stock, "
-                . "p.location AS location, "
+                . "p.stell AS stell, "
+                . "p.jar AS jar, "
+                . "p.shelf AS shelf, "
+                . "p.box AS box, "
                 . "p.dop AS dop, "
                 . "p.donor AS donor, "
                 . "p.avito AS avito, "
@@ -297,7 +311,8 @@ class ModelToolExcel extends Model {
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON pd.product_id = p.product_id "
                 . "LEFT JOIN ".DB_PREFIX."brand b ON b.id = p.brand "
                 . "WHERE "
-                    . "ph.date_modify > '".$sup_date->row['date']."' "
+                    . "ph.date_added > '".$sup_date->row['date']."' "
+                    . "OR ph.date_modify > '".$sup_date->row['date']."' "
                     . "OR ph.date_sale > '".$sup_date->row['date']."' "
                     . "OR ph.date_refund > '".$sup_date->row['date']."' "
                 . "GROUP BY ph.sku");
@@ -310,13 +325,6 @@ class ModelToolExcel extends Model {
 //            exit(var_dump($array));
             foreach ($array as $data) {
                 switch ($flag) {
-                    case 'prodList':
-                        $location = explode("/", $data['location']);
-                        $data['stell'] = isset($location[0])?$location[0]:'';
-                        $data['jar'] = isset($location[1])?$location[1]:'';
-                        $data['shelf'] = isset($location[2])?$location[2]:'';
-                        $data['box'] = isset($location[3])?$location[3]:'';
-                    break;
                     case 'drom':
                         $qphot = $this->db->query("SELECT * FROM ".DB_PREFIX."product_image WHERE product_id = '".$data['pid']."' ORDER BY sort_order ");
                         $photos = '';
@@ -340,11 +348,11 @@ class ModelToolExcel extends Model {
                 $sheet = $this->updateItem($data, $flag, $sheet);
 //                exit(var_dump($data));
             }
-			if($flag === 'aru'){
-				$this->saveFileXLSX($this->files[$flag], $xls);
-			} else {
-				$this->saveFile($this->files[$flag], $xls);
-			}
+            if($flag === 'aru'){
+                    $this->saveFileXLSX($this->files[$flag], $xls);
+            } else {
+                    $this->saveFile($this->files[$flag], $xls);
+            }
         }
         $this->db->query("INSERT INTO ".DB_PREFIX."downloads_history (flag, manager, date) VALUES ('".$flag."', '".$this->session->data['username']."', NOW())");
         return $this->files[$flag];
