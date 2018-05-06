@@ -187,6 +187,7 @@ class ModelToolLayout extends Model {
                     $selects.= '</select></div>';
                 break;
                 case 'library':
+                    $items = $this->db->query("SELECT item_id, parent_id FROM ".DB_PREFIX."lib_struct WHERE library_id = ".(int)$param." ");
                     if(!in_array($field['libraries'], array_column($items->rows, 'item_id'))){
                         $parent = (int)$field['parent_item'];
                         if($parent){

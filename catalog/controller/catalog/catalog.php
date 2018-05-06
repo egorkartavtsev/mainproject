@@ -95,7 +95,7 @@ class ControllerCatalogCatalog extends Controller{
                     }
                 }
             }
-            $list['modal_window'] = $this->load->view('modal_window/modal_window');
+            $list['modal_window'] = $this->load->view('modal_window/Modal_window');
             $data['productsDiv'] = $this->load->view('catalog/showproducts', $list);
         //----------------------------------------------------------------------------------
             $this->document->setTitle($this->config->get('config_meta_title'));
