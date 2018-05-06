@@ -138,17 +138,6 @@ class ControllerCatalogProduct extends Controller {
             if ($data['no_prod']){
                 $data['stock'] = 'Нет в наличии на складе';
             }
-//      =========================================Хуй пойми че с этим делать. Тегов не завезли.==================================================================================================================
-            $data['tags'] = array();
-            if ($product['tag']) {
-                $tags = explode(',', $product['tag']);
-                foreach ($tags as $tag) {
-                    $data['tags'][] = array(
-                        'tag'  => trim($tag),
-                        'href' => $this->url->link('product/search', 'tag=' . trim($tag))
-                    );
-                }
-            }
 //      =====================================Оповещение=======================================================================================================================================               
             $data['recurrings'] = $this->model_catalog_product->getProfiles($this->request->get['product_id']);
             if (isset($this->request->post['suc'])){
