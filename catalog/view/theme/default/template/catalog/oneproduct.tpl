@@ -40,9 +40,6 @@
             <?php } ?>
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#tab-description" data-toggle="tab"><?php echo $tab_description; ?></a></li>
-                <?php if ($attribute_groups) { ?>
-                    <li><a href="#tab-specification" data-toggle="tab"><?php echo $tab_attribute; ?></a></li>
-                <?php } ?>
             </ul>
           <div class="tab-content">
             <?php if(isset($complect) && $c_id!='') { ?>
@@ -75,7 +72,7 @@
                         <?php }?>
                         <?php  if (!in_array(0, array_column($complect, 'price'))) { ?>
                                 <?php if ( $product['price'] != 0.00 ) { ?>
-                                    <?php if(!$$whole) { ?>
+                                    <?php if(!$whole) { ?>
                                         <tr>
                                            <td style="text-align: right; font-size: 10pt;">Итого:</td>
                                            <td colspan='2' style="text-align: left; font-size: 14pt;"><s><?php echo $summ; ?> руб.</s></td>
@@ -110,8 +107,10 @@
           <ul class="list-unstyled">
             <li>Артикул: <?php echo $product['vin']; ?></li>  
             <?php foreach($options as $option){ ?>
-                <?php if (($option['viewed'] == 1 ||  $option['viewed'] == 3) && $option['value'] !== '' && isset($option['text']) && $option['text'] !=='') { ?>
-                    <li><?php echo $option['text'];?>: <?php echo $option['value'];?></li>
+                <?php if (isset($option['viewed'])) { ?>
+                    <?php if (($option['viewed'] == 1 ||  $option['viewed'] == 3) && $option['value'] !== '' && isset($option['text']) && $option['text'] !=='') { ?>
+                            <li><?php echo $option['text'];?>: <?php echo $option['value'];?></li>
+                    <?php }?>
                 <?php }?>
             <?php }?>
             <li><?php echo $text_stock; ?> <?php echo $stock; ?></li>
@@ -167,23 +166,10 @@
                 <?php }?>
             <?php }?>
         </div>
-        
-        <?php if ($tags) { ?>
-        <div>
-            <p><?php echo $text_tags; ?>
-            <?php for ($i = 0; $i < count($tags); $i++) { ?>
-                <?php if ($i < (count($tags) - 1)) { ?>
-                    <a href="<?php echo $tags[$i]['href']; ?>"><?php echo $tags[$i]['tag']; ?></a>,
-                <?php } else { ?>
-                    <a href="<?php echo $tags[$i]['href']; ?>"><?php echo $tags[$i]['tag']; ?></a>
-                <?php } ?>
-            <?php } ?>
-            </p>
-        </div>    
-        <?php } ?>
-</div>          
+</div>
+<?php  if (isset($column_right)) { ?>
 <?php echo $column_right; ?>
-  
+ <?php } ?>  
 <script src="catalog/view/javascript/clipboard.min.js" type="text/javascript"></script>
         <!------------------------------------Стоит вынести скрипты в отдельный файл------------------------------------------------------------->
 

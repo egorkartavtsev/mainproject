@@ -36,8 +36,9 @@ class ControllerCatalogProduct extends Controller {
             }
             //exit(var_dump($type));
 //      ------------------------------Отображаемая информация------------------------------------------------------------------------------------------------------------------------------------              
+            $data['options'] = array();
             foreach($type AS $key => $value){
-                    $options[$key] = $type[$key];
+                     $options[$key] = $type[$key];
             }
             $data['options'] = $options;
             //exit(var_dump($data['options']));
@@ -116,6 +117,7 @@ class ControllerCatalogProduct extends Controller {
             $data['entry_rating'] = $this->language->get('entry_rating');
             $data['entry_good'] = $this->language->get('entry_good');
             $data['entry_bad'] = $this->language->get('entry_bad');
+            $data['entry_compl'] = $this->language->get('entry_compl');
 
             $data['button_cart'] = $this->language->get('button_cart');
             $data['button_wishlist'] = $this->language->get('button_wishlist');
@@ -128,7 +130,7 @@ class ControllerCatalogProduct extends Controller {
 //      ======================================Колличество(надо переделать)==================================================================================================================
             $data['no_prod'] = FALSE;
             if ($product['quantity'] <= 0) {
-                    $data['stock'] = $product['stock_status'];
+                    $data['stock'] = 'Нет в наличии на складе';
                     $data['no_prod'] = TRUE;
             } elseif ($this->config->get('config_stock_display')) {
                     $data['stock'] = $product['quantity'];
