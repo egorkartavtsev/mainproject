@@ -212,7 +212,7 @@ class ControllerCatalogCatalog extends Controller{
             if((int)$item['isParent']){
                 $href = $this->url->link('catalog/catalog/library', 'libr='.$library.'_'.$item['fill_id']);
             }else{
-                $this->url->link('catalog/catalog/products', 'libr='.$library.'_'.$item['fill_id']);
+                $href = $this->url->link('catalog/catalog/products', 'libr='.$library.'_'.$item['fill_id']);
             }
             
             $data['items'][] = array(

@@ -151,7 +151,7 @@ class ControllerCommonHeader extends Controller {
                         }
                         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."order WHERE viewed = 0 ");
                         if($sup->num_rows){
-                            $data['notice'] = 'Есть новые заказы ('.$sup->num_rows.' шт.) с витрины. <a href="'.$this->url->link('sale/order', 'token='.$this->session->data['token']).'">Перейти в заказы...</a>';
+                            $data['notice'] = 'Есть новые заказы ('.$sup->num_rows.' шт.) с витрины. <a href="'.$this->url->link('sale/orders', 'token='.$this->session->data['token']).'">Перейти в заказы...</a>';
                         }
 		}
                 
