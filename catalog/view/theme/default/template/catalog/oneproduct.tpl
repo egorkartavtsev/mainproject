@@ -1,9 +1,9 @@
 <div class="container">
-<?php if (isset($suc_text)) { ?>
+    <?php if (isset($suc_text)) { ?>
         <div class="col-lg-12 alert alert-success">
             <?php echo $suc_text;?>
         </div>
-<?php } ?>   
+    <?php } ?>   
     <div class="row">
         <div class="col-sm-8">
             <div class="label-thumd">
@@ -41,135 +41,132 @@
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#tab-description" data-toggle="tab"><?php echo $tab_description; ?></a></li>
             </ul>
-          <div class="tab-content">
-            <?php if(isset($complect) && $c_id!='') { ?>
-                <div class="alert alert-danger" id="complect">
-                    <h3><?php if(!isset($whole) || !$whole) { echo $entry_compl;} else { echo "Деталь продаётся только в комплекте: ";} ?></h3>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Название:</th>
-                                <?php if(!$whole && $whole != 0.00) { ?>
-                                    <?php  if (!in_array(0, array_column($complect, 'price'))) { ?>
-                                        <th>Цена:</th>
-                                    <?php } ?>
-                                <?php } ?>
-                            </tr>
-                        </thead>
-                        <?php $summ = 0; foreach($complect as $acc) { ?>
-                            <tr>
-                                <td><a href="index.php?route=product/product&product_id=<?php echo $acc['product_id'];?>" target="blank"><?php echo $acc['name'];?></a></td>
-                                <?php  if (!in_array(0, array_column($complect, 'price'))) { ?>
-                                    <?php if ( $product['price'] != 0.00 ) { ?>
-                                        <?php $summ+= $acc['price'];?>
-                                        <?php if(!$whole) { ?>
-                                            <td><?php echo $acc['price'];?> руб.</td>
-                                            <td><button class="btn btn-primary" onclick="cart.add('<?php echo $acc['product_id']; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i></button></td>
+            <div class="tab-content">
+                <?php if(isset($complect) && $c_id!='') { ?>
+                    <div class="alert alert-danger" id="complect">
+                        <h3><?php if(!isset($whole) || !$whole) { echo $entry_compl;} else { echo "Деталь продаётся только в комплекте: ";} ?></h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Название:</th>
+                                    <?php if(!$whole && $whole != 0.00) { ?>
+                                        <?php  if (!in_array(0, array_column($complect, 'price'))) { ?>
+                                            <th>Цена:</th>
                                         <?php } ?>
                                     <?php } ?>
-                                <?php } ?>    
-                            </tr>
-                        <?php }?>
-                        <?php  if (!in_array(0, array_column($complect, 'price'))) { ?>
-                                <?php if ( $product['price'] != 0.00 ) { ?>
-                                    <?php if(!$whole) { ?>
+                                </tr>
+                            </thead>
+                            <?php $summ = 0; foreach($complect as $acc) { ?>
+                                <tr>
+                                    <td><a href="index.php?route=product/product&product_id=<?php echo $acc['product_id'];?>" target="blank"><?php echo $acc['name'];?></a></td>
+                                    <?php  if (!in_array(0, array_column($complect, 'price'))) { ?>
+                                        <?php if ( $product['price'] != 0.00 ) { ?>
+                                            <?php $summ+= $acc['price'];?>
+                                            <?php if(!$whole) { ?>
+                                                <td><?php echo $acc['price'];?> руб.</td>
+                                                <td><button class="btn btn-primary" onclick="cart.add('<?php echo $acc['product_id']; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i></button></td>
+                                            <?php } ?>
+                                        <?php } ?>
+                                    <?php } ?>    
+                                </tr>
+                            <?php }?>
+                            <?php  if (!in_array(0, array_column($complect, 'price'))) { ?>
+                                    <?php if ( $product['price'] != 0.00 ) { ?>
+                                        <?php if(!$whole) { ?>
+                                            <tr>
+                                               <td style="text-align: right; font-size: 10pt;">Итого:</td>
+                                               <td colspan='2' style="text-align: left; font-size: 14pt;"><s><?php echo $summ; ?> руб.</s></td>
+                                            </tr>
+                                        <?php } ?>
                                         <tr>
-                                           <td style="text-align: right; font-size: 10pt;">Итого:</td>
-                                           <td colspan='2' style="text-align: left; font-size: 14pt;"><s><?php echo $summ; ?> руб.</s></td>
+                                            <td colspan='3' style="text-align: center; font-size: 14pt;">Цена комплекта <?php if(!$whole) { ?>со скидкой<?php } ?>: <span class="label label-danger"><?php echo $c_price; ?> руб.</span></td>
                                         </tr>
-                                    <?php } ?>
                                     <tr>
-                                        <td colspan='3' style="text-align: center; font-size: 14pt;">Цена комплекта <?php if(!$whole) { ?>со скидкой<?php } ?>: <span class="label label-danger"><?php echo $c_price; ?> руб.</span></td>
+                                        <td colspan='3' style="text-align: center;"><button class="btn btn-primary" onclick="cart.add('<?php echo $id_comp_ref; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i> Купить весь комплект</button></td>
                                     </tr>
-                                <tr>
-                                    <td colspan='3' style="text-align: center;"><button class="btn btn-primary" onclick="cart.add('<?php echo $id_comp_ref; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i> Купить весь комплект</button></td>
-                                </tr>
-                                <?php }?>
-                        <?php } else { ?>
-                                <tr>
-                                    <td colspan='2' style="text-align: center;"><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal"> Узнать стоимость комплекта</button></td>
-                                </tr>
-                                <?php echo $modal_window; ?>
-                        <?php }?>
-                    </table>
-                </div>
-            <?php }?>
-            <div class="tab-pane active" id="tab-description"><?php echo $description; ?></div>
+                                    <?php }?>
+                            <?php } else { ?>
+                                    <tr>
+                                        <td colspan='2' style="text-align: center;"><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal"> Узнать стоимость комплекта</button></td>
+                                    </tr>
+                                    <?php echo $modal_window; ?>
+                            <?php }?>
+                        </table>
+                    </div>
+                <?php }?>
+                <div class="tab-pane active" id="tab-description"><?php echo $description; ?></div>
             </div>
         </div>
         <div class="col-sm-4">
-          <div class="btn-group">
-            <button type="button" data-toggle="tooltip" class="btn btn-default" title="<?php echo $button_wishlist; ?>" onclick="wishlist.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-heart"></i></button>
-            <button type="button" data-toggle="tooltip" class="btn btn-default" title="<?php echo $button_compare; ?>" onclick="compare.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-exchange"></i></button>
-            <button type="button" data-toggle="tooltip" class="btn btn-default" title="Скопировать ссылку" id="send_prod"><i class="fa fa-copy"></i></button>
-          </div>
-          <h1><?php echo $product['name']; ?></h1>
-          <ul class="list-unstyled">
-            <li>Артикул: <?php echo $product['vin']; ?></li>  
-            <?php foreach($options as $option){ ?>
-                <?php if (isset($option['viewed'])) { ?>
-                    <?php if (($option['viewed'] == 1 ||  $option['viewed'] == 3) && $option['value'] !== '' && isset($option['text']) && $option['text'] !=='') { ?>
-                            <li><?php echo $option['text'];?>: <?php echo $option['value'];?></li>
+            <div class="btn-group">
+                <button type="button" data-toggle="tooltip" class="btn btn-default" title="<?php echo $button_wishlist; ?>" onclick="wishlist.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-heart"></i></button>
+                <button type="button" data-toggle="tooltip" class="btn btn-default" title="<?php echo $button_compare; ?>" onclick="compare.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-exchange"></i></button>
+                <button type="button" data-toggle="tooltip" class="btn btn-default" title="Скопировать ссылку" id="send_prod"><i class="fa fa-copy"></i></button>
+            </div>
+            <h1><?php echo $product['name']; ?></h1>
+            <ul class="list-unstyled">
+                <li>Артикул: <?php echo $product['vin']; ?></li>  
+                <?php foreach($options as $option){ ?>
+                    <?php if (isset($option['viewed'])) { ?>
+                        <?php if (($option['viewed'] == 1 ||  $option['viewed'] == 3) && $option['value'] !== '' && isset($option['text']) && $option['text'] !=='') { ?>
+                                <li><?php echo $option['text'];?>: <?php echo $option['value'];?></li>
+                        <?php }?>
                     <?php }?>
                 <?php }?>
-            <?php }?>
-            <li><?php echo $text_stock; ?> <?php echo $stock; ?></li>
-          </ul>
+                <li><?php echo $text_stock; ?> <?php echo $stock; ?></li>
+            </ul>
           <!-------------------------------------------->
-          <?php if ($product['price'] == 0.00 || $stock == 0)  { ?>
+            <?php if ($product['price'] == 0.00 || $stock == 0)  { ?>
                 <?php if ($product['price'] == 0.00) { ?>
                     <hr>
-                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                    Узнать стоимость товара
-                    </button>
+                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Узнать стоимость товара</button>
                 <?php } else { ?>
                     <h2><?php echo $product['price']; ?></h2>
                     <hr>
-                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                    Заказать товар
-                    </button>
+                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Заказать товар</button>
                 <?php } ?>
                 <?php echo $modal_window; ?>
-          <?php } else { ?>
-          <?php if(!isset($whole) || !$whole) { ?>
-            <?php if ($product['price']) { ?>
-            <ul class="list-unstyled">
-                <h2><?php echo $product['price']; ?></h2>
-            </ul>
-            <?php } ?>
-            <hr>
+            <?php } else { ?>
+                <?php if(!isset($whole) || !$whole) { ?>
+                    <?php if ($product['price']) { ?>
+                        <ul class="list-unstyled">
+                            <h2><?php echo $product['price']; ?></h2>
+                        </ul>
+                    <?php } ?>
+                <hr>
                 <div id="product">
-                  <?php if ($recurrings) { ?>
-                  <hr>
-                  <h3><?php echo $text_payment_recurring; ?></h3>
-                  <div class="form-group required">
-                    <select name="recurring_id" class="form-control">
-                      <option value=""><?php echo $text_select; ?></option>
-                      <?php foreach ($recurrings as $recurring) { ?>
-                      <option value="<?php echo $recurring['recurring_id']; ?>"><?php echo $recurring['name']; ?></option>
-                      <?php } ?>
-                    </select>
-                    <div class="help-block" id="recurring-description"></div>
-                  </div>
-                  <?php } ?>
-                  <div class="form-group">
-                    <label class="control-label" for="input-quantity"><?php echo $entry_qty; ?></label>
-                    <input type="text" name="quantity" value="<?php echo $product['minimum']; ?>" size="2" id="input-quantity" class="form-control" />
-                    <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>" />
-                    <br />
-                    <button type="button" id="button-cart" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-primary btn-lg btn-block"><?php echo $button_cart; ?></button>
-                  </div>
-                  <?php if ($product['minimum'] > 1) { ?>
-                  <div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_minimum; ?></div>
-                  <?php } ?>
+                    <?php if ($recurrings) { ?>
+                        <hr>
+                        <h3><?php echo $text_payment_recurring; ?></h3>
+                        <div class="form-group required">
+                            <select name="recurring_id" class="form-control">
+                                <option value=""><?php echo $text_select; ?></option>
+                                <?php foreach ($recurrings as $recurring) { ?>
+                                    <option value="<?php echo $recurring['recurring_id']; ?>"><?php echo $recurring['name']; ?></option>
+                                <?php } ?>
+                            </select>
+                            <div class="help-block" id="recurring-description"></div>
+                        </div>
+                    <?php } ?>
+                    <div class="form-group">
+                        <label class="control-label" for="input-quantity"><?php echo $entry_qty; ?></label>
+                        <input type="text" name="quantity" value="<?php echo $product['minimum']; ?>" size="2" id="input-quantity" class="form-control" />
+                        <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>" />
+                        <br />
+                        <button type="button" id="button-cart" data-loading-text="<?php echo $text_loading; ?>" class="btn btn-primary btn-lg btn-block"><?php echo $button_cart; ?></button>
+                    </div>
+                    <?php if ($product['minimum'] > 1) { ?>
+                        <div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo $text_minimum; ?></div>
+                    <?php } ?>
                 </div>
                 <?php }?>
             <?php }?>
         </div>
-</div>
-<?php  if (isset($column_right)) { ?>
-<?php echo $column_right; ?>
- <?php } ?>  
+    <?php  if (isset($column_right)) { ?>
+        <?php echo $column_right; ?>
+    <?php } ?> 
+    </div>
+</div> 
 <script src="catalog/view/javascript/clipboard.min.js" type="text/javascript"></script>
         <!------------------------------------Стоит вынести скрипты в отдельный файл------------------------------------------------------------->
 
