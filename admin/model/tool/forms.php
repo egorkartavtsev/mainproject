@@ -430,6 +430,7 @@ class ModelToolForms extends Model {
         $description = $sup->row['desctemp'];
         $sql = "UPDATE ".DB_PREFIX."product SET ";
         foreach ($info['options'] as $key => $value) {
+            $val = '';
             if($value['value']=='-' || $value['value']==''){
                 $name = str_replace('%'.$key.'%', '', $name);
                 $description = str_replace('%'.$key.'%', '', $description);
