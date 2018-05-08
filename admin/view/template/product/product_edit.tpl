@@ -38,7 +38,7 @@
                     <h3>Фотографии:</h3>
                     <div class="well col-sm-12">
                         <?php $count = 0; ?>
-                        <?php foreach($images as $img) { ?>
+                        <?php if(isset($images)) { foreach($images as $img) { ?>
                             <div style="float: left;" class="col-sm-2">
                                 <a href="" id="thumb-image<?php echo $img['lid']?>" data-toggle="image" class="img-thumbnail" data-toggle="popover" <?php if($img['main']){echo 'style="box-shadow: 0px 0px 50px #4CAF50;"';} ?>>
                                     <img src="<?php echo $img['thumb']; ?>" alt="" title="" data-placeholder="<?php echo $placeholder; ?>" />
@@ -49,7 +49,7 @@
                                 <input type="hidden" data-toggle='input-image' id="input-image<?php echo $img['lid']?>" name="image[<?php echo $img['lid']?>][img]" value="<?php echo $img['image']; ?>"/>
                             </div>
                         <?php ++$count; ?>
-                        <?php } ?>
+                        <?php } } ?>
                         <input type="hidden" name="info[image]" value="<?php echo $mainimage; ?>" id="input-main-image" />
                         <div class="text-center" style="float: left; padding: 3.5%;">
                             <button id="button-add-image" data-toggle="tooltip" data-original-title="Добавить фото" data-pointer="<?php echo $count;?>" class="btn btn-success btn-lg"><i class="fa fa-plus-circle"></i></button>

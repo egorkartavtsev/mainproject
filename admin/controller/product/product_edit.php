@@ -61,7 +61,7 @@ class ControllerProductProductEdit extends Controller {
                 );
             ++$local_id;
         }
-        $data['mainimage'] = $product['image'];
+        $data['mainimage'] = $product['image']!=''?$product['image']:'no_image.png';
         if($product['avitoname']==''){
             $brtr = $this->db->query("SELECT translate FROM ".DB_PREFIX."lib_fills WHERE name = '".$product['brand']."'");
             $mtr = $this->db->query("SELECT translate FROM ".DB_PREFIX."lib_fills WHERE name = '".$product['model']."'");
@@ -87,11 +87,15 @@ class ControllerProductProductEdit extends Controller {
         $this->load->model('tool/forms');
         $this->load->model('tool/product');
         $info = $this->model_tool_product->getProdStructure($this->request->post, $this->request->get['product_id']);
+//        exit(var_dump($info));
         $this->model_tool_forms->updateProduct($info, $this->request->get['product_id']);
+        $alinfo = $this->request->post['info'];
+        $alinfo['vin'] = $info['vin'];
+//        exit(var_dump($alinfo));
         if($this->session->data['uType']==='adm' && $this->request->post['allowavito']==='да'){
-            $this->model_tool_xml->findAd($this->request->post['info']);
+            $this->model_tool_xml->findAd($alinfo);
         }
-        $this->model_tool_xml->findARPart($this->request->post['info']);
+        $this->model_tool_xml->findARPart($alinfo);
         $this->response->redirect($this->url->link('catalog/product', 'token=' . $this->session->data['token'], true));
 //        exit(var_dump($this->request->post));
     }

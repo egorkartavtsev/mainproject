@@ -5,23 +5,21 @@
     <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
     <?php } ?>
   </ul>
-  <div class="row"><?php echo $column_left; ?>
+  <div class="row"><?php if($column_left) { echo $column_left; ?>
     <?php if ($column_left && $column_right) { ?>
     <?php $class = 'col-sm-6'; ?>
     <?php } elseif ($column_left || $column_right) { ?>
     <?php $class = 'col-sm-9'; ?>
     <?php } else { ?>
     <?php $class = 'col-sm-12'; ?>
-    <?php } ?>
+    <?php } } else {$class = 'col-sm-12';} ?>
     <div id="content" class="<?php echo $class; ?>"><?php echo $content_top; ?>
       <h1><?php echo $heading_title; ?></h1>
-      <div class="row">
-        <div>
-            <div class="col-sm-8 input-group">
+      <div class="col-sm-12">
+            <div class="row input-group">
                 <input type="text" name="search" value="<?php echo $search; ?>" placeholder="<?php echo $text_keyword; ?>" id="input-search" class="form-control" />
                 <span class="input-group-btn"><input type="button" value="<?php echo $button_search; ?>" id="button-search" class="btn btn-danger " /></span>
             </div>
-        </div>
       </div>
       <h2><?php echo $text_search; ?></h2>
       <?php if ($products) { ?>

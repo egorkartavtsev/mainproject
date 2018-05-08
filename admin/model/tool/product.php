@@ -387,10 +387,11 @@ class ModelToolProduct extends Model {
     }
     
     public function getProdStructure($info, $id) {
-        $sup = $this->db->query("SELECT structure FROM ".DB_PREFIX."product WHERE product_id = ".(int)$id);
+        $sup = $this->db->query("SELECT structure, vin FROM ".DB_PREFIX."product WHERE product_id = ".(int)$id);
         $structure = $this->getProdTypeTemplate($sup->row['structure']);
         $result = array();
         $result['temp'] = $structure['temp'];
+        $result['vin'] = $sup->row['vin'];
         $result['desctemp'] = $structure['desctemp'];
         foreach($structure['options'] as $option){
             if(isset($info['info'][$option['name']])){
@@ -404,7 +405,8 @@ class ModelToolProduct extends Model {
         $result['options']['status'] = array('field_type' => 'system', 'value' => $info['info']['status']);
         $result['options']['price'] = array('field_type' => 'system', 'value' => $info['info']['price']);
         $result['options']['image'] = array('field_type' => 'system', 'value' => $info['info']['image']);
-        $result['image'] = $info['image'];
+        $result['image'] = isset($info['image'])?$info['image']:'no_image.png';
+        $result['manager'] = $info['manager'];
         return $result;
     }
 }

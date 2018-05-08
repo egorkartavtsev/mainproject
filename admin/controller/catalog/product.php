@@ -1721,6 +1721,12 @@ class ControllerCatalogProduct extends Controller {
 			} else {
 				$filter_model = '';
 			}
+			
+                        if (isset($this->request->get['filter_donor'])) {
+				$filter_donor = $this->request->get['filter_donor'];
+			} else {
+				$filter_donor = '';
+			}
 
 			if (isset($this->request->get['limit'])) {
 				$limit = $this->request->get['limit'];

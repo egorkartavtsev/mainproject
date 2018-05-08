@@ -2,8 +2,11 @@
 class ControllerProductSearch extends Controller {
 	public function index() {
 		$this->load->language('product/search');
+
 		$this->load->model('catalog/category');
+
 		$this->load->model('catalog/product');
+
 		$this->load->model('tool/image');
 
 		if (isset($this->request->get['search'])) {
@@ -19,6 +22,36 @@ class ControllerProductSearch extends Controller {
 			$tag = $this->request->get['search'];
 		} else {
 			$tag = '';
+		}
+
+		if (isset($this->request->get['description'])) {
+			$description = $this->request->get['description'];
+		} else {
+			$description = '';
+		}
+
+		if (isset($this->request->get['category_id'])) {
+			$category_id = $this->request->get['category_id'];
+		} else {
+			$category_id = 0;
+		}
+
+		if (isset($this->request->get['sub_category'])) {
+			$sub_category = $this->request->get['sub_category'];
+		} else {
+			$sub_category = '';
+		}
+
+		if (isset($this->request->get['sort'])) {
+			$sort = $this->request->get['sort'];
+		} else {
+			$sort = 'p.sort_order';
+		}
+
+		if (isset($this->request->get['order'])) {
+			$order = $this->request->get['order'];
+		} else {
+			$order = 'ASC';
 		}
 
 		if (isset($this->request->get['page'])) {
@@ -174,8 +207,11 @@ class ControllerProductSearch extends Controller {
                         $filter_data = array(
 				'filter_name'         => $search,
 				'filter_tag'          => $tag,
-				'sort'                => 'p.date_added',
-				'order'               => 'DESC',
+				'filter_description'  => $description,
+				'filter_category_id'  => $category_id,
+				'filter_sub_category' => $sub_category,
+				'sort'                => $sort,
+				'order'               => $order,
 				'start'               => ($page - 1) * $limit,
 				'limit'               => $limit
 			);
@@ -483,6 +519,9 @@ class ControllerProductSearch extends Controller {
 
 				$search_data = array(
 					'keyword'       => $search,
+					'category_id'   => $category_id,
+					'sub_category'  => $sub_category,
+					'description'   => $description,
 					'products'      => $product_total,
 					'customer_id'   => $customer_id,
 					'ip'            => $ip
@@ -493,15 +532,16 @@ class ControllerProductSearch extends Controller {
 		}
 
 		$data['search'] = $search;
+		$data['description'] = $description;
+		$data['category_id'] = $category_id;
+		$data['sub_category'] = $sub_category;
 
-		$data['sort'] = 'p.date_added';
-		$data['order'] = 'DESC';
+		$data['sort'] = $sort;
+		$data['order'] = $order;
 		$data['limit'] = $limit;
 
-//		$data['column_left'] = $this->load->controller('common/column_left');
-//		$data['column_right'] = $this->load->controller('common/column_right');
-		$data['column_left'] = false;
-		$data['column_right'] = false;
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['column_right'] = $this->load->controller('common/column_right');
 		$data['content_top'] = $this->load->controller('common/content_top');
 		$data['content_bottom'] = $this->load->controller('common/content_bottom');
 		$data['footer'] = $this->load->controller('common/footer');
