@@ -24,6 +24,14 @@ function getURLVar(key) {
 
 $(document).ready(function() {
     
+        //Send data to the modal window for mail
+        $(document).on('click',"[btn_type=reqPrice]", function(){
+            var vin = $(this).attr('pvin'); 
+            $('#pvin').val(vin);
+            var pname = $(this).attr('pname');
+            $('#pname').val(pname);
+        });
+        
         //smartSearch
         $(document).on('input', "[type=libSearch]", function(){
             var input = $(this);
@@ -230,7 +238,7 @@ $(document).ready(function() {
 	// Makes tooltips work on ajax generated content
 	$(document).ajaxStop(function() {
 		$('[data-toggle=\'tooltip\']').tooltip({container: 'body'});
-	});
+	});   
 });
 
 // Cart add remove functions

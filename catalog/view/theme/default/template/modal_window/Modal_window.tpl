@@ -23,17 +23,19 @@
              <label>Комментарий: </label>
               <textarea class="form-control" name='comment' placeholder="Комментарий к заявке..."></textarea>
             </div>
+              <input id="pvin" type="hidden" name="vin" value=""/>
+              <input id="pname" type="hidden" name="product_name" value=""/>
               <input type="hidden" name="suc" value="1" />
-          </form>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
             <button type="submit" class="btn btn-danger">Отправить</button>
-          </div>
+          </div>  
+        </form>         
     </div>   
   </div>
 </div>
 <script type='text/javascript'>
       $('#myModal').on('shown.bs.modal', function () {
-        $('#myInput').focus()
-      })
+        $('#myInput').focus();
+      });
 </script>

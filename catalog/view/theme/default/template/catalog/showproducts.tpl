@@ -64,13 +64,12 @@
                     <?php if ($product['price'] !== '0') { ?>  
                     <button type="button" onclick="cart.add('<?php echo $key; ?>', '1');"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md"> В КОРЗИНУ</span></button>
                     <?php } else { ?>
-                    <button type="button" data-toggle="modal" data-target="#myModal"><span class="hidden-xs hidden-sm hidden-md"> Узнать стоимость</span></button>
-                      
+                    <button btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pname ="<?php echo $product['name'];?>" pvin="<?php echo $product['vin'];?>"><span class="hidden-xs hidden-sm hidden-md">Узнать стоимость</span></button>
                     <?php }?>
                     <button type="button" data-toggle="tooltip" title="Добавить в избранное" onclick="wishlist.add('<?php echo $key; ?>');"><i class="fa fa-heart"></i></button>
                     <button type="button" data-toggle="tooltip" title="Добавить в список сравнения" onclick="compare.add('<?php echo $key; ?>');"><i class="fa fa-exchange"></i></button>
                   </div>
-                  <?php echo $modal_window; ?>  
+                <?php echo $modal_window; ?>  
                 </div>
               </div>
             </div>
@@ -78,7 +77,7 @@
           <div class="col-lg-12">
               <?php echo $pagination; ?>
           </div>
-        </div>
+        </div>     
     <?php } else { ?>
         <?php echo '<div class="col-lg-12 text-center"><img src="sad.png" width="150"/><br><h4>К сожалению, ничего не найдено. Позвоните нам, чтобы уточнить наличие детали по телефону.<br><b>+ ‎7 (912) 475 08 70</b></h4></div>';?>
     <?php }?>
