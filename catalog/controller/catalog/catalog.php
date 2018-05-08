@@ -44,7 +44,9 @@ class ControllerCatalogCatalog extends Controller{
                         'text' => $this->model_tool_layout->getFillName($goal),
                         'href' => $this->url->link('catalog/catalog/products', 'libr='.$routeLib)
                     );
-                $library = array_shift(explode("_", trim($this->request->get['libr'])));
+                $librs = explode("_", trim($this->request->get['libr']));
+//                exit(var_dump($librs));
+                $library = array_shift($librs);
                 $products = $this->model_product_product->getProducts('libr', $goal, $sort);
                 $list['total'] = $this->model_product_product->getTotalProducts('libr', $goal);
                 $list['types'] = $types;
@@ -252,7 +254,7 @@ class ControllerCatalogCatalog extends Controller{
         $request = explode(";", $request);
         foreach ($request as $str) {
             $sup = explode(": ", $str);
-            if(trim($sup[1])!=='' && trim($sup[1])!=='null' && trim($sup[1])!=='Все товары'){
+            if(isset($sup[1]) && trim($sup[1])!=='' && trim($sup[1])!=='null' && trim($sup[1])!=='Все товары'){
                 $filter[str_replace("filter_", '', $sup[0])] = $sup[1];
             }
         }
@@ -269,8 +271,9 @@ class ControllerCatalogCatalog extends Controller{
 //        exit($sort);
         if(isset($this->request->get['libr'])){
             $types = $this->model_tool_layout->getTypesArray();
-            $libr = array_pop(explode("_", trim($this->request->get['libr'])));
-            $library = array_shift(explode("_", trim($this->request->get['libr'])));
+            $librs = explode("_", trim($this->request->get['libr']));
+            $libr = array_pop($librs);
+            $library = array_shift($librs);
             $products = $this->model_product_product->getProducts('libr', $libr, $sort, $filter);
             $list['total'] = $this->model_product_product->getTotalProducts('libr', $libr, $filter);
             $list['types'] = $types;
