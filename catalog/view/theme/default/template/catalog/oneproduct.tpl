@@ -78,9 +78,9 @@
                                                <td colspan='2' style="text-align: left; font-size: 14pt;"><s><?php echo $summ; ?> руб.</s></td>
                                             </tr>
                                         <?php } ?>
-                                        <tr>
-                                            <td colspan='3' style="text-align: center; font-size: 14pt;">Цена комплекта <?php if(!$whole) { ?>со скидкой<?php } ?>: <span class="label label-danger"><?php echo $c_price; ?> руб.</span></td>
-                                        </tr>
+                                    <tr>
+                                        <td colspan='3' style="text-align: center; font-size: 14pt;">Цена комплекта <?php if(!$whole) { ?>со скидкой<?php } ?>: <span class="label label-danger"><?php echo $c_price; ?> руб.</span></td>
+                                    </tr>
                                     <tr>
                                         <td colspan='3' style="text-align: center;"><button class="btn btn-primary" onclick="cart.add('<?php echo $id_comp_ref; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i> Купить весь комплект</button></td>
                                     </tr>
@@ -170,7 +170,6 @@
 </div> 
 <script src="catalog/view/javascript/clipboard.min.js" type="text/javascript"></script>
         <!------------------------------------Стоит вынести скрипты в отдельный файл------------------------------------------------------------->
-
 <script type="text/javascript"><!--
 $('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
 	$.ajax({

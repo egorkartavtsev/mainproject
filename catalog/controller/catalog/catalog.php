@@ -97,6 +97,20 @@ class ControllerCatalogCatalog extends Controller{
                     }
                 }
             }
+            if (isset($this->request->post['suc'])){
+                $mail =  'Имя: '.$this->request->post['name'].'; '
+                       . 'Email: '.$this->request->post['email'].'; '
+                       . 'Телефон: '.$this->request->post['phone'].'; '
+                       . 'Товар: '.$this->request->post['vin'].'; '
+                       . 'Наименование товара: '.$this->request->post['product_name'].'; ' 
+                       . 'Комментарий: '.$this->request->post['comment'];
+                $headers  = 'From: autorazbor174@mail.ru' . " " 
+                          . 'Reply-To: autorazbor174@mail.ru' . " "
+                          . 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+                $suc = true;
+                mail('autorazbor174@mail.ru', 'Заявка на уточнение цены товара с сайта авторазбор174.рф', $mail);
+                $list['suc_text'] = 'Ваша заявка успешно отправлена';
+            }
             $list['modal_window'] = $this->load->view('modal_window/Modal_window');
             $data['productsDiv'] = $this->load->view('catalog/showproducts', $list);
         //----------------------------------------------------------------------------------

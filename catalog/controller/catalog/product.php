@@ -16,11 +16,6 @@ class ControllerCatalogProduct extends Controller {
             $type = $this->model_tool_product->getType($product['structure']);
             $description = $this->model_tool_product->getDescription($this->request->get['product_id']);
             $complect_arr = $this->model_tool_product->getProductCompls($this->request->get['product_id']);
-            $list['breadcrumbs'][] = array(
-                    'text' => '<i class="fa fa-home"></i>',
-                    'href' => '/'
-            );
-            
 //      ------------------------------Комплекты(Как в старом)------------------------------------------------------------------------------------------------------------------------------------
             if($complect_arr){
                 $data['id_comp_ref'] = isset($complect_arr['id_comp_ref'])?$complect_arr['id_comp_ref']:NULL;
@@ -42,10 +37,8 @@ class ControllerCatalogProduct extends Controller {
             }
             $data['options'] = $options;
             //exit(var_dump($data['options']));
-//      ------------------------------Скрытая информация(Надо переименовать или создать общую структуру и вынести логику отображения в tpl)-----------------------------------------------------------------------------------------------                
 //      ------------------------------Описание--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------            
             $data['description'] = html_entity_decode($description['description'] , ENT_QUOTES, 'UTF-8');
-            //exit($list['title']);
 //      ------------------------------Осонованя информация--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
             $data['product'] = array(
                 'product_id' => $product['product_id'],
@@ -146,8 +139,8 @@ class ControllerCatalogProduct extends Controller {
                 $mail =  'Имя: '.$this->request->post['name'].'; '
                        . 'Email: '.$this->request->post['email'].'; '
                        . 'Телефон: '.$this->request->post['phone'].'; '
-                       . 'Товар: '.$data['vin'].'; '
-                       . 'Наименование товара: '.$data['heading_title'].'; ' 
+                       . 'Товар: '.$product['vin'].'; '
+                       . 'Наименование товара: '.$description['name'].'; ' 
                        . 'Комментарий: '.$this->request->post['comment'];
                 $headers  = 'From: autorazbor174@mail.ru' . " " 
                           . 'Reply-To: autorazbor174@mail.ru' . " "
