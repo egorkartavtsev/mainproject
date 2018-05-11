@@ -27,7 +27,7 @@ class ModelToolXml extends Model {
     }
     
     public function createAd($data, $xmls) {
-//        exit(var_dump($data));
+        exit(var_dump($data));
         $this->load->model('common/avito');
         $this->load->model('product/product');
         $settings = $this->model_common_avito->getSetts();
@@ -111,7 +111,7 @@ class ModelToolXml extends Model {
             $count=1;
             if(!empty($photos)){
                 foreach ($photos as $photo) {
-                    if($photo['img']!=$data['main-image'] && $count<=3){
+                    if($photo['img']!=$data['image'] && $count<=3){
                         $image = $images->addChild('Image');
                         $image->addAttribute('url', HTTP_CATALOG.'image/'.$photo['img']);
                         ++$count;

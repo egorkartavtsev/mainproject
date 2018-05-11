@@ -75,6 +75,7 @@
               </div>
             </div>
           <?php }?>
+          <div class="clearfix"></div>
           <div class="col-lg-12">
               <?php echo $pagination; ?>
           </div>

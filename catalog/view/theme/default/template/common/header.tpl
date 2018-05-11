@@ -39,9 +39,9 @@
 <?php foreach ($links as $link) { ?>
 <link href="<?php echo $link['href']; ?>" rel="<?php echo $link['rel']; ?>" />
 <?php } ?>
+<script type="text/javascript" src="https://vk.com/js/api/openapi.js?146"></script>
 <?php foreach ($scripts as $script) { ?>
 <script src="<?php echo $script; ?>" type="text/javascript"></script>
-<script type="text/javascript" src="https://vk.com/js/api/openapi.js?146"></script>
 <?php } ?>
 <?php foreach ($analytics as $analytic) { ?>
 <?php echo $analytic; ?>

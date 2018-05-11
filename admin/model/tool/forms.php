@@ -320,7 +320,10 @@ class ModelToolForms extends Model {
         $libraries = '';
         $inputs = '';
         $compabils = '';
-        $systemF = '';
+        $systemF = '<div class="col-lg-12"><div class="pull-right" style="margin-bottom: 0px;">
+                        <input type="submit" class="btn btn-success" value="сохранить изменения" />
+                    </div></div>'
+                    . '<div class="clearfix"></div>';
         $modal = '';
         $hiddens = '<input type="hidden" name="manager" value="'.$info['manager'].'" />'; 
         $lib_links = $this->getLinksArr($this->request->get['product_id']);
@@ -429,6 +432,7 @@ class ModelToolForms extends Model {
     }
     
     public function updateProduct($info, $id) {
+        //exit(var_dump($info));
         $this->load->model('tool/product');
         $links = array();
         $vin = $this->db->query("SELECT vin FROM ".DB_PREFIX."product WHERE product_id = ".(int)$id);

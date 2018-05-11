@@ -819,3 +819,14 @@ h2.price {
     background-image: none;
     background-color: #df5c39;
 }
+
+.filter {
+    background-color: #f5f5f5;
+    border: 1px solid #c3c3c3;
+    margin-bottom: 20px;
+}
+
+.filter-default {
+    padding: 9px;
+    border-radius: 3px;
+}

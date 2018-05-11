@@ -161,6 +161,7 @@
                 </div>
                 <?php }?>
             <?php }?>
+            <div id="vk_groups"></div>
         </div>
     <?php  if (isset($column_right)) { ?>
         <?php echo $column_right; ?>

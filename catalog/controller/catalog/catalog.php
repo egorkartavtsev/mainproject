@@ -320,6 +320,7 @@ class ControllerCatalogCatalog extends Controller{
                     }
                 }
             }
+            $list['modal_window'] = $this->load->view('modal_window/Modal_window');
             $result = $this->load->view('catalog/showproducts', $list);
         } else {
             $result = '<div class="col-lg-12 text-center"><img src="sad.png" width="150"/><br><h4>К сожалению, ничего не найдено. Попробуйте изменить значения фильтра или позвоните нам, чтобы уточнить наличие детали по телефону.<br><b>+ ‎7 (912) 475 08 70</b></h4></div>';

@@ -8,8 +8,14 @@
   <div class="row">
     <div id="content" class="col-sm-12">
         <?php echo $content_top; ?>
-        <div class="well well-sm col-lg-3">
-            <?php echo $filterDiv; ?>
+        <div class="col-lg-3">
+            <div class="well well-sm">
+                <?php echo $filterDiv; ?>
+            </div>
+            <div class="clearfix"></div>
+            <div class="hidden-sm hidden-xs">
+                <div class="hidden-sm" id="vk_groups"></div>
+            </div>
         </div>
         <div class="col-lg-9">
             <?php echo $productsDiv; ?>

@@ -208,7 +208,7 @@ class ModelToolLayout extends Model {
                 break;
             }
         }
-        $result.= '<h4><b>Фильтры:</b> </h4><div class="col-xs-12"><button class="btn btn-info col-lg-6" onclick="location.reload();">Очистить</button><button class="btn btn-primary col-lg-6" disabled btn_type="filter">Применить</button></div>'.$libraries.'<div class="clearfix"></div>'.$selects.'<div class="clearfix"></div>'.$inputs.'<div class="col-xs-12"><button class="btn btn-primary btn-block" disabled btn_type="filter">Применить фильтр</button></div>';
+        $result.= '<h4><b>Фильтры:</b> </h4><div class="col-xs-12"><button class="btn btn-info col-lg-6" onclick="location.reload();">Очистить</button><button class="btn btn-primary col-lg-6" disabled btn_type="filter">Применить</button></div>'.$libraries.'<div class="clearfix"></div>'.$selects.'<div class="clearfix"></div>'.$inputs;
         return $result;
     }
     

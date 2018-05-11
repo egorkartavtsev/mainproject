@@ -58,7 +58,8 @@ class ModelProductProduct extends Model {
                         }
                     }
                 }
-                $sql.= "ORDER BY date_added DESC ";
+//                $sql.= "ORDER BY date_added DESC ";
+                $sql.= "AND vin!='' AND !LOCATE('complect', vin) AND status = 1  ORDER BY date_added DESC ";
             break;
             case 'libr':
                 $sql = "SELECT * FROM ".DB_PREFIX."product_to_lib p2l "

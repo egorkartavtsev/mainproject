@@ -31,9 +31,6 @@
             </div>
             <div class="panel-body">
                 <form method="POST" action="<?php echo $action;?>" name="form-product">
-                    <div class="col-lg-12"><div class="pull-right">
-                        <input type="submit" class="btn btn-success" value="сохранить изменения" />
-                    </div></div>
                     <?php echo $form;?>
                     <h3>Фотографии:</h3>
                     <div class="well col-sm-12">
