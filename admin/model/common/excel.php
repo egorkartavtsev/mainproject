@@ -408,7 +408,7 @@
             $allow = TRUE;
             $product_info = array();
             for($i = 0; $i<count($prods); ++$i){
-                $locate = explode("/", $prods[$i]['location']);
+//                $locate = explode("/", $prods[$i]['location']);
                 
                 $still = isset($prods[$i]['still'])?$prods[$i]['still']:'';
                 $jar = isset($prods[$i]['jar'])?$prods[$i]['jar']:'';

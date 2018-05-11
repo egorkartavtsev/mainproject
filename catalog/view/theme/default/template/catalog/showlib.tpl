@@ -1,6 +1,6 @@
 <div id="sSearchResult" >
     
-    <?php if(count($items)){ foreach($items as $item){ ?>
+    <?php if(isset($items) && count($items)){ foreach($items as $item){ ?>
       <?php if(in_array(0, array_column($items, 'showImg'))) { ?>
           <a href='<?php echo $item["href"];?>' class="col-lg-4 col-md-4 col-xs-6 text-center ">
               <p  class="well well-sm well-lib-list">

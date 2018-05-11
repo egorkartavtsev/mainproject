@@ -6,7 +6,7 @@ class ControllerCommonDashboard extends Controller {
 		$this->document->setTitle($this->language->get('heading_title'));
 
 		$data['heading_title'] = $this->language->get('heading_title');
-
+                $data['ses_token'] = $this->session->data['token'];
 		$data['breadcrumbs'] = array();
                 $data['fcItems'] = array();
                         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."user_customs WHERE user_id = ".(int)$this->user->getId()." ");

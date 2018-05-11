@@ -133,7 +133,7 @@ class ModelToolForms extends Model {
             $par = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_struct WHERE item_id = (SELECT parent_id FROM ".DB_PREFIX."lib_struct WHERE name = '".$fieldName."') ");
             $result['text'] = isset($text)?$text:'';
             $result['js'] = $jsChilds;
-            $result['item'] = $sup->row['item_id'];
+            $result['item'] = isset($sup->row['item_id'])?$sup->row['item_id']:'';
             $result['parent_name'] = $par->row['name'];
         }
         return $result;
@@ -468,7 +468,7 @@ class ModelToolForms extends Model {
         $this->db->query("DELETE FROM ".DB_PREFIX."product_image WHERE product_id = ".(int)$id);
         if(is_array($info['image'])){
             foreach($info['image'] as $image){
-                $this->db->query("INSERT INTO ".DB_PREFIX."product_image SET product_id = ".(int)$id.", image = '".$image['img']."', sort_order = '".$image['sort_order']."'");
+                $this->db->query("INSERT INTO ".DB_PREFIX."product_image SET product_id = ".(int)$id.", image = '".$image['img']."', sort_order = '".(isset($image['sort_order'])?$image['sort_order']:'0')."'");
             }
         }
         $this->db->query("DELETE FROM ".DB_PREFIX."product_to_lib WHERE product_id = ".(int)$id);

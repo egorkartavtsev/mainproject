@@ -27,7 +27,7 @@ class ModelToolXml extends Model {
     }
     
     public function createAd($data, $xmls) {
-        exit(var_dump($data));
+//        exit(var_dump($data));
         $this->load->model('common/avito');
         $this->load->model('product/product');
         $settings = $this->model_common_avito->getSetts();
@@ -105,7 +105,7 @@ class ModelToolXml extends Model {
             /******************************/
             $images = $ad->addChild('Images');
             $image = $images->addChild('Image');
-            $image->addAttribute('url', HTTP_CATALOG.'image/'.$data['main-image']);
+            $image->addAttribute('url', HTTP_CATALOG.'image/'.$data['image']);
             /*****************************/
             $photos = $this->model_product_product->getPhotos($data['pid']);
             $count=1;
@@ -134,7 +134,7 @@ class ModelToolXml extends Model {
         //-----------------------------------------
         $templ = htmlspecialchars_decode($this->model_common_avito->getDescTempl());
         /************************/
-            $templ = str_replace('%podcat%', $data['podcat'], $templ);
+            $templ = str_replace('%podcat%', $data['podcateg'], $templ);
             $templ = str_replace('%brand%', $data['brandname'], $templ);
             $templ = str_replace('%modrow%', $data['mrname'], $templ);
             $templ = str_replace('%trbrand%', $data['trbrand'], $templ);
@@ -190,13 +190,13 @@ class ModelToolXml extends Model {
         /******************************/
         $images = $xmls->Ad[$id]->addChild('Images');
         $image = $images->addChild('Image');
-        $image->addAttribute('url', HTTP_CATALOG.'image/'.$data['main-image']);
+        $image->addAttribute('url', HTTP_CATALOG.'image/'.$data['image']);
         /*****************************/
         $photos = $this->model_product_product->getPhotos($data['pid']);
         $count=1;
         if(!empty($photos)){
             foreach ($photos as $photo) {
-                if($photo['img']!=$data['main-image'] && $count<=3){
+                if($photo['img']!=$data['image'] && $count<=3){
                     $image = $images->addChild('Image');
                     $image->addAttribute('url', HTTP_CATALOG.'image/'.$photo['img']);
                     ++$count;
@@ -334,31 +334,31 @@ class ModelToolXml extends Model {
         $part = $xmls->addChild('part');
         
             $part->addChild('id', $data['vin']);
-            $part->addChild('title', $data['name']);
-            if($data['catN']!==''){
-                $part->addChild('part_number', $data['catN']);
+            $part->addChild('title', $data['avitoname']);
+            if($data['catn']!==''){
+                $part->addChild('part_number', $data['catn']);
             }
             $part->addChild('description', (string)trim($templ));
             $part->addChild('is_new', ($data['type']==='Новый'?1:0));
             $part->addChild('price', $data['price']);
             $part->addChild('manufacturer', $data['brand']);
-            $part->addChild('count', $data['quant']);
+            $part->addChild('count', $data['quantity']);
             $avail = $part->addChild('availability');
                 $avail->addChild('isAvailable', $data['status']);
-                if($data['compability']!==''){
+                if(isset($data['compability']) && $data['compability']!==''){
                     $part->addChild('compability', $data['compability']);
                 } else {
                     $part->addChild('compability', '');
                 }
             /******************************/
             $images = $part->addChild('images');
-            $images->addChild('image', HTTP_CATALOG.'image/'.$data['main-image']);
+            $images->addChild('image', HTTP_CATALOG.'image/'.$data['image']);
             /*****************************/
             $photos = $this->model_product_product->getPhotos($data['pid']);
             $count=1;
             if(!empty($photos)){
                 foreach ($photos as $photo) {
-                    if($photo['img']!=$data['main-image'] && $count<=3 && $photo['img']!=''){
+                    if($photo['img']!=$data['image'] && $count<=3 && $photo['img']!=''){
                         $images->addChild('image', HTTP_CATALOG.'image/'.$photo['img']);
                         ++$count;
                     }
@@ -374,7 +374,7 @@ class ModelToolXml extends Model {
                     $prop = $props->addChild('property', $data['note']);
                     $prop->addAttribute('name', 'Примечание');
                 }
-                if($data['dop']!='-'){
+                if(isset($data['dop']) && $data['dop']!='-'){
                     $prop = $props->addChild('property', $data['dop']);
                     $prop->addAttribute('name', 'Дополнительная информация');
                 }
@@ -401,14 +401,13 @@ class ModelToolXml extends Model {
     //------------------------------------------------------------------
         $xmls->part[$id]->manufactutrer = $data['brand'];
         $xmls->part[$id]->Price = $data['price'];
-        $xmls->part[$id]->title = $data['name'];
-        $xmls->part[$id]->count = $data['quatn'];
+        $xmls->part[$id]->title = $data['avitoname'];
+        $xmls->part[$id]->count = $data['quantity'];
         $xmls->part[$id]->availability->isAvailable = $data['status'];
         $xmls->part[$id]->description = (string)$templ;
         $xmls->part[$id]->is_new = $data['type']==='Новый'?1:0;
-        $xmls->part[$id]->compability = $data['compability'];
-        $xmls->part[$id]->title = $data['name'];
-        $xmls->part[$id]->title = $data['name'];
+        $xmls->part[$id]->compability = isset($data['compability'])?$data['compability']:'';
+        $xmls->part[$id]->title = $data['avitoname'];
         
     /******************************************************************/
         $domProp=dom_import_simplexml($xmls->part[$id]->properties);
@@ -423,7 +422,7 @@ class ModelToolXml extends Model {
                 $prop = $props->addChild('property', $data['note']);
                 $prop->addAttribute('name', 'Примечание');
             }
-            if($data['dop']!='-'){
+            if(isset($data['dop']) && $data['dop']!='-'){
                 $prop = $props->addChild('property', $data['dop']);
                 $prop->addAttribute('name', 'Дополнительная информация');
             }
@@ -434,13 +433,13 @@ class ModelToolXml extends Model {
     //-----------------------------------------------------------------
         /******************************/
             $images = $xmls->part[$id]->addChild('images');
-            $images->addChild('image', HTTP_CATALOG.'image/'.$data['main-image']);
+            $images->addChild('image', HTTP_CATALOG.'image/'.$data['image']);
             /*****************************/
             $photos = $this->model_product_product->getPhotos($data['pid']);
             $count=1;
             if(!empty($photos)){
                 foreach ($photos as $photo) {
-                    if($photo['img']!=$data['main-image'] && $count<=3 && $photo['img']!=''){
+                    if($photo['img']!=$data['image'] && $count<=3 && $photo['img']!=''){
                         $images->addChild('image', HTTP_CATALOG.'image/'.$photo['img']);
                         ++$count;
                     }

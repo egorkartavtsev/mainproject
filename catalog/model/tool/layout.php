@@ -220,7 +220,7 @@ class ModelToolLayout extends Model {
             'childs' => $sup->rows,
             'currId' => $curr->row['name'],
             'currText' => $curr->row['text'],
-            'cName' => $query->row['name']
+            'cName' => isset($query->row['name'])?$query->row['name']:''
         );
         return $result;
     }

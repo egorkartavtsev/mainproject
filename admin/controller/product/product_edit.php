@@ -77,7 +77,7 @@ class ControllerProductProductEdit extends Controller {
             $data['cname'] = $comp['name'];
             $data['clink'] = $this->url->link('complect/complect/edit', 'token=' . $this->session->data['token'] . '&complect=' . $comp['id'], true);
         }
-        
+        $data['placeholder'] = $this->model_tool_image->resize('no_image.png', 100, 100);
         
         $this->response->setOutput($this->load->view('product/product_edit', $data));
     }
@@ -92,9 +92,11 @@ class ControllerProductProductEdit extends Controller {
         $alinfo = $this->request->post['info'];
         $alinfo['vin'] = $info['vin'];
 //        exit(var_dump($alinfo));
+        $alinfo['pid'] = $this->request->get['product_id'];
         if($this->session->data['uType']==='adm' && $this->request->post['allowavito']==='да'){
             $this->model_tool_xml->findAd($alinfo);
         }
+        $alinfo['name'] = $alinfo['avitoname'];
         $this->model_tool_xml->findARPart($alinfo);
         $this->response->redirect($this->url->link('catalog/product', 'token=' . $this->session->data['token'], true));
 //        exit(var_dump($this->request->post));
