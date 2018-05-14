@@ -223,7 +223,7 @@ class ModelToolForms extends Model {
             //add product to db
             $sql = "INSERT INTO ".DB_PREFIX."product SET ";
             foreach ($prodItem as $key => $value) {
-                $sql.= $key." = '".$value."', ";
+                $sql.= $key." = '".trim($value)."', ";
             }
             $sql.="date_added = NOW(), ";
             $sql.="date_modified = NOW(), ";

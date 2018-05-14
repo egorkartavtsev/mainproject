@@ -5,15 +5,17 @@ class ControllerCommonWriteOff extends Controller {
         $data['token_wo'] = $this->session->data['token'];
         if(!empty($this->request->post)){
             $this->load->model('common/write_off');
-            
+//            exit(var_dump($this->request->post));
             $this->load->controller('common/excelTools');
             $tools = new ControllerCommonExcelTools($this->registry);
             $info = $tools->constructSaleArray($this->request->post);
             $id_invoice = uniqid('r_');
             $prods = $this->model_common_write_off->sale($info, $id_invoice);
             $this->load->model('tool/xml');
-            $APinfo = array('vin' => $info['vin'], 'write_off' => 1);
-            $this->model_tool_xml->findARPart($APinfo);
+            foreach ($info as $item) {
+                $APinfo = array('vin' => $item['vin'], 'write_off' => 1, 'price' => $item['price']);
+                $this->model_tool_xml->findARPart($APinfo);
+            }
             $this->response->setOutput($this->load->view('common/write_off_form', $data));
 //            $this->response->redirect($this->url->link('common/write_off/downloadInvoice', 'token=' . $this->session->data['token'] . '&products=' . $prods . '&invoice=' .$id_invoice, true));
         }
