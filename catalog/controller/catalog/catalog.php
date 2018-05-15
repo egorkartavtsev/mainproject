@@ -266,6 +266,7 @@ class ControllerCatalogCatalog extends Controller{
         $result = '';
         $request = $this->request->post['filter'];
         $request = explode(";", $request);
+        $filter = array();
         foreach ($request as $str) {
             $sup = explode(": ", $str);
             if(isset($sup[1]) && trim($sup[1])!=='' && trim($sup[1])!=='null' && trim($sup[1])!=='Все товары'){
