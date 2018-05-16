@@ -9,7 +9,7 @@ class ModelToolXml extends Model {
         $settings = $this->model_common_avito->getSetts();
         foreach($xmls->Ad as $ad){
             if(in_array($data['vin'], (array)$ad)){
-                if($data['price']<$settings['price']){
+                if($data['price']<$settings['price'] || isset($data['write_off'])){
                     $dom=dom_import_simplexml($xmls->Ad[$sup]);
                     $dom->parentNode->removeChild($dom);
                     $xmls->saveXML('../Avito/ads.xml');
@@ -296,12 +296,16 @@ class ModelToolXml extends Model {
     }
     
     public function findARPart($data) {
+//        exit(var_dump($data));
         $xmls = simplexml_load_file('../Avito/autoru.xml');
         $sup = 0;
         //exit(var_dump($xmls));        
         foreach($xmls->part as $part){
             if(in_array($data['vin'], (array)$part)){
-                if(isset($data['write_off'])){$this->saleARpart($vin, $sup); exit(var_dump($data));}
+                if(isset($data['write_off'])){
+                    $this->saleARpart($data['vin'], $sup);
+                    return 0;
+                }
                 $this->updateARPart($data, $sup, $xmls);
                 return 0;
             } else{ 
@@ -334,14 +338,18 @@ class ModelToolXml extends Model {
         $part = $xmls->addChild('part');
         
             $part->addChild('id', $data['vin']);
-            $part->addChild('title', $data['avitoname']);
-            if($data['catn']!==''){
+            $part->addChild('title', $data['name']);
+            if(isset($data['catn']) && $data['catn']!==''){
                 $part->addChild('part_number', $data['catn']);
             }
+            if(isset($data['type']) && $data['type']!==''){
+                $part->addChild('is_new', ($data['type']==='Новый'?1:0));
+            }
+            if(isset($data['brand']) && $data['brand']!==''){
+                $part->addChild('manufacturer', $data['brand']);
+            }
             $part->addChild('description', (string)trim($templ));
-            $part->addChild('is_new', ($data['type']==='Новый'?1:0));
             $part->addChild('price', $data['price']);
-            $part->addChild('manufacturer', $data['brand']);
             $part->addChild('count', $data['quantity']);
             $avail = $part->addChild('availability');
                 $avail->addChild('isAvailable', $data['status']);
@@ -351,26 +359,28 @@ class ModelToolXml extends Model {
                     $part->addChild('compability', '');
                 }
             /******************************/
-            $images = $part->addChild('images');
-            $images->addChild('image', HTTP_CATALOG.'image/'.$data['image']);
-            /*****************************/
-            $photos = $this->model_product_product->getPhotos($data['pid']);
-            $count=1;
-            if(!empty($photos)){
-                foreach ($photos as $photo) {
-                    if($photo['img']!=$data['image'] && $count<=3 && $photo['img']!=''){
-                        $images->addChild('image', HTTP_CATALOG.'image/'.$photo['img']);
-                        ++$count;
+                if(isset($data['image'])){
+                    $images = $part->addChild('images');
+                    $images->addChild('image', HTTP_CATALOG.'image/'.$data['image']);
+                    /*****************************/
+                    $photos = $this->model_product_product->getPhotos($data['pid']);
+                    $count=1;
+                    if(!empty($photos)){
+                        foreach ($photos as $photo) {
+                            if($photo['img']!=$data['image'] && $count<=3 && $photo['img']!=''){
+                                $images->addChild('image', HTTP_CATALOG.'image/'.$photo['img']);
+                                ++$count;
+                            }
+                        }
                     }
                 }
-            }
             /******************************************************/
             $props = $part->addChild('properties');
-                if($data['cond']!='-'){
+                if(isset($data['cond']) && $data['cond']!='-'){
                     $prop = $props->addChild('property', $data['cond']);
                     $prop->addAttribute('name', 'Состояние');
                 }
-                if($data['note']!='-'){
+                if(isset($data['note']) && $data['note']!='-'){
                     $prop = $props->addChild('property', $data['note']);
                     $prop->addAttribute('name', 'Примечание');
                 }

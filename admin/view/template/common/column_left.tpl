@@ -66,21 +66,28 @@
             </ul>
         </li>
     <?php } ?>
-    <?php if(0){ ?><li id="menu-prodtdup">
-        <a class="parent"><i class="fa fa-arrow-circle-o-up fw"></i> <span><?php echo $tiresdisc['main'];?></span></a>
+    <li id="menu-production">
+        <a class="parent"><i class="fa fa-umbrella fw"></i> <span>Продукция</span></a>
         <ul>
             <li>
-                <a href="index.php?route=tiresdisc/param&token=<?php echo $token_excel;?>"><span><?php echo $tiresdisc['td-lib'];?></span></a>
+                <a href="index.php?route=production/catalog&token=<?php echo $token_excel;?>"><span>Каталог товаров магазина</span></a>
             </li>
             <li>
-                <a href="index.php?route=tiresdisc/create&token=<?php echo $token_excel;?>"><span><?php echo $tiresdisc['td-create'];?></span></a>
+                <a href="index.php?route=production/addition&token=<?php echo $token_excel;?>"><span>Создание товара</span></a>
             </li>
             <li>
-                <a href="index.php?route=tiresdisc/list&token=<?php echo $token_excel;?>"><span><?php echo $tiresdisc['main'];?></span></a>
+                <a href="index.php?route=production/writeoff&token=<?php echo $token_excel;?>"><span>Списание товара</span></a>
             </li>
+            <li>
+                <a href="index.php?route=production/refund&token=<?php echo $token_excel;?>"><span>Возврат товара</span></a>
+            </li>
+            <li>
+                <a href="index.php?route=production/setphotos&token=<?php echo $token_excel;?>"><span>Прикрепить фотографии</span></a>
+            </li>
+            
         </ul>
             
-    </li><?php }?>
+    </li>
     <li id="menu-donor">
         <a class="parent"><i class="fa fa fa-car fw"></i> <span>Работа с донорами</span></a>
         <ul>
@@ -94,9 +101,9 @@
             
     </li>
     <li id="menu-produp">
-        <a class="parent"><i class="fa fa-umbrella fw"></i> <span><?php echo $edit_prod['adm_prod'];?></span></a>
+        <a class="parent"><i class="fa fa-tint fw"></i> <span><?php echo $edit_prod['adm_prod'];?></span></a>
         <ul>
-            <li>
+            <!--<li>
                 <a class="parent">Товары</a>
                 <ul class="collapse">
                     <li>
@@ -111,10 +118,10 @@
                     <li>
                         <a href="index.php?route=common/refund&token=<?php echo $token_excel;?>"><?php echo $edit_prod['refund'];?></span></a>
                     </li>
-                    <li>
-                        <a href="index.php?route=common/excel&token=<?php echo $token_excel;?>"><span><?php echo $edit_prod['excel'];?></span></a>
-                    </li>
                 </ul>
+            </li>-->
+            <li>
+                <a href="index.php?route=common/excel&token=<?php echo $token_excel;?>"><span><?php echo $edit_prod['excel'];?></span></a>
             </li>
             <li>
                 <a href="index.php?route=complect/complect&token=<?php echo $token_excel;?>"><span><?php echo $edit_prod['complect'];?></span></a>

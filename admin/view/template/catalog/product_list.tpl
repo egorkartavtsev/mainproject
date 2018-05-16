@@ -279,7 +279,7 @@
   <script type="text/javascript"><!--
       
       $('#btn-clear-filters').on('click', function(){
-        var url = 'index.php?route=catalog/product&token=<?php echo $token; ?>';
+        var url = 'index.php?route=production/catalog&token=<?php echo $token; ?>';
         location = url;
       });
       
@@ -287,7 +287,7 @@
         $('#panel-body-f').toggle('slow', function(){});
       });
 $('#button-filter').on('click', function() {
-	var url = 'index.php?route=catalog/product&token=<?php echo $token; ?>';
+	var url = 'index.php?route=production/catalog&token=<?php echo $token; ?>';
 
 	var filter_name = $('input[name=\'filter_name\']').val();
 
@@ -374,7 +374,7 @@ $('#button-filter').on('click', function() {
 $('input[name=\'filter_name\']').autocomplete({
 	'source': function(request, response) {
 		$.ajax({
-			url: 'index.php?route=catalog/product/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
+			url: 'index.php?route=production/catalog/autocomplete&token=<?php echo $token; ?>&filter_name=' +  encodeURIComponent(request),
 			dataType: 'json',
 			success: function(json) {
 				response($.map(json, function(item) {
@@ -394,7 +394,7 @@ $('input[name=\'filter_name\']').autocomplete({
 $('input[name=\'filter_model\']').autocomplete({
 	'source': function(request, response) {
 		$.ajax({
-			url: 'index.php?route=catalog/product/autocomplete&token=<?php echo $token; ?>&filter_model=' +  encodeURIComponent(request),
+			url: 'index.php?route=production/catalog/autocomplete&token=<?php echo $token; ?>&filter_model=' +  encodeURIComponent(request),
 			dataType: 'json',
 			success: function(json) {
 				response($.map(json, function(item) {

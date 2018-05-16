@@ -40,7 +40,7 @@ class ControllerCommonColumnLeft extends Controller {
 				'href'     => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true),
 				'children' => array()
 			);
-			
+			/*
 			// Catalog
 			$catalog = array();
 			
@@ -152,7 +152,7 @@ class ControllerCommonColumnLeft extends Controller {
 					'children' => $catalog
 				);		
 			}
-			
+			*/
 	
 			// Extension
 			$extension = array();

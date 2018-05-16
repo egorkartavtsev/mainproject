@@ -22,7 +22,7 @@
             <div class="col-lg-12" id="prodinfo"></div>
         </div>
         <div class="col-lg-12 alert alert-success">
-            <form onsubmit="refr();" action="index.php?route=common/write_off&token=<?php echo $token_wo; ?>" method="post" class="form-group" id="formInvoice">
+            <form onsubmit="refr();" action="index.php?route=production/writeoff&token=<?php echo $token_wo; ?>" method="post" class="form-group" id="formInvoice">
                     <div class="col-lg-12" id="wo-form" style="display: none;">
                         <div id="formwo" display='block'>
                             <div class="form-group col-lg-6">

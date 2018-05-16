@@ -97,6 +97,7 @@ class ControllerProductProductEdit extends Controller {
             $this->model_tool_xml->findAd($alinfo);
         }
         $alinfo['name'] = $alinfo['avitoname'];
+//        exit(var_dump($alinfo));
         $this->model_tool_xml->findARPart($alinfo);
         $this->response->redirect($this->url->link('catalog/product', 'token=' . $this->session->data['token'], true));
 //        exit(var_dump($this->request->post));

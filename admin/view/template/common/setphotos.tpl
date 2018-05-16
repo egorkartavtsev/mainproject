@@ -22,7 +22,7 @@
   <?php } ?>
   <div class="container-fluid">
     <div class="well well-sm" id="status">
-        <form class="row" role="group" enctype="multipart/form-data" action="index.php?route=common/setphotos/upload&token=<?php echo $token_add; ?>" method="POST">
+        <form class="row" role="group" enctype="multipart/form-data" action="index.php?route=production/setphotos/upload&token=<?php echo $token_add; ?>" method="POST">
             <div class="form-group-lg col-lg-3" style="float: left;">
                 <input class="form-control" name="vin" type="text" placeholder="Введите внутренний номер" />
             </div>
