@@ -172,8 +172,8 @@ $(document).ready(function() {
     //choose cpbItem
     $(document).on('click', '[span_type=cpbItem]', function(){
         var tc = $(this).parent().parent().parent().parent().find('#totalCpb');
-        if (tc.text().search($(this).text()) == -1) {
-        tc.text(tc.text()+$(this).text()+', ')
+        if (tc.text().replace( /[.?*+^$[\]\\(){}|-]/g, "" ).search($(this).text().replace( /[.?*+^$[\]\\(){}|-]/g, "" )) == -1) {
+        tc.text(tc.text()+$(this).text()+', ');
         }
     });
     $(document).on('click', '[btn_type=applyCpb]', function(){
