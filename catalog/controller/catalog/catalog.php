@@ -111,7 +111,7 @@ class ControllerCatalogCatalog extends Controller{
                 mail('autorazbor174@mail.ru', 'Заявка на уточнение цены товара с сайта авторазбор174.рф', $mail);
                 $list['suc_text'] = 'Ваша заявка успешно отправлена';
             }
-            $list['modal_window'] = $this->load->view('modal_window/Modal_window');
+            $list['modal_window'] = $this->load->view('modal_window/modal_window');
             $data['productsDiv'] = $this->load->view('catalog/showproducts', $list);
         //----------------------------------------------------------------------------------
             $this->document->setTitle($this->config->get('config_meta_title'));
