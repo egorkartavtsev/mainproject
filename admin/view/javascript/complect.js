@@ -170,13 +170,13 @@
     
      function findprod(){
         ajax({
-            url:"index.php?route=common/write_off/findProd&token=<?php echo $token_excel; ?>",
+            url:"index.php?route=production/writeoff/findProd&token="+getURLVar('token'),
             statbox:"status",
             method:"POST",
             data:
             {
                 vin: document.getElementById("vin").value,
-                token: "<?php echo $token_excel; ?>"
+                token: getURLVar('token')
             },
             success:function(data){
                     document.getElementById("prodinfo").innerHTML=data; 
@@ -234,13 +234,13 @@
 
     function findprod($token){
         ajax({
-            url:"index.php?route=common/write_off/findProd&token="+$token,
+            url:"index.php?route=production/writeoff/findProd&token="+$token,
             statbox:"status",
             method:"POST",
             data:
             {
                 vin: document.getElementById("vin").value,
-                token: "<?php echo $token_wo; ?>"
+                token: $token
             },
             success:function(data){
                     document.getElementById("prodinfo").innerHTML=data;
@@ -290,7 +290,7 @@
             $("#wo-form").show("slow", function(){});
 
              ajax({
-                url:"index.php?route=common/write_off/addToList&token="+$token,
+                url:"index.php?route=production/writeoff/addToList&token="+$token,
                 statbox:"status",
                 method:"POST",
                 data:

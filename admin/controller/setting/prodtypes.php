@@ -18,6 +18,7 @@ class ControllerSettingProdTypes extends Controller {
         $this->load->model('setting/prodtype');
         $this->load->model('tool/product');
         $this->load->model('tool/layout');
+        $data = $this->model_tool_layout->getLayout($this->request->get['route']);
         if(isset($this->request->get['synch']) && $this->request->get['synch']==='true'){
             $sup = $this->db->query("SELECT 
                                         p2b.product_id,
@@ -46,7 +47,6 @@ class ControllerSettingProdTypes extends Controller {
 //                        . "fill_id = '".$row['fill_id']."' ");
 //            }
         }
-        $data = $this->model_tool_layout->getLayout($this->info);
         $data['templates'] = $this->model_tool_product->getStructures();
         $data['ckeditor'] = $this->config->get('config_editor_default');
 //        exit(var_dump($data['ckeditor']));

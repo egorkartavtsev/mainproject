@@ -15,7 +15,8 @@
             $uType = $this->session->data['uType'];
             $uName = $this->session->data['username'];
 //            exit(var_dump($this->session->data));
-            $data = $this->getLayout();
+            $this->load->model("tool/layout");
+            $data = $this->model_tool_layout->getLayout($this->request->get['route']);
             $data['uType'] = $uType;
             $data['broken'] = $err!=0?$err:NULL;
             $data['matches'] = $mat!=0?$mat:NULL;

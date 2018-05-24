@@ -4,7 +4,8 @@ class ControllerDonorShow extends Controller {
     
     public function index() {
         $this->load->model('common/donor');
-        
+        $this->load->model("tool/layout");
+        $data = $this->model_tool_layout->getLayout($this->request->get['route']);
         $data['donor'] = $this->model_common_donor->getDonorShow($this->request->get['numb']);
         $this->load->model('tool/image');
         $this->document->setTitle($data['donor']['name']);
@@ -89,9 +90,6 @@ class ControllerDonorShow extends Controller {
         
         $data['go_site'] = HTTPS_CATALOG.'index.php?route=product/product&product_id=';
         $data['placeholder'] = $this->model_tool_image->resize('no_image.png', 100, 100);
-        $data['header'] = $this->load->controller('common/header');
-        $data['column_left'] = $this->load->controller('common/column_left');
-        $data['footer'] = $this->load->controller('common/footer');
         $data['token_add'] = $this->session->data['token'];
         
         $this->response->setOutput($this->load->view('donor/show', $data));

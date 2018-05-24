@@ -14,9 +14,9 @@ class ControllerSettingLibraries extends Controller {
     );
     public function index() {
         $this->load->model('setting/prodtype');
-        $this->load->model('tool/layout');
         $this->load->model('tool/product');
-        $data = $this->model_tool_layout->getLayout($this->info);
+        $this->load->model('tool/layout');
+        $data = $this->model_tool_layout->getLayout($this->request->get['route']);
         if(!empty($this->request->post)){
             //exit(var_dump($this->request->post));
             $this->model_tool_product->saveLibrary($this->request->post);
@@ -30,7 +30,7 @@ class ControllerSettingLibraries extends Controller {
         $this->load->model('setting/prodtype');
         $this->load->model('tool/layout');
         $this->load->model('tool/product');
-        $data = $this->model_tool_layout->getLayout($this->info);
+        $data = $this->model_tool_layout->getLayout($this->request->get['route']);
         $data['library'] = $this->model_tool_product->getLibrInfo($this->request->get['lib']);
         $data['library_id'] = $this->request->get['lib'];
         $this->response->setOutput($this->load->view('setting/librEdit', $data));

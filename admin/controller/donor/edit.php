@@ -3,29 +3,11 @@
 class ControllerDonorEdit extends Controller {
     public function index() {
         $this->load->model("common/donor");
+        $this->load->model("tool/layout");
+        $data = $this->model_tool_layout->getLayout($this->request->get['route']);
         $data['donor'] = $this->model_common_donor->getDonorInfo($this->request->get['donor_id']);
 //        exit(var_dump($data['donor']));
         $this->load->model('tool/image');
-        $this->document->setTitle($data['donor']['name']);
-
-        $data['heading_title'] = $data['donor']['name'];
-
-        $data['breadcrumbs'] = array();
-
-        $data['breadcrumbs'][] = array(
-                'text' => 'Главная',
-                'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
-        );
-
-        $data['breadcrumbs'][] = array(
-                'text' => 'Список доноров',
-                'href' => $this->url->link('donor/list', 'token=' . $this->session->data['token'], true)
-        );
-        
-        $data['breadcrumbs'][] = array(
-                'text' => 'Редактирование - '.$data['donor']['name'],
-                'href' => $this->url->link('donor/edit', 'token=' . $this->session->data['token'], true)
-        );
         $i = 0;
         $images = $this->model_common_donor->getImages($this->request->get['donor_id']);
 //        exit(var_dump($images));
@@ -136,9 +118,6 @@ class ControllerDonorEdit extends Controller {
         $data['go_site'] = HTTPS_CATALOG.'index.php?route=product/product&product_id=';
         $data['action'] = $this->url->link('donor/edit/save_form', 'token=' . $this->session->data['token'] . '&donor_id=' . $this->request->get['donor_id'], true);
         $data['placeholder'] = $this->model_tool_image->resize('no_image.png', 100, 100);
-        $data['header'] = $this->load->controller('common/header');
-        $data['column_left'] = $this->load->controller('common/column_left');
-        $data['footer'] = $this->load->controller('common/footer');
         $data['token_add'] = $this->session->data['token'];
         $data['utype'] = $this->session->data['uType'];
         $this->response->setOutput($this->load->view('donor/edit', $data));

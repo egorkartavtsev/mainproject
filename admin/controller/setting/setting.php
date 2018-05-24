@@ -3,6 +3,8 @@ class ControllerSettingSetting extends Controller {
 	private $error = array();
 
 	public function index() {
+            $this->load->model('tool/layout');
+            $data = $this->model_tool_layout->getLayout($this->request->get['route']);
 		$this->load->language('setting/setting');
 
 		$this->document->setTitle($this->language->get('heading_title'));
@@ -1368,9 +1370,7 @@ class ControllerSettingSetting extends Controller {
 			$data['config_sms_copy'] = $this->config->get('config_sms_copy');
 		}
 
-		$data['header'] = $this->load->controller('common/header');
-		$data['column_left'] = $this->load->controller('common/column_left');
-		$data['footer'] = $this->load->controller('common/footer');
+		
 
 		$this->response->setOutput($this->load->view('setting/setting', $data));
 	}

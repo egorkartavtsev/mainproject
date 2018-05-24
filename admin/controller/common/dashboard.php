@@ -2,36 +2,15 @@
 class ControllerCommonDashboard extends Controller {
 	public function index() {
 		$this->load->language('common/dashboard');
-
-		$this->document->setTitle($this->language->get('heading_title'));
-
-		$data['heading_title'] = $this->language->get('heading_title');
+                $this->load->model('tool/layout');
+                $data = $this->model_tool_layout->getLayout($this->request->get['route']);
+                
+		
                 $data['ses_token'] = $this->session->data['token'];
 		$data['breadcrumbs'] = array();
-                $data['fcItems'] = array();
-                        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."user_customs WHERE user_id = ".(int)$this->user->getId()." ");
-                        if($sup->num_rows){
-                            $items = explode(";", $sup->row['fast_call']);
-                            foreach ($items as $item) {
-                                if(strlen(trim($item))!== 0){
-                                    $query = $this->db->query("SELECT * FROM ".DB_PREFIX."controllers WHERE controller = '".trim($item)."'");
-                                    $data['fcItems'][] = array(
-                                        'href'  => $this->url->link(trim($item), 'token='.$this->session->data['token']),
-                                        'text'  => $query->row['name'],
-                                        'icon'  => $query->row['icon']
-                                    );
-                                }
-                            }
-                        }
-		$data['breadcrumbs'][] = array(
-			'text' => $this->language->get('text_home'),
-			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
-		);
-
-		$data['breadcrumbs'][] = array(
-			'text' => $this->language->get('heading_title'),
-			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
-		);
+                $fcItems = $this->user->getLayout();
+                $data['fcItems'] = $fcItems['fcmenu'];
+		
 
 		// Check install directory exists
 		if (is_dir(dirname(DIR_APPLICATION) . '/install')) {
@@ -89,10 +68,6 @@ class ControllerCommonDashboard extends Controller {
 				$column = array();
 			}
 		}
-
-		$data['header'] = $this->load->controller('common/header');
-		$data['column_left'] = $this->load->controller('common/column_left');
-		$data['footer'] = $this->load->controller('common/footer');
 
 		// Run currency update
 		if ($this->config->get('config_currency_auto')) {

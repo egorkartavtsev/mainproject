@@ -54,9 +54,8 @@
                   </tr>
               </table>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-5">
               <table class="table table-bordered table-striped">
-                <?php if(count($order['products'])){ ?>
                 <thead>
                     <tr>
                         <td>Наименование</td>
@@ -67,6 +66,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                <?php if(isset($order['products']) && count($order['products'])){ ?>
                   <?php foreach($order['products'] as $prod){ ?>
                     <tr>
                         <td><a href="<?php echo $catalog.'&product_id='.$prod['product_id'];?>"><?php echo $prod['name'];?></a></td>
@@ -76,6 +76,7 @@
                         <td><button class="btn btn-danger" btn_type="delete_prod" prod="<?php echo $prod['product_id']?>"><i class="fa fa-trash-o"></i></button></td>
                     </tr>
                   <?php } ?>
+                <?php } ?>
                   <tr><td colspan="3" style="text-align: right;">Итого:</td><td colspan="2"><?php echo $order['total'];?></td></tr>
                   <tr>
                       <td colspan="3">
@@ -87,10 +88,9 @@
                       </td>
                   </tr>
                 </tbody>
-                <?php } ?>
               </table>
           </div>
-          <div class="col-md-4" id="debug">
+          <div class="col-md-3" id="debug">
               <div class="col-lg-8">
                   <label>Состояние заказа:</label>
                   <select id="order-status" class="form-control">
@@ -115,7 +115,7 @@
     
     $('#save_order').click(function(){
         ajax({
-            url: 'index.php?route=sale/orders_info/save_status&token='+getURLVar('token'),
+            url: 'index.php?route=report/orders_info/save_status&token='+getURLVar('token'),
             method: 'post',
             data: {
                 stat: $('#order-status').val(),
@@ -131,7 +131,7 @@
     $('[btn_type=added_prod]').click(function(){
         var vin = $(this).parent().parent().find('input[id=addedVin]').val();
         ajax({
-            url: 'index.php?route=sale/orders_info/added_prod&token='+getURLVar('token'),
+            url: 'index.php?route=report/orders_info/added_prod&token='+getURLVar('token'),
             method: 'post',
             data: {
                 vin: vin,
@@ -151,7 +151,7 @@
     $('[btn_type=delete_prod]').click(function(){
         var prod = $(this).attr('prod');
         ajax({
-            url: 'index.php?route=sale/orders_info/delete_prod&token='+getURLVar('token'),
+            url: 'index.php?route=report/orders_info/delete_prod&token='+getURLVar('token'),
             method: 'post',
             data: {
                 prod: prod,

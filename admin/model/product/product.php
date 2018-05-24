@@ -262,7 +262,8 @@ class ModelProductProduct extends Model {
     
     public function setCompl($newItem, $heading) {
         if($this->db->query("UPDATE ".DB_PREFIX."product SET comp = '".$heading."' WHERE product_id = '".$newItem."' ")){
-            $this->recountCompl($heading);
+            $this->load->model('tool/complect');
+            $this->model_tool_complect->compReprice($heading);
             return 1;
         } else {
             return 0;
@@ -271,7 +272,8 @@ class ModelProductProduct extends Model {
     
     public function remCompl($item, $heading) {
         $this->db->query("UPDATE ".DB_PREFIX."product SET comp = '' WHERE product_id = '".$item."' ");
-        $this->recountCompl($heading);
+        $this->load->model('tool/complect');
+        $this->model_tool_complect->compReprice($heading);
     }
     
     private function recountCompl($heading){

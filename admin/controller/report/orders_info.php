@@ -1,9 +1,11 @@
 <?php
 
-class ControllerSaleOrdersInfo extends Controller{
+class ControllerReportOrdersInfo extends Controller{
     public function index() {
         $this->load->model('tool/order');
-        $data['href'] = 'index.php?route=sale/order_info&token='.$this->session->data['token'];
+        $this->load->model("tool/layout");
+        $data = $this->model_tool_layout->getLayout($this->request->get['route']);
+        $data['href'] = 'index.php?route=report/order_info&token='.$this->session->data['token'];
         $url = '';
         if(isset($this->request->get['page'])){
             $offset = 30*($this->request->get['page']-1);
@@ -25,21 +27,7 @@ class ControllerSaleOrdersInfo extends Controller{
         $data['order'] = $this->model_tool_order->getOrderInfo($this->request->get['order_id']);
         $data['statuses'] = $this->model_tool_order->getOrderStatuses();
         $data['catalog'] = HTTP_CATALOG.'index.php?route=catalog/product';
-        $this->document->setTitle('Информация о заказе');
-        $data['breadcrumbs'] = array();
-        $data['breadcrumbs'][] = array(
-                'text' => 'Главная',
-                'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
-        );
-
-        $data['breadcrumbs'][] = array(
-                'text' => 'Заказы',
-                'href' => $this->url->link('sale/orders', 'token=' . $this->session->data['token'].$url, true)
-        );
-        $data['btn_back'] = $this->url->link('sale/orders', 'token=' . $this->session->data['token'].$url, TRUE);
-        $data['header'] = $this->load->controller('common/header');
-        $data['column_left'] = $this->load->controller('common/column_left');
-        $data['footer'] = $this->load->controller('common/footer');
+        $data['btn_back'] = $this->url->link('report/orders', 'token=' . $this->session->data['token'].$url, TRUE);
         if(!isset($filter)){
             $filter = 0;
         }

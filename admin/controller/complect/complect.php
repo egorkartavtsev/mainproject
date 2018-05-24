@@ -2,7 +2,8 @@
 class ControllerComplectComplect extends Controller {
     
     public function index(){
-        $data = $this->getLayout();
+        $this->load->model('tool/layout');
+        $data = $this->model_tool_layout->getLayout($this->request->get['route']);
         $this->load->model('complect/complect');
         $data['complects'] = $this->model_complect_complect->getTotalComplects();
         $data['token'] = $this->session->data['token'];
@@ -10,12 +11,8 @@ class ControllerComplectComplect extends Controller {
     }
     
     public function create() {
-        $data = $this->getLayout();
-        $data['breadcrumbs'][] = array(
-            'href' => 'index.php?route=complect/complect/create&token='.$this->session->data['token'],
-            'text' => 'Создание комплекта'
-        );
-        $data['token'] = $this->session->data['token'];
+        $this->load->model('tool/layout');
+        $data = $this->model_tool_layout->getLayout($this->request->get['route']);
         $this->response->setOutput($this->load->view('complect/create', $data));
     }
 
@@ -73,50 +70,20 @@ class ControllerComplectComplect extends Controller {
     }
     
     public function deleteAccss(){
-        $this->db->query("UPDATE ".DB_PREFIX."product SET comp = '' WHERE sku = '".$this->request->post['accss']."'");
+        $this->load->model('tool/complect');
+        $heading = $this->model_tool_complect->isCompl($this->request->post['accss']);
+        $this->model_tool_complect->compReprice($heading['complect']['heading']);
+        $this->db->query("UPDATE ".DB_PREFIX."product SET comp = '' WHERE vin = '".$this->request->post['accss']."'");
     }
 
         public function edit() {
-        $data = $this->getLayout();
+        $this->load->model('tool/layout');
+        $data = $this->model_tool_layout->getLayout($this->request->get['route']);
         $this->load->model('complect/complect');
         $complect = $this->request->get['complect'];
         $data['complect'] = $this->model_complect_complect->getComplect($complect);
         $data['id'] = $complect;
-        $data['heading_title'] = $data['complect']['name'];
-        $data['breadcrumbs'][] = array(
-            'href' => 'index.php?route=complect/complect/edit&token='.$this->session->data['token'].'&complect='.$complect,
-            'text' => 'Редактирование комплекта'
-        );
-        $data['token'] = $this->session->data['token'];
         $this->response->setOutput($this->load->view('complect/edit', $data));
-    }
-    
-    public function getLayout() {
-        
-        
-                $this->load->language('complect/complect');
-
-		$this->document->setTitle($this->language->get('heading_title'));
-
-		$data['heading_title'] = $this->language->get('heading_title');
-
-		$data['breadcrumbs'] = array();
-
-		$data['breadcrumbs'][] = array(
-			'text' => $this->language->get('text_home'),
-			'href' => $this->url->link('complect/complect', 'token=' . $this->session->data['token'], true)
-		);
-
-		$data['breadcrumbs'][] = array(
-			'text' => $this->language->get('heading_title'),
-			'href' => $this->url->link('complect/complect', 'token=' . $this->session->data['token'], true)
-		);
-                $data['header'] = $this->load->controller('common/header');
-		$data['column_left'] = $this->load->controller('common/column_left');
-		$data['footer'] = $this->load->controller('common/footer');
-                
-                return $data;
-        
     }
     
     function searchComplects() {

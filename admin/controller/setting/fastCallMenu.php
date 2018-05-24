@@ -16,40 +16,11 @@ class ControllerSettingFastCallMenu extends Controller {
     public function index() {
         $this->load->model('tool/product');
         $this->load->model('tool/layout');
-        $data = $this->model_tool_layout->getLayout($this->info);
-        $items = $this->model_tool_product->getItems();
-        $ignore = array(
-			'common/dashboard',
-			'common/excelTools',
-			'common/column_left',
-                        'common/filemanager',
-                        'donor/edit',
-                        'donor/show',
-                        'donor/show',
-                        'product/product_edit',
-                        'setting/fastCallMenu',
-                        'sale/order',
-                        'sale/recurring',
-                        'sale/return',
-                        'sale/voucher',
-                        'sale/voucher_theme',
-                        'tiresdisc/edit',
-			'common/startup',
-			'common/login',
-			'common/logout',
-			'common/forgotten',
-			'common/reset',			
-			'common/footer',
-			'common/header',
-			'error/not_found',
-			'error/permission'
-		);
-        $data['fcItems'] = $this->model_tool_product->getFCMenuItems($this->user->getId());
-        foreach ($items as $item){
-            if($this->user->hasPermission('access', $item['controller']) && !in_array($item['controller'], array_column($data['fcItems'], 'name')) && !in_array($item['controller'], $ignore)){
-                $data['items'][] = $item;
-            }
-        }
+        $data = $this->model_tool_layout->getLayout($this->request->get['route']);
+        
+        $fcItems = $this->user->getLayout();
+        $data['fcItems'] = $fcItems['fcmenu'];
+        $data['items'] = $fcItems['leftcolumn'];
         $this->response->setOutput($this->load->view('setting/fastCallMenu', $data));
     }
     

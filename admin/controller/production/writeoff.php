@@ -1,7 +1,11 @@
 <?php
 class ControllerProductionWriteoff extends Controller {
     public function index() {
-        $data = $this->getLayout();
+        $this->load->language('common/write_off');
+        $this->load->model('tool/layout');
+        $data = $this->model_tool_layout->getLayout($this->request->get['route']);
+        $data['notice'] = $this->language->get('notice');
+        $data['lable_vn'] = $this->language->get('lable_vn');
         $data['token_wo'] = $this->session->data['token'];
         if(!empty($this->request->post)){
             $this->load->model('common/write_off');
@@ -222,7 +226,7 @@ class ControllerProductionWriteoff extends Controller {
             'href' => $this->url->link('common/write_off', 'token=' . $this->session->data['token'], true)
         );
         $data['header'] = $this->load->controller('common/header');
-        $data['column_left'] = $this->load->controller('common/column_left');
+        $data['column_left'] = $this->load->controller('layout/columnleft');
         $data['footer'] = $this->load->controller('common/footer');
         $data['token_em'] = $this->session->data['token'];
         return $data;

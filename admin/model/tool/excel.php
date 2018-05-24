@@ -177,7 +177,7 @@ class ModelToolExcel extends Model {
         }
         foreach ($letters as $key => $letter) {
             if($key!=='photos'){$sheet->getColumnDimension($letter)->setAutoSize(true);}
-            $sheet->setCellValueExplicit($letter.$row, isset($data[$key])?$data[$key]:$sheet->getCell($letter.$row), PHPExcel_Cell_DataType::TYPE_STRING);
+            $sheet->setCellValueExplicit($letter.$row, isset($data[$key])?(string)$data[$key]:(string)$sheet->getCell($letter.$row), PHPExcel_Cell_DataType::TYPE_STRING);
             $sheet->getStyle($letter.$row.':'.$letter.$row)->applyFromArray($styleArray);
         }
         return $sheet;

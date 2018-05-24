@@ -15,15 +15,17 @@
       
       <div class="alert alert-success" id="FCPrev">
           <h4>Предварительный вид меню быстрого доступа: </h4>
-          <?php foreach($fcItems as $fc){ ?>
-              <button class="btn btn-success" nameItem="<?php echo $fc['name'];?>" btn_type="dropFCItem"><i class="fa <?php echo $fc['icon'];?>"></i> <?php echo $fc['text']==''?$fc['name']:$fc['text'];?></button> 
+          <?php foreach($fcItems as $key => $fc){ ?>
+              <button class="btn btn-success" nameItem="<?php echo $key;?>" btn_type="dropFCItem"><i class="fa <?php echo $fc['icon'];?>"></i> <?php echo $fc['text']==''?$fc['name']:$fc['text'];?></button> 
           <?php }?>
       </div>
       
       <div id="totalAvalItems">
           <h4>Доступные пункты меню: </h4>
           <?php foreach($items as $fc){ ?>
-          <div class="pull-left"><button class="btn btn-info" nameItem="<?php echo $fc['controller'];?>" btn_type="addFCItem"><i class="fa <?php echo $fc['icon'];?>"></i> <?php echo $fc['name']==''?$fc['controller']:$fc['name'];?></button> </div> 
+            <?php foreach($fc['childs'] as $id => $item){ ?>
+                <div class="pull-left"><button class="btn btn-info" nameItem="<?php echo $id;?>" btn_type="addFCItem"><i class="fa <?php echo $item['icon'];?>"></i> <?php echo $item['text'];?></button> </div> 
+            <?php }?>
           <?php }?>
       </div>
   </div>

@@ -103,9 +103,9 @@ $(document).ready(function() {
     
     $(document).on('change', '[name*="complect"]', function(){
         if($(this).val()==='set'){
-            $('#cHeader').attr('type', 'text');
+            $(this).parent().find('#cHeader').attr('type', 'text');
         } else {
-            $('#cHeader').attr('type', 'hidden');
+            $(this).parent().find('#cHeader').attr('type', 'hidden');
         }
     })
     
@@ -429,7 +429,7 @@ $(document).ready(function() {
         var type = button.parent().find('select').val();
         var num = button.attr('num');
         ajax({
-            url:"index.php?route=product/product_add/addToList&token="+getURLVar('token'),
+            url:"index.php?route=production/addition/addToList&token="+getURLVar('token'),
             statbox:"status",
             method:"POST",
             data: {type: type, num},

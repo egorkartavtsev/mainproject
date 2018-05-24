@@ -15,6 +15,7 @@ class ControllerCommonWriteOff extends Controller {
             foreach ($info as $item) {
                 $APinfo = array('vin' => $item['vin'], 'write_off' => 1, 'price' => $item['price']);
                 $this->model_tool_xml->findARPart($APinfo);
+                $this->model_tool_xml->findToRemove($item['vin']);
             }
             $this->response->setOutput($this->load->view('common/write_off_form', $data));
 //            $this->response->redirect($this->url->link('common/write_off/downloadInvoice', 'token=' . $this->session->data['token'] . '&products=' . $prods . '&invoice=' .$id_invoice, true));

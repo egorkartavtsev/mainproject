@@ -69,7 +69,7 @@ function chooseCPC($id, $name){
 
 function setCompl($item, $heading){
     ajax({
-        url:"index.php?route=product/product_edit/setCompl&token=" + getURLVar('token'),
+        url:"index.php?route=production/catalog/setCompl&token=" + getURLVar('token'),
         statbox:"status",
         method:"POST",
         data:
@@ -92,7 +92,7 @@ function setCompl($item, $heading){
 
 function remCompl($item, $heading){
     ajax({
-        url:"index.php?route=product/product_edit/remCompl&token=" + getURLVar('token'),
+        url:"index.php?route=production/catalog/remCompl&token=" + getURLVar('token'),
         statbox:"status",
         method:"POST",
         data:

@@ -80,7 +80,7 @@
   </div>
   <script type="text/javascript">
       $('[btn_type=clear_filter]').click(function(){
-          location = 'index.php?route=sale/orders&token='+getURLVar('token');
+          location = 'index.php?route=report/orders&token='+getURLVar('token');
       });
       $('[btn_type=order_filter]').click(function(){
           var url = '';
@@ -89,7 +89,7 @@
                   url = url+'&'+$(this).attr('id')+'='+$(this).val();
               }
           })
-          location = 'index.php?route=sale/orders&token='+getURLVar('token')+url;
+          location = 'index.php?route=report/orders&token='+getURLVar('token')+url;
       });
       $('input[id*=\'filter\']').on('keydown', function(e) {
             if (e.keyCode == 13) {

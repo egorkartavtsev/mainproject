@@ -126,7 +126,7 @@
     <script type="text/javascript">
         $("#heading").on('input', function(){
             ajax({
-                url:"index.php?route=product/product_edit/getCompl&token=" + getURLVar('token'),
+                url:"index.php?route=production/catalog/getCompl&token=" + getURLVar('token'),
                 statbox:"status",
                 method:"POST",
                 data:

@@ -1,24 +1,12 @@
 <?php
 
-class ControllerSaleOrders extends Controller{
+class ControllerReportOrders extends Controller{
     public function index() {
         $this->load->model('tool/order');
-        $this->document->setTitle('Заказы');
-        $data['breadcrumbs'] = array();
-        $data['breadcrumbs'][] = array(
-                'text' => 'Главная',
-                'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
-        );
-
-        $data['breadcrumbs'][] = array(
-                'text' => 'Заказы',
-                'href' => $this->url->link('sale/orders', 'token=' . $this->session->data['token'], true)
-        );
-        $data['header'] = $this->load->controller('common/header');
-        $data['column_left'] = $this->load->controller('common/column_left');
-        $data['footer'] = $this->load->controller('common/footer');
+        $this->load->model("tool/layout");
+        $data = $this->model_tool_layout->getLayout($this->request->get['route']);
         $url = '';
-        $data['href'] = 'index.php?route=sale/orders_info&token='.$this->session->data['token'];
+        $data['href'] = 'index.php?route=report/orders_info&token='.$this->session->data['token'];
         if(isset($this->request->get['page'])){
             $offset = 30*($this->request->get['page']-1);
             $page = $this->request->get['page'];

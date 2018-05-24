@@ -1,25 +1,15 @@
 <?php
 
 class ControllerProductionAddition extends Controller{
-    private $info = array(
-        'this'      => array(
-                'name'  => 'Создать продукт',
-                'link'  => 'product/product_add'
-        ),
-        'parent'    => array(
-                'name'  => 'Главная',
-                'link'  => 'common/dashboard'
-        ),
-        'description'   => 'Внесение продукции в программу.'
-    );
+    
     public function index() {
         $this->load->model('tool/forms');
-        $this->load->model('tool/layout');
         $this->load->model('tool/product');
-        $data = $this->model_tool_layout->getLayout($this->info);
+        $this->load->model('tool/layout');
+        $data = $this->model_tool_layout->getLayout($this->request->get['route']);
         $types = $this->model_tool_product->getStructures();
         $data['firstSelect'] = '<select class="form-control">';
-        $data['formaction'] = $this->url->link($this->info['this']['link'], 'token='.$this->session->data['token']);
+        $data['formaction'] = $this->url->link('production/addition', 'token='.$this->session->data['token']);
         foreach ($types as $type) {
             $data['firstSelect'].='<option value="'.$type['type_id'].'">'.$type['text'].'</option>';
         }

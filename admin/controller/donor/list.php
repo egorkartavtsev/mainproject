@@ -3,6 +3,8 @@
 class ControllerDonorList extends Controller {
     public function index(){
         $this->load->model("common/donor");
+        $this->load->model("tool/layout");
+        $data = $this->model_tool_layout->getLayout($this->request->get['route']);
         $filter = array();
         $donors = $this->model_common_donor->getDonors($filter);
         $this->load->model('tool/image');
@@ -42,24 +44,6 @@ class ControllerDonorList extends Controller {
                 'show' => $this->url->link('donor/show', 'token=' . $this->session->data['token'].'&numb='.$donor['numb'], true)
             );
         }
-        $this->document->setTitle('Список доноров');
-
-        $data['heading_title'] = 'Список доноров';
-
-        $data['breadcrumbs'] = array();
-
-        $data['breadcrumbs'][] = array(
-                'text' => 'Главная',
-                'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
-        );
-
-        $data['breadcrumbs'][] = array(
-                'text' => 'Список доноров',
-                'href' => $this->url->link('donor/list', 'token=' . $this->session->data['token'], true)
-        );
-        $data['header'] = $this->load->controller('common/header');
-        $data['column_left'] = $this->load->controller('common/column_left');
-        $data['footer'] = $this->load->controller('common/footer');
         $data['token_add'] = $this->session->data['token'];
         $data['utype'] = $this->session->data['uType'];
         $this->response->setOutput($this->load->view('donor/list', $data));

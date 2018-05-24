@@ -107,6 +107,8 @@ class ControllerSettingStore extends Controller {
 	}
 
 	protected function getList() {
+                $this->load->model('tool/layout');
+                $data = $this->model_tool_layout->getLayout($this->request->get['route']);
 		$url = '';
 
 		if (isset($this->request->get['page'])) {
@@ -183,10 +185,6 @@ class ControllerSettingStore extends Controller {
 		} else {
 			$data['selected'] = array();
 		}
-
-		$data['header'] = $this->load->controller('common/header');
-		$data['column_left'] = $this->load->controller('common/column_left');
-		$data['footer'] = $this->load->controller('common/footer');
 
 		$this->response->setOutput($this->load->view('setting/store_list', $data));
 	}

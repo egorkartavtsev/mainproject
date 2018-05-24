@@ -91,6 +91,7 @@ class ControllerProductProductEdit extends Controller {
         $this->model_tool_forms->updateProduct($info, $this->request->get['product_id']);
         $alinfo = $this->request->post['info'];
         $alinfo['vin'] = $info['vin'];
+        $alinfo['structure'] = $info['structure'];
 //        exit(var_dump($alinfo));
         $alinfo['pid'] = $this->request->get['product_id'];
         if($this->session->data['uType']==='adm' && $this->request->post['allowavito']==='да'){

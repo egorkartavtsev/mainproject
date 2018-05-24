@@ -390,6 +390,7 @@ class ModelToolProduct extends Model {
         $sup = $this->db->query("SELECT structure, vin FROM ".DB_PREFIX."product WHERE product_id = ".(int)$id);
         $structure = $this->getProdTypeTemplate($sup->row['structure']);
         $result = array();
+        $result['structure'] = $sup->row['structure'];
         $result['temp'] = $structure['temp'];
         $result['vin'] = $sup->row['vin'];
         $result['desctemp'] = $structure['desctemp'];

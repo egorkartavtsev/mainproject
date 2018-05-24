@@ -1,8 +1,19 @@
 <?php
 
 class ModelToolLayout extends Model {
-    public function getLayout($info) {
-        $this->document->setTitle($info['this']['name']);
+    public function getLayout($route) {
+        $module = explode("/", $route);
+        $sup = $this->db->query("SELECT "
+                    . "m.name AS name,"
+                    . "m.text AS text,"
+                    . "m.description AS description,"
+                    . "m1.name AS parent, "
+                    . "m1.text AS parenttext "
+                . "FROM ".DB_PREFIX."modules  m "
+                . "LEFT JOIN ".DB_PREFIX."modules  m1 on m.parent_id = m1.id "
+                . "WHERE m.name = '".$module[1]."' "
+                    . "AND m.parent_id = m1.id ");
+        $this->document->setTitle($sup->row['text']);
 /***************************breadcrumbs******************************/
         $data['breadcrumbs'] = array();
 
@@ -12,21 +23,21 @@ class ModelToolLayout extends Model {
         );
         
         $data['breadcrumbs'][] = array(
-            'text' => $info['parent']['name'],
-            'href' => $this->url->link($info['parent']['link'], 'token=' . $this->session->data['token'], true)
+            'text' => $sup->row['parenttext'],
+            'href' => FALSE
         );
         
         $data['breadcrumbs'][] = array(
-            'text' => $info['this']['name'],
-            'href' => $this->url->link($info['this']['link'], 'token=' . $this->session->data['token'], true)
+            'text' => $sup->row['text'],
+            'href' => $this->url->link($sup->row['parent'].'/'.$sup->row['name'], 'token=' . $this->session->data['token'], true)
         );
 /*****************************page_struct*****************************/
-        $data['heading_title'] = $info['this']['name'];
-        $data['header'] = $this->load->controller('common/header');
-        $data['column_left'] = $this->load->controller('common/column_left');
+        $data['heading_title'] = $sup->row['text'];
+        $data['header'] = $this->load->controller('layout/header');
+        $data['column_left'] = $this->load->controller('layout/columnleft');
         $data['footer'] = $this->load->controller('common/footer');
         $data['token'] = $this->session->data['token'];
-        $data['description'] = $info['description'];
+        $data['description'] = $sup->row['description'];
         return $data;
     }
 }

@@ -3,30 +3,14 @@
 class ControllerDonorCreate extends Controller {
     public function index(){
         $this->load->model("common/donor");
+        $this->load->model("tool/layout");
+        $data = $this->model_tool_layout->getLayout($this->request->get['route']);
         if(!empty($this->request->post)){
             if($this->request->files['photo']['name'][0]!=""){
                 $this->setPhoto($this->request->post['number']);
             }
             $this->model_common_donor->create($this->request->post);
         }
-        $this->document->setTitle('Создать донора');
-
-        $data['heading_title'] = 'Создать донора';
-
-        $data['breadcrumbs'] = array();
-
-        $data['breadcrumbs'][] = array(
-                'text' => 'Главная',
-                'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
-        );
-
-        $data['breadcrumbs'][] = array(
-                'text' => 'Создать донора',
-                'href' => $this->url->link('donor/create', 'token=' . $this->session->data['token'], true)
-        );
-        $data['header'] = $this->load->controller('common/header');
-        $data['column_left'] = $this->load->controller('common/column_left');
-        $data['footer'] = $this->load->controller('common/footer');
         $data['token_add'] = $this->session->data['token'];
         //берём марки
         $query = $this->db->query("SELECT id, name FROM ".DB_PREFIX."brand "
