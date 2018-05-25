@@ -11,7 +11,8 @@ class ControllerCommonDescTemp extends Controller {
 
 
     public function index() {
-            $data = $this->getLayout();
+            $this->load->model('tool/layout');
+            $data = $this->model_tool_layout->getLayout($this->request->get['route']);
             $data['token'] = $this->session->data['token'];
             $data['ckeditor'] = $this->config->get('config_editor_default');
             $this->load->model('common/tempdesc');

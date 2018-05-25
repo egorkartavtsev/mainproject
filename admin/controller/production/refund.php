@@ -4,7 +4,8 @@ class ControllerProductionRefund extends Controller {
     
     public function index(){
 //        exit(var_dump($this->session->data));
-        $data = $this->getLayout();
+        $this->load->model('tool/layout');
+        $data = $this->model_tool_layout->getLayout($this->request->get['route']);
         if(isset($this->request->get['result'])){
             $data['result'] = '<div class="col-lg-12 well well-sm"><p>';
                 if($this->request->get['result']=='success'){

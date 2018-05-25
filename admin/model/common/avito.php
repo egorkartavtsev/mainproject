@@ -64,8 +64,8 @@ class ModelCommonAvito extends Model {
     }
     
     public function getPCID($pcat) {
-        $quer = $this->db->query("SELECT avitoId AS id FROM ".DB_PREFIX."lib_fills WHERE name = '".$pcat."'");
-        return $quer->row['id'];
+        $quer = $this->db->query("SELECT avitoId FROM ".DB_PREFIX."lib_fills WHERE id = '".$pcat."'");
+        return $quer->row['avitoId'];
     }
     
     public function getDescTempl() {

@@ -410,18 +410,6 @@ class ControllerProductionCatalog extends Controller {
 			$url .= '&page=' . $this->request->get['page'];
 		}
 
-		$data['breadcrumbs'] = array();
-
-		$data['breadcrumbs'][] = array(
-			'text' => $this->language->get('text_home'),
-			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
-		);
-
-		$data['breadcrumbs'][] = array(
-			'text' => $this->language->get('heading_title'),
-			'href' => $this->url->link('catalog/product', 'token=' . $this->session->data['token'] . $url, true)
-		);
-
 		$data['add'] = $this->url->link('catalog/product/add', 'token=' . $this->session->data['token'] . $url, true);
 		$data['copy'] = $this->url->link('catalog/product/copy', 'token=' . $this->session->data['token'] . $url, true);
 		$data['delete'] = $this->url->link('production/catalog/delete', 'token=' . $this->session->data['token'] . $url, true);
@@ -526,8 +514,6 @@ class ControllerProductionCatalog extends Controller {
                             );
                         }
 		}
-
-		$data['heading_title'] = $this->language->get('heading_title');
 
 		$data['text_list'] = $this->language->get('text_list');
 		$data['text_enabled'] = $this->language->get('text_enabled');
@@ -706,7 +692,7 @@ class ControllerProductionCatalog extends Controller {
 		$pagination->total = $product_total;
 		$pagination->page = $page;
 		$pagination->limit = $this->config->get('config_limit_admin');
-		$pagination->url = $this->url->link('catalog/product', 'token=' . $this->session->data['token'] . $url . '&page={page}', true);
+		$pagination->url = $this->url->link('production/catalog', 'token=' . $this->session->data['token'] . $url . '&page={page}', true);
 
 		$data['pagination'] = $pagination->render();
 
@@ -992,19 +978,17 @@ class ControllerProductionCatalog extends Controller {
         $this->load->model('tool/forms');
         $this->load->model('tool/product');
         $info = $this->model_tool_product->getProdStructure($this->request->post, $this->request->get['product_id']);
-//        exit(var_dump($info));
         $this->model_tool_forms->updateProduct($info, $this->request->get['product_id']);
-        $alinfo = $this->request->post['info'];
-        $alinfo['vin'] = $info['vin'];
-        $alinfo['structure'] = $info['structure'];
-//        exit(var_dump($alinfo));
-        $alinfo['pid'] = $this->request->get['product_id'];
-        if($this->session->data['uType']==='adm' && $this->request->post['allowavito']==='да'){
-            $this->model_tool_xml->findAd($alinfo);
+        $info['options']['avitoname'] = $this->request->post['info']['avitoname'];
+        $info['options']['vin'] = $info['vin'];
+        $info['options']['pid'] = $this->request->get['product_id'];
+//        exit(var_dump($this->request->post));
+        if($this->user->hasPermission('', 'common/autoload') && $this->request->post['allowavito']==='да'){
+            $this->model_tool_xml->avitoFind($info);
         }
-        $alinfo['name'] = $alinfo['avitoname'];
-//        exit(var_dump($alinfo));
-        $this->model_tool_xml->findARPart($alinfo);
+        $this->model_tool_xml->ARUFind($info);
+        
+//        $this->model_tool_xml->findARPart($alinfo);
         $this->response->redirect($this->url->link('production/catalog', 'token=' . $this->session->data['token'], true));
 //        exit(var_dump($this->request->post));
     }

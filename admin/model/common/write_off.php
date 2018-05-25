@@ -63,7 +63,6 @@ class ModelCommonWriteoff extends Model {
                         . "date_mod = NOW(), "
                         . "manager = '".$data['manager']."'");
             $endq = $data['quan'] - $data['quanfact'];
-            $this->model_tool_xml->findToRemove($data['vin']);
             
             $this->db->query("INSERT INTO ".DB_PREFIX."product_history ("
                 . "sku, "

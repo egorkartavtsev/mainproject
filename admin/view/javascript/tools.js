@@ -112,7 +112,7 @@ $(document).ready(function() {
     $(document).on('click', '[btn_type=descText]', function(){
         var target = $(this).attr('desc-target');
         ajax({
-            url:"index.php?route=catalog/product/getDesc&token="+getURLVar('token'),
+            url:"index.php?route=production/catalog/getDesc&token="+getURLVar('token'),
             statbox:"status",
             method:"POST",
             data:
