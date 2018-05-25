@@ -17,10 +17,16 @@ class ControllerSettingLibraries extends Controller {
         $this->load->model('tool/product');
         $this->load->model('tool/layout');
         $data = $this->model_tool_layout->getLayout($this->request->get['route']);
+        $librs = $this->model_tool_product->getLibrs();
+        foreach ($librs as $lib) {
+            $data['libr_list'][] = array(
+                'text' => $lib['text'],
+                'href' => $this->url->link('setting/libraries/edit', 'token='.$this->session->data['token'].'&lib='.$lib['library_id'])
+            );
+        }
         if(!empty($this->request->post)){
             //exit(var_dump($this->request->post));
             $this->model_tool_product->saveLibrary($this->request->post);
-            $data = $this->model_tool_layout->getLayout($this->info);
             $data['success'] = 'Библиотека успешно создана. Теперь вы можете её наполнить. Библиотека доступна для редактирования в левом меню, а также Вы можете использовать её в конструкторе типов товаров, подключив к одному из свойств.';
         }
         $this->response->setOutput($this->load->view('setting/libraries', $data));

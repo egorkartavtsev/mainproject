@@ -410,4 +410,5 @@ class ModelToolProduct extends Model {
         $result['manager'] = $info['manager'];
         return $result;
     }
+    
 }

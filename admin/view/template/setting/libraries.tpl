@@ -8,7 +8,14 @@
         <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
         <?php } ?>
       </ul>
-      <div class="h4 well well-sm"><i class="fa fa-warning fw"></i> <?php echo $description; ?></div>
+      <div class="h4 well well-sm">
+          <i class="fa fa-warning fw"></i> <?php echo $description; ?><br>
+      </div>
+      <ul class="list-unstyled list-inline">
+          <?php foreach($libr_list as $lib){ ?>
+            <li><a class="btn btn-success" href="<?php echo $lib['href']?>"><i class="fa fa-pencil-square-o"></i> Библиотека: <?php echo $lib['text']?></a></li>
+          <?php } ?>
+      </ul>
       <?php if(isset($success)) { ?><div class="h4 alert alert-success"><i class="fa fa-life-ring fw"></i> <?php echo $success; ?></div><? } ?>
     </div>
   </div>
