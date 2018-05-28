@@ -740,11 +740,11 @@ class ModelCatalogProduct extends Model {
 //                        . "FROM " . DB_PREFIX . "complects c "
 //                        . "WHERE c.heading = p.vin OR c.heading = p.comp) AS com_price, "
                     . "FROM " . DB_PREFIX . "product p "
-                            . "LEFT JOIN " . DB_PREFIX . "product_description pd "
-                                . "ON (p.product_id = pd.product_id) "
-                            . "LEFT JOIN ". DB_PREFIX . "complects c "
-                                . "ON (p.vin = c.heading OR p.comp = c.heading) "
-                            . "WHERE !LOCATE('complect', vin) ";
+                    . "LEFT JOIN " . DB_PREFIX . "product_description pd "
+                        . "ON (p.product_id = pd.product_id) "
+                    . "LEFT JOIN ". DB_PREFIX . "complects c "
+                        . "ON (p.vin = c.heading OR p.comp = c.heading) "
+                    . "WHERE !LOCATE('complect', vin) ";
             //exit(var_dump($reqwords));
             if(count($reqwords)==1){
                 $query.="AND (p.vin = '".$this->db->escape($reqwords[0])."' OR LOCATE ('".$this->db->escape($reqwords[0])."', p.catn)  OR p.category = '".$this->db->escape($reqwords[0])."' OR p.podcateg = '".$this->db->escape($reqwords[0])."' OR LOCATE ('" . $this->db->escape($reqwords[0]) . "', pd.name) OR LOCATE ('" . $this->db->escape($reqwords[0]) . "', p.compability) OR LOCATE ('" . $this->db->escape($reqwords[0]) . "', p.note)) ";
@@ -757,6 +757,8 @@ class ModelCatalogProduct extends Model {
             $query.="AND quantity > 0 ORDER BY p.date_added DESC";
 //            exit($query);
             $result = $this->db->query($query);
+//            exit(var_dump($query));
+//            exit(var_dump($result->rows));
             return $result->rows;
         }
         

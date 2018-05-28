@@ -367,9 +367,11 @@ class ModelToolProduct extends Model {
     }
     
     public function saveFillSets($fields, $fill) {
+        $sup = $this->db->query("SELECT lf.name, (SELECT ls.name FROM ".DB_PREFIX."lib_struct ls WHERE ls.item_id = lf.item_id) AS col FROM ".DB_PREFIX."lib_fills lf WHERE id = ".(int)$fill);
         foreach ($fields as $key => $value) {
             $this->db->query("UPDATE ".DB_PREFIX."lib_fills SET ".$key." = '".$value."' WHERE id = ".(int)$fill);
         }
+        $this->db->query("UPDATE ".DB_PREFIX."product SET ".$sup->row['col']." = '".$fields['name']."' WHERE ".$sup->row['col']." = '".$sup->row['name']."'");
     }
     
     public function getProduct($id) {

@@ -17,10 +17,12 @@ class ModelToolComplect extends Model {
     public function createComplect($vin, $name) {
         $link = uniqid('complect');
         $this->db->query("INSERT INTO ".DB_PREFIX."complects SET heading = '".$vin."', link = '".$link."', name = '".$name."', sale = 10");
+        $comp = $this->db->getLastId();
         $this->db->query("INSERT INTO ".DB_PREFIX."product (vin, price, status, quantity, viewes, date_added) VALUES ('".$link."', 0, 0, 1, 0, NOW())");
         $prod = $this->db->getLastId();
         $this->db->query("INSERT INTO ".DB_PREFIX."product_description (name, language_id, product_id) VALUES ('Комплект: ".$name."', 1, ".$prod.")");
         $this->db->query("INSERT INTO ".DB_PREFIX."product_to_store (product_id, store_id) VALUES (".(int)$prod.", 0)");
+        return $comp;
     }
     
     public function compReprice($vin) {

@@ -216,7 +216,7 @@ class ModelToolForms extends Model {
                     $prodItem['comp'] = $product['heading'];
                     break;
                 case 'create':
-                    $this->model_tool_complect->createComplect($product['vin'], $name);
+                    $prodItem['comp'] = $this->model_tool_complect->createComplect($product['vin'], $name);
                     break;
             }
             //------------------------------
