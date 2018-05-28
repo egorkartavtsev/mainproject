@@ -8,7 +8,9 @@ class ControllerLayoutHeader extends Controller {
 		} else {
 			$data['base'] = HTTP_SERVER;
 		}
-
+                $this->load->model('tool/image');
+                
+                $data['logo'] = $this->model_tool_image->resize('../image/asmLogo.png',65,40);
 		$data['description'] = $this->document->getDescription();
 		$data['keywords'] = $this->document->getKeywords();
 		$data['links'] = $this->document->getLinks();

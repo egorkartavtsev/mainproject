@@ -69,6 +69,7 @@
     <a type="button" id="button-menu" class="pull-left"><i class="fa fa-indent fa-lg"></i></a>
     <div class="hidden-xs pull-left">
         <div class="col-sm-12 ">
+        <img src="<?php echo $logo;?>" style="margin-right: 15px;" class="pull-left">
             <?php foreach($fcItems as $fc){ ?>
             <a class="btn btn-success" data-toggle="tooltip" data-placement="bottom" data-original-title="<?php echo $fc['text'];?>" href="<?php echo $fc['href'];?>"><i class="fa <?php echo $fc['icon'];?>"></i></a> 
             <?php }?>

@@ -35,7 +35,7 @@ class ModelToolLayout extends Model {
         $data['heading_title'] = $sup->row['text'];
         $data['header'] = $this->load->controller('layout/header');
         $data['column_left'] = $this->load->controller('layout/columnleft');
-        $data['footer'] = $this->load->controller('common/footer');
+        $data['footer'] = $this->load->controller('layout/footer');
         $data['token'] = $this->session->data['token'];
         $data['description'] = $sup->row['description'];
         return $data;
