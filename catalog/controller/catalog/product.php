@@ -16,7 +16,7 @@ class ControllerCatalogProduct extends Controller {
             $type = $this->model_tool_product->getType($product['structure']);
             $description = $this->model_tool_product->getDescription($this->request->get['product_id']);
             $complect_arr = $this->model_tool_product->getProductCompls($this->request->get['product_id']);
-//      ------------------------------Комплекты(Как в старом)------------------------------------------------------------------------------------------------------------------------------------
+//      ------------------------------Комплекты(Как в старом)200------------------------------------------------------------------------------------------------------------------------------------
             if($complect_arr){
                 $data['id_comp_ref'] = isset($complect_arr['id_comp_ref'])?$complect_arr['id_comp_ref']:NULL;
                 $data['c_id'] = isset($complect_arr['c_id'])?$complect_arr['c_id']:NULL;
