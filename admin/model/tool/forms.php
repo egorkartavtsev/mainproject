@@ -339,6 +339,7 @@ class ModelToolForms extends Model {
                 . '<label>Статус</label>'
                 . '<select class="form-control" name="info[status]">'
                     . '<option value="1">Включено</option>'
+                    . '<option value="2" '.($info['status']=='2'?'selected':'').'>В резерве</option>'
                     . '<option value="0" '.($info['status']=='0'?'selected':'').'>Отключено</option>'
                 . '</select></div><div class="col-lg-12"></div>';
         foreach ($info as $key => $option) {

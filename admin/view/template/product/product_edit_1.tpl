@@ -150,8 +150,9 @@
                             <div class="form-group col-sm-6">
                                 <label for="input-status">Статус:</label>
                                 <select class="form-control" id="input-status" name="status">
-                                    <option value="1" <?php if($status == '1') {echo 'selected';} ?> >Включен</option>
                                     <option value="0" <?php if($status == '0') {echo 'selected';} ?> >Отключен</option>
+                                    <option value="1" <?php if($status == '1') {echo 'selected';} ?> >Включен</option>
+                                    <option value="2" <?php if($status == '2') {echo 'selected';} ?> >В резерве</option>
                                 </select>
                             </div>
                             <div class="form-group col-sm-4">

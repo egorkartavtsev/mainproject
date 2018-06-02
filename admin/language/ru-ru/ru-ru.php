@@ -15,6 +15,7 @@ $_['text_yes']          			= 'Да';
 $_['text_no']          				= 'Нет';
 $_['text_enabled']          		= 'Включено';
 $_['text_disabled']          		= 'Отключено';
+$_['text_reserve']                      = 'В резерве';
 $_['text_none']          			= ' --- Не выбрано --- ';
 $_['text_select']          			= ' --- Выберите --- ';
 $_['text_select_all']          		= 'Выделить всё';
