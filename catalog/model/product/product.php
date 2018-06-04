@@ -22,7 +22,7 @@ class ModelProductProduct extends Model {
                     }
                     $limof = "";
                 }
-                $sql.= "AND p.vin!='' AND !LOCATE('complect', p.vin) AND p.status = 1 ".$sort." LIMIT ".(int)$limit." OFFSET ".(int)$offset." ";
+                $sql.= "AND p.vin!='' AND !LOCATE('complect', p.vin) AND (p.status = 1 OR p.status = 2)  ".$sort." LIMIT ".(int)$limit." OFFSET ".(int)$offset." ";
             break;
             case 'libr':
                 $sql = "SELECT *, (SELECT name FROM ".DB_PREFIX."product_description pd WHERE pd.product_id = p.product_id) AS name FROM ".DB_PREFIX."product_to_lib p2l "
@@ -36,7 +36,7 @@ class ModelProductProduct extends Model {
                     }
                     $limof = "";
                 }
-                $sql.= "AND p.vin!='' AND !LOCATE('complect', p.vin) AND p.status = 1 ".$sort." ".$limof." ";
+                $sql.= "AND p.vin!='' AND !LOCATE('complect', p.vin) AND (p.status = 1 OR p.status = 2) ".$sort." ".$limof." ";
             break;
             case 'search':
             break;
@@ -59,7 +59,7 @@ class ModelProductProduct extends Model {
                     }
                 }
 //                $sql.= "ORDER BY date_added DESC ";
-                $sql.= "AND vin!='' AND !LOCATE('complect', vin) AND status = 1  ORDER BY date_added DESC ";
+                $sql.= "AND vin!='' AND !LOCATE('complect', vin) AND (status = 1 OR status = 2) ORDER BY date_added DESC ";
             break;
             case 'libr':
                 $sql = "SELECT * FROM ".DB_PREFIX."product_to_lib p2l "
