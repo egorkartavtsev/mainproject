@@ -1,5 +1,4 @@
 <div id="sSearchResult" >
-    
     <?php if(isset($items) && count($items)){ foreach($items as $item){ ?>
       <?php if(in_array(0, array_column($items, 'showImg'))) { ?>
           <a href='<?php echo $item["href"];?>' class="col-lg-4 col-md-4 col-xs-6 text-center ">
