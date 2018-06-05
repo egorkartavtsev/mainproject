@@ -21,4 +21,12 @@ class ModelServiceTools extends Model{
                 . "WHERE a2c.client_id = ".(int)$id);
         return $sup->rows;
     }
+    public function tryVIN($vin) {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."automobile WHERE vin = '".(int)$vin."'");
+        if($sup->num_rows){
+            return $sup->row;
+        } else {
+            return FALSE;
+        }
+    }
 }

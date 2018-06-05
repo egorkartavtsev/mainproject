@@ -42,7 +42,7 @@ $(document).ready(function() {
         $("#auto").html('<div class="form-group">\n\
                             <label>Введите VIN(frame) автомобиля</label>\n\
                             <input type="text" id="cautovin" class="form-control"/></div>\n\
-<div id="autocreateresult"><button class="btn btn-primary" btn_type="tryVIN">проверить</button></div>');
+                            <div id="autocreateresult"><button class="btn btn-primary" btn_type="tryVIN">проверить</button></div>');
     });
     $(document).on('click', '[btn_type=tryVIN]', function(){
         var vin = $(this).parent().parent().find('#cautovin').val();
