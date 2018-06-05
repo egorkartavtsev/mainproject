@@ -754,7 +754,7 @@ class ModelCatalogProduct extends Model {
                 }
             }
             $query.="AND status = 1 ";
-            $query.="AND quantity > 0 ORDER BY p.date_added DESC";
+            $query.="ORDER BY p.date_added DESC";
 //            exit($query);
             $result = $this->db->query($query);
 //            exit(var_dump($query));

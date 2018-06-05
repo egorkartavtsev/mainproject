@@ -178,7 +178,9 @@ class ModelToolForms extends Model {
         }
         foreach ($prodlist as $num => $product){
             //upload photos
-            $this->uploadPhoto($product['vin'], $photo[$num]);
+            if($photo[$num][0]['size']!='0'){
+                $this->uploadPhoto($product['vin'], $photo[$num]);
+            }
             $prodItem = array();
             $prod2Lib = array();
             //"napolnenie" producta

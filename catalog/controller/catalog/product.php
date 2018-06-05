@@ -156,7 +156,7 @@ class ControllerCatalogProduct extends Controller {
             }
 //      =====================================Отправка данных в tpl=============================================================================================================================              
             $data['modal_window'] = $this->load->view('modal_window/Modal_window'); 
-            $data['sendLink'] = $this->url->link('product/product', 'product_id='.$this->request->get['product_id']);
+            $data['sendLink'] = $this->url->link('catalog/product', 'product_id='.$this->request->get['product_id']);
             $data['product_id'] = $this->request->get['product_id'];
             $list['productpage'] = $this->load->view('catalog/oneproduct', $data);
 //      ---------------------------------------------------------------------------------

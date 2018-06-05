@@ -38,6 +38,69 @@ function addOption(){
 }
 $(document).ready(function() {
     
+    $(document).on('click', '[btn_type=createAuto]', function(){
+        $("#auto").html('<div class="form-group">\n\
+                            <label>Введите VIN(frame) автомобиля</label>\n\
+                            <input type="text" id="cautovin" class="form-control"/></div>\n\
+<div id="autocreateresult"><button class="btn btn-primary" btn_type="tryVIN">проверить</button></div>');
+    });
+    $(document).on('click', '[btn_type=tryVIN]', function(){
+        var vin = $(this).parent().parent().find('#cautovin').val();
+        ajax({
+            url:"index.php?route=service/auto/tryVIN&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data: {vin: vin},
+            success:function(data){
+                $("#autocreateresult").html(data);
+            }
+        });
+    });
+    
+    
+    $(document).on('change', '[select_type=client_type]', function(){
+        var type = $(this).val();
+        ajax({
+            url:"index.php?route=service/client/getAddForm&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data: {legal: type},
+            success:function(data){
+                $("#form_client").html(data);
+            }
+        });
+    })
+    $(document).on('click', '[type=setLevelVal]', function(){
+        $(this).parent().parent().find('input').val($(this).text());
+        $(document).find('[name='+$(this).attr('child')+']').attr('target-kladr', $(this).attr('kladr'));
+        $(document).find('[name='+$(this).attr('child')+']').attr('data-toggle', 'dropdown');
+        $(document).find('[name='+$(this).attr('child')+']').attr('aria-expanded', 'true');
+        $(document).find('[name='+$(this).attr('child')+']').val('');
+        $(document).find('[name='+$(this).attr('child')+']').after('<ul class="dropdown-menu dropdown-menu-left" id="'+$(this).attr('child')+'">Введите значение</ul>');
+    });
+    $(document).on('input', '[type=adress]', function(){
+        if($(this).attr('target-kladr')!=='none'){
+            var ul = $(this).parent().find('ul');
+            ul.html('<img src="../wait.gif"/>');
+            var type = $(this).val();
+            var level = $(this).attr('target-level');
+            var child = $(this).attr('target-child');
+            var kladr = $(this).attr('target-kladr');
+            ajax({
+                url:"index.php?route=service/client/getAdress&token="+getURLVar('token'),
+                statbox:"status",
+                method:"POST",
+                data: {req: type, kladr: kladr, child: child, lvl: level},
+                success:function(data){
+                    ul.html('');
+                    ul.html(data);
+                }
+            });
+        } else {
+            $(this).val('');
+        }
+    })
+    
     $(document).on('click', '[btn_type=createFill]', function(){
         var parent = '';
         if($(this).attr('parent') == '0'){

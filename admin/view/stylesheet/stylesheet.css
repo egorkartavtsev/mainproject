@@ -12,6 +12,13 @@ html, body {
 h1, h2, h3, h4, h5, h6, p {
 	margin-top: 0;
 }
+.adressitem{
+    cursor: pointer;
+    padding: 5px 15px;
+}
+.adressitem:hover{
+    background-color: #cae2b6;
+}
 .page-header {
 	vertical-align: middle;
 	margin: 15px 0;

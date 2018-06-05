@@ -3,8 +3,8 @@ class ControllerCommonSetphotos extends Controller {
 private $error = array();
     
     public function index() {
-            
-            $data = $this->getLayout();
+            $this->load->model('tool/layout');
+            $data = $this->model_tool_layout->getLayout($this->request->get['route']);
             $data['status'] = 1;
             $this->response->setOutput($this->load->view('common/setphotos', $data));
         }

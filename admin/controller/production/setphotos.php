@@ -3,8 +3,8 @@ class ControllerProductionSetphotos extends Controller {
 private $error = array();
     
     public function index() {
-            
-            $data = $this->getLayout();
+            $this->load->model('tool/layout');
+            $data = $this->model_tool_layout->getLayout($this->request->get['route']);
             $data['status'] = 1;
             $this->response->setOutput($this->load->view('common/setphotos', $data));
         }
@@ -144,7 +144,8 @@ private $error = array();
 				$error = 1;
 				$error_info = 'Такой товар не существует!';
 			}
-            $data = $this->getLayout();
+            $this->load->model('tool/layout');
+            $data = $this->model_tool_layout->getLayout($this->request->get['route']);
             $data['error'] = $error;
             $data['error_info'] = $error_info;
             $this->response->setOutput($this->load->view('common/setphotos', $data));
@@ -152,7 +153,8 @@ private $error = array();
 
     public function setPH() {
 //        $photo = $_FILES;
-        $data = $this->getLayout();
+        $this->load->model('tool/layout');
+        $data = $this->model_tool_layout->getLayout($this->request->get['route']);
         $vin = $this->request->post['vin'];
         $uploadtmpdir = DIR_IMAGE . "tmp/";
         if ($vin!=''){

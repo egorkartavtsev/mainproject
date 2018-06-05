@@ -90,6 +90,7 @@ class User {
                 $controllers_query = $this->db->query("SELECT * FROM ".DB_PREFIX."modules "
                     . "WHERE ((accesslvl >= ".(int)$this->minaccesslevel." AND accesslvl <= ".(int)$this->useral.") OR accesslvl = 0) AND parent_id = ".(int)$mod['id']." AND showmenu = 1");    
                 $layout[$mod['id']] = array(
+                    'name' => $mod['name'],
                     'description' => $mod['description'],
                     'icon' => $mod['icon'],
                     'text' => $mod['text'],
@@ -98,6 +99,7 @@ class User {
                 foreach ($controllers_query->rows as $controller) {
                     $layout[$mod['id']]['childs'][$controller['id']] = array(
                         'description' => $controller['description'],
+                        'name' => $controller['name'],
                         'icon' => $controller['icon'],
                         'text' => $controller['text'],
                         'href' => $mod['name'].'/'.$controller['name']
