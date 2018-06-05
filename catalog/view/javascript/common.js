@@ -116,7 +116,7 @@ $(document).ready(function() {
                     method: "POST",
                     data:
                     {
-                        request: $(this).val()
+                        request: $.trim($(this).val())
                     },
                     success:function(data){
                         $("#searchResult").html(data);
@@ -157,11 +157,16 @@ $(document).ready(function() {
 	});
 
 	/* Search */
+        $('#search input[name=\'search\']').parent().find('button').on('click', function() {
+                var valuetrim = $('header #search input[name=\'search\']').val();
+                var valuetrim = valuetrim.replace(/\s+/g," ");
+                $('header #search input[name=\'search\']').val($.trim(valuetrim))
+        });
 	$('#search input[name=\'search\']').parent().find('button').on('click', function() {
 		var url = $('base').attr('href') + 'index.php?route=product/search';
 
 		var value = $('header #search input[name=\'search\']').val();
-
+                
 		if (value) {
 			url += '&search=' + encodeURIComponent(value);
 		}

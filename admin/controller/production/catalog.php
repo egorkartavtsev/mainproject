@@ -486,6 +486,18 @@ class ControllerProductionCatalog extends Controller {
                         } else {
                             $saleDate = 'В наличии';
                         }
+                        $stat ='';
+                        switch ($result['status']):
+                        case 0:
+                            $stat=$this->language->get('text_disabled');
+                            break;
+                        case 1:
+                            $stat=$this->language->get('text_enabled');
+                            break;
+                        case 2:
+                            $stat=$this->language->get('text_reserve');
+                            break;
+                        endswitch;
                         
                         if($result['product_id']!=NULL){
                             $data['products'][] = array(
@@ -509,7 +521,7 @@ class ControllerProductionCatalog extends Controller {
                                     'category'   => $category,
                                     'special'    => $special,
                                     'quantity'   => $result['quantity'],
-                                    'status'     => $result['status'] ? $this->language->get('text_enabled') : $this->language->get('text_disabled'),
+                                    'status'     => $stat,
                                     'edit'       => $this->url->link('production/catalog/edit', 'token=' . $this->session->data['token'] . '&product_id=' . $result['product_id'] . $url, true)
                             );
                         }
@@ -518,6 +530,7 @@ class ControllerProductionCatalog extends Controller {
 		$data['text_list'] = $this->language->get('text_list');
 		$data['text_enabled'] = $this->language->get('text_enabled');
 		$data['text_disabled'] = $this->language->get('text_disabled');
+                $data['text_reserve'] = $this->language->get('text_reserve');
 		$data['text_no_results'] = $this->language->get('text_no_results');
 		$data['text_confirm'] = $this->language->get('text_confirm');
 
