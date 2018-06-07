@@ -15,28 +15,19 @@ class ModelServiceAuto extends Model{
         $info['datesor'] = $datesor;
         $info['brand'] = $brand->row['name'];
         $info['model'] = $model->row['name'];
-        if(isset($info['auto_id'])){
-            $sql.= "UPDATE ".DB_PREFIX."automobiles SET ";
-            foreach ($info as $key => $value) {
-                if($key!='vin' && $key!='owner' && $key!='auto_id' && $key!='numb'){
-                    $sql.= $key." = '".$value."', ";
-                }
+//        exit(var_dump($info));
+        $sql.= "INSERT INTO ".DB_PREFIX."automobiles SET ";
+        foreach ($info as $key => $value) {
+            if($key!='owner' && $key!='auto_id' && $key!='numb'){
+                $sql.= $key." = '".$value."', ";
             }
-            $sql.="numb = '".$info['numb']."' WHERE id = ".(int)$info['auto_id'];
-            $this->db->query($sql);
-            $auto_id = $info['auto_id'];
-        } else {
-            $sql.= "INSERT INTO ".DB_PREFIX."automobiles SET ";
-            foreach ($info as $key => $value) {
-                if($key!='owner' && $key!='numb'){
-                    $sql.= $key." = '".$value."', ";
-                }
-            }
-            $sql.="numb = '".$info['numb']."' ";
-            $this->db->query($sql);
-            $auto_id = $this->db->getLastId();
         }
-        $this->db->query("UPDATE ".DB_PREFIX."auto_to_client SET status = 0 WHERE auto_id = ".(int)$auto_id);
+        $sql.="numb = '".$info['numb']."'";
+        $this->db->query($sql);
+        $auto_id = $this->db->getLastId();
+        if(isset($info['auto_id'])){
+            $this->db->query("UPDATE ".DB_PREFIX."auto_to_client SET status = 0 WHERE auto_id = ".(int)$info['auto_id']);
+        }
         $this->db->query("INSERT INTO ".DB_PREFIX."auto_to_client SET client_id = ".(int)$info['owner'].", auto_id = ".(int)$auto_id.", status = 1 ");
         return $info;
     }

@@ -28,7 +28,7 @@
                   <?php if($car['status']=='0'){ ?><p><span class="label label-success">Продано</span></p><?php }?>
               </div>
             <?php }?>
-            <button class="btn btn-block btn-success" btn_type="createAuto" data-toggle="modal" data-target="#autocreateModal"><i class="fa fa-plus-circle"></i> добавить</button>
+            <button class="btn btn-block btn-success" btn_type="createAuto" client="<?php echo $client_id?>" data-toggle="modal" data-target="#autocreateModal"><i class="fa fa-plus-circle"></i> добавить</button>
           </div>
           <div class="col-md-4 alert alert-success">
             <h4>Страховые полисы</h4>

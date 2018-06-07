@@ -7,6 +7,7 @@ class ControllerServiceClientShow extends Controller {
         $auto = $this->model_service_tools->getClientAuto($this->request->get['client']);
         //exit(var_dump($data['brands']));
         $data['auto'] = $auto;
+        $data['client_id'] = $this->request->get['client'];
         $data['client'] = array(
             'status' => array(
                 'text' => 'Статус',

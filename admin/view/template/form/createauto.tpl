@@ -123,7 +123,7 @@
       <div class="clearfix"><p></p></div>
       <div class="clearfix"></div>
       <div class="clearfix"><p></p></div>
-      <button class="btn btn-block btn-success" btn_type="addAuto" data-dismiss="modal" aria-label="Close">прикрепить</button>
+      <button class="btn btn-block btn-success" btn_type="addAuto" data-dismiss="modal" client="<?php echo $owner;?>" aria-label="Close">прикрепить</button>
   </div>
 <script type="text/javascript">
     $(function () {

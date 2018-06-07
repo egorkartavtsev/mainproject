@@ -54,6 +54,7 @@ $(document).ready(function() {
     });
     
     $(document).on('click', '[btn_type=addAuto]', function(){
+        var client = $(this).attr('client');
         var result = '';
         $(this).parent().parent().parent().find('input').each(function(){
             if($(this).attr('id')=='datepts' || $(this).attr('id')=='datesor'){
@@ -68,7 +69,7 @@ $(document).ready(function() {
             result = result + $(this).attr('id') + ':' + $(this).val()+';';
         });
         ajax({
-            url:"index.php?route=service/auto/addAuto&token="+getURLVar('token')+"&client="+getURLVar('client'),
+            url:"index.php?route=service/auto/addAuto&token="+getURLVar('token')+"&client="+client,
             statbox:"status",
             method:"POST",
             data: {arr: result},
@@ -82,13 +83,14 @@ $(document).ready(function() {
         $("#auto").html('<div class="form-group">\n\
                             <label>Введите VIN(frame) автомобиля</label>\n\
                             <input type="text" id="vin" class="form-control"/></div>\n\
-                            <div id="autocreateresult"><button class="btn btn-primary" btn_type="tryVIN">проверить</button></div>');
+                            <div id="autocreateresult"><button class="btn btn-primary" client="'+$(this).attr('client')+'" btn_type="tryVIN">проверить</button></div>');
     });
     $(document).on('click', '[btn_type=tryVIN]', function(){
         var vin = $(this).parent().parent().find('#vin').val();
+        var client = $(this).attr('client');
         if(vin!=''){
             ajax({
-                url:"index.php?route=service/auto/tryVIN&token="+getURLVar('token')+"&client="+getURLVar('client'),
+                url:"index.php?route=service/auto/tryVIN&token="+getURLVar('token')+"&client="+client,
                 statbox:"status",
                 method:"POST",
                 data: {vin: vin},

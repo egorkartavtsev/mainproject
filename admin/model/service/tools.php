@@ -24,7 +24,7 @@ class ModelServiceTools extends Model{
     }
     
     public function tryVIN($vin) {
-        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."automobiles WHERE vin = '".$vin."'");
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."automobiles WHERE vin = '".$vin."' ORDER BY id DESC");
         if($sup->num_rows){
             $reslt = $sup->row;
             $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE name = '".$reslt['model']."' AND item_id = 17");
