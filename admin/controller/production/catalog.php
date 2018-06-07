@@ -14,7 +14,7 @@ class ControllerProductionCatalog extends Controller {
         
         public function getMatches(){
 		$i=0;
-		$query = $this->db->query("SELECT product_id, sku, date_added FROM `oc_product` p1 WHERE EXISTS (SELECT * FROM `oc_product` p2 WHERE p1.sku = p2.sku AND p1.product_id<>p2.product_id) ORDER BY p1.sku");
+		$query = $this->db->query("SELECT product_id, vin, date_added FROM `oc_product` p1 WHERE EXISTS (SELECT * FROM `oc_product` p2 WHERE p1.vin = p2.vin AND p1.product_id<>p2.product_id) ORDER BY p1.vin");
 		echo '<table>';
 			foreach($query->rows as $prods){
 				echo '<tr>';

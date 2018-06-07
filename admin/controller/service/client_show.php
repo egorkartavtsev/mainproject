@@ -2,11 +2,10 @@
 
 class ControllerServiceClientShow extends Controller {
     public function index() {
-        $this->load->model('tool/layout');
         $this->load->model('service/tools');
-        $data = $this->model_tool_layout->getLayout($this->request->get['route']);
         $info = $this->model_service_tools->getClientInfo($this->request->get['client']);
         $auto = $this->model_service_tools->getClientAuto($this->request->get['client']);
+        //exit(var_dump($data['brands']));
         $data['auto'] = $auto;
         $data['client'] = array(
             'status' => array(
@@ -75,7 +74,7 @@ class ControllerServiceClientShow extends Controller {
             'value' => $info['phone2']
         );
         $data['modal_auto'] = $this->load->view('modals/clear', array('target'=>'autocreate', 'header'=>'Добавить автомобиль', 'key'=>'auto'));
-        $this->response->setOutput($this->load->view('service/client_show', $data));
+        echo $this->load->view('service/client_show', $data);
     }
 }
 

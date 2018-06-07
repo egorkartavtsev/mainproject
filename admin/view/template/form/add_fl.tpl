@@ -88,11 +88,11 @@
                     <div class="clearfix"></div>
                 <h4>Контакты: </h4>
                     <div class="col-md-3 form-group">
-                        <label>Телефон 1:</label>
+                        <label>Телефон 1(без "8" и слитно. Н-р: 951458...):</label>
                         <input class="form-control" type="text" name="phone1">
                     </div>
                     <div class="col-md-3 form-group">
-                        <label>Телефон 2:</label>
+                        <label>Телефон 2(без "8" и слитно. Н-р: 951458...):</label>
                         <input class="form-control" type="text" name="phone2">
                     </div>
                 <div class="clearfix"></div>

@@ -53,7 +53,7 @@ class ControllerServiceClient extends Controller {
         $client = $this->request->post;
         $this->load->model('service/client');
         $id = $this->model_service_client->create($client);
-        $this->response->redirect($this->url->link('service/client_show', 'token='.$this->request->get['token'].'&client='.$id));
+        $this->response->redirect($this->url->link('service/client_list', 'token='.$this->request->get['token'].'&client='.$id));
     }
 }
 

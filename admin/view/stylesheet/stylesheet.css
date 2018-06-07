@@ -12,6 +12,26 @@ html, body {
 h1, h2, h3, h4, h5, h6, p {
 	margin-top: 0;
 }
+
+.client_item{
+    cursor: pointer;
+    border: 1px solid #c3cfc3;
+    padding: 5px 10px;
+    margin-bottom: 3px;
+    border-radius: 20px 0px;
+    background-color: #eee;
+}
+.client_item:hover{
+    background-color: #dfebd5;
+    color: #8fbb6c;
+}
+.client_item_choosen{
+    background-color: #dfebd5;
+    border: 2px solid #7aae50;
+    border-radius: 20px;
+    color: #8fbb6c;
+}
+
 .adressitem{
     cursor: pointer;
     padding: 5px 15px;

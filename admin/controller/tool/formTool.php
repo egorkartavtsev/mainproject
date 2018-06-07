@@ -34,6 +34,14 @@ class ControllerToolFormTool extends Controller {
                     $result.= '<option value="'.$fill['id'].'">'.$fill['name'].'</option>';
                 }
                 $result.= '</select>';
+            } elseif($num === 'createauto') {
+                $result.= '<label>'.$child['text'].'</label> ';
+                $result.= '<select class="form-control" id = "select-'.$fieldName.'" '.$child['js'].'>';
+                $result.= '<option value="-">-</option>';
+                foreach ($child['fills'] as $fill) {
+                    $result.= '<option value="'.$fill['id'].'">'.$fill['name'].'</option>';
+                }
+                $result.= '</select>';
             } else {
                 if($num !== 'no-num'){
                     $result.= '<a class="btn btn-success btn-sm" data-toggle="modal" data-target="#createFillModal" parent="'.$child['parent_name'].'" btn_type="createFill"><i class="fa fa-plus"></i></a><label>  '.$child['text'].'  </label> ';

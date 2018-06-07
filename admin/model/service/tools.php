@@ -15,18 +15,47 @@ class ModelServiceTools extends Model{
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."client WHERE id = ".(int)$id);
         return $sup->row;
     }
+    
     public function getClientAuto($id) {
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."auto_to_client a2c "
                 . "LEFT JOIN ".DB_PREFIX."automobiles a ON a2c.auto_id = a.id "
-                . "WHERE a2c.client_id = ".(int)$id);
+                . "WHERE a2c.client_id = ".(int)$id." ORDER BY a2c.status DESC, a2c.id DESC");
         return $sup->rows;
     }
+    
     public function tryVIN($vin) {
-        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."automobile WHERE vin = '".(int)$vin."'");
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."automobiles WHERE vin = '".$vin."'");
         if($sup->num_rows){
-            return $sup->row;
+            $reslt = $sup->row;
+            $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE name = '".$reslt['model']."' AND item_id = 17");
+            $reslt['model'] = array(
+                'id' => $sup->row['id'],
+                'name' => $sup->row['name']
+            );
+            return $reslt;
         } else {
             return FALSE;
         }
+    }
+        
+    public function getBrands() {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE parent_id = 0 AND item_id = 16 ORDER BY name");
+        return $sup->rows;
+    }
+    public function getEclass() {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE parent_id = 0 AND item_id = 32 ORDER BY name");
+        return $sup->rows;
+    }
+    public function getColors() {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE parent_id = 0 AND item_id = 29 ORDER BY name");
+        return $sup->rows;
+    }
+    public function getCateg() {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE parent_id = 0 AND item_id = 30 ORDER BY name");
+        return $sup->rows;
+    }
+    public function getTypes() {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE parent_id = 0 AND item_id = 31 ORDER BY name");
+        return $sup->rows;
     }
 }
