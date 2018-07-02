@@ -25,7 +25,7 @@ class ModelCatalogProduct extends Model {
                         . "p.catn AS cat_numb, "
                         . "p.compability AS compability, "
                         . "p.vin AS vin, "
-                        . "p.type AS ean, "
+                        . "p.type AS type, "
                         . "p.comp AS comp, "
                         . "p.price as price, "
                         . "p.dop AS dop, "
@@ -110,7 +110,7 @@ class ModelCatalogProduct extends Model {
 				'model'            => $query->row['model'],
 				'sku'              => $query->row['vin'],
 				'upc'              => $query->row['cond'],
-				'ean'              => $query->row['type'],
+				'type'              => $query->row['type'],
 				'jan'              => $query->row['note'],
 				'isbn'             => $query->row['catn'],
 				'mpn'              => $query->row['stell'],
@@ -725,7 +725,7 @@ class ModelCatalogProduct extends Model {
                     . "p.vin AS vin, "
                     . "p.image AS image, "
                     . "p.note AS note, "
-                    . "p.type AS ean, "
+                    . "p.type AS type, "
                     . "p.compability AS compability, "
                     . "p.catn AS cat_numb, "
                     . "p.price AS price, "

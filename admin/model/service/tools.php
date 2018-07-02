@@ -23,6 +23,12 @@ class ModelServiceTools extends Model{
         return $sup->rows;
     }
     
+    public function getClientHandlings($id) {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."handling "
+                . "WHERE client = ".(int)$id." ORDER BY date DESC");
+        return $sup->rows;
+    }
+    
     public function tryVIN($vin) {
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."automobiles WHERE vin = '".$vin."' ORDER BY id DESC");
         if($sup->num_rows){
@@ -56,6 +62,18 @@ class ModelServiceTools extends Model{
     }
     public function getTypes() {
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE parent_id = 0 AND item_id = 31 ORDER BY name");
+        return $sup->rows;
+    }
+    public function getCommissars() {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE parent_id = 0 AND item_id = 33 ORDER BY name");
+        return $sup->rows;
+    }
+    public function getInsurences() {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE parent_id = 0 AND item_id = 34 ORDER BY name");
+        return $sup->rows;
+    }
+    public function getHandlTypes() {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE parent_id = 0 AND item_id = 35 ORDER BY name");
         return $sup->rows;
     }
 }

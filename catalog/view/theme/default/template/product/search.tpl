@@ -41,12 +41,11 @@
         <?php foreach ($products as $product) { ?>
         <div class="product-layout product-list col-xs-12">
           <div class="label-thumd">
-            <?php if ($product['ean']){ ?>
-                <?php if ($product['ean']=='Б/У') { ?> 
-                    <div class="eanr">Б/У</div>
-                <?php }?>
-                <?php if ($product['ean']=='Новый') { ?> 
+            <?php if ($product['type']){ ?>
+                <?php if(strripos($product['type'], 'ВЫЙ') || strripos($product['type'], 'вый')){ ?>
                     <div class="eanb">Новый</div>
+                <?php } else { ?>
+                    <div class="eanr">Б/У</div>
                 <?php }?>
             <?php }?>
             <?php if ($product['comp']){ ?>
@@ -66,7 +65,7 @@
             <div>
               <div class="caption">
                   <h4><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></h4>
-                    <?php if ($product['ean'] && $product['ean']=='Б/У') { ?>
+                    <?php if ($product['type'] && $product['type']=='Б/У') { ?>
                         <p><b>Внутренний номер:</b> <?php echo $product['description']; ?></p>
                         <?php if ($product['catN']) { ?>
                             <p><b>Каталожный номер:</b> <?php echo $product['catN']; ?></p>
@@ -75,8 +74,8 @@
                     <?php if ($product['note']) { ?>
                         <p><b>Примечание:</b> <?php echo $product['note']; ?></p>
                     <?php }?>
-                    <?php if ($product['ean']) { ?>
-                        <p><b>Тип:</b> <?php echo $product['ean']; ?></p>
+                    <?php if ($product['type']) { ?>
+                        <p><b>Тип:</b> <?php echo $product['type']; ?></p>
                     <?php }?>
                     <?php if ($product['compability']) { ?>
                         <p><b>Применимость:</b> <?php echo $product['compability']; ?></p>

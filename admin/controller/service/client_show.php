@@ -5,8 +5,11 @@ class ControllerServiceClientShow extends Controller {
         $this->load->model('service/tools');
         $info = $this->model_service_tools->getClientInfo($this->request->get['client']);
         $auto = $this->model_service_tools->getClientAuto($this->request->get['client']);
+        $handlings = $this->model_service_tools->getClientHandlings($this->request->get['client']);
         //exit(var_dump($data['brands']));
         $data['auto'] = $auto;
+        $data['handlings'] = $handlings;
+        $data['token'] = $this->session->data['token'];
         $data['client_id'] = $this->request->get['client'];
         $data['client'] = array(
             'status' => array(

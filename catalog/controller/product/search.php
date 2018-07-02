@@ -238,11 +238,12 @@ class ControllerProductSearch extends Controller {
                                 else{
                                     $catN = '';
                                 }
-                                if (isset($result['ean']) && ($result['ean'] != '')){
-                                    $ean = $result['ean'];
+                                //exit(var_dump($result));
+                                if (isset($result['type']) && ($result['type'] != '')){
+                                    $type = $result['type'];
                                 }
                                 else{
-                                    $ean= '';
+                                    $type= '';
                                 }    
                                 if (isset($result['note']) && ($result['note'] != '')){
                                     $note = $result['note'];
@@ -266,7 +267,7 @@ class ControllerProductSearch extends Controller {
 					'description' => $result['vin'],
 					'catN'        => $catN,
 					'compability' => $compability,
-                                        'ean'         => $ean,
+                                        'type'         => $type,
 					'note'        => $note,
 					'price'       => $price,
                                         'com_whole'   => $com_whole,

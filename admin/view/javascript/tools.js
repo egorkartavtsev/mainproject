@@ -38,6 +38,65 @@ function addOption(){
 }
 $(document).ready(function() {
     
+    $(document).on('change', '[select_type=handling_acc]', function(){
+        if($(this).val()==='1'){
+            ajax({
+                url:"index.php?route=service/client_handling/getAccidentForm&token="+getURLVar('token'),
+                statbox:"status",
+                method:"POST",
+                data: {},
+                success:function(data){
+                    $('#accident_info').html(data);
+                }
+            });
+        } else {
+            $('#accident_info').html('');
+        }
+    });
+    
+    $(document).on('click', '[btn_type=addcontract]', function(){
+        var form = '';
+        $(this).parent().find('select').each(function(){
+            form = form + $(this).attr('id') + ":" + $(this).val()+";"
+        })
+        $(this).parent().find('input').each(function(){
+            form = form + $(this).attr('id') + ":" + $(this).val()+";"
+        })
+        /*ajax({
+            url:"index.php?route=service/client_handling/showContract&token="+getURLVar('token')+"&handling="+getURLVar('handling'),
+            statbox:"status",
+            method:"POST",
+            data: {contract: contract},
+            success:function(data){
+                $('#contract').html(data);
+            }
+        });*/
+    });
+    $(document).on('click', '[btn_type=contract]', function(){
+        var contract = $(this).attr('target-contract')
+        ajax({
+            url:"index.php?route=service/client_handling/showContract&token="+getURLVar('token')+"&handling="+getURLVar('handling'),
+            statbox:"status",
+            method:"POST",
+            data: {contract: contract},
+            success:function(data){
+                $('#contract').html(data);
+            }
+        });
+    });
+    
+    $(document).on('click', '[btn_type=contract]', function(){
+        var contract = $(this).attr('contract')
+        ajax({
+            url:"index.php?route=service/client_handling/showContract&token="+getURLVar('token')+"&handling="+getURLVar('handling'),
+            statbox:"status",
+            method:"POST",
+            data: {contract: contract},
+            success:function(data){
+                $('#contract').html(data);
+            }
+        });
+    });
     $(document).on('click', '[div_type=client]', function(){
         $(document).find('[div_type=client]').removeClass('client_item_choosen');
         $(this).addClass('client_item_choosen');

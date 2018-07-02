@@ -124,9 +124,9 @@ class ModelToolProduct extends Model {
     
     public function saveChangeFillName($id, $name, $field) {
         $sup = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE id = '".$id."'");
-        if($this->db->query("UPDATE ".DB_PREFIX."lib_fills SET name = '".$name."' WHERE id = '".$id."'")){
-            $this->db->query("UPDATE ".DB_PREFIX."product_description SET name = REPLACE(name, '".$sup->row['name']."', '".$name."')");
-            $this->db->query("UPDATE ".DB_PREFIX."product SET `".$field."` = REPLACE(`".$field."`, '".$sup->row['name']."', '".$name."')");
+        if($this->db->query("UPDATE ".DB_PREFIX."lib_fills SET name = '".trim($name)."' WHERE id = '".$id."'")){
+            $this->db->query("UPDATE ".DB_PREFIX."product_description SET name = REPLACE(name, '".$sup->row['name']."', '".trim($name)."')");
+            $this->db->query("UPDATE ".DB_PREFIX."product SET `".$field."` = REPLACE(`".$field."`, '".$sup->row['name']."', '".trim($name)."')");
             return 1;}
         else {return 0;}
     }
@@ -136,7 +136,7 @@ class ModelToolProduct extends Model {
                 . "library_id = '".$fill['libraryId']."', "
                 . "item_id = '".$fill['itemId']."', "
                 . "parent_id = '".$fill['parent']."', "
-                . "name = '".$fill['name']."' ")){
+                . "name = '".trim($fill['name'])."' ")){
             $sup = $this->db->query("SELECT MAX(id) as id FROM ".DB_PREFIX."lib_fills ");
             return $sup->row['id'];
         } else {
@@ -369,7 +369,7 @@ class ModelToolProduct extends Model {
     public function saveFillSets($fields, $fill) {
         $sup = $this->db->query("SELECT lf.name, (SELECT ls.name FROM ".DB_PREFIX."lib_struct ls WHERE ls.item_id = lf.item_id) AS col FROM ".DB_PREFIX."lib_fills lf WHERE id = ".(int)$fill);
         foreach ($fields as $key => $value) {
-            $this->db->query("UPDATE ".DB_PREFIX."lib_fills SET ".$key." = '".$value."' WHERE id = ".(int)$fill);
+            $this->db->query("UPDATE ".DB_PREFIX."lib_fills SET ".$key." = '".trim($value)."' WHERE id = ".(int)$fill);
         }
         $this->db->query("UPDATE ".DB_PREFIX."product SET ".$sup->row['col']." = '".$fields['name']."' WHERE ".$sup->row['col']." = '".$sup->row['name']."'");
     }
