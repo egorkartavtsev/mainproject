@@ -107,6 +107,7 @@
                 <?php }?>
             </tbody>
         </table>
+        <?php echo $pagination;?>
     </div>
 </div>
 <script type="text/javascript">

@@ -76,7 +76,7 @@ class ModelProductAvito extends Model {
         } elseif(isset($filter['mess']) && !(int)$filter['mess']) {
             $sql.= "AND p2a.dateEnd<=NOW() ";
         }
-        $sql.= "ORDER BY ".$filter['sort']." ".$filter['order'];
+        $sql.= "ORDER BY ".$filter['sort']." ".$filter['order']." LIMIT ".(int)$filter['limit']." OFFSET ".(int)$filter['start'];
 //        exit(var_dump($sql));
         $sup = $this->db->query($sql);
         return $sup->rows;
@@ -98,7 +98,6 @@ class ModelProductAvito extends Model {
         $sql.= "ORDER BY ".$filter['sort']." ".$filter['order'];
 //        exit(var_dump($sql));
         $sup = $this->db->query($sql);
-        return $sup->rows;
         return $sup->num_rows;
     }
 }
