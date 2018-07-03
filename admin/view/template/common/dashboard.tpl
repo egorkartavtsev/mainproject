@@ -24,19 +24,15 @@
             <a href="index.php?route=setting/fastCallMenu&token=<?php echo $ses_token;?>" class="btn btn-info">настроить</a>
         </div>
     </div>
-    <?php foreach ($rows as $row) { ?>
     <div class="row">
-      <?php foreach ($row as $dashboard_1) { ?>
-      <?php $class = 'col-lg-' . $dashboard_1['width'] . ' col-md-3 col-sm-6'; ?>
-      <?php foreach ($row as $dashboard_2) { ?>
-      <?php if ($dashboard_2['width'] > 3) { ?>
-      <?php $class = 'col-lg-' . $dashboard_1['width'] . ' col-md-12 col-sm-12'; ?>
-      <?php } ?>
-      <?php } ?>
-      <div class="<?php echo $class; ?>"><?php echo $dashboard_1['output']; ?></div>
-      <?php } ?>
+      <?php if(isset($notice['order'])){ 
+                echo $notice['order'];
+            }
+            if(isset($notice['avito'])){ 
+                echo $notice['avito'];
+            }  
+      ?>
     </div>
-    <?php } ?>
   </div>
 </div>
 <?php echo $footer; ?>

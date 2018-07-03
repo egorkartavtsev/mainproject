@@ -11,7 +11,9 @@
         </div>
     </div>
     <div class="col-lg-12">
-        <p class=""><?php echo $result?$result:'Не найдено'; ?></p>
+        <?php foreach($sql as $quer){
+            echo $quer.'<br>';
+        }?>
     </div>
 </div>
 <?php echo $footer;?>

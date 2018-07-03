@@ -4,8 +4,8 @@ class ControllerCommonDashboard extends Controller {
 		$this->load->language('common/dashboard');
                 $this->load->model('tool/layout');
                 $data = $this->model_tool_layout->getLayout($this->request->get['route']);
+                $this->model_tool_layout->updateADS($this->request->get['route']);
                 
-		
                 $data['ses_token'] = $this->session->data['token'];
 		$data['breadcrumbs'] = array();
                 $fcItems = $this->user->getLayout();
@@ -75,7 +75,26 @@ class ControllerCommonDashboard extends Controller {
 
 			$this->model_localisation_currency->refresh();
 		}
-
+                
+                $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."order WHERE viewed = 0 ");
+                if($sup->num_rows){
+                    $data['notice']['order'] = '<a href="'.$this->url->link('report/orders', 'token='.$this->session->data['token']).'" style="float: left;">'
+                            . '<div class="db-notice orders" style="color: white;">'
+                                . '<h3>Новые заказы с сайта: </h3>'
+                                . '<h1><i class="fa fa-pencil-square-o fw"></i> <b>'.$sup->num_rows.'</b>шт.</h3>'
+                            . '</div>'
+                        . '</a>';
+                }
+                $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."product_to_avito WHERE message = 1 ");
+                if($sup->num_rows){
+                    $data['notice']['avito'] = '<a href="'.$this->url->link('avito/avito_list', 'token='.$this->session->data['token']).'" style="float: left;">'
+                            . '<div class="db-notice avito" style="color: white;">'
+                                . '<h3>Окончилась активация: </h3>'
+                                . '<h1><i class="fa fa-adn fw"></i> <b>'.$sup->num_rows.'</b>объявл.</h3>'
+                            . '</div>'
+                        . '</a>';
+                }
+                
 		$this->response->setOutput($this->load->view('common/dashboard', $data));
 	}
 }

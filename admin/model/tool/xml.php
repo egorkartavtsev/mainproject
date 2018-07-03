@@ -12,6 +12,7 @@ class ModelToolXml extends Model {
                         $dom=dom_import_simplexml($xmls->Ad[$sup]);
                         $dom->parentNode->removeChild($dom);
                         $xmls->saveXML('../Avito/ads.xml');
+                        $this->db->query("DELETE FROM ".DB_PREFIX."product_to_avito WHERE vin = '".$data['vin']."' ");
                         return 0;
                     }
                     $this->avitoUpdateAd($data['options'], $sup, $xmls);
@@ -231,6 +232,9 @@ class ModelToolXml extends Model {
                 $image = $images->addChild('Image');
                 $image->addAttribute('url', HTTP_CATALOG.'image/'.$img);
             $xmls->saveXML('../Avito/ads.xml');
+            $this->db->query("INSERT INTO ".DB_PREFIX."product_to_avito "
+                    . "(`product_id`, `vin`, `dateStart`, `dateEnd`, `message`) VALUES "
+                    . "(".$data['pid'].", '".$data['vin']."', '".date('Y-m-d', strtotime("+".$settings['sdate']." days"))."'), '".date('Y-m-d', strtotime("+".$settings['edate']." days"))."') ");
     }
 /*---------------------------------------------------------------------------------------------*/    
     public function ARUFind($data) {

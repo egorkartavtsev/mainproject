@@ -216,6 +216,76 @@ $(document).ready(function() {
         //alert(parent);
     })
     
+    $(document).on('click', '[btn_type=hidenotice]', function(){
+        var vin = $(this).attr('target-arg');
+        var btn = $(this);
+        ajax({
+            url:"index.php?route=avito/avito_tool/hideNotice&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data:
+            {
+                vin: vin
+            },
+            success:function(data){
+                btn.parent().parent().removeClass('elderAD');
+                btn.remove();
+            }
+        })
+    })
+    
+    $(document).on('click', '[btn_type=react]', function(){
+        var vin = $(this).attr('target-arg');
+        var btn = $(this);
+        ajax({
+            url:"index.php?route=avito/avito_tool/react&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data:
+            {
+                vin: vin
+            },
+            success:function(data){
+                btn.remove();
+            }
+        })
+    })
+    
+    $(document).on('click', '[btn_type=dropAd]', function(){
+        var vin = $(this).attr('target-arg');
+        var btn = $(this);
+        ajax({
+            url:"index.php?route=avito/avito_tool/drop&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data:
+            {
+                vin: vin
+            },
+            success:function(data){
+                btn.parent().parent().remove();
+            }
+        })
+    })
+    
+    $(document).on('click', '[btn_type=deact]', function(){
+        var vin = $(this).attr('target-arg');
+        var btn = $(this);
+        ajax({
+            url:"index.php?route=avito/avito_tool/deact&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data:
+            {
+                vin: vin
+            },
+            success:function(data){
+                btn.parent().parent().addClass('elderAD');
+                btn.remove();
+            }
+        })
+    })
+    
     $(document).on('input', '[id=fillname]', function(){
         if($(this).val()==''){
             $('#createFill').attr('disabled', '');

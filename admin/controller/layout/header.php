@@ -141,7 +141,11 @@ class ControllerLayoutHeader extends Controller {
                         
                         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."order WHERE viewed = 0 ");
                         if($sup->num_rows){
-                            $data['notice'] = 'Есть новые заказы ('.$sup->num_rows.' шт.) с витрины. <a href="'.$this->url->link('report/orders', 'token='.$this->session->data['token']).'">Перейти в заказы...</a>';
+                            $data['notice']['order'] = '<a href="'.$this->url->link('report/orders', 'token='.$this->session->data['token']).'" style="float: left;"><div class="top-notice orders"><h3><b style="color: white;">'.$sup->num_rows.'</b></h3></div></a>';
+                        }
+                        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."product_to_avito WHERE message = 1 ");
+                        if($sup->num_rows){
+                            $data['notice']['avito'] = '<a href="'.$this->url->link('avito/avito_list', 'token='.$this->session->data['token']).'" style="float: left;"><div class="top-notice avito"><h3><b style="color: white;">'.$sup->num_rows.'</b></h3></div></a>';
                         }
 		}
                 

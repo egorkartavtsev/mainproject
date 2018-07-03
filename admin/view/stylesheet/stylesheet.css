@@ -13,6 +13,40 @@ h1, h2, h3, h4, h5, h6, p {
 	margin-top: 0;
 }
 
+.top-notice{
+    margin-bottom: 0;
+    border-radius: 0px 0px 10px 10px;
+    min-height: 40px;
+    padding: 5px 20px;
+}
+
+.db-notice{
+    margin-bottom: 0;
+    margin-right: 5px;
+    border-radius: 10px 10px 10px 10px;
+    min-height: 40px;
+    padding: 10px 25px;
+}
+.db-notice > h1{
+    font-size: 45px;
+}
+
+.orders{
+    background-image: linear-gradient(to bottom, #f5908d, #bf0b02);
+    background-repeat: repeat-x;
+}
+
+.avito{
+    background-image: linear-gradient(to bottom, #8dd8f5, #029cbf);
+    background-repeat: repeat-x;
+    margin-left: 1px;
+}
+
+.elderAD{
+    background-color: #fef1f1!important;
+    border-color: #fde2e2;
+    color: #a20505;
+}
 .client_item{
     cursor: pointer;
     border: 1px solid #c3cfc3;

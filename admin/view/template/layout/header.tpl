@@ -77,11 +77,12 @@
             
         </div>
     </div>
-        <?php if(isset($notice)){ ?>
-            <div class="alert alert-danger" style="margin-bottom: 0;">
-                <?php echo $notice; ?>
-            </div>
-        <?php }  ?>
+        <?php if(isset($notice['order'])){ 
+                echo $notice['order'];
+            }  ?>
+        <?php if(isset($notice['avito'])){ 
+                echo $notice['avito'];
+            }  ?>
     <?php }  ?>
    </div>
   <?php if ($logged) { ?>
