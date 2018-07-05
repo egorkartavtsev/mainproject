@@ -350,7 +350,7 @@ class ModelToolForms extends Model {
                     case 'input':
                         $inputs.= '<div class="col-md-3 form-group">'
                                     . '<label>'.$option['text'].'</label>'
-                                    . '<input class="form-control" name="info['.$key.']" '.($option['required']=='1'?'required="required':'').' value="'.$option['value'].'">'
+                                    . '<input class="form-control" name="info['.$key.']" '.($option['required']=='1'?'required="required':'').' value="'.htmlspecialchars_decode($option['value']).'">'
                                 . '</div>';
                     break;
                     case 'select':

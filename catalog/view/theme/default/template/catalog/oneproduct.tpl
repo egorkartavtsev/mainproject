@@ -58,7 +58,7 @@
                             </thead>
                             <?php $summ = 0; foreach($complect as $acc) { ?>
                                 <tr>
-                                    <td><a href="index.php?route=product/product&product_id=<?php echo $acc['product_id'];?>" target="blank"><?php echo $acc['name'];?></a></td>
+                                    <td><a href="index.php?route=catalog/product&product_id=<?php echo $acc['product_id'];?>" target="blank"><?php echo $acc['name'];?></a></td>
                                     <?php  if (!in_array(0, array_column($complect, 'price'))) { ?>
                                         <?php if ( $product['price'] != 0.00 ) { ?>
                                             <?php $summ+= $acc['price'];?>
@@ -109,7 +109,7 @@
                 <?php foreach($options as $option){ ?>
                     <?php if (isset($option['viewed'])) { ?>
                         <?php if (($option['viewed'] == 1 ||  $option['viewed'] == 3) && $option['value'] !== '' && isset($option['text']) && $option['text'] !=='') { ?>
-                                <li><?php echo $option['text'];?>: <?php echo $option['value'];?></li>
+                                <li><?php echo $option['text'];?>: <?php echo htmlspecialchars_decode($option['value']);?></li>
                         <?php }?>
                     <?php }?>
                 <?php }?>

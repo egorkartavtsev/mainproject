@@ -67,7 +67,10 @@ class ModelProductAvito extends Model {
         $sql = "SELECT * FROM ".DB_PREFIX."product_to_avito p2a "
                 . "LEFT JOIN ".DB_PREFIX."product p ON p.product_id = p2a.product_id "
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON pd.product_id = p2a.product_id "
-                . "WHERE LOCATE('".$filter['modbr']."', pd.name) "
+                . "WHERE LOCATE('".$filter['modbr']."', p.brand) "
+                    . "AND LOCATE('".$filter['podcat']."', p.podcateg) "
+                    . "AND LOCATE('".$filter['model']."', p.model) "
+                    . "AND LOCATE('".$filter['vin']."', p.vin) "
                     . "AND p.price>=".(int)$filter['priceFrom']." "
                     . "AND p.price<=".(int)$filter['priceTo']." "
                     . "AND p2a.dateEnd>='".$filter['date']."' ";
@@ -86,7 +89,10 @@ class ModelProductAvito extends Model {
         $sql = "SELECT * FROM ".DB_PREFIX."product_to_avito p2a "
                 . "LEFT JOIN ".DB_PREFIX."product p ON p.product_id = p2a.product_id "
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON pd.product_id = p2a.product_id "
-                . "WHERE LOCATE('".$filter['modbr']."', pd.name) "
+                . "WHERE LOCATE('".$filter['modbr']."', p.brand) "
+                    . "AND LOCATE('".$filter['podcat']."', p.podcateg) "
+                    . "AND LOCATE('".$filter['model']."', p.model) "
+                    . "AND LOCATE('".$filter['vin']."', p.vin) "
                     . "AND p.price>=".(int)$filter['priceFrom']." "
                     . "AND p.price<=".(int)$filter['priceTo']." "
                     . "AND p2a.dateEnd>='".$filter['date']."' ";

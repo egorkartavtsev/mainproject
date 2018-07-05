@@ -252,97 +252,97 @@ class ControllerProductionCatalog extends Controller {
             $this->load->model('tool/layout');
                 $data = $this->model_tool_layout->getLayout($this->request->get['route']);
 		if (isset($this->request->get['filter_name'])) {
-			$filter_name = $this->request->get['filter_name'];
+			$filter_name = trim($this->request->get['filter_name']);
 		} else {
 			$filter_name = null;
 		}
 		if (isset($this->request->get['filter_donor'])) {
-			$filter_donor = $this->request->get['filter_donor'];
+			$filter_donor = trim($this->request->get['filter_donor']);
 		} else {
 			$filter_donor = null;
 		}
 		if (isset($this->request->get['filter_drom'])) {
-			$filter_drom = $this->request->get['filter_drom'];
+			$filter_drom = trim($this->request->get['filter_drom']);
 		} else {
 			$filter_drom = null;
 		}
 		if (isset($this->request->get['filter_catn'])) {
-			$filter_catn = $this->request->get['filter_catn'];
+			$filter_catn = trim($this->request->get['filter_catn']);
 		} else {
 			$filter_catn = null;
 		}
                 if (isset($this->request->get['filter_category'])) {
-			$filter_category = $this->request->get['filter_category'];
+			$filter_category = trim($this->request->get['filter_category']);
 		} else {
 			$filter_category = NULL;
 		}
                 if (isset($this->request->get['filter_wocat'])) {
-			$filter_wocat = $this->request->get['filter_wocat'];
+			$filter_wocat = trim($this->request->get['filter_wocat']);
 		} else {
 			$filter_wocat = null;
 		}
                 
 		if (isset($this->request->get['filter_model'])) {
-			$filter_model = $this->request->get['filter_model'];
+			$filter_model = trim($this->request->get['filter_model']);
 		} else {
 			$filter_model = null;
 		}
 
 		if (isset($this->request->get['filter_price'])) {
-			$filter_price = $this->request->get['filter_price'];
+			$filter_price = trim($this->request->get['filter_price']);
 		} else {
 			$filter_price = null;
 		}
 		
                 if (isset($this->request->get['filter_vin'])) {
-			$filter_vin = $this->request->get['filter_vin'];
+			$filter_vin = trim($this->request->get['filter_vin']);
 		} else {
 			$filter_vin = null;
 		}
                 
                 if (isset($this->request->get['filter_brand'])) {
-			$filter_brand = $this->request->get['filter_brand'];
+			$filter_brand = trim($this->request->get['filter_brand']);
 		} else {
 			$filter_brand = null;
 		}
                 if (isset($this->request->get['filter_drom'])) {
-			$filter_drom = $this->request->get['filter_drom'];
+			$filter_drom = trim($this->request->get['filter_drom']);
 		} else {
 			$filter_drom = null;
 		}
 
 		if (isset($this->request->get['filter_quantity'])) {
-			$filter_quantity = $this->request->get['filter_quantity'];
+			$filter_quantity = trim($this->request->get['filter_quantity']);
 		} else {
 			$filter_quantity = null;
 		}
 
 		if (isset($this->request->get['filter_status'])) {
-			$filter_status = $this->request->get['filter_status'];
+			$filter_status = trim($this->request->get['filter_status']);
 		} else {
 			$filter_status = null;
 		}
 
 		if (isset($this->request->get['filter_image'])) {
-			$filter_image = $this->request->get['filter_image'];
+			$filter_image = trim($this->request->get['filter_image']);
 		} else {
 			$filter_image = null;
 		}
 
 		if (isset($this->request->get['sort'])) {
-			$sort = $this->request->get['sort'];
+			$sort = trim($this->request->get['sort']);
 		} else {
 			$sort = 'pd.date_added';
 		}
 
 		if (isset($this->request->get['order'])) {
-			$order = $this->request->get['order'];
+			$order = trim($this->request->get['order']);
 		} else {
 			$order = 'DESC';
 		}
 
 		if (isset($this->request->get['page'])) {
-			$page = $this->request->get['page'];
+			$page = trim($this->request->get['page']);
 		} else {
 			$page = 1;
 		}
@@ -410,8 +410,8 @@ class ControllerProductionCatalog extends Controller {
 			$url .= '&page=' . $this->request->get['page'];
 		}
 
-		$data['add'] = $this->url->link('catalog/product/add', 'token=' . $this->session->data['token'] . $url, true);
-		$data['copy'] = $this->url->link('catalog/product/copy', 'token=' . $this->session->data['token'] . $url, true);
+		$data['add'] = $this->url->link('production/addition', 'token=' . $this->session->data['token'] . $url, true);
+		$data['copy'] = $this->url->link('production/catalog/copy', 'token=' . $this->session->data['token'] . $url, true);
 		$data['delete'] = $this->url->link('production/catalog/delete', 'token=' . $this->session->data['token'] . $url, true);
                 $data['go_site'] = HTTPS_CATALOG.'index.php?route=catalog/product&product_id=';
 		$data['products'] = array();

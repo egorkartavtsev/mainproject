@@ -43,7 +43,8 @@ class ModelToolLayout extends Model {
     
     public function updateADS($route) {
         if($route=='common/dashboard'){
-            $this->db->query("UPDATE ".DB_PREFIX."product_to_avito SET message = 1 WHERE dateEnd<NOW()");
+            $date = date('Y-m-d');
+            $this->db->query("UPDATE ".DB_PREFIX."product_to_avito SET message = 1 WHERE dateEnd = '".$date."' ");
         }
     }
     

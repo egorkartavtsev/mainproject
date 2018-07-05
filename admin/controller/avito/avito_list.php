@@ -16,6 +16,9 @@ class ControllerAvitoAvitoList extends Controller{
             'priceTo'   => 99999999,
             'date'      => '1976-01-01',
             'modbr'     => '',
+            'model'     => '',
+            'podcat'     => '',
+            'vin'     => '',
             'sort'      => 'p2a.dateEnd',
             'start'     => 0,
             'limit'     => 100,
@@ -25,6 +28,24 @@ class ControllerAvitoAvitoList extends Controller{
         if(isset($this->request->get['page'])){
             $page = $this->request->get['page'];
             $filter['start'] = ($page-1)*50;
+        }
+        if(isset($this->request->get['filter_model'])){
+            $data['filter']['model'] = $this->request->get['filter_model'];
+            $data['url'].= '&filter_model='.$data['filter']['model'];
+            $url.= '&filter_model='.$data['filter']['model'];
+            $filter['model'] = $this->request->get['filter_model'];
+        }
+        if(isset($this->request->get['filter_podcat'])){
+            $data['filter']['podcat'] = $this->request->get['filter_podcat'];
+            $data['url'].= '&filter_podcat='.$data['filter']['podcat'];
+            $url.= '&filter_podcat='.$data['filter']['podcat'];
+            $filter['podcat'] = $this->request->get['filter_podcat'];
+        }
+        if(isset($this->request->get['filter_vin'])){
+            $data['filter']['vin'] = $this->request->get['filter_vin'];
+            $data['url'].= '&filter_vin='.$data['filter']['vin'];
+            $url.= '&filter_vin='.$data['filter']['vin'];
+            $filter['vin'] = $this->request->get['filter_vin'];
         }
         if(isset($this->request->get['filter_priceFrom'])){
             $data['filter']['priceFrom'] = $this->request->get['filter_priceFrom'];

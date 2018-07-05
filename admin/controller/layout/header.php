@@ -43,7 +43,9 @@ class ControllerLayoutHeader extends Controller {
 		$data['text_support'] = $this->language->get('text_support');
 		$data['text_logged'] = sprintf($this->language->get('text_logged'), $this->user->getUserName());
 		$data['text_logout'] = $this->language->get('text_logout');
-
+                
+                
+                
 		if (!isset($this->request->get['token']) || !isset($this->session->data['token']) || ($this->request->get['token'] != $this->session->data['token'])) {
 			$data['logged'] = '';
 
@@ -148,6 +150,21 @@ class ControllerLayoutHeader extends Controller {
                             $data['notice']['avito'] = '<a href="'.$this->url->link('avito/avito_list', 'token='.$this->session->data['token']).'" style="float: left;"><div class="top-notice avito"><h3><b style="color: white;">'.$sup->num_rows.'</b></h3></div></a>';
                         }
 		}
+                
+                //CKEditor
+                if ($this->config->get('config_editor_default')) {
+                    $data['scripts'][]='view/javascript/ckeditor/ckeditor.js';
+                    $data['scripts'][]='view/javascript/ckeditor/ckeditor_init.js';
+                } else {
+                    $data['scripts'][]='view/javascript/summernote/summernote.js';
+                    $data['scripts'][]='view/javascript/summernote/lang/summernote-'.$this->language->get('lang').'.js';
+                    $data['scripts'][]='view/javascript/summernote/opencart.js';
+                    $data['styles'][] = array(
+                        'href'=>'view/javascript/summernote/summernote.css',
+                        'rel'=>'stylesheet',
+                        'media'=>'screen'
+                    );
+                }
                 
 		return $this->load->view('layout/header', $data);
 	}

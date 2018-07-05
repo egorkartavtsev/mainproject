@@ -23,13 +23,17 @@
                     <label>Цена до:</label>
                     <input type="text" class="form-control" target="filter" target-name="priceTo" value="<?php echo isset($filter['priceTo'])?$filter['priceTo']:'';?>">
                 </div>
-                <div class="form-group">
+                <div class="form-group-sm">
                     <label>Статус: </label>
                     <select class="form-control" target="filter" target-name="mess">
                         <option value=" ">Все</option>
                         <option value="1" <?php echo (isset($filter['mess']) && (int)$filter['mess'])?'selected':'';?>>Активно</option>
                         <option value="0" <?php echo (isset($filter['mess']) && !(int)$filter['mess'])?'selected':'';?>>Неактивно</option>
                     </select>
+                </div>
+                <div class="form-group-sm">
+                    <label>Внутренний номер:</label>
+                    <input type="text" class="form-control" target="filter" target-name="vin" value="<?php echo isset($filter['vin'])?$filter['vin']:'';?>">
                 </div>
             </div>
             <div class="col-md-4">
@@ -42,16 +46,24 @@
                         </span>
                     </div>
                 </div>
+                <div class="form-group-sm">
+                    <label>Подкатегория:</label>
+                    <input type="text" class="form-control" target="filter" target-name="podcat" value="<?php echo isset($filter['podcat'])?$filter['podcat']:'';?>">
+                </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    <label>Марка или модель:</label>
+                    <label>Марка:</label>
                     <input type="text" class="form-control" target="filter" target-name="modbr" value="<?php echo isset($filter['modbr'])?$filter['modbr']:'';?>">
+                </div>
+                <div class="form-group-sm">
+                    <label>Модель:</label>
+                    <input type="text" class="form-control" target="filter" target-name="model" value="<?php echo isset($filter['model'])?$filter['model']:'';?>">
                 </div>
                 <div class="clearfix"><p></p></div>
                 <div class="clearfix"></div>
-                <button class="btn bnt-block btn-primary" id="button-filter">применить фильтры</button>
-                <button class="btn bnt-block btn-danger" id="clear-filter">очистить фильтры</button>
+                <button class="btn btn-sm bnt-block btn-primary" id="button-filter">применить фильтры</button>
+                <button class="btn btn-sm bnt-block btn-danger" id="clear-filter">очистить фильтры</button>
             </div>
         </div>
         <div class="form-group col-md-6">

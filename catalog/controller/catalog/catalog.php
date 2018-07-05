@@ -284,6 +284,7 @@ class ControllerCatalogCatalog extends Controller{
 //        exit(var_dump($filter));
 //        exit(var_dump($this->request->get));
 //        exit($sort);
+        $list['pagination'] = '';
         if(isset($this->request->get['libr'])){
             $types = $this->model_tool_layout->getTypesArray();
             $librs = explode("_", trim($this->request->get['libr']));
@@ -292,7 +293,7 @@ class ControllerCatalogCatalog extends Controller{
             $products = $this->model_product_product->getProducts('libr', $libr, $sort, $filter);
             $list['total'] = $this->model_product_product->getTotalProducts('libr', $libr, $filter);
             $list['types'] = $types;
-            $list['pagination'] = $this->model_tool_layout->pagination($list['total'], 'libr');
+            //$list['pagination'] = $this->model_tool_layout->pagination($list['total'], 'libr');
             $data['filterDiv'] = $this->model_tool_layout->constructFilter('libr', $library);
             $list['link'] = $this->url->link('catalog/catalog/products', 'libr='.$this->request->get['libr']);
         }
@@ -301,7 +302,7 @@ class ControllerCatalogCatalog extends Controller{
             $products = $this->model_product_product->getProducts('type', $this->request->get['type'], $sort, $filter);
             $list['total'] = $this->model_product_product->getTotalProducts('type', $this->request->get['type'], $filter);
             $list['types'] = $types;
-            $list['pagination'] = $this->model_tool_layout->pagination($list['total'], 'type');
+            //$list['pagination'] = $this->model_tool_layout->pagination($list['total'], 'type');
             $data['filterDiv'] = $this->model_tool_layout->constructFilter('type', $this->request->get['type']);
             $list['link'] = $this->url->link('catalog/catalog/products', 'type='.$this->request->get['type']);
         }

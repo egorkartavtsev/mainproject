@@ -127,6 +127,12 @@ class ModelToolXml extends Model {
         $image->addAttribute('url', HTTP_CATALOG.'image/'.$img);
         
         $xmls->saveXML('../Avito/ads.xml');
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."product_to_avito WHERE vin = '".$data['vin']."' ");
+        if($sup->num_rows<1){
+            $this->db->query("INSERT INTO ".DB_PREFIX."product_to_avito "
+                    . "(`product_id`, `vin`, `dateStart`, `dateEnd`, `message`) VALUES "
+                    . "(".$data['pid'].", '".$data['vin']."', '".date('Y-m-d', strtotime("+".$settings['sdate']." days"))."', '".date('Y-m-d', strtotime("+".$settings['edate']." days"))."', 0) ");
+        }
     }
     
     public function avitoCreateAd($data, $xmls) {
@@ -234,7 +240,7 @@ class ModelToolXml extends Model {
             $xmls->saveXML('../Avito/ads.xml');
             $this->db->query("INSERT INTO ".DB_PREFIX."product_to_avito "
                     . "(`product_id`, `vin`, `dateStart`, `dateEnd`, `message`) VALUES "
-                    . "(".$data['pid'].", '".$data['vin']."', '".date('Y-m-d', strtotime("+".$settings['sdate']." days"))."'), '".date('Y-m-d', strtotime("+".$settings['edate']." days"))."') ");
+                    . "(".$data['pid'].", '".$data['vin']."', '".date('Y-m-d', strtotime("+".$settings['sdate']." days"))."', '".date('Y-m-d', strtotime("+".$settings['edate']." days"))."', 0) ");
     }
 /*---------------------------------------------------------------------------------------------*/    
     public function ARUFind($data) {

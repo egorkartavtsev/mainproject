@@ -372,6 +372,14 @@ class ModelToolProduct extends Model {
             $this->db->query("UPDATE ".DB_PREFIX."lib_fills SET ".$key." = '".trim($value)."' WHERE id = ".(int)$fill);
         }
         $this->db->query("UPDATE ".DB_PREFIX."product SET ".$sup->row['col']." = '".$fields['name']."' WHERE ".$sup->row['col']." = '".$sup->row['name']."'");
+        $this->db->query("UPDATE ".DB_PREFIX."product_description SET "
+                . "tag = REPLACE(tag, '".$sup->row['name']."', '".$fields['name']."'), "
+                . "meta_title = REPLACE(meta_title, '".$sup->row['name']."', '".$fields['name']."'), "
+                . "meta_h1 = REPLACE(meta_h1, '".$sup->row['name']."', '".$fields['name']."'), "
+                . "meta_description = REPLACE(meta_description, '".$sup->row['name']."', '".$fields['name']."'), "
+                . "meta_keyword = REPLACE(meta_keyword, '".$sup->row['name']."', '".$fields['name']."'), "
+                . "name = REPLACE(name, '".$sup->row['name']."', '".$fields['name']."'), "
+                . "description = REPLACE(description, '".$sup->row['name']."', '".$fields['name']."') ");
     }
     
     public function getProduct($id) {
@@ -400,7 +408,7 @@ class ModelToolProduct extends Model {
             if(isset($info['info'][$option['name']])){
                 $result['options'][$option['name']] = array(
                     'field_type' => $option['field_type'],
-                    'value' => $info['info'][$option['name']]
+                    'value' => htmlspecialchars($info['info'][$option['name']], ENT_QUOTES)
                 );
             }
         }
