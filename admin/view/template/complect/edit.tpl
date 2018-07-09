@@ -31,7 +31,7 @@
                     </div>
                     <div class="col-lg-4">
                         <label>Головной товар(комплектообразующий)</label>
-                        <input value="<?php echo $complect['heading'];?>" class="form-control" oninput="validVin('heading', 'result_box', '<?php echo $token; ?>')" name="heading" id="heading" />
+                        <input value="<?php echo $complect['heading'];?>" class="form-control" oninput="validVin('heading-crt', 'result_box', '<?php echo $token; ?>')" name="" id="heading-crt" />
                         <div id='result_box'></div>
                     </div>
                     <div class="col-lg-4">

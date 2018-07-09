@@ -439,6 +439,8 @@ class ModelToolForms extends Model {
         $this->load->model('tool/product');
         $links = array();
         $vin = $this->db->query("SELECT vin FROM ".DB_PREFIX."product WHERE product_id = ".(int)$id);
+        $this->load->model('tool/complect');
+        $this->model_tool_complect->compReprice($vin->row['vin']);
         $sup = $this->db->query("SELECT temp, desctemp FROM ".DB_PREFIX."product_type WHERE type_id = (SELECT structure FROM ".DB_PREFIX."product WHERE product_id = ".(int)$id.")");
         $name = $sup->row['temp'];
         $description = $sup->row['desctemp'];

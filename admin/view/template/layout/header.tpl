@@ -10,6 +10,7 @@
 <?php if ($keywords) { ?>
 <meta name="keywords" content="<?php echo $keywords; ?>" />
 <?php } ?>
+<link rel="shortcut icon" href="../image/icoadm.png" type="image/x-icon">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 <script type="text/javascript" src="view/javascript/jquery/jquery-2.1.1.min.js?t=<?php echo(microtime(true)); ?>"></script>
 <script type="text/javascript" src="view/javascript/complect.js?t=<?php echo(microtime(true)); ?>"></script>

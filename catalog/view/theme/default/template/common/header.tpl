@@ -17,6 +17,7 @@
 <?php if ($keywords) { ?>
 <meta name="keywords" content= "<?php echo $keywords; ?>" />
 <?php } ?>
+<link rel="shortcut icon" href="image/icoshop.png" type="image/x-icon">
 <meta property="og:title" content="<?php echo $title; if (isset($_GET['page'])) { echo " - ". ((int) $_GET['page'])." ".$text_page;} ?>" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="<?php echo $og_url; ?>" />

@@ -129,7 +129,7 @@
             data:
             {
                 complect: window.complect,
-                heading: document.getElementById('heading').value,
+                heading: document.getElementById('heading-crt').value,
                 name: document.getElementById('name').value,
                 price: document.getElementById('price').value,
                 whole: document.getElementById('whole').value,
@@ -204,7 +204,7 @@
             {
                 complect: window.complect,
                 id: document.getElementById('id').value,
-                heading: document.getElementById('heading').value,
+                heading: document.getElementById('heading-crt').value,
                 name: document.getElementById('name').value,
                 price: document.getElementById('price').value,
                 whole: document.getElementById('whole').value,
