@@ -295,6 +295,8 @@ $('#button-filter').on('click', function() {
 	var url = 'index.php?route=production/catalog&token=<?php echo $token; ?>';
 
 	var filter_name = $('input[name=\'filter_name\']').val();
+        var filter_name = filter_name.replace(/\s+/g," ");
+        $('input[name=\'filter_name\']').val($.trim(filter_name));
 
 	if (filter_name) {
 		url += '&filter_name=' + encodeURIComponent(filter_name);
@@ -319,13 +321,16 @@ $('#button-filter').on('click', function() {
 	}
 
 	var filter_price = $('input[name=\'filter_price\']').val();
+        var filter_price = filter_price.replace(/\s+/g," ");
+        $('input[name=\'filter_price\']').val($.trim(filter_price));
 
 	if (filter_price) {
 		url += '&filter_price=' + encodeURIComponent(filter_price);
 	}
         
         var filter_vin = $('input[name=\'filter_vin\']').val();
-
+        var filter_vin = filter_vin.replace(/\s+/g," ");
+        $('input[name=\'filter_vin\']').val($.trim(filter_vin));
 	if (filter_vin) {
 		url += '&filter_vin=' + encodeURIComponent(filter_vin);
 	}
@@ -337,7 +342,8 @@ $('#button-filter').on('click', function() {
 	}
         
         var filter_brand = $('input[name=\'filter_brand\']').val();
-
+        var filter_brand = filter_brand.replace(/\s+/g," ");
+        $('input[name=\'filter_brand\']').val($.trim(filter_brand));
 	if (filter_brand) {
 		url += '&filter_brand=' + encodeURIComponent(filter_brand);
 	}
