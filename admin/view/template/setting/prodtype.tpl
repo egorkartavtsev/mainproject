@@ -30,6 +30,7 @@
       </div>
   </div>
 </div>
+<?php echo $modal;?>
 <script type="text/javascript"><!--
     $('#myTabs a').click(function (e) {
       ckeditorInit('prodtypes', getURLVar('token'));

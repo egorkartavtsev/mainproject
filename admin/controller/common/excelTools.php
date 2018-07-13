@@ -176,15 +176,14 @@
             }
         }
         
-        public function constructFile($products = 0) {
-            $this->load->model("common/excel");
-            $template = $this->model_common_excel->getProductTemplate();
+        public function constructFile($products = 0, $type) {
+            $this->load->model("tool/product");
+            $template = $this->model_tool_product->getExcelTempl($type);
             $xls = new PHPExcel();
             $xls->setActiveSheetIndex(0);
             $sheet = $xls->getActiveSheet();
             $sheet = $this->getHeading($sheet, $template);
             if($products!=0){
-                ini_set('max_execution_time','3600');
                 $sheet = $this->getTBody($products, $template, $sheet);
             }
             return $xls;
@@ -192,7 +191,7 @@
 
         public function download_template($filter){
             
-            $xls = $this->constructFile();
+            $xls = $this->constructFile(0, $filter['type']);
             header ( "Expires: " . gmdate("D,d M YH:i:s") . " GMT" );
             header ( "Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT" );
             header ( "Cache-Control: no-cache, must-revalidate" );
@@ -209,7 +208,7 @@
 
             $products = $this->model_common_excel->getInfoProducts($filter_data);
 //            exit(var_dump($products));
-            $xls = $this->constructFile($products);
+            $xls = $this->constructFile($products, $filter_data['type']);
             
             header ( "Expires: " . gmdate("D,d M YH:i:s") . " GMT" );
             header ( "Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT" );
@@ -233,7 +232,7 @@
                 )
             );
             foreach ($template as $key => $field) {
-                $letter = $alphabet[$key];
+                $letter = $alphabet[$field['excel']];
                 $cell = $letter.'1';
                 $sheet->setCellValue($cell, $field['text']);
                 $sheet->getColumnDimension($letter)->setAutoSize(true);
@@ -262,27 +261,28 @@
             $i = 2;
             foreach ($products as $row) {
                 foreach ($template as $key => $field) {
-                    $letter = $alphabet[$key];
+//                    exit(var_dump($row));
+                    $letter = $alphabet[$field['excel']];
                     $sheet->getColumnDimension($letter)->setAutoSize(true);
                     $cell = $letter.$i;
-                    if($field['name'] == 'date'){
-                        $row[$field['name']] = DateTime::createFromFormat('Y-m-d H:i:s', $row[$field['name']])->format('d.‌​m.Y');
+                    if($key == 'date_added'){
+                        $row[$key] = DateTime::createFromFormat('Y-m-d H:i:s', $row[$key])->format('d.‌​m.Y');
                     }
-                    if ($field['name'] == 'whole'){
-                        if($row[$field['name']] == 1){
-                            $row[$field['name']] = 'Комплект';
+                    if ($key == 'comp_whole'){
+                        if($row[$key] == '1'){
+                            $row[$key] = 'Комплект';
                         } else {
-                            $row[$field['name']] = '';
+                            $row[$key] = '';
                         }
                     }
                     
-                    if (($field['name'] == 'comp_price') && ($row[$field['name']] != '')) {
-                        $row['complect'] = '';
+                    if (($key == 'comp_price') && ($row[$key] != '')) {
+                        $row['comp'] = '';
                     }
                     
-                    $sheet->setCellValueExplicit($cell, (string)htmlspecialchars_decode(str_replace(">", "-", str_replace($replace, '***', (string)$row[$field['name']]))), PHPExcel_Cell_DataType::TYPE_STRING);
+                    $sheet->setCellValueExplicit($cell, (string)htmlspecialchars_decode(str_replace(">", "-", str_replace($replace, '***', (string)$row[$key]))), PHPExcel_Cell_DataType::TYPE_STRING);
                     $sheet->getColumnDimension($letter)->setAutoSize(true);
-                    if($row['quant']==0){
+                    if($row['quantity']==0){
                         $sheet
                             ->getStyle($cell.':'.$cell)
                             ->getFill()
@@ -321,11 +321,7 @@
         public function constructFilter($filter_data) {
             $this->load->model('common/excel');
             
-            $filter['brand'] = isset($filter_data['brand'])?$this->model_common_excel->getParam('brand',$filter_data['brand']):FALSE;
-            $filter['model'] = isset($filter_data['model_id'])?$this->model_common_excel->getParam('brand', $filter_data['model_id']):FALSE;
-            $filter['modr'] = isset($filter_data['modelRow_id'])?$this->model_common_excel->getParam('brand', $filter_data['modelRow_id']):FALSE;
-            $filter['category'] = isset($filter_data['category_id'])?$this->model_common_excel->getParam('category', $filter_data['category_id']):FALSE;
-            $filter['podcat'] = isset($filter_data['podcat_id'])?$this->model_common_excel->getParam('category', $filter_data['podcat_id']):FALSE;
+            $filter['type'] = isset($filter_data['type'])?$filter_data['type']:1;
             $filter['prod_on'] = isset($filter_data['prod_on'])?TRUE:FALSE;
             $filter['prod_off'] = isset($filter_data['prod_off'])?TRUE:FALSE;
             $filter['date_start'] = $filter_data['date']!=''?$this->getTrueDate($filter_data['date'], 'start'):FALSE;
@@ -339,16 +335,11 @@
                     $filter['manager'] = "";
                 }
             }
-            //exit(var_dump($filter_data));
-            if(isset($filter_data['stock'])){
-                foreach ($filter_data['stock'] as $key => $stock) {
-                    $filter['stock'][$key]['still'] = $filter_data['still'][$key]!=""?$filter_data['still'][$key]:FALSE; 
-                    $filter['stock'][$key]['jar'] = $filter_data['jar'][$key]===""?FALSE:$filter_data['jar'][$key]; 
-                    $filter['stock'][$key]['shelf'] = $filter_data['shelf'][$key]===""?FALSE:$filter_data['shelf'][$key]; 
-                    $filter['stock'][$key]['box'] = $filter_data['box'][$key]===""?FALSE:$filter_data['box'][$key]; 
-                }
-            } else {
+            if(!isset($filter_data['stock'])){
                 $filter['stock'] = FALSE;
+            } else {
+                foreach($filter_data['stock'] as $stock)
+                $filter['stock'][$stock] = $stock;
             }
             return $filter;
         }  

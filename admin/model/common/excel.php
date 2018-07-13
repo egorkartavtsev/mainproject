@@ -1,6 +1,11 @@
 <?php
     class ModelCommonExcel extends Model {
         
+        public function getTypes() {
+            $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."product_type ");
+            return $sup->rows;
+        }
+        
         public function getProductTemplate() {
             $query = $this->db->query("SELECT * FROM ".DB_PREFIX."excel_template ORDER BY id");
             $template = array();
@@ -318,58 +323,21 @@
         }
         
         public function constructQuery($filter) {
-            $template = $this->getProductTemplate();
-            $query = "SELECT "
-                        . "p.avito AS ".$template[0]['name'].", "
-                        . "p.drom AS ".$template[1]['name'].", "
-                        . "p.brand AS ".$template[2]['name'].", "
-                        . "p.model AS ".$template[3]['name'].", "
-                        . "p.modR AS ".$template[4]['name'].", "
-                        . "p.category AS ".$template[5]['name'].", "
-                        . "p.podcateg AS ".$template[6]['name'].", "
-                        . "pd.name AS ".$template[7]['name'].", "
-                        . "p.vin AS ".$template[8]['name'].", "
-                        . "p.cond AS ".$template[9]['name'].", "
-                        . "p.type AS ".$template[10]['name'].", "
-                        . "p.note AS ".$template[11]['name'].", "
-                        . "p.dop AS ".$template[12]['name'].", "
-                        . "p.catn AS ".$template[13]['name'].", "
-                        . "p.compability AS ".$template[14]['name'].", "
-                        . "p.stock AS ".$template[15]['name'].", "
-                        . "p.stell AS ".$template[16]['name'].", "
-                        . "p.jar AS ".$template[17]['name'].", "
-                        . "p.shelf AS ".$template[18]['name'].", "
-                        . "p.box AS ".$template[19]['name'].", "
-                        . "p.price AS ".$template[20]['name'].", "
-                        . "p.comp AS ".$template[23]['name'].", "
-                        . "p.comp_price AS ".$template[22]['name'].", "
-                        . "p.comp_whole AS ".$template[24]['name'].", "
-                        . "p.donor AS ".$template[25]['name'].", "
-                        . "p.date_added AS ".$template[26]['name'].", "
-                        . "p.quantity AS ".$template[21]['name']." "
-                        . "FROM ".DB_PREFIX."product p "
-                        . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
-                        . "WHERE p.category != '' ";
+            $this->load->model('tool/product');
+            $template = $this->model_tool_product->getExcelTempl($filter['type']);
+//            exit(var_dump($filter));
+//            exit(var_dump($template));
+            
+            $query = "SELECT ";
+            foreach ($template as $key => $value) {
+                $query.="p.".$key." AS ".$key.", ";
+            }
+            $query.= "pd.name AS name "
+                    . "FROM ".DB_PREFIX."product p "
+                    . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
+                    . "WHERE !LOCATE('complect', p.vin) ";
             $query.=$filter['manager'];
             if($filter){
-                if($filter['brand']){
-                    if($filter['model']){
-                        if($filter['modr']){
-                            $query.="AND p.modR = '".$filter['modr']."' ";
-                        } else {
-                            $query.="AND p.model = '".$filter['model']."' ";
-                        }
-                    } else {
-                        $query.="AND b.name = '".$filter['brand']."' ";
-                    }
-                }
-                if($filter['category']){
-                    if($filter['podcat']){
-                        $query.="AND p.podcateg = '".$filter['podcat']."' ";
-                    } else {
-                        $query.="AND p.category = '".$filter['category']."' ";
-                    }
-                }
                 if($filter['prod_on']){
                     if(!$filter['prod_off']){
                         $query.="AND p.quantity >= 1 ";
@@ -395,8 +363,8 @@
                     $query.="AND p.date_added <= '".$filter['date_end']."' ";
                 }
             }
-            $query.="ORDER BY p.vin";
-//            exit(var_dump($query));
+            $query.="AND structure = ".(int)$filter['type']." ORDER BY p.date_added DESC";
+            //exit($query);
             return $query;
         }
 
@@ -404,67 +372,6 @@
         public function getInfoProducts($filter) {
             $query = $this->constructQuery($filter);
             $products = $this->db->query($query);
-            $prods = $products->rows;
-            $allow = TRUE;
-            $product_info = array();
-            for($i = 0; $i<count($prods); ++$i){
-//                $locate = explode("/", $prods[$i]['location']);
-                
-                $still = isset($prods[$i]['still'])?$prods[$i]['still']:'';
-                $jar = isset($prods[$i]['jar'])?$prods[$i]['jar']:'';
-                $shelf = isset($prods[$i]['shelf'])?$prods[$i]['shelf']:'';
-                $box = isset($prods[$i]['box'])?$prods[$i]['box']:'';
-                    
-                $prods[$i]['still'] = $still;
-                $prods[$i]['jar'] = $jar;
-                $prods[$i]['shelf'] = $shelf;
-                $prods[$i]['box'] = $box;
-                if($filter){
-                    if($filter['stock']){
-                        foreach ($filter['stock'] as $stock => $sInfo) {
-                /*------------------------------------------------------------------*/
-                            if($prods[$i]['stock'] == $stock){
-                                if($sInfo['still']){
-                                    if($sInfo['still']==$prods[$i]['still']){
-                                        if($sInfo['jar']){
-                                            if($sInfo['jar']==$prods[$i]['jar']){
-                                                if($sInfo['shelf']){
-                                                    if($sInfo['shelf']==$prods[$i]['shelf']){
-                                                        if ($sInfo['box']){
-                                                            if($sInfo['box']==$prods[$i]['box']){
-                                                                $allow = TRUE;
-                                                            } else {
-                                                                $allow = false;
-                                                            }
-                                                        } else {
-                                                            $allow = TRUE;
-                                                        }
-                                                    } else {
-                                                        $allow = FALSE;
-                                                    }
-                                                } else {
-                                                    $allow = TRUE;
-                                                }
-                                            } else {
-                                                $allow = false;
-                                            }
-                                        } else {
-                                            $allow = TRUE;
-                                        }
-                                    } else{
-                                        $allow = false;
-                                    }
-                                }
-                            }
-                /*------------------------------------------------------------------*/
-                        }
-                    }
-                }
-                if($allow){
-                    $product_info[] = $prods[$i];
-                }
-            }
-            //exit(var_dump($product_info));
-            return $product_info;
+            return $products->rows;
         }
     }

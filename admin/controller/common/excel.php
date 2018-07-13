@@ -1,6 +1,9 @@
 <?php
     class ControllerCommonExcel extends Controller {
     private $errors = array();
+    private $alphabet = array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 
+                              'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'aa', 'ab', 'ac', 'ad', 'ae', 
+                              'af', 'ag', 'ah');
     private $uploadTypes = array(
         'add'   => 'addProduct',
         'synch' => 'synchProds'
@@ -11,55 +14,20 @@
     );
 
         public function index($err = 0, $mat = 0) {
-            
             $uType = $this->session->data['uType'];
             $uName = $this->session->data['username'];
-//            exit(var_dump($this->session->data));
+
             $this->load->model("tool/layout");
+            $this->load->model("common/excel");
+            $this->load->model("tool/excel");
             $data = $this->model_tool_layout->getLayout($this->request->get['route']);
+            $data['types'] = $this->model_common_excel->getTypes();
             $data['uType'] = $uType;
             $data['broken'] = $err!=0?$err:NULL;
             $data['matches'] = $mat!=0?$mat:NULL;
             /*****************************************************************/
+            $data['stocks'] = $this->model_tool_excel->getStocks();
 
-            //берём категории
-            $query = $this->db->query("SELECT "
-                    . "c.category_id AS id, "
-                    . "cd.name AS name "
-                    . "FROM ".DB_PREFIX."category c "
-                    . "LEFT JOIN ".DB_PREFIX."category_description cd "
-                        . "ON (cd.language_id=1 AND cd.category_id = c.category_id) "
-                    . "WHERE c.parent_id = 0 ORDER BY cd.name ");
-
-            $results = $query->rows;
-            $data['category'] = array();
-            foreach ($results as $res) {
-                    $data['category'][] = array(
-                        'name' => $res['name'],
-                        'val'  => $res['id']
-                    );
-            }
-
-            //берём марки
-            $query = $this->db->query("SELECT id, name FROM ".DB_PREFIX."brand "
-                                    . "WHERE parent_id = 0 ORDER BY name ");
-
-            $brands = $query->rows;
-            $data['brands'] = array();
-            foreach ($brands as $res) {
-                $data['brands'][] = array(
-                'name' => $res['name'],
-                'val'  => $res['id']
-                );
-            }
-
-            //Берём склады
-            $query = $this->db->query("SELECT name FROM ".DB_PREFIX."stocks WHERE 1");
-            $stocks = $query->rows;
-            foreach ($stocks as $stock) {
-                $data['stocks'][] = $stock['name'];
-            }
-            
             //Берём менеджеров
             $query = $this->db->query("SELECT * FROM ".DB_PREFIX."user WHERE 1 ");
             $data['managers'] = array();
@@ -74,6 +42,46 @@
             $this->response->setOutput($this->load->view('common/excel', $data));
         }
 
+        public function downloadTemplate() {
+            
+            $this->load->model('tool/product');
+            $templ = $this->model_tool_product->getExcelTempl($this->request->get['type']);
+            $styleArray = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => PHPExcel_Style_Border::BORDER_THIN
+                    )
+                )
+            );
+            
+            $xls = new PHPExcel();
+            $xls->setActiveSheetIndex(0);
+            $sheet = $xls->getActiveSheet();
+            foreach ($templ as $col) {
+                $sheet->setCellValue($this->alphabet[$col['excel']].'1', $col['text']);
+                $sheet->getColumnDimension($this->alphabet[$col['excel']])->setAutoSize(true);
+                $sheet
+                    ->getStyle($this->alphabet[$col['excel']].'1'.':'.$this->alphabet[$col['excel']].'1')
+                    ->getFill()
+                    ->setFillType(PHPExcel_Style_Fill::FILL_SOLID)
+                    ->getStartColor()
+                    ->setRGB('DDDDDD'); 
+                $sheet->getStyle($this->alphabet[$col['excel']].'1'.':'.$this->alphabet[$col['excel']].'1')->applyFromArray($styleArray);        
+                $sheet->getStyle($this->alphabet[$col['excel']].'1'.':'.$this->alphabet[$col['excel']].'1')->getFont()->setBold(true);
+            }
+            
+            
+            header ( "Expires: " . gmdate("D,d M YH:i:s") . " GMT" );
+            header ( "Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT" );
+            header ( "Cache-Control: no-cache, must-revalidate" );
+            header ( "Pragma: no-cache" );
+            header ( "Content-type: application/vnd.ms-excel" );
+            header ( "Content-Disposition: attachment; filename=temp.xls" );
+            
+            $objWriter = new PHPExcel_Writer_Excel5($xls);
+            $objWriter->save('php://output');
+        }
+        
         public function getLayout() {
 
 

@@ -35,6 +35,74 @@ class ModelToolProduct extends Model {
         return $sup->rows;
     }
     
+    public function getOptionInfo($opt) {
+        $sup = $this->db->query("SELECT "
+                    . "tl.name, tl.description, "
+                    . "tl.text, tl.type_id, "
+                    . "tl.lib_id, tl.vals, "
+                    . "tl.def_val, tl.required, "
+                    . "tl.field_type, tl.libraries, tl.sort_order, tl.viewed, "
+                    . "tl.unique_field, tl.searching, tl.filter, "
+                    . "l.text AS lib_name "
+                . "FROM ".DB_PREFIX."type_lib tl "
+                . "LEFT JOIN ".DB_PREFIX."libraries l ON tl.libraries = l.library_id "
+                . "WHERE tl.lib_id = ".(int)$opt);
+        return $sup->row;
+    }
+    
+    public function saveExcelTemplate($templ) {
+        foreach ($templ as $key => $value) {
+            $this->db->query("UPDATE ".DB_PREFIX."type_lib SET excel = ".(int)$value." WHERE lib_id = ".(int)$key);
+        }
+    }
+    
+    public function getExcelTempl($type) {
+        $sup = $this->db->query("SELECT tl.text AS text, tl.excel AS excel, tl.name AS name FROM ".DB_PREFIX."type_lib tl WHERE tl.type_id = ".(int)$type." AND tl.excel != 0 ORDER BY tl.excel ");
+        $res = array();
+        $res['vin'] = array(
+            'excel' => 0,
+            'text'  => 'Внутренний номер'
+        );
+        $res['price'] = array(
+            'excel' => 1,
+            'text'  => 'Цена'
+        );
+        $res['quantity'] = array(
+            'excel' => 2,
+            'text'  => 'Количество'
+        );
+        $i=3;
+        foreach ($sup->rows as $lib) {
+            $res[$lib['name']] = array(
+                'excel' => $lib['excel']+2,
+                'text'  => $lib['text']
+            );
+            ++$i;
+        }
+        $res['comp'] = array(
+            'excel' => $i,
+            'text'  => 'Комплектность'
+        );
+        ++$i;
+        $res['comp_price'] = array(
+            'excel' => $i,
+            'text'  => 'Цена комплекта'
+        );
+        ++$i;
+        $res['comp_whole'] = array(
+            'excel' => $i,
+            'text'  => 'Способ покупки'
+        );
+        ++$i;
+        $res['date_added'] = array(
+            'excel' => $i,
+            'text'  => 'Дата фотографии'
+        );
+        ++$i;
+        
+        return $res;
+    }
+    
     public function getOptions($type) {
         $result = array();
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE type_id = '".$type."' ORDER BY sort_order ");
@@ -174,7 +242,7 @@ class ModelToolProduct extends Model {
                 $sql.="type_id = '".$data['type_id']."' WHERE name = '".$data['name']."' AND type_id = '".$data['type_id']."' ";
                 $this->db->query($sql);
                 break;
-            case '0':
+            default :
                 $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE name = '".$data['name']."' AND type_id = '".$data['type_id']."' ");
                 $allow = empty($sup->row)?TRUE:FALSE;
                 if($allow){

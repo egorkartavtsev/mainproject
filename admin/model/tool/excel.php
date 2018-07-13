@@ -74,7 +74,12 @@ class ModelToolExcel extends Model {
         $objPHPExcel->setActiveSheetIndex(0);
         return $objPHPExcel;
     }
-
+    
+    public function getStocks() {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE item_id = 20");
+        return $sup->rows;
+    }
+    
     private function saveFile($file, $objPHPExcel) {
         $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
         $objWriter->save($file);

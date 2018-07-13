@@ -39,129 +39,98 @@
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade" id="home">
                 <div class="col-lg-6">
-                    <h3>Выгрузка товаров магазина</h3>
-                    <span class="label label-default">Скачайте на жёсткий диск список товаров Вашего магазина</span>
-                    <hr>                    
-                    <a target="blank" href="index.php?route=common/excel/downloadAllProds&flag=prodList&token=<?php echo $token_excel;?>" class="btn btn-block btn-danger"><i class="fa fa-download"></i>&nbsp;Выгрузка всех товаров</a>
+                    <form class="alert alert-success" method="POST" action="index.php?route=common/excel/downloadFile&type=prods&token=<?php echo $token_excel;?>">
+                        <h3>Настройте фильтр товаров для выгрузки</h3>
+                        <hr>
+                        <div class="form-group col-lg-6">
+                            <div class='input-group date' id='datetimepicker1'>
+                                <input type='text' class="form-control" name="date" id="date" placeholder="Начальная дата"/>
+                                <span class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <div class='input-group date' id='datetimepicker2'>
+                                <input type='text' class="form-control" name="date1" id="date" placeholder="Конечная дата"/>
+                                <span class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <?php if ($uType == 'adm') { ?>
+                            <div class="form-group col-lg-6">
+                                <select name='manager' class='form-control'>
+                                    <option value="all">Выберите менеджера( = Все менеджеры)</option>
+                                    <?php foreach ($managers as $key => $man_id) { ?>
+                                        <option value="<?php echo $key; ?>"><?php echo $key; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        <?php } ?>
+                        <div class="form-group  col-lg-6">
+                            <select name='type' class='form-control'>
+                                <?php foreach ($types as $type) { ?>
+                                    <option value="<?php echo $type['type_id']; ?>"><?php echo $type['text']; ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <hr>
+                        <h3>Выберите склад</h3>
+
+                        <?php foreach($stocks as $stock) { ?>
+                        <div class='col-lg-3' style="float: left;">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="stock[<?php echo $stock['id']; ?>]" value="<?php echo $stock['name']; ?>"> <?php echo $stock['name']; ?>  
+                                    </label>
+                                </div>
+                            </div>
+                        <?php }?>
+                        <div class="clearfix"></div>
+                        <div class="clearfix"><p></p></div>
+                        <div class="col-lg-6">
+                            <hr>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="prod_on"> Выгрузить товары "в наличии"
+                                </label>
+                                <br>
+                                <label>
+                                    <input type="checkbox" name="prod_off"> Выгрузить товары "не в наличии"<br>
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Выгрузить товары</button>
+                    </form>
                 </div>
                 <div class="col-lg-6">
                     <h3>Скачать шаблон</h3>
                     <span class="label label-default">Скачайте на жёсткий диск шаблон для загрузки нескольких товаров в магазин</span>
-                    <hr>
-                    <a href="index.php?route=common/excel/downloadFile&type=template&token=<?php echo $token_excel;?>" class="btn btn-block btn-success"><i class="fa fa-download"></i>&nbsp;Скачать шаблон</a>
+                    <?php foreach($types as $type){ ?>
+                        <hr>
+                        <a href="index.php?route=common/excel/downloadTemplate&type=<?php echo $type['type_id']?>&token=<?php echo $token_excel;?>" class="btn btn-block btn-success"><i class="fa fa-download"></i>&nbsp;Скачать шаблон "<?php echo $type['text'];?>"</a>
+                    <?php }?>
+                </div>
+                <div class="clearfix"></div>
+                <div class="clearfix"><p></p></div>
+                <div class="col-lg-6">
+                    <h3>Выгрузка товаров магазина</h3>
+                    <span class="label label-default">Скачайте на жёсткий диск список товаров Вашего магазина</span>
+                    <?php foreach($types as $type){ ?>
+                        <hr>                    
+                        <a target="blank" disabled title="Временно недоступно" href="index.php?route=common/excel/downloadAllProds&flag=prodList&token=<?php echo $token_excel;?>" class="btn btn-block btn-danger"><i class="fa fa-download"></i>&nbsp;Выгрузка всех товаров "<?php echo $type['text'];?>"</a>
+                    <?php }?>
                 </div>
                 <div class="clearfix"></div>
                 <hr>
-                <form class="col-lg-6 alert alert-success" method="POST" action="index.php?route=common/excel/downloadFile&type=prods&token=<?php echo $token_excel;?>">
-                    <h3>Настройте фильтр товаров для выгрузки</h3>
-                    <hr>
-                    <div class="form-group col-lg-6">
-                        <select class="form-control" name="brand" id='brand' onchange='
-                                ajax({
-                                                                           url:"index.php?route=common/addprod/get_model&token=<?php echo $token_excel; ?>",
-                                                                           statbox:"status",
-                                                                           method:"POST",
-                                                                           data:
-                                                                           {
-                                                                                          brand: document.getElementById("brand").value,
-                                                                                          token: "<?php echo $token_excel; ?>"
-                                                                           },
-                                                                          success:function(data){document.getElementById("model1").innerHTML=data;}
-
-                                                           })
-                                '>
-                            <option selected="selected" disabled="disabled">Выберите марку</option>
-                            <?php foreach ($brands as $brand) { ?>
-                              <option value="<?php echo $brand['val']; ?>"><?php echo $brand['name']; ?></option>
-                            <?php } ?>
-                        </select>
-                    </div>
-                    <div class="form-group col-lg-6" id="model1"></div>
-                    <div class="form-group col-lg-6" id="model_row"></div>
-                    <div class="clearfix"></div>
-                    <div class="form-group col-lg-6">
-                        <select class="form-control" name="category_id" id='category' onchange='
-                                ajax({
-                                                                           url:"index.php?route=common/addprod/get_podcat&token=<?php echo $token_excel; ?>",
-                                                                           statbox:"status",
-                                                                           method:"POST",
-                                                                           data:
-                                                                           {
-                                                                                          categ: document.getElementById("category").value,
-                                                                                          token: "<?php echo $token_excel; ?>"
-                                                                           },
-                                                                          success:function(data){document.getElementById("podcat").innerHTML=data;}
-
-                                                           })
-                                '>
-                            <option selected="selected" disabled="disabled">Выберите категорию</option>
-                            <?php foreach ($category as $cat) { ?>
-                              <option value="<?php echo $cat['val']; ?>"><?php echo $cat['name']; ?></option>
-                            <?php } ?>
-                        </select>
-                    </div>
-                    <div class="form-group col-lg-6" id="podcat"></div>
-                    <div class="clearfix"></div>
-                    <div class="form-group col-lg-12">
-                        <div class='input-group date' id='datetimepicker1'>
-                            <input type='text' class="form-control" name="date" id="date" placeholder="Начальная дата"/>
-                            <span class="input-group-addon">
-                                <span class="fa fa-calendar"></span>
-                            </span>
-                        </div>
-                        <div class='input-group date' id='datetimepicker2'>
-                            <input type='text' class="form-control" name="date1" id="date" placeholder="Конечная дата"/>
-                            <span class="input-group-addon">
-                                <span class="fa fa-calendar"></span>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                    <?php if ($uType == 'adm') { ?>
-                        <select name='manager' class='form-control'>
-                            <option value="all">Выберите менеджера( = Все менеджеры)</option>
-                            <?php foreach ($managers as $key => $man_id) { ?>
-                                <option value="<?php echo $key; ?>"><?php echo $key; ?></option>
-                            <?php } ?>
-                        </select>
-                    <?php } ?>
-                    <hr>
-                    <h3>Выберите склад</h3>
-                    <?php foreach($stocks as $stock) { ?>
-                    <div class='col-lg-6' style="float: left;">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="stock[<?php echo $stock; ?>]" onchange="showinput('<?php echo $stock; ?>');" value="<?php echo $stock; ?>"> <?php echo $stock; ?>  
-                                </label>
-                            </div>
-                            <div id="for<?php echo $stock; ?>" class="form-group col-lg-12" style="display: none;">
-                                    <input class="form-control" type="text" name="still[<?php echo $stock; ?>]" placeholder="Введите номер стеллажа">
-                                    <input class="form-control" type="text" name="jar[<?php echo $stock; ?>]" placeholder="Введите номер яруса">
-                                    <input class="form-control" type="text" name="shelf[<?php echo $stock; ?>]" placeholder="Введите номер полки">
-                                    <input class="form-control" type="text" name="box[<?php echo $stock; ?>]" placeholder="Введите номер коробки/ячейки">
-                            </div>
-                        </div>
-                    <?php }?>
-                    <div class="col-lg-6">
-                        <hr>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="prod_on"> Выгрузить товары "в наличии"
-                            </label>
-                            <br>
-                            <label>
-                                <input type="checkbox" name="prod_off"> Выгрузить товары "не в наличии"<br>
-                            </label>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Выгрузить товары</button>
-                </form>
             </div>
             <div role="tabpanel" class="tab-pane fade in active" id="messages">
                 <h3>Загрузка товаров в магазин</h3>
                 <span class="label label-default">Загрузите eXcel файл на сервер для обновления базы товаров магазина</span>
                 <hr>
-                <button type="button" class="btn btn-block btn-success" id="upload"><i class="fa fa-upload"></i>&nbsp;Загрузка товаров</button>
+                <button disabled title="Временно недоступно" type="button" class="btn btn-block btn-success" id="upload"><i class="fa fa-upload"></i>&nbsp;Загрузка товаров</button>
                 <div class="alert alert-success" id="up_form" style="margin-top: 5px; display: none;">
                     <div class="col-lg-12">
                         <div class="col-lg-6">
@@ -180,7 +149,7 @@
                 <span class="label label-danger">Программа привяжет фотографии к их товарам.</span><br>
                 <hr>
                 <div class="col-lg-3">
-                    <button type="button" class="btn btn-block btn-success" id="synch"><i class="fa fa-upload"></i>&nbsp;Обновить список товаров</button>
+                    <button disabled title="Временно недоступно" type="button" class="btn btn-block btn-success" id="synch"><i class="fa fa-upload"></i>&nbsp;Обновить список товаров</button>
                 </div>
                 <div class="col-lg-3"> 
                     <a type="button" href="index.php?route=common/excel/clearPhotos&token=<?php echo $token_excel;?>" class="btn btn-block btn-warning"><i class="fa fa-dedent"></i>&nbsp;Очистить фотографии.</a>

@@ -7,6 +7,12 @@ class ModelProductAvito extends Model {
         echo $vin;
     }
     
+    public function getStocks() {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE item_id = 19");
+        return $sup->rows;
+    }
+    
+    
     public function dropAD($vin){
         $this->db->query("DELETE FROM ".DB_PREFIX."product_to_avito WHERE vin = '".$vin."'");
             
@@ -70,6 +76,7 @@ class ModelProductAvito extends Model {
                 . "WHERE LOCATE('".$filter['modbr']."', p.brand) "
                     . "AND LOCATE('".$filter['podcat']."', p.podcateg) "
                     . "AND LOCATE('".$filter['model']."', p.model) "
+                    . "AND LOCATE('".$filter['stock']."', p.adress) "
                     . "AND LOCATE('".$filter['vin']."', p.vin) "
                     . "AND p.price>=".(int)$filter['priceFrom']." "
                     . "AND p.price<=".(int)$filter['priceTo']." "
@@ -92,6 +99,7 @@ class ModelProductAvito extends Model {
                 . "WHERE LOCATE('".$filter['modbr']."', p.brand) "
                     . "AND LOCATE('".$filter['podcat']."', p.podcateg) "
                     . "AND LOCATE('".$filter['model']."', p.model) "
+                    . "AND LOCATE('".$filter['stock']."', p.adress) "
                     . "AND LOCATE('".$filter['vin']."', p.vin) "
                     . "AND p.price>=".(int)$filter['priceFrom']." "
                     . "AND p.price<=".(int)$filter['priceTo']." "

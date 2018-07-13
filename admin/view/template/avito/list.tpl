@@ -50,6 +50,15 @@
                     <label>Подкатегория:</label>
                     <input type="text" class="form-control" target="filter" target-name="podcat" value="<?php echo isset($filter['podcat'])?$filter['podcat']:'';?>">
                 </div>
+                <div class="form-group-sm">
+                    <label>Местоположение: </label>
+                    <select class="form-control" target="filter" target-name="stock">
+                        <option value=" ">Все</option>
+                        <?php foreach($stocks as $stock){ ?>
+                            <option value="<?php echo $stock['name']?>" <?php echo (isset($filter['stock']) && $filter['stock']==$stock['name'])?'selected':'';?>><?php echo $stock['name']?></option>
+                        <?php }?>
+                    </select>
+                </div>
             </div>
             <div class="col-md-4">
                 <div class="form-group">

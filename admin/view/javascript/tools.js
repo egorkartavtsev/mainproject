@@ -38,6 +38,36 @@ function addOption(){
 }
 $(document).ready(function() {
     
+    $(document).on('click', '[btn_type=saveExcelTempl]', function(){
+        var templ = '';
+        $(this).parent().parent().parent().find('input').each(function(){
+            templ = templ + $(this).attr('target') + ':' + $(this).val() + ',';
+        })
+        ajax({
+            url:"index.php?route=setting/prodtypes/saveExcelTempl&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data: {templ: templ},
+            success:function(data){
+                alert(data);
+            }
+        });
+    })
+    
+    
+    $(document).on('click', '[btn_type=sets_opt]', function(){
+        var opt = $(this).attr('option');
+        ajax({
+                url:"index.php?route=setting/prodtypes/getSetsOpt&token="+getURLVar('token'),
+                statbox:"status",
+                method:"POST",
+                data: {opt: opt},
+                success:function(data){
+                    $('#sets_option').html(data);
+                }
+            });
+    });
+    
     $(document).on('change', '[select_type=handling_acc]', function(){
         if($(this).val()==='1'){
             ajax({
@@ -834,6 +864,7 @@ $(document).ready(function() {
                     $("#newOpt").removeAttr('disabled');
                 }
                 optionDiv.attr('class', 'alert alert-success');
+                alert(data);
                 alert('Сохранено');
             }
         });

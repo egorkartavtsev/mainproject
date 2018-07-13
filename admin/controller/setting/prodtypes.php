@@ -19,20 +19,20 @@ class ControllerSettingProdTypes extends Controller {
         $this->load->model('tool/product');
         $this->load->model('tool/layout');
         $data = $this->model_tool_layout->getLayout($this->request->get['route']);
-        if(isset($this->request->get['synch']) && $this->request->get['synch']==='true'){
-            $sup = $this->db->query("SELECT 
-                                        p2b.product_id,
-                                        lf.id AS fill_id
-                                    FROM `".DB_PREFIX."product_to_brand` p2b 
-                                    LEFT JOIN `".DB_PREFIX."brand` b 
-                                            ON p2b.brand_id = b.id 
-                                    LEFT JOIN `".DB_PREFIX."lib_fills` lf 
-                                            ON lf.name = b.name");
-            foreach ($sup->rows as $row) {
-                $this->db->query("INSERT INTO ".DB_PREFIX."product_to_lib SET "
-                        . "product_id = '".$row['product_id']."', "
-                        . "fill_id = '".$row['fill_id']."' ");
-            }
+//        if(isset($this->request->get['synch']) && $this->request->get['synch']==='true'){
+//            $sup = $this->db->query("SELECT 
+//                                        p2b.product_id,
+//                                        lf.id AS fill_id
+//                                    FROM `".DB_PREFIX."product_to_brand` p2b 
+//                                    LEFT JOIN `".DB_PREFIX."brand` b 
+//                                            ON p2b.brand_id = b.id 
+//                                    LEFT JOIN `".DB_PREFIX."lib_fills` lf 
+//                                            ON lf.name = b.name");
+//            foreach ($sup->rows as $row) {
+//                $this->db->query("INSERT INTO ".DB_PREFIX."product_to_lib SET "
+//                        . "product_id = '".$row['product_id']."', "
+//                        . "fill_id = '".$row['fill_id']."' ");
+//            }
 //            $sup = $this->db->query("SELECT 
 //                                        p2c.product_id,
 //                                        lf.id AS fill_id
@@ -46,9 +46,14 @@ class ControllerSettingProdTypes extends Controller {
 //                        . "product_id = '".$row['product_id']."', "
 //                        . "fill_id = '".$row['fill_id']."' ");
 //            }
-        }
+//        }
         $data['templates'] = $this->model_tool_product->getStructures();
         $data['ckeditor'] = $this->config->get('config_editor_default');
+        $data['modal'] = $this->load->view('modals/clear', array(
+            'target' => 'options',
+            'key' => 'sets_option',
+            'header' => 'Настройки свойства'
+        ));
 //        exit(var_dump($data['ckeditor']));
         $this->response->setOutput($this->load->view('setting/prodtype', $data));
     }
@@ -57,102 +62,36 @@ class ControllerSettingProdTypes extends Controller {
         $this->load->model('tool/product');
         $results = $this->model_tool_product->getOptions($this->request->post['id']);
         $info = $this->model_tool_product->getStructInfo($this->request->post['id']);
+        
         $options = '<div>';
         $divInfo = '';
         $divsOpt = '';
+        $divExc = '<div role="tabpanel" class="tab-pane" id="excel">'
+                . '<h3>Шаблон выгрузки и загрузки товаров типа "'.$info['text'].'"</h3>'
+                . '<table class="table table-hover">'
+                . '<thead>'
+                    . '<tr>'
+                        . '<th>Свойство</th>'
+                        . '<th>Столбец</th>'
+                    . '</tr>'
+                . '</thead>'
+                . '<tbody>';
         $options.= '<ul class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Свойства</a></li>
                         <li role="presentation"><a href="#descript" aria-controls="descript" role="tab" data-toggle="tab">Общие</a></li>
+                        <li role="presentation"><a href="#excel" aria-controls="excel" role="tab" data-toggle="tab">Excel</a></li>
                     </ul>'
-                . '<div class="tab-content"><div role="tabpanel" class="tab-pane active" id="home"><h4 type="optHeader"><span id="optHeader">Свойства товара: </span>';
+                . '<div class="tab-content"><div role="tabpanel" class="tab-pane active" id="home"><h4 type="optHeader"><h4 id="optHeader">Свойства товара: </h4>';
         $divsOpt.= '<div class="clearfix"></div><div class="clearfix"><p></p></div><button id="newOpt" class="btn btn-success" onclick="addOption()"><i class="fa fa-plus-circle"></i> создать нововое свойство товара</button><div class="clearfix"></div><div class="clearfix"><p></p></div>';
         if(!empty($results['options'])){
             foreach ($results['options'] as $result) {
-                $options.='<span class="label label-success" type-name="'.$result['name'].'">'.$result['text'].($result['field_type']=='library'?'(библиотечное)':'').'</span> ';
-                $divsOpt.= '<div class="alert alert-success">';
-                if($result['field_type']!=='library'){
-                        $divsOpt.='<div class="col-md-6">'
-                                    . '<input type="text" id="textOption" class="form-control" value="'.$result['text'].'" placeholder="Введите название свойства(по-русски)">'
-                                    . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
-                                    . '<span type="text" id="nameOption" class="label label-success">'.$result['name'].'</span>'
-                                    . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
-                                    . '<select id="field_typeOption" class="form-control">'
-                                        . '<option value="input" '.($result['field_type']=='input'?'selected':'').'>Текстовое поле</option>'
-                                        . '<option value="select" '.($result['field_type']=='select'?'selected':'').'>Выбор вариантов</option>'
-                                        . '<option value="compability" '.($result['field_type']=='compability'?'selected':'').'>Библиотечная совместимость</option>'
-                                    . '</select>'
-                                    . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
-                                    . '<select id="librariesOption" class="form-control" disabled>';
-                                    $librs = $this->model_tool_product->getLibrs();
-                                    foreach ($librs as $lib){
-                                        $divsOpt.='<option value="'.$lib['library_id'].'">'.$lib['text'].'</option>';
-                                    }
-                           $divsOpt.= '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
-                                    . '<input type="text" id="def_valOption" class="form-control" '.($result['field_type']=='input'?'':'disabled').' value="'.$result['def_val'].'" placeholder="Введите значения свойства по-умолчанию">'
-                                    . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
-                                    . '<select id="unique_fieldOption" class="form-control">'
-                                        . '<option value="0" '.($result['unique_field']=='0'?'selected':'').'>Неуникальное поле</option>'
-                                        . '<option value="1" '.($result['unique_field']=='1'?'selected':'').'>Уникальное поле</option>'
-                                    . '</select>'
-                                    . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
-                                    . '<select id="filterOption" class="form-control">'
-                                        . '<option value="1" '.($result['filter']=='1'?'selected':'').'>Отображать в фильтрах</option>'
-                                        . '<option value="0" '.($result['filter']=='0'?'selected':'').'>Не отображать в фильтрах</option>'
-                                    . '</select>'
-                                    . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
-                                    . '<button id="saveOpt" class="btn btn-info"><i class="fa fa-floppy-o"></i> сохранить</button>&nbsp;'
-                                    . '<button id="delOpt" class="btn btn-danger"><i class="fa fa-trash-o"></i> отвязать</button>'
-                               . '</div>';
-                        $divsOpt.='<div class="col-md-6">'
-                                    . '<input type="text" id="valsOption" class="form-control" '.($result['field_type']=='select'?'':'disabled').' value="'.$result['vals'].'" placeholder="Введите значения свойства через ;">'
-                                    . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
-                                    . '<input type="text" id="descriptionOption" class="form-control" value="'.$result['description'].'" placeholder="Введите описание свойства">'
-                                    . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
-                                    . '<select id="requiredOption" class="form-control">'
-                                        . '<option value="0" '.($result['required']=='0'?'selected':'').'>Необязательное поле</option>'
-                                        . '<option value="1" '.($result['required']=='1'?'selected':'').'>Обязательное поле</option>'
-                                    . '</select>'
-                                    . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
-                                    . '<select id="viewedOption" class="form-control">'
-                                        . '<option value="1" '.($result['viewed']=='1'?'selected':'').'>Отображать везде на витрине</option>'
-                                        . '<option value="2" '.($result['viewed']=='2'?'selected':'').'>Отображать только в списке товаров</option>'
-                                        . '<option value="3" '.($result['viewed']=='3'?'selected':'').'>Отображать только на странице товарв</option>'
-                                        . '<option value="0" '.($result['viewed']=='0'?'selected':'').'>Не отображать на витрине</option>'
-                                    . '</select>'
-                                    . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
-                                    . '<select id="searchingOption" class="form-control">'
-                                        . '<option value="1" '.($result['searching']=='1'?'selected':'').'>Участвует в поиске</option>'
-                                        . '<option value="0" '.($result['searching']=='0'?'selected':'').'>Не участвует в поиске</option>'
-                                    . '</select>'
-                                    . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
-                                    . '<input type="text" id="sort_orderOption" class="form-control" value="'.$result['sort_order'].'" placeholder="Порядок сортировки">'
-                                    . '<input type="hidden" id="oldOption" value="1">'
-                                    . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
-                                . '</div>'
-                                . '<div class="clearfix"></div><div class="clearfix"><p></p></div>';
-                } else {
-                    $divsOpt.= '<div><h4>'.$result['text'].'</h4><span class="label label-success" id="nameOption">'.$result['name'].'</span>'
-                            . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
-                            . '<select id="viewedOption" class="form-control">'
-                                . '<option value="1" '.($result['viewed']=='1'?'selected':'').'>Отображать везде на витрине</option>'
-                                . '<option value="2" '.($result['viewed']=='2'?'selected':'').'>Отображать только в списке товаров</option>'
-                                . '<option value="3" '.($result['viewed']=='3'?'selected':'').'>Отображать только на странице товарв</option>'
-                                . '<option value="0" '.($result['viewed']=='0'?'selected':'').'>Не отображать на витрине</option>'
-                            . '</select>'
-                            . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
-                            . '<select id="filterOption" class="form-control">'
-                                . '<option value="1" '.($result['filter']=='1'?'selected':'').'>Отображать в фильтрах</option>'
-                                . '<option value="0" '.($result['filter']=='0'?'selected':'').'>Не отображать в фильтрах</option>'
-                            . '</select>'
-                            . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
-                            . '<input type="text" id="sort_orderOption" class="form-control" value="'.$result['sort_order'].'" placeholder="Порядок сортировки">'
-                            . '<input type="hidden" id="oldOption" value="1">'
-                            . '<div class="clearfix"></div><div class="clearfix"><p></p></div>'
-                            . '<button id="saveOpt" class="btn btn-info"><i class="fa fa-floppy-o"></i> сохранить</button>&nbsp;'
-                            . '<button id="delOpt" class="btn btn-danger"><i class="fa fa-trash-o"></i> отвязать</button>'
-                            . '</div>';
-                }
-                    $divsOpt.= '</div>';
+                $options.='<button class="btn btn-success btn-lg col-md-3" btn_type="sets_opt" data-toggle="modal" data-target="#optionsModal" option="'.$result['lib_id'].'">'
+                                .'<p>'.$result['text']
+                            .'</p></button> ';
+                $divExc.= '<tr>'
+                        . '<td>'.$result['text'].'</td>'
+                        . '<td><input class="form-control" name="excel" target="'.$result['lib_id'].'" value="'.$result['excel'].'"/></td>'
+                        . '</tr>';
             }
         }
         $divsOpt.= '</div>';
@@ -177,8 +116,11 @@ class ControllerSettingProdTypes extends Controller {
                         . '<label>&nbsp;</label><br><button class="btn btn-success" disabled btn_type="showNavSave"><i class="fa fa-floppy-o"></i></button>'
                     . '</div>';
         $divInfo.= '</div>';
+        
+        $divExc.= '<tr><td colspan="2" class="text-center"><button btn_type="saveExcelTempl" class="btn btn-success">сохранить шаблон</button></td></tr></tbody></table></div>';
         $options.='</h4>';
-        echo $options.$divsOpt.$divInfo;
+        echo $options.$divsOpt.$divInfo.$divExc;
+//        echo $options.$divInfo.$divExc;
     }
     
     public function addOption() {
@@ -264,7 +206,6 @@ class ControllerSettingProdTypes extends Controller {
             $divsOpt.= '</div><div class="clearfix"></div><div class="clearfix"><p></p></div>';
             exit($divsOpt);
         }
-        //exit(var_dump($result));
     }
     
     public function translateOption() {
@@ -308,5 +249,41 @@ class ControllerSettingProdTypes extends Controller {
         $this->load->model('tool/product');
         
         echo $this->model_tool_product->saveDT($this->request->post['temp'], $this->request->post['temp_id']);
+    }
+    
+    public function getSetsOpt() {
+        $opt = $this->request->post['opt'];
+        $this->load->model('tool/product');
+        $result = $this->model_tool_product->getOptionInfo($opt);
+        $output = '';
+        switch ($result['field_type']) {
+            case 'input':
+                $output = $this->load->view('form/sets_input', $result);
+            break;
+            case 'select':
+                $output = $this->load->view('form/sets_select', $result);
+            break;
+            case 'library':
+                $output = $this->load->view('form/sets_libr', $result);
+            break;
+            case 'compability':
+                $output = $this->load->view('form/sets_cpb', $result);
+            break;
+        }
+        echo $output;
+    }
+    
+    public function saveExcelTempl(){
+        $this->load->model('tool/product');
+        $templ = array();
+        $sup = explode(',', $this->request->post['templ']);
+        foreach ($sup as $value) {
+            $subsup = explode(":", $value);
+            if(isset($subsup[1])){
+                $templ[$subsup[0]] = $subsup[1];
+            }
+        }
+        $this->model_tool_product->saveExcelTemplate($templ);
+        echo 'COXPAHEHO';
     }
 }

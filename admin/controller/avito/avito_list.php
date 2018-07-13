@@ -7,6 +7,7 @@ class ControllerAvitoAvitoList extends Controller{
         $this->load->model('tool/image');
         $this->load->model('product/avito');
         $data = $this->model_tool_layout->getLayout($this->request->get['route']);
+        $data['stocks'] = $this->model_product_avito->getStocks();
         $data['ads'] = array();
         $url = '';
         $data['url'] = 'index.php?route='.$this->request->get['route'].'&token='.$this->session->data['token'];
@@ -28,6 +29,12 @@ class ControllerAvitoAvitoList extends Controller{
         if(isset($this->request->get['page'])){
             $page = $this->request->get['page'];
             $filter['start'] = ($page-1)*50;
+        }
+        if(isset($this->request->get['filter_stock'])){
+            $data['filter']['stock'] = $this->request->get['filter_stock'];
+            $data['url'].= '&filter_stock='.$data['filter']['stock'];
+            $url.= '&filter_stock='.$data['filter']['stock'];
+            $filter['stock'] = $this->request->get['filter_stock'];
         }
         if(isset($this->request->get['filter_model'])){
             $data['filter']['model'] = $this->request->get['filter_model'];
