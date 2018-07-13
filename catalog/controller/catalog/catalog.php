@@ -84,7 +84,8 @@ class ControllerCatalogCatalog extends Controller{
                     'type' => $prod['type'],
                     'comp' => $prod['comp']==''?FALSE:$prod['comp'],
                     'com_whole' => $prod['comp_whole'],
-                    'price' => $prod['price']
+                    'price' => $prod['price'],
+                    'quantity' => $prod['quantity']    
                 );
                 foreach ($prod as $key => $field){
                     if(isset($types[$prod['structure']][$key])){

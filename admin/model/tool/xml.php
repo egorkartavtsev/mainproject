@@ -30,6 +30,7 @@ class ModelToolXml extends Model {
     }
     
     public function avitoUpdateAd($data, $id, $xmls) {
+        //exit(var_dump($data));
         $this->load->model('common/avito');
         $this->load->model('product/product');
         $settings = $this->model_common_avito->getSetts();
