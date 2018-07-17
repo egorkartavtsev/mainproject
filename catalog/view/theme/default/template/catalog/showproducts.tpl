@@ -53,7 +53,7 @@
                       <h4><a href="<?php echo $product['href'];?>" ><?php echo $product['name'];?></a></h4>
                       <p>Артикул: <?php echo $product['vin'];?></p>
                       <?php foreach($product['options'] as $option){ ?>
-                        <p><?php echo $option['text'];?>: <?php echo $option['value'];?></p>
+                        <?php if($option['value']!='-'){ ?><p><?php echo $option['text'];?>: <?php echo htmlspecialchars_decode($option['value']);?></p><?php }?>
                       <?php }?>
                       <?php if ($product['price'] !== '0') { ?>
                       <p><b>Цена: <?php echo $product['price'];?></b></p>

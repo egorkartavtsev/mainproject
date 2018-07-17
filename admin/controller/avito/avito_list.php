@@ -19,6 +19,7 @@ class ControllerAvitoAvitoList extends Controller{
             'modbr'     => '',
             'model'     => '',
             'podcat'     => '',
+            'stock'     => '',
             'vin'     => '',
             'sort'      => 'p2a.dateEnd',
             'start'     => 0,

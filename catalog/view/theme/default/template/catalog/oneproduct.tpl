@@ -109,7 +109,7 @@
                 <?php foreach($options as $option){ ?>
                     <?php if (isset($option['viewed'])) { ?>
                         <?php if (($option['viewed'] == 1 ||  $option['viewed'] == 3) && $option['value'] !== '' && isset($option['text']) && $option['text'] !=='') { ?>
-                                <li><?php echo $option['text'];?>: <?php echo htmlspecialchars_decode($option['value']);?></li>
+                                <?php if($option['value']!='-'){ ?><li><?php echo $option['text'];?>: <?php echo htmlspecialchars_decode($option['value']);?></li><?php }?>
                         <?php }?>
                     <?php }?>
                 <?php }?>
