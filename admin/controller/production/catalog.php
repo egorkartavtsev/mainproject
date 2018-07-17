@@ -782,7 +782,7 @@ class ControllerProductionCatalog extends Controller {
             if($product['avitoname']==''){
                 $brtr = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE name = '".$product['brand']."'");
                 $mtr = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE name = '".$product['model']."'");
-                $data['avitoname'] = $product['podcateg'].' '.$mtr->row['name'].'/'.$mtr->row['translate'];
+                $data['avitoname'] = $product['podcateg'].' '.$mtr->row['name'].' '.$mtr->row['translate'];
             } else {
                 $data['avitoname'] = $product['avitoname'];
             }
@@ -995,7 +995,7 @@ class ControllerProductionCatalog extends Controller {
         $info['options']['avitoname'] = $this->request->post['info']['avitoname'];
         $info['options']['vin'] = $info['vin'];
         $info['options']['pid'] = $this->request->get['product_id'];
-//        exit(var_dump($this->request->post));
+        //exit(var_dump($this->request->post));
         if($this->user->hasPermission('', 'common/autoload') && $this->request->post['allowavito']==='да'){
             $this->model_tool_xml->avitoFind($info);
         }

@@ -480,6 +480,7 @@ class ModelToolProduct extends Model {
                 );
             }
         }
+        $result['options']['avitoname'] = array('field_type' => 'system', 'value' => $info['info']['avitoname']);
         $result['options']['quantity'] = array('field_type' => 'system', 'value' => $info['info']['quantity']);
         $result['options']['status'] = array('field_type' => 'system', 'value' => $info['info']['status']);
         $result['options']['price'] = array('field_type' => 'system', 'value' => $info['info']['price']);
