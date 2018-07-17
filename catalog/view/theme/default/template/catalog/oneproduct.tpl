@@ -25,6 +25,9 @@
                         Деталь из комплекта
                     </div>
                 <?php }?>
+        <!--<?php if ($product['okraska'] == 'Окрашенный'){ ?>
+                <div class="okraska">Деталь в цвете</div>
+            <?php }?>-->    
             <?php }?>
             </div>
             <?php if (isset($images) || isset($thumbs)) { ?>
