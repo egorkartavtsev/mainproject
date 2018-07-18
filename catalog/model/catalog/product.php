@@ -718,6 +718,7 @@ class ModelCatalogProduct extends Model {
         }
         
         public function searchProducts($request) {
+            $fields = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE searching = 1 ");
             $reqwords = explode(" ", $request);
             $query = "SELECT "
                     . "p.product_id AS product_id, "
@@ -733,12 +734,6 @@ class ModelCatalogProduct extends Model {
                     . "p.minimum AS minimum, "
                     . "c.whole AS com_whole, "
                     . "c.price AS com_price "
-//                    . "(SELECT c.whole "
-//                        . "FROM " . DB_PREFIX . "complects c "
-//                        . "WHERE c.heading = p.vin OR c.heading = p.comp) AS com_whole, "
-//                    . "(SELECT c.price "
-//                        . "FROM " . DB_PREFIX . "complects c "
-//                        . "WHERE c.heading = p.vin OR c.heading = p.comp) AS com_price, "
                     . "FROM " . DB_PREFIX . "product p "
                     . "LEFT JOIN " . DB_PREFIX . "product_description pd "
                         . "ON (p.product_id = pd.product_id) "
@@ -746,12 +741,14 @@ class ModelCatalogProduct extends Model {
                         . "ON (p.vin = c.heading OR p.comp = c.heading) "
                     . "WHERE !LOCATE('complect', vin) ";
             //exit(var_dump($reqwords));
-            if(count($reqwords)==1){
-                $query.="AND (p.vin = '".$this->db->escape($reqwords[0])."' OR LOCATE ('".$this->db->escape($reqwords[0])."', p.catn)  OR p.category = '".$this->db->escape($reqwords[0])."' OR p.podcateg = '".$this->db->escape($reqwords[0])."' OR LOCATE ('" . $this->db->escape($reqwords[0]) . "', pd.name) OR LOCATE ('" . $this->db->escape($reqwords[0]) . "', p.compability) OR LOCATE ('" . $this->db->escape($reqwords[0]) . "', p.note)) ";
-            } elseif (count($reqwords)>1) {
-                foreach ($reqwords as $word){
-                    $query.="AND (p.vin = '".$this->db->escape($word)."' OR LOCATE ('".$this->db->escape($word)."', p.catn)  OR p.category = '".$this->db->escape($word)."' OR p.podcateg = '".$this->db->escape($word)."' OR LOCATE ('" . $this->db->escape($word) . "', pd.name) OR LOCATE ('" . $this->db->escape($word) . "', p.compability) OR LOCATE ('" . $this->db->escape($word) . "', p.note)) ";
+            foreach ($reqwords as $word){
+                $query.= "AND (p.vin = '".$this->db->escape($word)."' ";
+                foreach($fields->rows as $field){
+                    if(trim($field['name'])!=''){
+                        $query.="OR LOCATE ('".$this->db->escape($word)."', p.".$field['name'].")  ";
+                    }
                 }
+                $query.= ") ";
             }
             $query.="AND status = 1 ";
             $query.="ORDER BY p.date_added DESC";

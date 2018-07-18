@@ -78,8 +78,9 @@ class ModelToolForms extends Model {
                              . '<label>'.$option['text'].'</label>';
                         $selectF.='<select class="form-control" name="info['.$num.']['.$option['name'].']">';
                         $vals = explode(';', $option['vals']);
+                        $selectF.='<option value="-">-</option>';
                         foreach ($vals as $value) {
-                            $selectF.='<option value="'.$value.'">'.$value.'</option>';
+                            $selectF.='<option value="'.trim($value).'">'.trim($value).'</option>';
                         }
                         $selectF.='</select>';
                     $selectF.='</div>';
@@ -96,7 +97,7 @@ class ModelToolForms extends Model {
                                 . '<select class="form-control" name="info['.$num.']['.$option['name'].']" select_type="librSelect" child="'.$sup->row['child'].'">'
                                 . '<option value="-">-</option>';
                         foreach ($fillsquer->rows as $fill) {
-                            $librF.='<option value="'.$fill['id'].'">'.$fill['name'].'</option>';
+                            $librF.='<option value="'.$fill['id'].'">'.trim($fill['name']).'</option>';
                         }
                         $librF.='</select></div>';
                     }
