@@ -80,7 +80,9 @@
 <div class="container">
     <div class="">
         <p class="alert alert-danger col-sm-7 pull-left text-center">
-            ВНИМАНИЕ! Если Вы не нашли необходимую деталь - можете уточнить о наличии по телефону<br class="hidden-sm"><a href="tel:+‎79124750870"> + ‎7 (912) 475 08 70</a>
+            ВНИМАНИЕ! Если Вы не нашли необходимую деталь - можете уточнить о наличии по телефону<br class="hidden-sm">
+            <a href="tel: +79124750870" class="hidden-md hidden-lg btn btn-info col-lg-6"><span><i class="fa fa-phone"></i><?php echo $telephone; ?></span></a>
+            <span class="hidden-xs hidden-sm"><?php echo $telephone; ?></span>
         </p>
         <div class="col-sm-5 pull-right text-right">
             <a style="cursor: pointer;"><img data-toggle="modal" data-target="#wapp_viber" src="<?php echo $viber;?>" width="50"></a>

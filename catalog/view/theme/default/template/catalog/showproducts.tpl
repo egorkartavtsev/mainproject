@@ -45,6 +45,9 @@
                             </div>
                         <?php }?>
                     <?php }?>
+                <!--<?php if ($product['okraska'] == 'Окрашенный'){ ?>
+                        <div class="okraska">Деталь в цвете</div>
+                    <?php }?>-->  
                 </div>
               <div class="product-thumb">
                 <div class="image"><a href="<?php echo $product['href']; ?>"><img src="<?php echo $product['thumb']; ?>" alt="<?php echo $product['name']; ?>" title="<?php echo $product['name']; ?>" class="img-responsive" /></a></div>
