@@ -73,12 +73,21 @@ class ControllerToolFormTool extends Controller {
         $this->load->model('tool/complect');
         echo $this->model_tool_complect->isHeading($heading);
     }
-    
     public function createFill() {
         $parent = $this->request->post['parent'];
         $name = $this->request->post['name'];
-        $this->load->model('tool/forms');
-        $this->model_tool_forms->createFill($parent, $name);
+        $item_name = $this->request->post['item'];
+        $item_id = $this->db->query("SELECT item_id FROM ".DB_PREFIX."lib_struct WHERE name = '".$item_name."'")->row['item_id'];
+        $check = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE name = '".$name."' AND item_id = '".$item_id."'");
+        $check_num = $check->num_rows;
+        if ($check_num <= 0){
+            $this->load->model('tool/forms');
+            $this->model_tool_forms->createFill($parent, $name);
+        } else {
+            $res = 'exists';
+        }
+        echo $res;
+        
     }
 }
 

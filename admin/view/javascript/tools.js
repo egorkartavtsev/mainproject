@@ -235,6 +235,7 @@ $(document).ready(function() {
     })
     
     $(document).on('click', '[btn_type=createFill]', function(){
+        var item = $(this).parent().attr('id');      
         var parent = '';
         if($(this).attr('parent') == '0'){
             parent = '0';
@@ -243,9 +244,9 @@ $(document).ready(function() {
         }
         $(document).find('#createFill').attr('parent', parent);
         $(document).find('#createFill').attr('parent_div', $(this).attr('parent'));
-        //alert(parent);
+        $(document).find('#createFill').attr('item', item);
+        //alert(parent); 
     })
-    
     $(document).on('click', '[btn_type=hidenotice]', function(){
         var vin = $(this).attr('target-arg');
         var btn = $(this);
@@ -341,28 +342,34 @@ $(document).ready(function() {
         })
     })
     
-    $(document).on('click', '[id=createFill]', function(){
+    $(document).on('click', '[id=createFill]', function(){      
         var button = $(this);
         var parent_div = $(this).attr('parent_div');
         var parent = $(this).attr('parent');
         var name = $(this).parent().parent().find('input').val();
+        var item = $(this).attr('item');
         ajax({
             url:"index.php?route=tool/formTool/createFill&token="+getURLVar('token'),
             statbox:"status",
             method:"POST",
-            data:
-            {
-                parent: parent, name: name
+            data:{
+                parent: parent, 
+                name: name,
+                item: item
             },
             success:function(data){
-//                alert(data);
-                if(parent_div!=='0'){
-                    $('#'+parent_div).find('select').trigger('change');
-                } else {
-                    alert('Данное значение будет доступно после перезагрузки страницы');
-                }
+                if(data === 'exists'){
+                    alert('Такой элемент уже существует');
+                    return FALSE;
+                } else {  
+                    if(parent_div!=='0'){
+                        $('#'+parent_div).find('select').trigger('change');
+                    } else {
+                        alert('Данное значение будет доступно после перезагрузки страницы');
+                    }
                 button.parent().parent().find('input').val('');
                 button.attr('disabled', '');
+                }   
             }
         })
     })
@@ -574,9 +581,17 @@ $(document).ready(function() {
             url:"index.php?route=setting/libraries/saveFillSets&token="+getURLVar('token'),
             statbox:"status",
             method:"POST",
-            data: {fields: fields, fill: fill},
+            data: {
+                fields: fields, 
+                fill: fill
+            },
             success:function(data){
-                alert('Сохранено');
+                if(data === 'exists'){
+                    alert('Такой элемент уже существует');
+                    return FALSE;
+                } else{  
+                    alert('Сохранено');
+                }
             }
         });
     })
@@ -944,6 +959,10 @@ $(document).ready(function() {
               name: parent.parent().find("#newName").val()
           },
           success:function(data){
+            if(data === 'exists'){
+                alert('Такой элемент уже существует');
+                return FALSE;
+            }  
             if(data === '0'){
               alert('Возникла внутренняя ошибка');
               return FALSE;
@@ -954,7 +973,7 @@ $(document).ready(function() {
               parent.parent().find('[td_type=newfillName]').attr('td_type', 'fillName');
               parent.parent().attr('id', 'fill'+data);
             }
-          }
+          }         
         })
         $(this).parent().html('<button class="btn btn-success" btn_type="saveChangeFillName"><i class="fa fa-floppy-o" ></i></button>');
     });
