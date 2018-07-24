@@ -82,6 +82,7 @@ class ControllerCatalogCatalog extends Controller{
                     'name' => $prod['name'],
                     'vin' => $prod['vin'],
                     'type' => $prod['type'],
+                    'status' => $prod['status'],
                     'comp' => $prod['comp']==''?FALSE:$prod['comp'],
                     'com_whole' => $prod['comp_whole'],
                     'price' => $prod['price'],

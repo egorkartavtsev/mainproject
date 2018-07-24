@@ -133,6 +133,9 @@ class ControllerCatalogProduct extends Controller {
             if ($data['no_prod']){
                 $data['stock'] = 'Нет в наличии на складе';
             }
+            if ($product['status'] == '2') {
+                $data['stock'] = 'Зарезервирован'; 
+            } 
 //      =====================================Оповещение=======================================================================================================================================               
             $data['recurrings'] = $this->model_catalog_product->getProfiles($this->request->get['product_id']);
             if (isset($this->request->post['suc'])){

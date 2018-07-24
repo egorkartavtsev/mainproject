@@ -63,15 +63,19 @@
                       <?php }?>
                   </div>
                   <div class="button-group">
-                    <?php if ($product['price'] == 0.00 || $product['quantity'] == 0)  { ?>
-                        <?php if ($product['price'] == 0.00) { ?>
-                            <button btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pname ="<?php echo $product['name'];?>" pvin="<?php echo $product['vin'];?>"><span class="hidden-xs hidden-sm hidden-md">Узнать стоимость</span></button>
-                        <?php } else { ?>
-                            <button btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pname ="<?php echo $product['name'];?>" pvin="<?php echo $product['vin'];?>"><span class="hidden-xs hidden-sm hidden-md">Заказать товар</span></button> 
+                    <?php if ($product['status'] == '2') { ?>
+                        <button btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pname ="<?php echo $product['name'];?>" pvin="<?php echo $product['vin'];?>"><span class="hidden-xs hidden-sm hidden-md">Уточнить</span></button>
+                    <?php } else { ?>                   
+                        <?php if ($product['price'] == 0.00 || $product['quantity'] == 0)  { ?>
+                            <?php if ($product['price'] == 0.00) { ?>
+                                <button btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pname ="<?php echo $product['name'];?>" pvin="<?php echo $product['vin'];?>"><span class="hidden-xs hidden-sm hidden-md">Узнать стоимость</span></button>
+                            <?php } else { ?>
+                                <button btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pname ="<?php echo $product['name'];?>" pvin="<?php echo $product['vin'];?>"><span class="hidden-xs hidden-sm hidden-md">Заказать товар</span></button> 
+                            <?php } ?>
+                        <?php } else { ?>  
+                            <button type="button" onclick="cart.add('<?php echo $key; ?>', '1');"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md"> В КОРЗИНУ</span></button>
                         <?php } ?>
-                    <?php } else { ?>  
-                        <button type="button" onclick="cart.add('<?php echo $key; ?>', '1');"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md"> В КОРЗИНУ</span></button>
-                    <?php } ?>
+                    <?php } ?>    
                     <button type="button" data-toggle="tooltip" title="Добавить в избранное" onclick="wishlist.add('<?php echo $key; ?>');"><i class="fa fa-heart"></i></button>
                     <button type="button" data-toggle="tooltip" title="Добавить в список сравнения" onclick="compare.add('<?php echo $key; ?>');"><i class="fa fa-exchange"></i></button>
                   </div>
