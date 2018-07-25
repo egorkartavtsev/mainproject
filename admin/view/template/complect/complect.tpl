@@ -25,6 +25,7 @@
                           <tr> 
                             <th>id</th> 
                             <th>Наименование комплекта</th>
+                            <th>Внутренний номер</th>
                             <th>Головной товар</th>
                             <th>Цена</th> 
                             <th>Действие</th>
@@ -36,6 +37,7 @@
                                     <tr id="comp<?php echo $complect['id'];?>">
                                         <td><?php echo $complect['id'];?></td>
                                         <td><?php echo $complect['name'];?></td>
+                                        <td><?php echo $complect['link'];?></td>
                                         <td><?php echo $complect['heading'];?></td>
                                         <td><?php echo $complect['price'];?></td>
                                         <td>

@@ -3,25 +3,11 @@ class ModelCommonWriteoff extends Model {
     
     public function findProd($vin) {
         
-        $query = $this->db->query("SELECT "
-                    . "p.product_id AS id, "
-                    . "pd.name AS name, "
-                    . "p.image AS image, "
-                    . "p.product_id AS id, "
-                    . "p.quantity AS quan, "
-                    . "p.price AS price, "
-                    . "p.stock AS stock, "
-                    . "p.location AS location, "
-                    . "p.stell AS stell, "
-                    . "p.jar AS jar, "
-                    . "p.shelf AS shelf, "
-                    . "p.box AS box, "
-                    . "p.vin AS vin "
+        $query = $this->db->query("SELECT * "
                 . "FROM ".DB_PREFIX."product p "
                 . "LEFT JOIN ".DB_PREFIX."product_description pd "
                     . "ON pd.product_id = p.product_id "
                 . "WHERE p.vin = '".$vin."' ");
-        //exit(var_dump($query->row));
         return $query->row;
     }
     
@@ -32,6 +18,60 @@ class ModelCommonWriteoff extends Model {
         } else {
             return TRUE;
         }
+    }
+    
+    public function isCompl($vin) {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."complects WHERE link = '".$vin."' ");
+        $result = array();
+        if($sup->num_rows){
+            $qComp = $this->db->query("SELECT * "
+                    . "FROM ".DB_PREFIX."product p "
+                    . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
+                    . "WHERE (comp = '".$sup->row['heading']."' OR vin = '".$sup->row['heading']."') "
+                        . "AND quantity != 0 "
+                        . "AND status = 1 ");
+            foreach ($qComp->rows as $prod){
+                $result[$prod['vin']] = array(
+                    'vin'       => $prod['vin'],
+                    'location'  => $prod['location'],
+                    'stock'     => $prod['stock'],
+                    'name'      => '(Комплект)'.$prod['name'],
+                    'price'     => $prod['price'],
+                    'image'     => $prod['image'],
+                    'quantity'  => $prod['quantity'],
+                    'reason'    => 'Продажа комплекта',
+                    'fact_price'=> 0
+                );
+            }
+            if(count($result)){
+                return $this->repriceForCompl($result, $sup->row);
+            } else {
+                return $result;
+            }
+        } else {
+            return FALSE;
+        }
+    }
+    
+    public function repriceForCompl($prods, $compl) {
+        if(count($prods)){
+            $sale = (int)$compl['sale']?$compl['sale']:15;
+            $total = 0;
+            $min = '';
+            foreach ($prods as $vin => $prod){
+                $prods[$vin]['fact_price'] = ($prod['price']*(100 - $sale))/100;
+                $total+= $prods[$vin]['fact_price'];
+                $min = $vin;
+            }
+            $dif = $compl['price'] - $total;
+            if(isset($prods[$compl['heading']])){
+                $prods[$compl['heading']]['fact_price']+= $dif;
+                $prods[$compl['heading']]['name'].= '(Головной)';
+            } else {
+                $prods[$min]['fact_price']+= $dif;       
+            }
+        }
+        return $prods;
     }
     
     public function sale($prods, $id_invoice) {

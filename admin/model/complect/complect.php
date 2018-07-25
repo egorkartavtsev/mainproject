@@ -195,6 +195,7 @@
                     $result[] = array(
                         'id' => $comp['id'],
                         'name' => $comp['name'],
+                        'link' => $comp['link'],
                         'price' => $comp['price'],
                         'heading' => $comp['heading'],
                         'href' => HTTP_SERVER.'index.php?route=complect/complect/edit&complect='.$comp['id'].'&token='.$this->session->data['token']

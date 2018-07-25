@@ -22,7 +22,131 @@ function getURLVar(key) {
 	}
 }
 
+function validation(field_type, value, req){
+    var allow = false;
+    var reg = '';
+    switch(field_type){
+        case 'char':
+            reg = /^([a-zа-яё]+)$/i;
+        break;
+        case 'varchar':
+            reg = /^([a-zа-яё\d\s\\\.\,\-,\/]+)$/i;
+        break;
+        case 'numeric':
+            reg = /^\d+$/;
+        break;
+        case 'email':
+            reg = /^[a-z0-9_-]+@[a-z0-9-]+\.[a-z]{2,6}$/i;
+        break;
+    }
+    
+    if(reg.test(value)) {
+        allow = true;
+    } 
+    
+    return allow;
+}
+
 $(document).ready(function() {
+    
+    $(document).on('input', '[name=captcha]', function(){
+        var inp = $(this);
+        if(inp.val().length=='6'){
+            $.ajax({
+                url: "index.php?route="+getURLVar('route')+"/validate",
+                method: "POST",
+                data:
+                {
+                    captcha: inp.val()
+                },
+                success:function(data){
+                    if(data){
+                        alert('Проверочный код введён верно!')
+                        inp.parent().parent().remove();
+                        $(document).find("[btn_type=nextstep]").removeAttr('disabled');
+                    } else {
+                        $(document).find("[btn_type=nextstep]").attr('disabled', 'disabled');
+                        alert('Введён неверный проверочный код!')
+                    }
+                }      
+            });
+        } else {
+            $(document).find("[btn_type=nextstep]").attr('disabled', 'disabled');
+        }
+    });
+    
+    //nextStep button in checkout
+    
+        $(document).on('click', "[btn_type=laststep]", function(){
+            $.ajax({
+                url: "index.php?route="+getURLVar('route')+"/applyStep",
+                method: "POST",
+                data:
+                {
+                    step: 'last'
+                },
+                success:function(data){
+                    location = 'index.php?route=checkout/success';
+                }
+            });
+        })
+        
+        $(document).on('click', "[btn_type=nextstep]", function(){
+            if(confirm('Вы указали верные данные?')){
+                $(this).text('загрузка...');
+                var btn = $(this);
+                var inval;
+                var step = $(this).parent().attr('step');
+                var nextstep = parseInt(step)+1;
+                var form = [];
+                var allow = [];
+                
+                btn.parent().find('input').each(function(){
+                    if($(this).val()===''){
+                        if(parseInt($(this).attr('target_req'))){
+                            allow.push(false);
+                            inval = $(this).parent();
+                        } else {
+                            allow.push(true);
+                            $(this).parent().removeClass('invalid');
+                        }
+                    } else{
+                        if(validation($(this).attr('field_type'), $(this).val())){
+                            allow.push(true);
+                            $(this).parent().removeClass('invalid');
+                            form.push($(this).attr('name') + ':' + $(this).val());
+                        } else {
+                            allow.push(false);
+                            inval = $(this).parent();
+                        }
+                    }
+                });
+                if ($.inArray(false, allow)<0){
+                    $.ajax({
+                        url: "index.php?route="+getURLVar('route')+"/applyStep",
+                        method: "POST",
+                        data:
+                        {
+                            step: step,
+                            form: form
+                        },
+                        success:function(data){
+                            $(document).find("[step="+step+"]").html(data);
+                            $(document).find("[step="+nextstep+"]").removeClass('hidden');
+                        }
+                    });
+                } else {
+                    alert('Вы ввели некорректные или неполные данные.');
+                    inval.addClass('invalid');
+                }
+                
+            } else {
+                $(this).text('Продолжить');
+                false;
+            }
+        })
+    
+    
     
         //Send data to the modal window for mail
         $(document).on('click',"[btn_type=reqPrice]", function(){

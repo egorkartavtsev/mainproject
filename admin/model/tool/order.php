@@ -26,6 +26,15 @@ class ModelToolOrder extends Model{
         return $result;
     }
     
+    public function updateProds($order) {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."order_product WHERE order_id = ".(int)$order);
+        $sql = "UPDATE ".DB_PREFIX."product SET status = 1 WHERE 0 ";
+        foreach ($sup->rows as $prod) {
+            $sql.= "OR product_id = ".(int)$prod['product_id'];
+        }
+        $this->db->query($sql);
+    }
+    
     public function getTotalOrders($filter = 0) {
         $sql = "SELECT * FROM ".DB_PREFIX."order WHERE 1 ";
         if($filter){
@@ -41,7 +50,9 @@ class ModelToolOrder extends Model{
         
         $result = array();
         $isup = $this->db->query("SELECT * FROM ".DB_PREFIX."order WHERE order_id = ".(int)$id);
-        $psup = $this->db->query("SELECT * FROM ".DB_PREFIX."order_product WHERE order_id = ".(int)$id);
+        $psup = $this->db->query("SELECT *, op.quantity as factquantity FROM ".DB_PREFIX."order_product op "
+                . "LEFT JOIN ".DB_PREFIX."product p ON op.product_id = p.product_id "
+                . "WHERE order_id = ".(int)$id);
         if($isup->num_rows){
             $this->db->query("UPDATE ".DB_PREFIX."order SET viewed = 1 WHERE order_id = ".(int)$id);
             $result = array(
@@ -49,6 +60,7 @@ class ModelToolOrder extends Model{
                 'date_added' => DateTime::createFromFormat('Y-m-d H:i:s', $isup->row['date_added'])->format('d.‌​m.Y H:i'),
                 'firstname'  => $isup->row['firstname'],
                 'lastname'   => $isup->row['lastname'],
+                'patron'   => $isup->row['patron'],
                 'email' => $isup->row['email'],
                 'telephone' => $isup->row['telephone'],
                 'zone' => $isup->row['payment_zone'],
@@ -62,6 +74,23 @@ class ModelToolOrder extends Model{
             }
         }
         return $result;
+    }
+    
+    public function tryComp($vin) {
+        $result = array('key','prods');
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."complects WHERE link = '".$vin."'");
+        if($sup->num_rows){
+            $result['key'] = $sup->row['name'];
+            $qprod = $this->db->query("SELECT * FROM ".DB_PREFIX."product p "
+                    . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
+                    . "WHERE vin = '".$sup->row['heading']."' OR comp = '".$sup->row['heading']."' ");
+            foreach ($qprod->rows as $value) {
+                $result['prods'][] = $value;
+            }
+            return $result;
+        } else {
+            return FALSE;
+        }
     }
     
     public function getOrderStatuses() {
@@ -111,6 +140,10 @@ class ModelToolOrder extends Model{
         return $result;
     }
     
+    public function updateProdStat($vin, $status) {
+        $this->db->query("UPDATE ".DB_PREFIX."product SET status = ".(int)$status." WHERE vin = '".$vin."'");
+    }
+    
     public function added_prod($vin, $order_id) {
         $sup = $this->db->query("SELECT p.product_id, p.price, pd.name, p.quantity "
                                     . "FROM ".DB_PREFIX."product p "
@@ -136,7 +169,7 @@ class ModelToolOrder extends Model{
                 return FALSE;
             }
             $this->db->query("UPDATE ".DB_PREFIX."product SET "
-                                . "quantity = quantity - 1 "
+                                . "status = 2 "
                              . "WHERE product_id = ".(int)$sup->row['product_id']." ");
             $this->db->query("UPDATE ".DB_PREFIX."order SET "
                                 . "total = total + ".(int)$sup->row['price']." "
@@ -165,7 +198,7 @@ class ModelToolOrder extends Model{
                                 . "total = total - ".(int)$sup->row['price']." "
                              . "WHERE order_id = ".(int)$order." ");
             $this->db->query("UPDATE ".DB_PREFIX."product SET "
-                                . "quantity = quantity + 1 "
+                                . "status = 1 "
                              . "WHERE product_id = ".(int)$prod." ");
             return TRUE;
         } else {
