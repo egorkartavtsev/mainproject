@@ -31,32 +31,11 @@
             </div>
             <div class="panel-body">
                 <form method="POST" action="<?php echo $action;?>" name="form-product">
-                    <?php echo $form;?>
-                    <h3>Фотографии:</h3>
-                    <div class="well col-sm-12">
-                        <?php $count = 0; ?>
-                        <?php if(isset($images)) { foreach($images as $img) { ?>
-                            <div style="float: left;" class="col-sm-2">
-                                <a href="" id="thumb-image<?php echo $img['lid']?>" data-toggle="image" class="img-thumbnail" data-toggle="popover" <?php if($img['main']){echo 'style="box-shadow: 0px 0px 50px #4CAF50;"';} ?>>
-                                    <img src="<?php echo $img['thumb']; ?>" alt="" title="" data-placeholder="<?php echo $placeholder; ?>" />
-                                </a>
-                                <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="image[<?php echo $img['lid']?>][sort-order]" value="<?php echo $img['sort_order']; ?>" />
-                                </div>
-                                <input type="hidden" data-toggle='input-image' id="input-image<?php echo $img['lid']?>" name="image[<?php echo $img['lid']?>][img]" value="<?php echo $img['image']; ?>"/>
-                            </div>
-                        <?php ++$count; ?>
-                        <?php } } ?>
-                        <input type="hidden" name="info[image]" value="<?php echo $mainimage; ?>" id="input-main-image" />
-                        <div class="text-center" style="float: left; padding: 3.5%;">
-                            <button id="button-add-image" data-toggle="tooltip" data-original-title="Добавить фото" data-pointer="<?php echo $count;?>" class="btn btn-success btn-lg"><i class="fa fa-plus-circle"></i></button>
-                        </div>
-                    </div>
-                    <div class='clearfix'></div>
-                    <div class='clearfix'><p></p></div>
-                    <div class="alert alert-success col-sm-12">
+                    <div class="col-md-6">
+                        <?php echo $form;?>
+                        <div class="alert alert-success col-sm-12">
                         <h3>Индивидуальные настройки для Авито</h3>
-                        <div class="col-md-6">
+                        
                             <div class="form-group-sm">
                                 <label for="avitoname">Заголовок объявления отображаемый на авито(лимит: 50 символов). Оставьте пустым для автоматической генерации.</label>
                                 <input type="text" name="info[avitoname]" class="form-control" id="avitoname" maxlength="50" value="<?php echo $avitoname;?>" />
@@ -69,7 +48,33 @@
                                 </select>
                             </div>
                         </div>
+                        
                     </div>
+                    <div class="col-md-6">
+                        <h3>Фотографии:</h3>
+                        <div class="well col-sm-12">
+                            <?php $count = 0; ?>
+                            <?php if(isset($images)) { foreach($images as $img) { ?>
+                                <div style="float: left;" class="col-sm-3">
+                                    <a href="" id="thumb-image<?php echo $img['lid']?>" data-toggle="image" class="img-thumbnail" data-toggle="popover" <?php if($img['main']){echo 'style="box-shadow: 0px 0px 50px #4CAF50;"';} ?>>
+                                        <img src="<?php echo $img['thumb']; ?>" alt="" title="" data-placeholder="<?php echo $placeholder; ?>" />
+                                    </a>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" name="image[<?php echo $img['lid']?>][sort-order]" value="<?php echo $img['sort_order']; ?>" />
+                                    </div>
+                                    <input type="hidden" data-toggle='input-image' id="input-image<?php echo $img['lid']?>" name="image[<?php echo $img['lid']?>][img]" value="<?php echo $img['image']; ?>"/>
+                                </div>
+                            <?php ++$count; ?>
+                            <?php } } ?>
+                            <input type="hidden" name="info[image]" value="<?php echo $mainimage; ?>" id="input-main-image" />
+                            <div class="text-center" style="float: left; padding: 3.5%;">
+                                <button id="button-add-image" data-toggle="tooltip" data-original-title="Добавить фото" data-pointer="<?php echo $count;?>" class="btn btn-success btn-lg"><i class="fa fa-plus-circle"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='clearfix'></div>
+                    <div class='clearfix'><p></p></div>
+                    
                 </form>
                     <div class="well">
                         <p>
