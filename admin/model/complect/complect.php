@@ -83,8 +83,7 @@
                     $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE vin = '".$com."'");
                     $price+= $sup->row['price'];
                     $quer = "UPDATE ".DB_PREFIX."product "
-                        . "SET comp = '".$heading."', "
-                            . "image = '".$image."' "
+                        . "SET comp = '".$heading."' "
                         . "WHERE vin = '".$com."'";
                     $this->db->query($quer);
                 }
@@ -144,13 +143,13 @@
             $this->db->query("UPDATE ".DB_PREFIX."product SET price = '".$price."' WHERE `vin` = '".$query->row['link']."' ");
             $this->db->query("UPDATE ".DB_PREFIX."product SET comp_whole = '".$whole."' WHERE `vin` = '".$heading."' ");
             $price = 0;
+
             foreach ($complect as $com){
                 if($com!==''){
                     $sup = $this->db->query("SELECT price FROM ".DB_PREFIX."product WHERE vin = '".$com."'");
                     $price+= $sup->row['price'];
                     $quer = "UPDATE ".DB_PREFIX."product "
-                        . "SET comp = '".$heading."', "
-                            . "image = '".$image."' "
+                        . "SET comp = '".$heading."' "
                         . "WHERE vin = '".$com."'";
                     $this->db->query($quer);
                 }
