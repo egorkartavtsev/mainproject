@@ -64,7 +64,7 @@
                   </div>
                   <div class="button-group">
                     <?php if ($product['status'] == '2') { ?>
-                        <button btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pname ="<?php echo $product['name'];?>" pvin="<?php echo $product['vin'];?>"><span class="hidden-xs hidden-sm hidden-md">Уточнить</span></button>
+                        <button btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pname ="<?php echo $product['name'];?>" pvin="<?php echo $product['vin'];?>"><span class="hidden-xs hidden-sm hidden-md">Уточнить наличие</span></button>
                     <?php } else { ?>                   
                         <?php if ($product['price'] == 0.00 || $product['quantity'] == 0)  { ?>
                             <?php if ($product['price'] == 0.00) { ?>

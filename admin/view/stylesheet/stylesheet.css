@@ -31,6 +31,14 @@ h1, h2, h3, h4, h5, h6, p {
     font-size: 45px;
 }
 
+.editForm{
+    margin-bottom: 5px;
+}
+
+.editForm > label{
+    min-height: 34px;
+}
+
 .orders{
     background-image: linear-gradient(to bottom, #f5908d, #bf0b02);
     background-repeat: repeat-x;

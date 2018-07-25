@@ -333,12 +333,12 @@ class ModelToolForms extends Model {
 //        exit(var_dump($info));
 //        exit(var_dump(!array_key_exists('vin', $this->systemFields)));
         foreach ($this->systemFields as $key => $field) {
-            $systemF.= '<div class="form-group col-md-3">'
+            $systemF.= '<div class="form-group-sm editForm col-md-3">'
                         . '<label>'.$field.($key==='vin'?'<span style="color: red;">*</span>':'').'</label>'
                         . '<input class="form-control" name="info['.$key.']" '.($key==='vin'?'required="required" disabled aria-required="true" unique="unique" field="vin"':'').' value="'.$info[$key].'"/>'
                      . '</div>';
         }
-        $systemF.= '<div class="form-group col-md-3">'
+        $systemF.= '<div class="form-group-sm editForm col-md-3">'
                 . '<label>Статус</label>'
                 . '<select class="form-control" name="info[status]">'
                     . '<option value="1">Включено</option>'
@@ -349,13 +349,13 @@ class ModelToolForms extends Model {
             if(!array_key_exists($key, $this->systemFields) && !in_array($key, $this->ignoreFields)){
                 switch ($option['field_type']) {
                     case 'input':
-                        $inputs.= '<div class="col-md-3 form-group">'
+                        $inputs.= '<div class="col-md-4 form-group-sm editForm">'
                                     . '<label>'.$option['text'].'</label>'
                                     . '<input class="form-control" name="info['.$key.']" '.($option['required']=='1'?'required="required':'').' value="'.htmlspecialchars_decode($option['value']).'">'
                                 . '</div>';
                     break;
                     case 'select':
-                        $selects.= '<div class="col-md-3 form-group">'
+                        $selects.= '<div class="col-md-4 form-group-sm editForm">'
                                     . '<label>'.$option['text'].'</label>'
                                     . '<select class="form-control" name="info['.$key.']">'
                                         . '<option value="-">-</option>';
@@ -379,7 +379,7 @@ class ModelToolForms extends Model {
                             $dop = 'select_type="librSelect" child="'.$supitem->row['child'].'"';
                             $endrow='';
                         } else{$dop = ''; $endrow = '<div class="col-lg-12"></div>';}
-                        $libraries.= '<div class="col-md-3 form-group" id="'.$key.'">'
+                        $libraries.= '<div class="col-md-4 form-group-sm editForm " id="'.$key.'">'
                                     . '<a class="btn btn-success btn-sm" data-toggle="modal" data-target="#createFillModal" parent="'.($supitem->row['parent']==''?'0':$supitem->row['parent']).'" btn_type="createFill"><i class="fa fa-plus"></i></a><label>  '.$option['text'].'  </label> '
                                     . '<select class="form-control" name="info['.$key.']" '.$dop.'>'
                                         . '<option value="">-</option>';
@@ -389,7 +389,7 @@ class ModelToolForms extends Model {
                         $libraries.= '</select></div>'.$endrow;
                     break;
                     case 'compability':
-                        $compabils.= '<div class="col-lg-12 form-group">'
+                        $compabils.= '<div class="col-lg-12 form-group-sm editForm">'
                                         . '<div class="col-md-10">'
                                             . '<label>'.$option['text'].($option['required']=='1'?'<span style="color: red;">*</span>':'').'</label>'
                                             . '<input class="form-control" name="info['.$key.']" id="'.$key.'0" '.($option['required']=='1'?'required="required':'').' value="'.$option['value'].'"></div>'
