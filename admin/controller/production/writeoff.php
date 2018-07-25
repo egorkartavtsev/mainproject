@@ -104,12 +104,12 @@ class ControllerProductionWriteoff extends Controller {
                 $product.= '</div>';
                 $product.= '<div class="col-lg-6">';
                     $product.= '<h4><span class="text-muted">Цена: </span><span id="price">'.$prod_info['price'].'</h4>';
-                    $product.= '<h4><span class="text-muted">Количество: </span><span id="quan">'.$prod_info['quan'].'</h4>';
+                    $product.= '<h4><span class="text-muted">Количество: </span><span id="quan">'.$prod_info['quantity'].'</h4>';
                     $product.= '<h4><span class="text-muted">Расположение: </span><span id="loc">'.$prod_info['stock'].'/'.$prod_info['location'].'</h4>';
                     if($complect){
                         $product.= '<h4><span class="label label-warning">КОМПЛЕКТ</span></h4>';
                     }
-                    if($prod_info['quan']>0){ 
+                    if($prod_info['quantity']>0){ 
                         $product.= '<button class="btn btn-success" id="writeoff" onclick="addToList(\''.$prod_info['vin'].'\', \''.$this->session->data['token'].'\')"><i class="fa fa-plus"></i> Добавить к списку списания</button>';
                     }
 
@@ -131,7 +131,7 @@ class ControllerProductionWriteoff extends Controller {
         $data = array(
             'name' => $this->request->post['name'],
             'price' => $this->request->post['price'],
-            'quan_stock' => $this->request->post['quan'],
+            'quan_stock' => $this->request->post['quantity'],
             'location' => str_replace(",", "/", $this->request->post['location']),
             'client' => str_replace($denied, "NO",$this->request->post['client']),
             'city' => str_replace($denied, "NO",$this->request->post['city']),
@@ -239,35 +239,47 @@ class ControllerProductionWriteoff extends Controller {
     public function addToList() {
         $vin = $this->request->post['vin'];
         $this->load->model('common/write_off');
+        $list = '';
+        $compl = $this->model_common_write_off->isCompl($vin);
+        if($compl){
+            foreach($compl as $prod){
+                $list.= $this->prodInfo($prod);
+            }
+        } else {
+            $list = $this->prodInfo($this->model_common_write_off->findProd($vin));
+        }
+        echo $list;
+    }
+    
+    private function prodInfo($prod_info) {
         $this->load->model('tool/image');
-        $prod_info = $this->model_common_write_off->findProd($vin);
-        //exit(var_dump($prod_info));
-        //exit($vin.' - это вин');
+        $factprice = isset($prod_info['fact_price'])?$prod_info['fact_price']:$prod_info['price'];
+        $reason = isset($prod_info['reason'])?$prod_info['reason']:'';
         if(!empty($prod_info)){
             if ($prod_info['image']) {
                 $image = $this->model_tool_image->resize($prod_info['image'], 228, 228);
             } else {
                 $image = $this->model_tool_image->resize('placeholder.png', 228, 228);
             }
-            $list = '<tr id="'.$vin.'">'
-                        . '<td>'.$prod_info['name'].'<input type="hidden" name="products['.$vin.'][name]" value="'.$prod_info['name'].'"></td>'
-                        . '<td><b>'.$vin.'</b></td>'
-                        . '<td>'.$prod_info['quan'].'<input id="quan'.$vin.'" id="quan'.$vin.'" type="hidden" name="products['.$vin.'][quan]" value="'.$prod_info['quan'].'"></td>'
-                        . '<td>'.$prod_info['price'].'<input type="hidden" name="products['.$vin.'][price]" value="'.$prod_info['price'].'"></td>'
+            $list = '<tr id="'.$prod_info['vin'].'">'
+                        . '<td>'.$prod_info['name'].'<input type="hidden" name="products['.$prod_info['vin'].'][name]" value="'.$prod_info['name'].'"></td>'
+                        . '<td><b>'.$prod_info['vin'].'</b></td>'
+                        . '<td>'.$prod_info['quantity'].'<input id="quan'.$prod_info['vin'].'" id="quan'.$prod_info['vin'].'" type="hidden" name="products['.$prod_info['vin'].'][quan]" value="'.$prod_info['quantity'].'"></td>'
+                        . '<td>'.$prod_info['price'].'<input type="hidden" name="products['.$prod_info['vin'].'][price]" value="'.$prod_info['price'].'"></td>'
                         . '<td>'
-                            . '<input type="text" class="form-control" placeholder="Введите цену продажи" value="'.$prod_info['price'].'" name="products['.$vin.'][pricefact]">'
+                            . '<input type="text" class="form-control" placeholder="Введите цену продажи" value="'.$factprice.'" name="products['.$prod_info['vin'].'][pricefact]">'
                         . '</td>'
                         . '<td>'
-                            . '<input type="text" class="form-control" oninput="validate(\'quan'.$vin.'fact\', \'quan'.$vin.'\');" id="quan'.$vin.'fact" placeholder="Введите количество к продаже" value="'.$prod_info['quan'].'" name="products['.$vin.'][quanfact]"><input type="hidden" name="products['.$vin.'][locate]" value="'.$prod_info['stock'].'/'.$prod_info['location'].'">'
+                            . '<input type="text" class="form-control" oninput="validate(\'quan'.$prod_info['vin'].'fact\', \'quan'.$prod_info['vin'].'\');" id="quan'.$prod_info['vin'].'fact" placeholder="Введите количество к продаже" value="'.$prod_info['quantity'].'" name="products['.$prod_info['vin'].'][quanfact]"><input type="hidden" name="products['.$prod_info['vin'].'][locate]" value="'.$prod_info['stock'].'/'.$prod_info['location'].'">'
                         . '</td>'
                         . '<td>'
-                            . '<input type="text" class="form-control" name="products['.$vin.'][reason]" placeholder="Введите причину уценки">'
+                            . '<input type="text" class="form-control" name="products['.$prod_info['vin'].'][reason]" placeholder="Введите причину уценки" value="'.$reason.'">'
                         . '</td>'
                         . '<td>'
-                            . '<button onclick="unsetElement(\''.$vin.'\')" class="btn btn-danger">X</button>'
+                            . '<button onclick="unsetElement(\''.$prod_info['vin'].'\')" class="btn btn-danger">X</button>'
                         . '</td>'
                     . '</tr>';
         }
-        echo $list;
+        return $list;
     }
 }

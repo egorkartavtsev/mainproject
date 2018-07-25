@@ -102,6 +102,7 @@ class ControllerComplectComplect extends Controller {
                     $output.='<tr>'
                                 . '<td>'.$comp['id'].'</td>'
                                 . '<td>'.$comp['name'].'</td>'
+                                . '<td>'.$comp['link'].'</td>'
                                 . '<td>'.$comp['heading'].'</td>'
                                 . '<td>'.$comp['price'].'</td>'
                                 . '<td>
