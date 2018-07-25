@@ -61,7 +61,7 @@ class ControllerSettingLibraries extends Controller {
         $field = $this->request->post['field'];
         $this->load->model('tool/product');
         $res = $this->model_tool_product->saveChangeFillName($id, $name, $field);
-        echo $res;
+        echo $res;        
     }
     
     public function saveNewFillName() {
@@ -69,10 +69,15 @@ class ControllerSettingLibraries extends Controller {
         $fill['name'] = $this->request->post['name'];
         $fill['libraryId'] = $this->request->post['libraryId'];
         $fill['parent'] = $this->request->post['parent'];
-        
-        $this->load->model('tool/product');
-        $res = $this->model_tool_product->saveNewFillName($fill);
-        echo $res;
+        $check = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE item_id = '".$fill['itemId']."' AND name = '".$fill['name']."'");
+        $check_num = $check->num_rows;
+        if ($check_num <= 0){
+            $this->load->model('tool/product');
+            $res = $this->model_tool_product->saveNewFillName($fill); 
+        } else {
+            $res = 'exists' ;
+        }
+        echo $res;  
     }
     
     public function deleteFill() {
@@ -165,8 +170,16 @@ class ControllerSettingLibraries extends Controller {
                 $fields[trim($sup[0])] = trim($sup[1]);
             }
         }
-        $this->load->model('tool/product');
-        $this->model_tool_product->saveFillSets($fields, $fill);
+        $itemid = $this->db->query("SELECT item_id FROM ".DB_PREFIX."lib_fills WHERE id = '".$fill."' LIMIT 1")->row['item_id'];
+        $check = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE name = '".$fields['name']."' AND item_id = '".$itemid."'");
+        $check_num = $check->num_rows;
+        if ($check_num <= 0){
+            $this->load->model('tool/product');
+            $this->model_tool_product->saveFillSets($fields, $fill);
+        } else {
+            $res = 'exists';
+        }
+        echo $res;
     }
     
 }
