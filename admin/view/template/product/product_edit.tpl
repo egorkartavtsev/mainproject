@@ -55,7 +55,7 @@
                         <div class="well col-sm-12">
                             <?php $count = 0; ?>
                             <?php if(isset($images)) { foreach($images as $img) { ?>
-                                <div style="float: left;" class="col-sm-3">
+                                <div style="float: left;" class="col-sm-4">
                                     <a href="" id="thumb-image<?php echo $img['lid']?>" data-toggle="image" class="img-thumbnail" data-toggle="popover" <?php if($img['main']){echo 'style="box-shadow: 0px 0px 50px #4CAF50;"';} ?>>
                                         <img src="<?php echo $img['thumb']; ?>" alt="" title="" data-placeholder="<?php echo $placeholder; ?>" />
                                     </a>
@@ -70,19 +70,20 @@
                             <div class="text-center" style="float: left; padding: 3.5%;">
                                 <button id="button-add-image" data-toggle="tooltip" data-original-title="Добавить фото" data-pointer="<?php echo $count;?>" class="btn btn-success btn-lg"><i class="fa fa-plus-circle"></i></button>
                             </div>
+                            <div class='clearfix'></div>
+                            <div class='clearfix'><p></p></div>
+                            <div>
+                                <p>
+                                    Справка:<br><br>
+                                    <a class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i> - изменить фотографию </a><br>
+                                    <a class="btn btn-sm btn-danger"><i class="fa fa-trash-o"></i> - удалить фотографию </a><br>
+                                    <a class="btn btn-sm btn-warning"><i class="fa fa-exclamation-circle"></i>  - сделать фотографию главной</a><br>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                    <div class='clearfix'></div>
-                    <div class='clearfix'><p></p></div>
                     
                 </form>
-                    <div class="well">
-                        <p>
-                            Справка:<br><br>
-                            <button class="btn btn-primary"><i class="fa fa-pencil"></i> - изменить фотографию </button>
-                            <button class="btn btn-danger"><i class="fa fa-trash-o"></i> - удалить фотографию </button>
-                            <button class="btn btn-warning"><i class="fa fa-exclamation-circle"></i>  - сделать фотографию главной</button></p>
-                    </div>
             </div>
         </div>
     </div>

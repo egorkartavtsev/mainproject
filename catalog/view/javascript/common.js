@@ -101,7 +101,7 @@ $(document).ready(function() {
                 var form = [];
                 var allow = [];
                 
-                btn.parent().find('input').each(function(){
+                btn.parent().find('input').eac(hfunction(){
                     if($(this).val()===''){
                         if(parseInt($(this).attr('target_req'))){
                             allow.push(false);
