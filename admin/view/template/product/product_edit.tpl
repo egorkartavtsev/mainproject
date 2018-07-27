@@ -50,9 +50,10 @@
                         </div>
                         
                     </div>
-                    <div class="col-md-6">
-                        <h3>Фотографии:</h3>
+                    <div class="col-md-6">                     
                         <div class="well col-sm-12">
+                            <h3>Фотографии:</h3>
+                            <hr>
                             <?php $count = 0; ?>
                             <?php if(isset($images)) { foreach($images as $img) { ?>
                                 <div style="float: left;" class="col-sm-3">
@@ -71,11 +72,71 @@
                                 <button id="button-add-image" data-toggle="tooltip" data-original-title="Добавить фото" data-pointer="<?php echo $count;?>" class="btn btn-success btn-lg"><i class="fa fa-plus-circle"></i></button>
                             </div>
                         </div>
-                    </div>
+                        <?php if ($complect != '') { ?>             
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="alert alert-success">
+                                    <div class="col-sm-12">
+                                        <div class ="row">
+                                            <label id="name" val="<?php echo $kit['name'];?>">Название комплекта:<h3><span class="label label-primary " title="Открыть редактирование комплекта в новом окне"><a style="color: #FFFFFF!important;" target="_blank" href="<?php echo $clink;?>"><i class="fa fa-pencil-square-o"></i>  <?php echo $kit['name'];?></a></span></h3></label>
+                                            <br>
+                                            <label id="heading" val="<?php echo $kit['heading'];?>" comp_id="<?php echo $kit['id'];?>">Головной товар(комплектообразующий):<h3><span class="label label-warning" title="Открыть редактирование товара в новом окне"><a style="color: #FFFFFF!important;" target="_blank" href="<?php echo $plink;?>"><i class="fa fa-pencil-square-o"></i>  <?php echo $kit['heading'];?></a></span></h3></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class ="row">
+                                            <div class="col-sm-3" style="vertical-align:bottom">
+                                                <label>Цена комплекта</label>
+                                                <input class="form-control" name="price" id="price" value="<?php echo $kit['price'];?>"/>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label>Способ продажи комплекта</label>
+                                                <select id="whole" class="form-control">
+                                                    <option value="0">Обычная продажа</option>
+                                                    <option value="1">Только комплект целиком</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label>Скидка(в процентах. при значении 0, скидка = 15%)</label>
+                                                <div class="input-group">
+                                                    <input class="form-control" name="sale" id="sale" value="<?php echo $kit['sale']?>"/>
+                                                    <div class="input-group-addon">%</div>
+                                                </div>
+                                            </div>   
+                                            <div class="col-sm-3">
+                                                <a class='btn btn-info btn-block' token="<?php echo $token ?>" btn_type="save_comp_info">Сохранить</a>
+                                            </div>    
+                                        </div>
+                                    </div>      
+                                </div>
+                                <div class="alert alert-success">
+                                    <h4>Комплектующие:</h4>
+                                        <?php $i = 0; ?>
+                                        <table class="table" id='complect'>
+                                            <?php foreach($kit['accessories'] as $acc) { ?>
+                                                <tr id="c<?php echo $i; ?>">
+                                                    <td id="accss<?php echo $i; ?>">
+                                                        <?php echo $acc['vin']?>
+                                                    </td>
+                                                    <td>
+                                                        <a href="<?php echo $acc['cp_link'];?>" target="_blank"><i class="fa fa-pencil-square"></i> <?php echo $acc['name']?></a>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $acc['price']?>
+                                                    </td>
+                                                </tr>
+                                                <?php ++$i; ?>
+                                            <?php } ?>
+                                        </table>
+                                </div>
+                            </div>
+                        </div>
+                        <?php } ?>
+                    </div>                   
                     <div class='clearfix'></div>
-                    <div class='clearfix'><p></p></div>
-                    
+                    <div class='clearfix'><p></p></div>      
                 </form>
+            </div>                            
                     <div class="well">
                         <p>
                             Справка:<br><br>

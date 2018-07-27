@@ -27,9 +27,9 @@
             
             $query_comp = $this->db->query("SELECT * FROM ".DB_PREFIX."complects WHERE id = '".$complect."' ");
             $complect_info = array(
-                'id' => $query_comp->row['id'],
-                'name' => $query_comp->row['name'],
-                'price' => $query_comp->row['price'],
+                'id'        => $query_comp->row['id'],
+                'name'      => $query_comp->row['name'],
+                'price'     => $query_comp->row['price'],
                 'heading'   => $query_comp->row['heading'],
                 'sale'      => $query_comp->row['sale']
             );
@@ -43,9 +43,10 @@
             $complect_info['accessories'] = array();
             foreach ($query_acc->rows as $prod) {
                 $complect_info['accessories'][] = array(
-                    'vin' => $prod['vin'],
-                    'price' => $prod['price'],
-                    'name' => $prod['name']
+                    'vin'     => $prod['vin'],
+                    'price'   => $prod['price'],
+                    'name'    => $prod['name'],
+                    'cp_link' => $this->url->link('production/catalog/edit', 'token=' . $this->session->data['token'] . '&product_id=' . $this->db->query("SELECT product_id FROM ".DB_PREFIX."product WHERE vin = '".$prod['vin']."'")->row['product_id'])
                 );
             }
             

@@ -787,15 +787,21 @@ class ControllerProductionCatalog extends Controller {
                 $data['avitoname'] = $product['avitoname'];
             }
             $data['complect'] = $product['comp'];
-            $data['comp_price'] = $product['comp_price'];
-            //берём комплектность
-            if($data['complect']!='' && $data['comp_price']==''){
-                $comp = $this->model_product_product->getComplect($data['complect']);
-                $data['cname'] = $comp['name'];
-                $data['clink'] = $this->url->link('complect/complect/edit', 'token=' . $this->session->data['token'] . '&complect=' . $comp['id'], true);
+            $data['comp_price'] = $product['comp_price'];  
+            if($data['complect']!='') {
+                $this->load->model('complect/complect');
+                if ($data['comp_price']=='') {
+                    $sup = $this->db->query("SELECT id FROM ".DB_PREFIX."complects WHERE heading = '".$data['complect']."'")->row['id'];
+                    $kit = $this->model_complect_complect->getComplect($sup);
+                } else {
+                    $kit = $this->model_complect_complect->getComplect($data['complect']); 
+                }
+                $data['cname'] = $kit['name'];
+                $data['clink'] = $this->url->link('complect/complect/edit', 'token=' . $this->session->data['token'] . '&complect=' . $kit['id'], true);
+                $data['plink'] = $this->url->link('production/catalog/edit', 'token=' . $this->session->data['token'] . '&product_id=' . $this->db->query("SELECT product_id FROM ".DB_PREFIX."product WHERE vin = '".$kit['heading']."'")->row['product_id']);
+                $data['kit'] = $kit;
             }
-            $data['placeholder'] = $this->model_tool_image->resize('no_image.png', 100, 100);
-
+            $data['placeholder'] = $this->model_tool_image->resize('no_image.png', 100, 100);     
             $this->response->setOutput($this->load->view('product/product_edit', $data));
         }
 

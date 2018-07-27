@@ -78,7 +78,7 @@ class ControllerToolFormTool extends Controller {
         $name = $this->request->post['name'];
         $item_name = $this->request->post['item'];
         $item_id = $this->db->query("SELECT item_id FROM ".DB_PREFIX."lib_struct WHERE name = '".$item_name."'")->row['item_id'];
-        $check = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE name = '".$name."' AND item_id = '".$item_id."'");
+        $check = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE name = '".$name."' AND item_id = '".$item_id."' AND parent_id = '".$parent."'");
         $check_num = $check->num_rows;
         if ($check_num <= 0){
             $this->load->model('tool/forms');

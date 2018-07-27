@@ -596,6 +596,28 @@ $(document).ready(function() {
         });
     })
     
+    $(document).on('click', '[btn_type=save_comp_info]', function(){
+        var val_comp_null = [];
+        ajax({
+            url:"index.php?route=complect/complect/editComplect&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data:
+            {
+                complect: val_comp_null,                
+                id: $(this).parent().parent().parent().parent().find("#heading").attr('comp_id'),
+                heading: $(this).parent().parent().parent().parent().find("#heading").attr('val'),
+                name: $(this).parent().parent().parent().parent().find("#name").attr('val'),
+                price: $(this).parent().parent().parent().parent().find("#price").val(),
+                whole: $(this).parent().parent().parent().parent().find("#whole").val(),
+                sale: $(this).parent().parent().parent().parent().find("#sale").val(),
+                token: $(this).attr('token')
+            },
+            success:function(data){
+                alert('Сохранено');
+            }
+        });
+    }); 
      //change fill name
     $(document).on( "click", "[btn_type=changeFill]", function() {
         var button = $(this);
@@ -632,7 +654,7 @@ $(document).ready(function() {
               parent.parent().find("td[td_type='fillName']").html(parent.parent().find("#newName").val());
             }
           }
-        })
+        });
         $(this).parent().html('<button class="btn btn-success" btn_type="saveChangeFillName"><i class="fa fa-floppy-o" ></i></button>');
     });
     //libr level settings

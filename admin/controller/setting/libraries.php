@@ -69,7 +69,7 @@ class ControllerSettingLibraries extends Controller {
         $fill['name'] = $this->request->post['name'];
         $fill['libraryId'] = $this->request->post['libraryId'];
         $fill['parent'] = $this->request->post['parent'];
-        $check = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE item_id = '".$fill['itemId']."' AND name = '".$fill['name']."'");
+        $check = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE item_id = '".$fill['itemId']."' AND name = '".$fill['name']."' AND parent_id = '".$fill['parent']."'");
         $check_num = $check->num_rows;
         if ($check_num <= 0){
             $this->load->model('tool/product');
@@ -171,7 +171,8 @@ class ControllerSettingLibraries extends Controller {
             }
         }
         $itemid = $this->db->query("SELECT item_id FROM ".DB_PREFIX."lib_fills WHERE id = '".$fill."' LIMIT 1")->row['item_id'];
-        $check = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE name = '".$fields['name']."' AND item_id = '".$itemid."'");
+        $parent = $this->db->query("SELECT parent_id FROM ".DB_PREFIX."lib_fills WHERE id = '".$fill."' LIMIT 1")->row['parent_id'];
+        $check = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE name = '".$fields['name']."' AND item_id = '".$itemid."' AND parent_id= '".$parent."'");
         $check_num = $check->num_rows;
         if ($check_num <= 0){
             $this->load->model('tool/product');
