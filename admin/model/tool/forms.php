@@ -336,10 +336,12 @@ class ModelToolForms extends Model {
                     . '<input class="form-control" name="info[vin]" disabled unique="unique" field="vin" value="'.$info['vin'].'"/>'
                  . '</div>';
         foreach ($this->systemFields as $key => $field) {
-            $systemF.= '<div class="form-group-sm editForm col-md-3">'
-                        . '<div class = "row paddingrow"><label>'.$field.($key==='vin'?'<span style="color: red;">*</span>':'').'</label></div>'
-                        . '<input class="form-control" name="info['.$key.']" '.($key==='vin'?'required="required" disabled aria-required="true" unique="unique" field="vin"':'').' value="'.$info[$key].'"/>'
-                     . '</div>';
+            if($key!=='vin'){
+                $systemF.= '<div class="form-group-sm editForm col-md-3">'
+                            . '<div class = "row paddingrow"><label>'.$field.($key==='vin'?'<span style="color: red;">*</span>':'').'</label></div>'
+                            . '<input class="form-control" name="info['.$key.']" '.($key==='vin'?'required="required" disabled aria-required="true" unique="unique" field="vin"':'').' value="'.$info[$key].'"/>'
+                         . '</div>';
+            }
         }
         $systemF.= '<div class="form-group-sm editForm col-md-3">'
                 . '<div class = "row paddingrow"><label>Статус</label></div>'
@@ -352,7 +354,7 @@ class ModelToolForms extends Model {
             if(!array_key_exists($key, $this->systemFields) && !in_array($key, $this->ignoreFields)){
                 switch ($option['field_type']) {
                     case 'input':
-                        $inputs.= '<div class="col-md-4 form-group-sm editForm">'
+                        $inputs.= '<div class="col-md-12 form-group-sm editForm">'
                                     . '<div class = "row paddingrow"><label>'.$option['text'].'</label></div>'
                                     . '<input class="form-control" name="info['.$key.']" '.($option['required']=='1'?'required="required':'').' value="'.htmlspecialchars_decode($option['value']).'">'
                                 . '</div>';
