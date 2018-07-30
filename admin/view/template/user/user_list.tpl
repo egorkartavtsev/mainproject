@@ -35,22 +35,25 @@
               <thead>
                 <tr>
                   <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
-                  <td class="text-left"><?php if ($sort == 'username') { ?>
+                  <td class="text-center">Аватар</td>
+                  <td class="text-center"><?php if ($sort == 'username') { ?>
                     <a href="<?php echo $sort_username; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_username; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_username; ?>"><?php echo $column_username; ?></a>
                     <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'status') { ?>
+                  <td class="text-center">Имя</td>
+                  <td class="text-center"><?php if ($sort == 'status') { ?>
                     <a href="<?php echo $sort_status; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_status; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
                     <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'date_added') { ?>
+                  <td class="text-center"><?php if ($sort == 'date_added') { ?>
                     <a href="<?php echo $sort_date_added; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_date_added; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_date_added; ?>"><?php echo $column_date_added; ?></a>
                     <?php } ?></td>
-                  <td class="text-right"><?php echo $column_action; ?></td>
+                  <td class="text-center">Уровень доступа</td>
+                  <td class="text-center"><?php echo $column_action; ?></td>
                 </tr>
               </thead>
               <tbody>
@@ -62,10 +65,13 @@
                     <?php } else { ?>
                     <input type="checkbox" name="selected[]" value="<?php echo $user['user_id']; ?>" />
                     <?php } ?></td>
-                  <td class="text-left"><?php echo $user['username']; ?></td>
-                  <td class="text-left"><?php echo $user['status']; ?></td>
-                  <td class="text-left"><?php echo $user['date_added']; ?></td>
-                  <td class="text-right"><a href="<?php echo $user['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+                  <td class="text-center"><img src="<?php echo $user['avatar']; ?>" class="image img-circle"></td>
+                  <td class="text-center"><?php echo $user['username']; ?></td>
+                  <td class="text-center"><?php echo $user['fsp']; ?></td>
+                  <td class="text-center"><?php echo $user['status']; ?></td>
+                  <td class="text-center"><?php echo $user['date_added']; ?></td>
+                  <td class="text-center"><?php echo $user['userAL']; ?></td>
+                  <td class="text-center"><a href="<?php echo $user['edit']; ?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
                 </tr>
                 <?php } ?>
                 <?php } else { ?>
@@ -78,8 +84,8 @@
           </div>
         </form>
         <div class="row">
-          <div class="col-sm-6 text-left"><?php echo $pagination; ?></div>
-          <div class="col-sm-6 text-right"><?php echo $results; ?></div>
+          <div class="col-sm-6 text-center"><?php echo $pagination; ?></div>
+          <div class="col-sm-6 text-center"><?php echo $results; ?></div>
         </div>
       </div>
     </div>

@@ -332,13 +332,19 @@ class ModelToolForms extends Model {
         $lib_links = $this->getLinksArr($this->request->get['product_id']);
 //        exit(var_dump($info));
 //        exit(var_dump(!array_key_exists('vin', $this->systemFields)));
+        $systemF.= '<div class="form-group-sm col-md-6">'
+                    . '<label>Внутренний номер:</label>'
+                    . '<input class="form-control" name="info[vin]" disabled unique="unique" field="vin" value="'.$info['vin'].'"/>'
+                 . '</div>';
         foreach ($this->systemFields as $key => $field) {
-            $systemF.= '<div class="form-group-sm editForm col-md-3">'
-                        . '<label>'.$field.($key==='vin'?'<span style="color: red;">*</span>':'').'</label>'
-                        . '<input class="form-control" name="info['.$key.']" '.($key==='vin'?'required="required" disabled aria-required="true" unique="unique" field="vin"':'').' value="'.$info[$key].'"/>'
-                     . '</div>';
+            if($key!=='vin'){
+                $systemF.= '<div class="form-group-sm col-md-3">'
+                            . '<label>'.$field.'</label>'
+                            . '<input class="form-control" name="info['.$key.']" value="'.$info[$key].'"/>'
+                         . '</div>';
+            }
         }
-        $systemF.= '<div class="form-group-sm editForm col-md-3">'
+        $systemF.= '<div class="form-group-sm col-md-3">'
                 . '<label>Статус</label>'
                 . '<select class="form-control" name="info[status]">'
                     . '<option value="1">Включено</option>'
@@ -349,13 +355,13 @@ class ModelToolForms extends Model {
             if(!array_key_exists($key, $this->systemFields) && !in_array($key, $this->ignoreFields)){
                 switch ($option['field_type']) {
                     case 'input':
-                        $inputs.= '<div class="col-md-4 form-group-sm editForm">'
+                        $inputs.= '<div class="col-md-6 form-group-sm">'
                                     . '<label>'.$option['text'].'</label>'
                                     . '<input class="form-control" name="info['.$key.']" '.($option['required']=='1'?'required="required':'').' value="'.htmlspecialchars_decode($option['value']).'">'
                                 . '</div>';
                     break;
                     case 'select':
-                        $selects.= '<div class="col-md-4 form-group-sm editForm">'
+                        $selects.= '<div class="col-md-4 form-group-sm">'
                                     . '<label>'.$option['text'].'</label>'
                                     . '<select class="form-control" name="info['.$key.']">'
                                         . '<option value="-">-</option>';
@@ -378,8 +384,8 @@ class ModelToolForms extends Model {
                         if($supitem->row['isparent']==='1'){
                             $dop = 'select_type="librSelect" child="'.$supitem->row['child'].'"';
                             $endrow='';
-                        } else{$dop = ''; $endrow = '<div class="col-lg-12"></div>';}
-                        $libraries.= '<div class="col-md-4 form-group-sm editForm " id="'.$key.'">'
+                        } else{$dop = ''; $endrow = '<div class="col-lg-12"><hr></div>';}
+                        $libraries.= '<div class="col-md-4 form-group-sm" id="'.$key.'">'
                                     . '<a class="btn btn-success btn-sm" data-toggle="modal" data-target="#createFillModal" parent="'.($supitem->row['parent']==''?'0':$supitem->row['parent']).'" btn_type="createFill"><i class="fa fa-plus"></i></a><label>  '.$option['text'].'  </label> '
                                     . '<select class="form-control" name="info['.$key.']" '.$dop.'>'
                                         . '<option value="">-</option>';
@@ -432,7 +438,7 @@ class ModelToolForms extends Model {
                 }
             }
         }
-        return '<div class="well well-sm" num="prod-edit">'.$systemF.$libraries.$selects.$inputs.$compabils.$hiddens.'<div class="clearfix"></div><div class="clearfix"></div></div>'.$modal;
+        return '<div class="well well-sm" num="prod-edit">'.$systemF.'<div class="clearfix"></div><hr>'.$libraries.$selects.'<div class="clearfix"></div><hr>'.$inputs.'<div class="clearfix"></div><hr>'.$compabils.$hiddens.'<div class="clearfix"></div><div class="clearfix"></div></div>'.$modal;
     }
     
     public function updateProduct($info, $id) {
