@@ -81,6 +81,7 @@ class ModelToolLayout extends Model {
                 $result[$type['type_id']][$field['name']] = $field;
             }
         }
+        
         return $result;
     }
     

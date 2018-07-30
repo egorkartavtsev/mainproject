@@ -38,6 +38,25 @@ function addOption(){
 }
 $(document).ready(function() {
     
+    $(document).on('click', '[btn_type=label_settings]', function(){
+        var target = $(this).attr('target');
+        var field = $(this).parent().find('[name=field]').val();
+        var color = $(this).parent().find('[name=color]').val();
+        ajax({
+            url:"index.php?route=setting/prodtypes/saveTypeLabel&token="+getURLVar('token'),
+            method:"POST",
+            data: {
+                label: target,
+                field: field,
+                color: color
+            },
+            success:function(data){
+                alert(data);
+            }
+        })
+    });
+    
+    
     $(document).on('click', '[btn_type=saveExcelTempl]', function(){
         var templ = '';
         $(this).parent().parent().parent().find('input').each(function(){

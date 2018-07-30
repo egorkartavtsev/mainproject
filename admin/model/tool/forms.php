@@ -2,7 +2,7 @@
 
 class ModelToolForms extends Model {
     private $systemFields = array(
-        'vin' => 'Внутренний номер', 'quantity' => 'Количество', 'price' => 'Цена'
+        'vin' => 'Внутренний номер', 'quantity' => 'Количество', 'price' => 'Цена', 'youtube' => 'YouTube(только код!)'
     );
     private $ignoreFields = array('complect', 'heading', 'type_id', 'manager', 'status');
     public function generateAddForm($id, $num){
@@ -222,6 +222,21 @@ class ModelToolForms extends Model {
                     $prodItem['comp'] = $this->model_tool_complect->createComplect($product['vin'], $name);
                     break;
             }
+            $prodItem['youtube'] = '';
+            if($product['youtube']!==''){
+                $sup = strrchr($product['youtube'], "=");
+                if($sup){
+                    $prodItem['youtube'] = str_replace("=", "", $sup);
+                } else {
+                    $sup = explode("/", $product['youtube']);
+                    if(count($sup)>1){
+                        $index = count($sup)-1;
+                        $prodItem['youtube'] = $sup[$index];
+                    } else {
+                        $prodItem['youtube'] = $sup[0];
+                    }                
+                }
+            }
             //------------------------------
             //add product to db
             $sql = "INSERT INTO ".DB_PREFIX."product SET ";
@@ -336,13 +351,17 @@ class ModelToolForms extends Model {
                     . '<input class="form-control" name="info[vin]" disabled unique="unique" field="vin" value="'.$info['vin'].'"/>'
                  . '</div>';
         foreach ($this->systemFields as $key => $field) {
-            if($key!=='vin'){
+            if($key!=='vin' && $key!=='youtube'){
                 $systemF.= '<div class="form-group-sm editForm col-md-3">'
-                            . '<div class = "row paddingrow"><label>'.$field.($key==='vin'?'<span style="color: red;">*</span>':'').'</label></div>'
-                            . '<input class="form-control" name="info['.$key.']" '.($key==='vin'?'required="required" disabled aria-required="true" unique="unique" field="vin"':'').' value="'.$info[$key].'"/>'
+                            . '<div class = "row paddingrow"><label>'.$field.'</label></div>'
+                            . '<input class="form-control" name="info['.$key.']" value="'.$info[$key].'"/>'
                          . '</div>';
             }
         }
+        $systemF.= '<div class="form-group-sm col-md-9">'
+                    . '<label>YouTube(только код видео!):</label>'
+                    . '<input class="form-control" name="info[youtube]" field="youtube" value="'.$info['youtube'].'"/>'
+                 . '</div>';
         $systemF.= '<div class="form-group-sm editForm col-md-3">'
                 . '<div class = "row paddingrow"><label>Статус</label></div>'
                 . '<select class="form-control" name="info[status]">'
@@ -350,6 +369,11 @@ class ModelToolForms extends Model {
                     . '<option value="2" '.($info['status']=='2'?'selected':'').'>В резерве</option>'
                     . '<option value="0" '.($info['status']=='0'?'selected':'').'>Отключено</option>'
                 . '</select></div><div class="col-lg-12"></div>';
+        if($info['youtube']!==''){
+            $systemF.= '<div class="form-group-sm col-md-9">'
+                    . '<label>https://youtu.be/'.$info['youtube'].'</label>'
+                 . '</div>';            
+        }
         foreach ($info as $key => $option) {
             if(!array_key_exists($key, $this->systemFields) && !in_array($key, $this->ignoreFields)){
                 switch ($option['field_type']) {

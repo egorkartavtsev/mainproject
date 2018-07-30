@@ -116,6 +116,10 @@
                         <option value="4WD">4WD</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="youtube">Код YouTube</label>
+                    <input class="form-control" name="youtube" id="youtube" type="text"/>
+                </div>
             </div>
                         <div class="clearfix"></div>
                         <div class="clearfix"></div>

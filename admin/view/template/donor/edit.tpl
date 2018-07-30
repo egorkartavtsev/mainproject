@@ -109,6 +109,10 @@
                         <option value="AT" <?php if($donor['trmiss']==='AT') {echo 'selected';}?>>AT</option>
                     </select>
                 </div>
+                <div class="form-group-sm">
+                    <label for="youtube">Код YouTube</label>
+                    <input class="form-control" name="youtube" id="youtube" type="text" value="<?php echo $donor['youtube'];?>"/>
+                </div>
             </div>
             
             <div class="col-md-3">

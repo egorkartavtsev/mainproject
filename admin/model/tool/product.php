@@ -114,6 +114,12 @@ class ModelToolProduct extends Model {
         return $result;
     }
     
+    public function saveTypeLabel($label, $field, $color) {
+        $this->db->query("UPDATE ".DB_PREFIX."type_lib SET label_color = 0, label_order = 0 WHERE label_order = ".(int)$label);
+        if($field!=='-'){
+            $this->db->query("UPDATE ".DB_PREFIX."type_lib SET label_color = '".$color."', label_order = ".(int)$label." WHERE lib_id = ".(int)$field);
+        }
+    }
     public function getStructInfo($id) {
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."product_type WHERE type_id = ".(int)$id);
         return $sup->row;
@@ -480,11 +486,27 @@ class ModelToolProduct extends Model {
                 );
             }
         }
+        $youtube = '';
+        if($info['info']['youtube']!==''){
+            $sup = strrchr($info['info']['youtube'], "=");
+            if($sup){
+                $youtube = str_replace("=", "", $sup);
+            } else {
+                $sup = explode("/", $info['info']['youtube']);
+                if(count($sup)>1){
+                    $index = count($sup)-1;
+                    $youtube = $sup[$index];
+                } else {
+                    $youtube = $sup[0];
+                }                
+            }
+        }
         $result['options']['avitoname'] = array('field_type' => 'system', 'value' => $info['info']['avitoname']);
         $result['options']['quantity'] = array('field_type' => 'system', 'value' => $info['info']['quantity']);
         $result['options']['status'] = array('field_type' => 'system', 'value' => $info['info']['status']);
         $result['options']['price'] = array('field_type' => 'system', 'value' => $info['info']['price']);
         $result['options']['image'] = array('field_type' => 'system', 'value' => $info['info']['image']);
+        $result['options']['youtube'] = array('field_type' => 'system', 'value' => $youtube);
         $result['image'] = isset($info['image'])?$info['image']:'no_image.png';
         $result['manager'] = $info['manager'];
         return $result;

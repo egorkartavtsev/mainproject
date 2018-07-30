@@ -758,6 +758,7 @@ class ControllerProductionCatalog extends Controller {
                 );
             }
             $info['vin'] = $product['vin'];
+            $info['youtube'] = $product['youtube'];
             $info['manager'] = $this->session->data['username'];
             $info['price'] = $product['price'];
             $info['quantity'] = $product['quantity'];

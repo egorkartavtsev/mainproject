@@ -95,10 +95,17 @@ class ControllerCatalogCatalog extends Controller{
                                 'text' => $types[$prod['structure']][$key]['text'],
                                 'value' => $field
                             );
+                            if((int)$types[$prod['structure']][$key]['label_order']){
+                                $list['products'][$prod['product_id']]['labels'][(int)$types[$prod['structure']][$key]['label_order']] = array(
+                                    'color' => $types[$prod['structure']][$key]['label_color'],
+                                    'value' => $field
+                                );
+                            }
                         }
                     }
                 }
             }
+//            exit(var_dump($list['products']));
             if (isset($this->request->post['suc'])){
                 $mail =  'Имя: '.$this->request->post['name'].'; '
                        . 'Email: '.$this->request->post['email'].'; '

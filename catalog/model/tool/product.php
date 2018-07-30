@@ -10,6 +10,8 @@ class ModelToolProduct extends Model {
             $pot[$cell['name']] = array ( 
                 'text' => $cell['text'],
                 'viewed' => $cell['viewed'],
+                'label_order' => $cell['label_order'],
+                'label_color' => $cell['label_color'],
                 'value' => ''  
             );    
         }

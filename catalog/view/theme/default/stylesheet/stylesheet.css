@@ -634,44 +634,35 @@ h2.price {
         position: absolute;
         z-index: 5;
         }
+
+.label-thumd div {
+    width: auto;
+    height: auto;
+    box-sizing: border-box;
+    border-radius: 0px 8px 8px 0px; 
+    position: relative;
+    float: left;
+    font-size: 150%;
+    color: whitesmoke;
+    white-space: nowrap;
+}
+ 
+.label-thumd .eang {
+        background-color: #8fbb6c;
+        border: 5px solid #8fbb6c;
+}
+
 .label-thumd .eanr {
-        width: auto;
-        height: auto;
-        box-sizing: border-box;
-        background-color: #cc0000;
-        border: 5px solid #cc0000;
-        border-radius: 15%; 
-        position: relative;
-        float: left;
-        font-size: 150%;
-        color: whitesmoke;
-        white-space: nowrap;
+        background-color: #da4f49;
+        border: 5px solid #da4f49;
 }
 .label-thumd .eanb {
-        width: auto;
-        height: auto;
-        box-sizing: border-box;
         background-color: #1f90bb;
         border: 5px solid #1f90bb;
-        border-radius: 9%; 
-        position: relative;
-        float: left;
-        font-size: 150%;
-        color: whitesmoke;
-        white-space: nowrap;
 }
 .label-thumd .whole {
-        width: auto;
-        height: auto;
-        box-sizing: border-box;
         background-color: #fbb450;
         border: 5px solid #fbb450;
-        border-radius: 5%; 
-        position: relative;
-        float: left;
-        font-size: 110%;
-        color: #000080;
-        white-space: nowrap;
         font-weight: 600;
         font-stretch: condensed;
 }

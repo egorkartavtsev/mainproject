@@ -27,13 +27,13 @@
           <?php foreach($products as $key => $product){ ?>
             <div class="product-layout product-list col-xs-12">
                 <div class="label-thumd">
-                    <?php if ($product['type']){ ?>
-                        <?php if(strripos($product['type'], 'ВЫЙ') || strripos($product['type'], 'вый')){ ?>
-                            <div class="eanb">Новый</div>
-                        <?php } else { ?>
-                            <div class="eanr">Б/У</div>
-                        <?php }?>
-                    <?php }?>
+                    <?php if (count($product['labels'])){ 
+                        for($i = 1; $i < 4; ++$i){ 
+                            if(isset($product['labels'][$i]) && $product['labels'][$i]['value']!=='' && $product['labels'][$i]['value']!=='-'){ ?>
+                            <div class="<?php echo $product['labels'][$i]['color']; ?>"><?php echo $product['labels'][$i]['value']; ?></div>
+                        <?php }
+                        }
+                    }?>
                     <?php if ($product['comp']){ ?>
                         <?php if ($product['com_whole'] == 1){ ?>
                             <div class="whole" title="На фото изображен полный комплект, содержащий данную деталь. &#013Цена указана за полный комплект.">

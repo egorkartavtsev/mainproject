@@ -66,6 +66,23 @@ class ControllerSettingProdTypes extends Controller {
         $options = '<div>';
         $divInfo = '';
         $divsOpt = '';
+        
+        $lblopt1 = '<option value="-" selected>Выключен</option>';
+        $lblopt2 = '<option value="-" selected>Выключен</option>';
+        $lblopt3 = '<option value="-" selected>Выключен</option>';
+        
+        $lblcol1 = '<option value="eanr">Красный</option>'
+                 . '<option value="eanb">Синий</option>'
+                 . '<option value="eang">Зелёный</option>';
+        
+        $lblcol2 = '<option value="eanr">Красный</option>'
+                 . '<option value="eanb">Синий</option>'
+                 . '<option value="eang">Зелёный</option>';
+        
+        $lblcol3 = '<option value="eanr">Красный</option>'
+                 . '<option value="eanb">Синий</option>'
+                 . '<option value="eang">Зелёный</option>';
+        
         $divExc = '<div role="tabpanel" class="tab-pane" id="excel">'
                 . '<h3>Шаблон выгрузки и загрузки товаров типа "'.$info['text'].'"</h3>'
                 . '<table class="table table-hover">'
@@ -80,6 +97,7 @@ class ControllerSettingProdTypes extends Controller {
                         <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Свойства</a></li>
                         <li role="presentation"><a href="#descript" aria-controls="descript" role="tab" data-toggle="tab">Общие</a></li>
                         <li role="presentation"><a href="#excel" aria-controls="excel" role="tab" data-toggle="tab">Excel</a></li>
+                        <li role="presentation"><a href="#labels" aria-controls="labels" role="tab" data-toggle="tab">Ярлыки</a></li>
                     </ul>'
                 . '<div class="tab-content"><div role="tabpanel" class="tab-pane active" id="home"><h4 type="optHeader"><h4 id="optHeader">Свойства товара: </h4>';
         $divsOpt.= '<div class="clearfix"></div><div class="clearfix"><p></p></div><button id="newOpt" class="btn btn-success" onclick="addOption()"><i class="fa fa-plus-circle"></i> создать нововое свойство товара</button><div class="clearfix"></div><div class="clearfix"><p></p></div>';
@@ -92,6 +110,37 @@ class ControllerSettingProdTypes extends Controller {
                         . '<td>'.$result['text'].'</td>'
                         . '<td><input class="form-control" name="excel" target="'.$result['lib_id'].'" value="'.$result['excel'].'"/></td>'
                         . '</tr>';
+                switch ($result['label_order']) {
+                    case '1':
+                        $lblopt1.= '<option value="'.$result['lib_id'].'" selected>'.$result['text'].'</option>';
+                        $lblopt2.= '<option value="'.$result['lib_id'].'" disabled>'.$result['text'].'</option>';
+                        $lblopt3.= '<option value="'.$result['lib_id'].'" disabled>'.$result['text'].'</option>';
+                        $lblcol1 = '<option value="eanr" '.($result['label_color']=='eanr'?'selected':'').'>Красный</option>'
+                                 . '<option value="eanb" '.($result['label_color']=='eanb'?'selected':'').'>Синий</option>'
+                                 . '<option value="eang" '.($result['label_color']=='eang'?'selected':'').'>Зелёный</option>';
+                    break;
+                    case '2':
+                        $lblopt1.= '<option value="'.$result['lib_id'].'" disabled>'.$result['text'].'</option>';
+                        $lblopt2.= '<option value="'.$result['lib_id'].'" selected>'.$result['text'].'</option>';
+                        $lblopt3.= '<option value="'.$result['lib_id'].'" disabled>'.$result['text'].'</option>';
+                        $lblcol2 = '<option value="eanr" '.($result['label_color']=='eanr'?'selected':'').'>Красный</option>'
+                                 . '<option value="eanb" '.($result['label_color']=='eanb'?'selected':'').'>Синий</option>'
+                                 . '<option value="eang" '.($result['label_color']=='eang'?'selected':'').'>Зелёный</option>';
+                    break;
+                    case '3':
+                        $lblopt1.= '<option value="'.$result['lib_id'].'" disabled>'.$result['text'].'</option>';
+                        $lblopt2.= '<option value="'.$result['lib_id'].'" disabled>'.$result['text'].'</option>';
+                        $lblopt3.= '<option value="'.$result['lib_id'].'" selected>'.$result['text'].'</option>';
+                        $lblcol3 = '<option value="eanr" '.($result['label_color']=='eanr'?'selected':'').'>Красный</option>'
+                                 . '<option value="eanb" '.($result['label_color']=='eanb'?'selected':'').'>Синий</option>'
+                                 . '<option value="eang" '.($result['label_color']=='eang'?'selected':'').'>Зелёный</option>';
+                    break;
+                    default:
+                        $lblopt1.= '<option value="'.$result['lib_id'].'">'.$result['text'].'</option>';
+                        $lblopt2.= '<option value="'.$result['lib_id'].'">'.$result['text'].'</option>';
+                        $lblopt3.= '<option value="'.$result['lib_id'].'">'.$result['text'].'</option>';
+                    break;
+                }
             }
         }
         $divsOpt.= '</div>';
@@ -116,11 +165,60 @@ class ControllerSettingProdTypes extends Controller {
                         . '<label>&nbsp;</label><br><button class="btn btn-success" disabled btn_type="showNavSave"><i class="fa fa-floppy-o"></i></button>'
                     . '</div>';
         $divInfo.= '</div>';
-        
+        $divsLabels = '<div role="tabpanel" class="tab-pane" id="labels">'
+                    . '<div class="row">'
+                        . '<div class="col-md-4">'
+                            . '<div class="alert alert-success">'
+                                . '<h3>Настройки ярлыка 1</h3>'
+                                . '<div class="form-group-sm">'
+                                    . '<label>Выберите свойство:</label>'
+                                    . '<select name="field" class="form-control">'.$lblopt1.'</select>'
+                                . '</div>'
+                                . '<div class="form-group-sm">'
+                                    . '<label>Выберите цвет:</label>'
+                                    . '<select name="color" class="form-control">'.$lblcol1.'</select>'
+                                . '</div>'
+                                . '<button class="btn btn-success btn-sm" btn_type="label_settings" target="1"><i class="fa fa-floppy-o"></i> сохранить ярлык</button>'
+                            . '</div>'
+                        . '</div>'
+                        . '<div class="col-md-4">'
+                            . '<div class="alert alert-success">'
+                                . '<h3>Настройки ярлыка 2</h3>'
+                                . '<div class="form-group-sm">'
+                                    . '<label>Выберите свойство:</label>'
+                                    . '<select name="field" class="form-control">'.$lblopt2.'</select>'
+                                . '</div>'
+                                . '<div class="form-group-sm">'
+                                    . '<label>Выберите цвет:</label>'
+                                    . '<select name="color" class="form-control">'.$lblcol2.'</select>'
+                                . '</div>'
+                                . '<button class="btn btn-success btn-sm" btn_type="label_settings" target="2"><i class="fa fa-floppy-o"></i> сохранить ярлык</button>'
+                            . '</div>'
+                        . '</div>'
+                        . '<div class="col-md-4">'
+                            . '<div class="alert alert-success">'
+                                . '<h3>Настройки ярлыка 3</h3>'
+                                . '<div class="form-group-sm">'
+                                    . '<label>Выберите свойство:</label>'
+                                    . '<select name="field" class="form-control">'.$lblopt3.'</select>'
+                                . '</div>'
+                                . '<div class="form-group-sm">'
+                                    . '<label>Выберите цвет:</label>'
+                                    . '<select name="color" class="form-control">'.$lblcol3.'</select>'
+                                . '</div>'
+                                . '<button class="btn btn-success btn-sm" btn_type="label_settings" target="3"><i class="fa fa-floppy-o"></i> сохранить ярлык</button>'
+                            . '</div>'
+                        . '</div>'
+                    . '</div>'
+                    . '<div class="row">'
+                        . '<div class="well well-sm text-center">'
+                            . '<h4><i class="fa fa-warning"></i> ярлык с информацией о комплектности товара является системным и редактированию не подлежит!</h4>'
+                        . '</div>'
+                    . '</div>'
+                . '</div>';
         $divExc.= '<tr><td colspan="2" class="text-center"><button btn_type="saveExcelTempl" class="btn btn-success">сохранить шаблон</button></td></tr></tbody></table></div>';
         $options.='</h4>';
-        echo $options.$divsOpt.$divInfo.$divExc;
-//        echo $options.$divInfo.$divExc;
+        echo $options.$divsOpt.$divInfo.$divExc.$divsLabels;
     }
     
     public function addOption() {
@@ -271,6 +369,11 @@ class ControllerSettingProdTypes extends Controller {
             break;
         }
         echo $output;
+    }
+    
+    public function saveTypeLabel(){
+        $this->load->model('tool/product');
+        echo $this->model_tool_product->saveTypeLabel($this->request->post['label'], $this->request->post['field'], $this->request->post['color']);
     }
     
     public function saveExcelTempl(){

@@ -45,6 +45,11 @@
                     </ul>
                 <?php } ?>
             <?php } ?>
+            <?php if ($donor['youtube']!=='') { ?>
+                <h3>Видеопрезентация:</h3>
+                <iframe style="width: 100%; min-height: 300px;" src="https://www.youtube.com/embed/<?php echo $donor['youtube'];?>?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <h4>Ссылка: https://youtu.be/<?php echo $donor['youtube'];?></h4>
+            <?php } ?>
         </div>
         <?php if($utype=='adm') { ?>
             <div class="well well-sm col-md-3">
@@ -53,56 +58,59 @@
             </div>
         <?php }?>
         </div>
-        
-        <table class="table table-bordered table-hover table-responsive">
-              <thead>
-                <tr>
-                  
-                  <td class="text-center">Изображение</td>
-                  <td>Название</td>
-                  <td>Внутренний номер</td>
-                  <td>Расположение</td>
-                  <td>Цена</td>
-                  <td>Категория</td>
-                  <td>Количество</td>
-                  <td class="text-left">Статус</td>
-                  <td class="text-left">Дата создания</td>
-                </tr>
-              </thead>
-              <tbody>
-                <?php if ($products) { ?>
-                <?php foreach ($products as $product) { ?>
-                <tr>
-                  <td class="text-center"><?php if ($product['image']) { ?>
-                    <img src="<?php echo $product['image']; ?>" alt="<?php echo $product['name']; ?>" class="img-thumbnail" />
-                    <?php } else { ?>
-                    <span class="img-thumbnail list"><i class="fa fa-camera fa-2x"></i></span>
-                    <?php } ?></td>
-                  <td class="text-left"><a href="<?php echo $go_site; ?><?php echo $product['product_id']; ?>" target="blank" data-toggle="tooltip" title="" data-original-title="Перейти к продукту"><?php echo $product['name']; ?></a></td>
-                  <td><?php echo $product['vin']; ?></td>
-                  <td><?php echo $product['stock']?>/<?php echo $product['location']; ?></td>
-                  <td><?php echo $product['price']?></td>
-                  <td class="text-left"><?php echo $product['category']; ?></td>
+        <div class="row">
+            <div class="col-lg-12" style="overflow-x: scroll;">
+                <table class="table table-bordered table-hover table-responsive">
+                  <thead>
+                    <tr>
 
-                  <td class="text-right"><?php if ($product['quantity'] <= 0) { ?>
-                    <span class="label label-warning"><?php echo $product['quantity']; ?></span>
-                    <?php } elseif ($product['quantity'] <= 5) { ?>
-                    <span class="label label-danger"><?php echo $product['quantity']; ?></span>
+                      <td class="text-center">Изображение</td>
+                      <td>Название</td>
+                      <td>Внутренний номер</td>
+                      <td>Расположение</td>
+                      <td>Цена</td>
+                      <td>Категория</td>
+                      <td>Количество</td>
+                      <td class="text-left">Статус</td>
+                      <td class="text-left">Дата создания</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php if ($products) { ?>
+                    <?php foreach ($products as $product) { ?>
+                    <tr>
+                      <td class="text-center"><?php if ($product['image']) { ?>
+                        <img src="<?php echo $product['image']; ?>" alt="<?php echo $product['name']; ?>" class="img-thumbnail" />
+                        <?php } else { ?>
+                        <span class="img-thumbnail list"><i class="fa fa-camera fa-2x"></i></span>
+                        <?php } ?></td>
+                      <td class="text-left"><a href="<?php echo $go_site; ?><?php echo $product['product_id']; ?>" target="blank" data-toggle="tooltip" title="" data-original-title="Перейти к продукту"><?php echo $product['name']; ?></a></td>
+                      <td><?php echo $product['vin']; ?></td>
+                      <td><?php echo $product['stock']?>/<?php echo $product['location']; ?></td>
+                      <td><?php echo $product['price']?></td>
+                      <td class="text-left"><?php echo $product['category']; ?></td>
+
+                      <td class="text-right"><?php if ($product['quantity'] <= 0) { ?>
+                        <span class="label label-warning"><?php echo $product['quantity']; ?></span>
+                        <?php } elseif ($product['quantity'] <= 5) { ?>
+                        <span class="label label-danger"><?php echo $product['quantity']; ?></span>
+                        <?php } else { ?>
+                        <span class="label label-success"><?php echo $product['quantity']; ?></span>
+                        <?php } ?></td>
+                      <td class="text-left"><?php echo $product['status']; ?></td>
+                      <td class="text-left"><?php echo DateTime::createFromFormat('Y-m-d H:i:s', $product['date_added'])->format('d.‌​m.Y'); ?></td>
+
+                    </tr>
+                    <?php } ?>
                     <?php } else { ?>
-                    <span class="label label-success"><?php echo $product['quantity']; ?></span>
-                    <?php } ?></td>
-                  <td class="text-left"><?php echo $product['status']; ?></td>
-                  <td class="text-left"><?php echo DateTime::createFromFormat('Y-m-d H:i:s', $product['date_added'])->format('d.‌​m.Y'); ?></td>
-                  
-                </tr>
-                <?php } ?>
-                <?php } else { ?>
-                <tr>
-                  <td class="text-center" colspan="10">За донором не закреплены детали</td>
-                </tr>
-                <?php } ?>
-              </tbody>
-            </table>
+                    <tr>
+                      <td class="text-center" colspan="10">За донором не закреплены детали</td>
+                    </tr>
+                    <?php } ?>
+                  </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 <script src="view/javascript/jquery/magnific/jquery.magnific-popup.min.js" type="text/javascript"></script>

@@ -25,11 +25,17 @@ class ControllerCatalogProduct extends Controller {
                 $data['complect'] = isset($complect_arr['complect'])?$complect_arr['complect']:NULL;
                 $data['whole'] = isset($complect_arr['whole'])?$complect_arr['whole']:NULL;
             }
+            $data['labels'] = array();
 //      ------------------------------Структура данных по товара----------------------------------------------------------------------------------------------------------------------------------  
             foreach($product AS $key => $value){
                     $type[$key]['value'] = $value;
+                    if(isset($type[$key]['label_order']) && (int)$type[$key]['label_order']){
+                        $data['labels'][(int)$type[$key]['label_order']] = array(
+                            'color' => $type[$key]['label_color'],
+                            'value' => $type[$key]['value']
+                        );
+                    }
             }
-            //exit(var_dump($type));
 //      ------------------------------Отображаемая информация------------------------------------------------------------------------------------------------------------------------------------              
             $data['options'] = array();
             foreach($type AS $key => $value){
@@ -161,6 +167,7 @@ class ControllerCatalogProduct extends Controller {
             $data['modal_window'] = $this->load->view('modal_window/Modal_window'); 
             $data['sendLink'] = $this->url->link('catalog/product', 'product_id='.$this->request->get['product_id']);
             $data['product_id'] = $this->request->get['product_id'];
+            $data['youtube'] = $product['youtube'];
             $list['productpage'] = $this->load->view('catalog/oneproduct', $data);
 //      ---------------------------------------------------------------------------------
             $this->document->setTitle($description['meta_title']);

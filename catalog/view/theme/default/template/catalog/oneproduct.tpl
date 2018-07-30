@@ -7,14 +7,13 @@
     <div class="row">
         <div class="col-sm-8">
             <div class="label-thumd">
-            <?php if ($product['type']){ ?>
-                <?php if ($product['type']=='Б/У') { ?> 
-                    <div class="eanr">Б/У</div>
-                <?php }?>
-                <?php if ($product['type']=='Новый') { ?> 
-                    <div class="eanb">Новый</div>
-                <?php }?>
-            <?php }?>
+            <?php if (count($labels)){ 
+                for($i = 1; $i < 4; ++$i){ 
+                    if(isset($labels[$i]) && $labels[$i]['value']!=='' && $labels[$i]['value']!=='-'){ ?>
+                    <div class="<?php echo $labels[$i]['color']; ?>"><?php echo $labels[$i]['value']; ?></div>
+                <?php }
+                }
+            }?>
             <?php if ($product['comp']){ ?>
                 <?php if ($product['comp'] == 1){ ?>
                     <div class="whole" title="На фото изображен полный комплект, содержащий данную деталь. &#013Цена указана за полный комплект.">
@@ -108,6 +107,10 @@
                     </div>
                 <?php }?>
                 <div class="tab-pane active" id="tab-description"><?php echo $description; ?></div>
+                <?php if ($youtube!=='') { ?>
+                    <h3>Видеопрезентация:</h3>
+                    <iframe style="width: 100%; min-height: 300px;" src="https://www.youtube.com/embed/<?php echo $youtube;?>?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <?php } ?>
             </div>
         </div>
         <div class="col-sm-4">
@@ -174,6 +177,7 @@
                 </div>
                 <?php }?>
             <?php }?>
+            <div class="col-lg-12"<p>&nbsp;</p></div>
             <div id="vk_groups"></div>
         </div>
     <?php  if (isset($column_right)) { ?>

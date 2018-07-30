@@ -9,6 +9,21 @@ class ModelCommonDonor extends Model {
         $quer = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE id = '".$data['modelRow_id']."' ");
         $model_row = $quer->row['name'];
         $name = $brand." ".$model_row." (ГВ: ".$data['year'].") - (VIN: ".$data['vin'].")";
+        $youtube = '';
+        if($data['youtube']!==''){
+            $sup = strrchr($data['youtube'], "=");
+            if($sup){
+                $youtube = str_replace("=", "", $sup);
+            } else {
+                $sup = explode("/", $data['youtube']);
+                if(count($sup)>1){
+                    $index = count($sup)-1;
+                    $youtube = $sup[$index];
+                } else {
+                    $youtube = $sup[0];
+                }                
+            }
+        }
         $this->db->query("INSERT INTO ".DB_PREFIX."donor "
                             . "SET "
                             . "numb = '".$data['number']."', "
@@ -17,6 +32,7 @@ class ModelCommonDonor extends Model {
                             . "brand = '".$brand."', "
                             . "model = '".$model."', "
                             . "mod_row = '".$model_row."', "
+                            . "youtube = '".$youtube."', "
                             . "ctype = '".$data['cuzov']."', "
                             . "year = '".$data['year']."', "
                             . "kmeters = '".$data['kilometers']."', "
@@ -127,6 +143,21 @@ class ModelCommonDonor extends Model {
         $model_row = $quer->row['name'];
         $name = $brand." ".$model_row." (ГВ: ".$data['year'].") - (VIN: ".$data['vin'].")";
         
+        $youtube = '';
+        if($data['youtube']!==''){
+            $sup = strrchr($data['youtube'], "=");
+            if($sup){
+                $youtube = str_replace("=", "", $sup);
+            } else {
+                $sup = explode("/", $data['youtube']);
+                if(count($sup)>1){
+                    $index = count($sup)-1;
+                    $youtube = $sup[$index];
+                } else {
+                    $youtube = $sup[0];
+                }                
+            }
+        }
         $this->db->query("UPDATE ".DB_PREFIX."donor "
                             . "SET "
                             . "numb = '".$data['number']."', "
@@ -138,6 +169,7 @@ class ModelCommonDonor extends Model {
                             . "ctype = '".$data['cuzov']."', "
                             . "year = '".$data['year']."', "
                             . "note = '".$data['note']."', "
+                            . "youtube = '".$youtube."', "
                             . "kmeters = '".$data['kilometers']."', "
                             . "vin = '".$data['vin']."', "
                             . "dvs = '".$data['dvs']."', "
