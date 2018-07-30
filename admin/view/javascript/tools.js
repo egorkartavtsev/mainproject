@@ -571,6 +571,7 @@ $(document).ready(function() {
     })
     
     $(document).on('click', '[btn_type=fillSetsSave]', function(){
+        var oldname = $(this).attr('oldname');
         var fields = '';
         var fill = $(this).attr('fill');
         $(this).parent().parent().find('input').each(function(){
@@ -583,11 +584,12 @@ $(document).ready(function() {
             method:"POST",
             data: {
                 fields: fields, 
-                fill: fill
+                fill: fill,
+                oldname: oldname 
             },
             success:function(data){
                 if(data === 'exists'){
-                    alert('Такой элемент уже существует');
+                    alert('Элемент с таким именем уже существует');
                     return FALSE;
                 } else{  
                     alert('Сохранено');
@@ -621,15 +623,39 @@ $(document).ready(function() {
      //change fill name
     $(document).on( "click", "[btn_type=changeFill]", function() {
         var button = $(this);
+        var oldname = $(this).parent().parent().find("[td_type=fillName]").text();
         ajax({
             url:"index.php?route=setting/libraries/getFillSets&token="+getURLVar('token'),
             statbox:"status",
             method:"POST",
-            data: {fill_id: button.attr('fill')},
+            data: {
+                fill_id: button.attr('fill'),
+                oldname: oldname
+            },
             success:function(data){
                 $('#level-settings').html(data);
             }
         });
+    });
+    $(document).on( "click", "[btn_type=changeFillprod]", function() {
+        var fill_id = $(this).parent().parent().parent().find("select").val();
+        var oldname = $(this).parent().parent().parent().find("option:selected").text();
+        if (fill_id !== "") {
+            ajax({
+                url:"index.php?route=setting/libraries/getFillSets&token="+getURLVar('token'),
+                statbox:"status",
+                method:"POST",
+                data: {
+                    fill_id: fill_id,
+                    oldname: oldname
+                },
+                success:function(data){
+                    $('#level-settings').html(data);
+                }
+            });
+        } else {
+            alert('Элемент не выбран');
+        }
     });
     //save new fill name
     $(document).on( "click", "[btn_type=saveChangeFillName]", function() {
@@ -911,8 +937,7 @@ $(document).ready(function() {
     })
     $(document).on( "change", "[id*='Option']", function() {
         $(this).parent().parent().attr('class', 'alert alert-warning');
-    })
-    
+    })    
     //translate libr name
     $(document).on( "input", "#libr_text", function() {
         ajax({

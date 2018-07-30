@@ -27,7 +27,7 @@ class ControllerToolFormTool extends Controller {
                     }
                 }
             } elseif($num === 'prod-edit') {
-                $result.= '<a class="btn btn-success btn-sm" data-toggle="modal" data-target="#createFillModal" parent="'.$child['parent_name'].'" btn_type="createFill"><i class="fa fa-plus"></i></a><label>  '.$child['text'].'  </label> ';
+                $result.= '<div class = "row paddingrow"><label> '.$child['text'].' </label><div class ="floatright"><a class="btn btn-success btn-sm" data-toggle="modal" data-target="#createFillModal" parent="'.$child['parent_name'].'" btn_type="createFill"><i class="fa fa-plus"></i></a><a class="btn btn-info btn-sm" btn_type="changeFillprod" type="button" data-toggle="modal" fill="" data-target="#settingsLevel" btn_type="levelSettings"><i class="fa fa-pencil"></i></a></div></div>';
                 $result.= '<select class="form-control" name = "info['.$fieldName.']" '.$child['js'].'>';
                 $result.= '<option value="-">-</option>';
                 foreach ($child['fills'] as $fill) {
@@ -44,7 +44,7 @@ class ControllerToolFormTool extends Controller {
                 $result.= '</select>';
             } else {
                 if($num !== 'no-num'){
-                    $result.= '<a class="btn btn-success btn-sm" data-toggle="modal" data-target="#createFillModal" parent="'.$child['parent_name'].'" btn_type="createFill"><i class="fa fa-plus"></i></a><label>  '.$child['text'].'  </label> ';
+                    $result.= '<div class = "row paddingrow"><label> '.$child['text'].' </label><div class ="floatright"><a class="btn btn-success btn-sm" data-toggle="modal" data-target="#createFillModal" parent="'.$child['parent_name'].'" btn_type="createFill"><i class="fa fa-plus"></i></a><a class="btn btn-info btn-sm" btn_type="changeFillprod" type="button" data-toggle="modal" fill="" data-target="#settingsLevel" btn_type="levelSettings"><i class="fa fa-pencil"></i></a></div></div>';
                     $result.= '<select class="form-control" name = "info['.$num.']['.$fieldName.']" '.$child['js'].'>';
                 } else {
                     $result.= '<label>'.$child['text'].'</label>';

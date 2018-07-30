@@ -35,7 +35,6 @@
                         <?php echo $form;?>
                         <div class="alert alert-success col-sm-12">
                         <h3>Индивидуальные настройки для Авито</h3>
-                        
                             <div class="form-group-sm">
                                 <label for="avitoname">Заголовок объявления отображаемый на авито(лимит: 50 символов). Оставьте пустым для автоматической генерации.</label>
                                 <input type="text" name="info[avitoname]" class="form-control" id="avitoname" maxlength="50" value="<?php echo $avitoname;?>" />
@@ -48,7 +47,6 @@
                                 </select>
                             </div>
                         </div>
-                        
                     </div>
                     <div class="col-md-6">                     
                         <div class="well col-sm-12">
@@ -95,7 +93,7 @@
                                         </div>
                                         <div class="col-sm-12">
                                             <div class ="row">
-                                                <div class="col-sm-3" style="vertical-align:bottom">
+                                                <div class="col-sm-3">
                                                     <label>Цена комплекта</label>
                                                     <input class="form-control" name="price" id="price" value="<?php echo $kit['price'];?>"/>
                                                 </div>
@@ -147,6 +145,20 @@
             </div>                            
         </div>
     </div>
+    <div class="modal fade" id="settingsLevel" tabindex="-1" role="dialog" aria-labelledby="settingsLevelLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="settingsLevelLabel">Настройки</h4>
+          </div>
+          <div class="modal-body" id="level-settings">
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>                                        
     <!-- Modal -->
     <div class="modal fade" id="compModal" tabindex="-1" role="dialog" aria-labelledby="compModal">
       <div class="modal-dialog" role="document">
@@ -188,7 +200,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div>   
     <script type="text/javascript">
         $("#heading").on('input', function(){
             ajax({
