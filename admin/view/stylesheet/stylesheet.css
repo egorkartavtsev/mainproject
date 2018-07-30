@@ -27,8 +27,18 @@ h1, h2, h3, h4, h5, h6, p {
     min-height: 40px;
     padding: 10px 25px;
 }
+
 .db-notice > h1{
     font-size: 45px;
+}
+
+.floatright{
+    float: right;
+}
+
+.paddingrow{
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 .editForm{

@@ -69,7 +69,7 @@ class ControllerSettingLibraries extends Controller {
         $fill['name'] = $this->request->post['name'];
         $fill['libraryId'] = $this->request->post['libraryId'];
         $fill['parent'] = $this->request->post['parent'];
-        $check = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE item_id = '".$fill['itemId']."' AND name = '".$fill['name']."'");
+        $check = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE item_id = '".$fill['itemId']."' AND name = '".$fill['name']."' AND parent_id = '".$fill['parent']."'");
         $check_num = $check->num_rows;
         if ($check_num <= 0){
             $this->load->model('tool/product');
@@ -129,10 +129,11 @@ class ControllerSettingLibraries extends Controller {
         $this->load->model('tool/product');
         $this->load->model('tool/image');
         $sets = $this->model_tool_product->getFillSets($this->request->post['fill_id']);
+        $oldname = $this->request->post['oldname'];
         $result = '';
         
         $result.= ' <div class="col-lg-12 form-group">
-                      <label for="name">Название:</label>я
+                      <label for="name">Название:</label>
                       <input class="form-control" id="name" type="text" value="'.$sets['name'].'"/>
                     </div>';
         $result.= ' <div class="col-lg-12 form-group">
@@ -155,14 +156,15 @@ class ControllerSettingLibraries extends Controller {
                       <input class="form-control" data-toggle="input-image" id="image" type="hidden" value="'.$sets['image'].'"/>
                     </div>';
         $result.= ' <div class="col-lg-12 form-group">
-                        <button class="btn btn-success" fill="'.$sets['id'].'" btn_type="fillSetsSave"><i class="fa fa-floppy-o"></i> сохранить</button>
+                        <button class="btn btn-success" fill="'.$sets['id'].'" oldname = "'.$oldname.'" btn_type="fillSetsSave"><i class="fa fa-floppy-o"></i>сохранить</button>
                     </div>';
         echo $result;
     }
     
     public function saveFillSets() {
         $fill = $this->request->post['fill'];
-        $request = $this->request->post['fields'];
+        $oldname = $this->request->post['oldname'];
+        $request = $this->request->post['fields'];       
         $request = explode("; ", $request);
         foreach ($request as $req) {
             $sup = explode(":", $req);
@@ -170,14 +172,20 @@ class ControllerSettingLibraries extends Controller {
                 $fields[trim($sup[0])] = trim($sup[1]);
             }
         }
-        $itemid = $this->db->query("SELECT item_id FROM ".DB_PREFIX."lib_fills WHERE id = '".$fill."' LIMIT 1")->row['item_id'];
-        $check = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE name = '".$fields['name']."' AND item_id = '".$itemid."'");
-        $check_num = $check->num_rows;
-        if ($check_num <= 0){
+        if ($oldname != $fields['name']) {
+            $itemid = $this->db->query("SELECT item_id FROM ".DB_PREFIX."lib_fills WHERE id = '".$fill."' LIMIT 1")->row['item_id'];
+            $parent = $this->db->query("SELECT parent_id FROM ".DB_PREFIX."lib_fills WHERE id = '".$fill."' LIMIT 1")->row['parent_id'];
+            $check = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE name = '".$fields['name']."' AND item_id = '".$itemid."' AND parent_id= '".$parent."'");
+            $check_num = $check->num_rows;
+            if ($check_num <= 0){
+                $this->load->model('tool/product');
+                $this->model_tool_product->saveFillSets($fields, $fill);
+            } else {
+                $res = 'exists';        
+            }
+        } else {
             $this->load->model('tool/product');
             $this->model_tool_product->saveFillSets($fields, $fill);
-        } else {
-            $res = 'exists';
         }
         echo $res;
     }

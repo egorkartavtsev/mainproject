@@ -27,7 +27,6 @@
                         <label>Название комплекта</label>
                         <input class="form-control" name="name" id="name" value="<?php echo $complect['name'];?>"/>
                         <input type="hidden" id="id" value="<?php echo $id; ?>">
-
                     </div>
                     <div class="col-lg-4">
                         <label>Головной товар(комплектообразующий)</label>

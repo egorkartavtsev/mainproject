@@ -27,7 +27,7 @@ class ControllerToolFormTool extends Controller {
                     }
                 }
             } elseif($num === 'prod-edit') {
-                $result.= '<a class="btn btn-success btn-sm" data-toggle="modal" data-target="#createFillModal" parent="'.$child['parent_name'].'" btn_type="createFill"><i class="fa fa-plus"></i></a><label>  '.$child['text'].'  </label> ';
+                $result.= '<div class = "row paddingrow"><label> '.$child['text'].' </label><div class ="floatright"><a class="btn btn-success btn-sm" data-toggle="modal" data-target="#createFillModal" parent="'.$child['parent_name'].'" btn_type="createFill"><i class="fa fa-plus"></i></a><a class="btn btn-info btn-sm" btn_type="changeFillprod" type="button" data-toggle="modal" fill="" data-target="#settingsLevel" btn_type="levelSettings"><i class="fa fa-pencil"></i></a></div></div>';
                 $result.= '<select class="form-control" name = "info['.$fieldName.']" '.$child['js'].'>';
                 $result.= '<option value="-">-</option>';
                 foreach ($child['fills'] as $fill) {
@@ -44,7 +44,7 @@ class ControllerToolFormTool extends Controller {
                 $result.= '</select>';
             } else {
                 if($num !== 'no-num'){
-                    $result.= '<a class="btn btn-success btn-sm" data-toggle="modal" data-target="#createFillModal" parent="'.$child['parent_name'].'" btn_type="createFill"><i class="fa fa-plus"></i></a><label>  '.$child['text'].'  </label> ';
+                    $result.= '<div class = "row paddingrow"><label> '.$child['text'].' </label><div class ="floatright"><a class="btn btn-success btn-sm" data-toggle="modal" data-target="#createFillModal" parent="'.$child['parent_name'].'" btn_type="createFill"><i class="fa fa-plus"></i></a><a class="btn btn-info btn-sm" btn_type="changeFillprod" type="button" data-toggle="modal" fill="" data-target="#settingsLevel" btn_type="levelSettings"><i class="fa fa-pencil"></i></a></div></div>';
                     $result.= '<select class="form-control" name = "info['.$num.']['.$fieldName.']" '.$child['js'].'>';
                 } else {
                     $result.= '<label>'.$child['text'].'</label>';
@@ -78,7 +78,7 @@ class ControllerToolFormTool extends Controller {
         $name = $this->request->post['name'];
         $item_name = $this->request->post['item'];
         $item_id = $this->db->query("SELECT item_id FROM ".DB_PREFIX."lib_struct WHERE name = '".$item_name."'")->row['item_id'];
-        $check = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE name = '".$name."' AND item_id = '".$item_id."'");
+        $check = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE name = '".$name."' AND item_id = '".$item_id."' AND parent_id = '".$parent."'");
         $check_num = $check->num_rows;
         if ($check_num <= 0){
             $this->load->model('tool/forms');

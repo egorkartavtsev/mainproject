@@ -87,7 +87,7 @@ class ControllerProductionWriteoff extends Controller {
     public function findProd() {
         $this->load->model('tool/image');
         $token = $this->request->post['token'];
-        $vin = $this->request->post['vin'];
+        $vin = str_replace(' ','',$this->request->post['vin']);
         $this->load->model('common/write_off');
         $prod_info = $this->model_common_write_off->findProd($vin);
         if(!empty($prod_info)){

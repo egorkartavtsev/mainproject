@@ -571,6 +571,7 @@ $(document).ready(function() {
     })
     
     $(document).on('click', '[btn_type=fillSetsSave]', function(){
+        var oldname = $(this).attr('oldname');
         var fields = '';
         var fill = $(this).attr('fill');
         $(this).parent().parent().find('input').each(function(){
@@ -583,11 +584,12 @@ $(document).ready(function() {
             method:"POST",
             data: {
                 fields: fields, 
-                fill: fill
+                fill: fill,
+                oldname: oldname 
             },
             success:function(data){
                 if(data === 'exists'){
-                    alert('Такой элемент уже существует');
+                    alert('Элемент с таким именем уже существует');
                     return FALSE;
                 } else{  
                     alert('Сохранено');
@@ -596,18 +598,64 @@ $(document).ready(function() {
         });
     })
     
+    $(document).on('click', '[btn_type=save_comp_info]', function(){
+        var val_comp_null = [];
+        ajax({
+            url:"index.php?route=complect/complect/editComplect&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data:
+            {
+                complect: val_comp_null,                
+                id: $(this).parent().parent().parent().parent().find("#heading").attr('comp_id'),
+                heading: $(this).parent().parent().parent().parent().find("#heading").attr('val'),
+                name: $(this).parent().parent().parent().parent().find("#name").attr('val'),
+                price: $(this).parent().parent().parent().parent().find("#price").val(),
+                whole: $(this).parent().parent().parent().parent().find("#whole").val(),
+                sale: $(this).parent().parent().parent().parent().find("#sale").val(),
+                token: $(this).attr('token')
+            },
+            success:function(data){
+                alert('Сохранено');
+            }
+        });
+    }); 
      //change fill name
     $(document).on( "click", "[btn_type=changeFill]", function() {
         var button = $(this);
+        var oldname = $(this).parent().parent().find("[td_type=fillName]").text();
         ajax({
             url:"index.php?route=setting/libraries/getFillSets&token="+getURLVar('token'),
             statbox:"status",
             method:"POST",
-            data: {fill_id: button.attr('fill')},
+            data: {
+                fill_id: button.attr('fill'),
+                oldname: oldname
+            },
             success:function(data){
                 $('#level-settings').html(data);
             }
         });
+    });
+    $(document).on( "click", "[btn_type=changeFillprod]", function() {
+        var fill_id = $(this).parent().parent().parent().find("select").val();
+        var oldname = $(this).parent().parent().parent().find("option:selected").text();
+        if (fill_id !== "") {
+            ajax({
+                url:"index.php?route=setting/libraries/getFillSets&token="+getURLVar('token'),
+                statbox:"status",
+                method:"POST",
+                data: {
+                    fill_id: fill_id,
+                    oldname: oldname
+                },
+                success:function(data){
+                    $('#level-settings').html(data);
+                }
+            });
+        } else {
+            alert('Элемент не выбран');
+        }
     });
     //save new fill name
     $(document).on( "click", "[btn_type=saveChangeFillName]", function() {
@@ -632,7 +680,7 @@ $(document).ready(function() {
               parent.parent().find("td[td_type='fillName']").html(parent.parent().find("#newName").val());
             }
           }
-        })
+        });
         $(this).parent().html('<button class="btn btn-success" btn_type="saveChangeFillName"><i class="fa fa-floppy-o" ></i></button>');
     });
     //libr level settings
@@ -889,8 +937,7 @@ $(document).ready(function() {
     })
     $(document).on( "change", "[id*='Option']", function() {
         $(this).parent().parent().attr('class', 'alert alert-warning');
-    })
-    
+    })    
     //translate libr name
     $(document).on( "input", "#libr_text", function() {
         ajax({
@@ -976,6 +1023,11 @@ $(document).ready(function() {
           }         
         })
         $(this).parent().html('<button class="btn btn-success" btn_type="saveChangeFillName"><i class="fa fa-floppy-o" ></i></button>');
+    });
+    $(document).on( "click", "[id=rep_vin]", function() {
+        var vin = $(this).parent().find('#vin').val();       
+        var vin = $.trim(vin.replace(/\s+/g,""));
+        $(this).parent().find('#vin').val(vin);   ;
     });
 })
 
