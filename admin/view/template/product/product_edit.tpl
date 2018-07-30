@@ -56,7 +56,7 @@
                             <?php if(isset($images)) { foreach($images as $img) { ?>
                                 <div style="float: left;" class="col-sm-4">
                                     <a href="" id="thumb-image<?php echo $img['lid']?>" data-toggle="image" class="img-thumbnail" data-toggle="popover" <?php if($img['main']){echo 'style="box-shadow: 0px 0px 50px #4CAF50;"';} ?>>
-                                        <img src="<?php echo $img['thumb']; ?>" alt="" title="" data-placeholder="<?php echo $placeholder; ?>" />
+                                       <img src="<?php echo $img['thumb']; ?>" alt="" title="" class="img-responsive" data-placeholder="<?php echo $placeholder; ?>" />
                                     </a>
                                     <div class="col-sm-8">
                                         <input type="text" class="form-control" name="image[<?php echo $img['lid']?>][sort-order]" value="<?php echo $img['sort_order']; ?>" />
@@ -86,36 +86,38 @@
                                     <div class="alert alert-success">
                                         <div class="col-sm-12">
                                             <div class ="row">
-                                                <label id="name" val="<?php echo $kit['name'];?>">Название комплекта:<h3><span class="label label-primary " title="Открыть редактирование комплекта в новом окне"><a style="color: #FFFFFF!important;" target="_blank" href="<?php echo $clink;?>"><i class="fa fa-pencil-square-o"></i>  <?php echo $kit['name'];?></a></span></h3></label>
+                                                <label id="name" val="<?php echo $kit['name'];?>">Название комплекта:<h4><span class="label label-primary " title="Открыть редактирование комплекта в новом окне"><a style="color: #FFFFFF!important;" target="_blank" href="<?php echo $clink;?>"><i class="fa fa-pencil-square-o"></i>  <?php echo $kit['name'];?></a></span></h4></label>
                                                 <br>
                                                 <label id="heading" val="<?php echo $kit['heading'];?>" comp_id="<?php echo $kit['id'];?>">Головной товар(комплектообразующий):<h3><span class="label label-warning" title="Открыть редактирование товара в новом окне"><a style="color: #FFFFFF!important;" target="_blank" href="<?php echo $plink;?>"><i class="fa fa-pencil-square-o"></i>  <?php echo $kit['heading'];?></a></span></h3></label>
                                             </div>
                                         </div>
-                                        <div class="col-sm-12">
+                                        <div class ="col-sm-12">
                                             <div class ="row">
-                                                <div class="col-sm-3">
-                                                    <label>Цена комплекта</label>
-                                                    <input class="form-control" name="price" id="price" value="<?php echo $kit['price'];?>"/>
-                                                </div>
-                                                <div class="col-sm-3">
-                                                    <label>Способ продажи комплекта</label>
-                                                    <select id="whole" class="form-control">
-                                                        <option value="0">Обычная продажа</option>
-                                                        <option value="1">Только комплект целиком</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-sm-3">
-                                                    <label>Скидка(в процентах. при значении 0, скидка = 15%)</label>
-                                                    <div class="input-group">
-                                                        <input class="form-control" name="sale" id="sale" value="<?php echo $kit['sale']?>"/>
-                                                        <div class="input-group-addon">%</div>
+                                                <div class="col-sm-9">
+                                                    <div class="">
+                                                        <label>Цена комплекта</label>
+                                                        <input class="form-control" name="price" id="price" value="<?php echo $kit['price'];?>"/>
                                                     </div>
+                                                    <div class="">
+                                                        <label>Способ продажи комплекта</label>
+                                                        <select id="whole" class="form-control">
+                                                            <option value="0">Обычная продажа</option>
+                                                            <option value="1">Только комплект целиком</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="">
+                                                        <label>Скидка(в процентах. при значении 0, скидка = 15%)</label>
+                                                        <div class="input-group">
+                                                            <input class="form-control" name="sale" id="sale" value="<?php echo $kit['sale']?>"/>
+                                                            <div class="input-group-addon">%</div>
+                                                        </div>
+                                                    </div>   
                                                 </div>   
                                                 <div class="col-sm-3">
                                                     <a class='btn btn-info btn-block' token="<?php echo $token ?>" btn_type="save_comp_info">Сохранить</a>
                                                 </div>    
-                                            </div>
-                                        </div>      
+                                            </div>     
+                                        </div>
                                     </div>
                                     <div class="alert alert-success">
                                         <h4>Комплектующие:</h4>

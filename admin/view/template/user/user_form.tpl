@@ -99,6 +99,15 @@
               <?php  } ?>
             </div>
           </div>
+          <div class="form-group required">
+            <label class="col-sm-2 control-label" for="input-useral">Уровень доступа: </label>
+            <div class="col-sm-10">
+              <input type="text" name="userAL" value="<?php echo $useral; ?>" placeholder="Уровень доступа пользователя" id="input-useral" class="form-control" />
+              <?php if ($error_al) { ?>
+              <div class="text-danger"><?php echo $error_al; ?></div>
+              <?php  } ?>
+            </div>
+          </div>
           <div class="form-group">
             <label class="col-sm-2 control-label" for="input-status"><?php echo $entry_status; ?></label>
             <div class="col-sm-10">
@@ -110,10 +119,6 @@
                     <?php } elseif ($status == '1') { ?>
                     <option value="0"><?php echo $text_disabled; ?></option>
                     <option value="1" selected="selected"><?php echo $text_enabled; ?></option>
-                    <option value="2"><?php echo $text_reserve; ?></option>
-                    <?php } else { ?>
-                    <option value="0" selected="selected"><?php echo $text_disabled; ?></option>
-                    <option value="1"><?php echo $text_enabled; ?></option>
                     <option value="2"><?php echo $text_reserve; ?></option>
                     <?php } ?>
               </select>

@@ -331,11 +331,17 @@ class ModelToolForms extends Model {
         $lib_links = $this->getLinksArr($this->request->get['product_id']);
 //        exit(var_dump($info));
 //        exit(var_dump(!array_key_exists('vin', $this->systemFields)));
+        $systemF.= '<div class="form-group-sm col-md-6">'
+                    . '<label>Внутренний номер:</label>'
+                    . '<input class="form-control" name="info[vin]" disabled unique="unique" field="vin" value="'.$info['vin'].'"/>'
+                 . '</div>';
         foreach ($this->systemFields as $key => $field) {
-            $systemF.= '<div class="form-group-sm editForm col-md-3">'
-                        . '<div class = "row paddingrow"><label>'.$field.($key==='vin'?'<span style="color: red;">*</span>':'').'</label></div>'
-                        . '<input class="form-control" name="info['.$key.']" '.($key==='vin'?'required="required" disabled aria-required="true" unique="unique" field="vin"':'').' value="'.$info[$key].'"/>'
-                     . '</div>';
+            if($key!=='vin'){
+                $systemF.= '<div class="form-group-sm editForm col-md-3">'
+                            . '<div class = "row paddingrow"><label>'.$field.($key==='vin'?'<span style="color: red;">*</span>':'').'</label></div>'
+                            . '<input class="form-control" name="info['.$key.']" '.($key==='vin'?'required="required" disabled aria-required="true" unique="unique" field="vin"':'').' value="'.$info[$key].'"/>'
+                         . '</div>';
+            }
         }
         $systemF.= '<div class="form-group-sm editForm col-md-3">'
                 . '<div class = "row paddingrow"><label>Статус</label></div>'
@@ -348,7 +354,7 @@ class ModelToolForms extends Model {
             if(!array_key_exists($key, $this->systemFields) && !in_array($key, $this->ignoreFields)){
                 switch ($option['field_type']) {
                     case 'input':
-                        $inputs.= '<div class="col-md-4 form-group-sm editForm">'
+                        $inputs.= '<div class="col-md-12 form-group-sm editForm">'
                                     . '<div class = "row paddingrow"><label>'.$option['text'].'</label></div>'
                                     . '<input class="form-control" name="info['.$key.']" '.($option['required']=='1'?'required="required':'').' value="'.htmlspecialchars_decode($option['value']).'">'
                                 . '</div>';
@@ -433,7 +439,7 @@ class ModelToolForms extends Model {
                 }
             }
         }
-        return '<div class="well well-sm" num="prod-edit">'.$systemF.$libraries.$selects.$inputs.$compabils.$hiddens.'<div class="clearfix"></div><div class="clearfix"></div></div>'.$modal;
+        return '<div class="well well-sm" num="prod-edit">'.$systemF.'<div class="clearfix"></div><hr>'.$libraries.$selects.'<div class="clearfix"></div><hr>'.$inputs.'<div class="clearfix"></div><hr>'.$compabils.$hiddens.'<div class="clearfix"></div><div class="clearfix"></div></div>'.$modal;
     }
     
     public function updateProduct($info, $id) {
