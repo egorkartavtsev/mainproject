@@ -254,7 +254,7 @@ $(document).ready(function() {
     })
     
     $(document).on('click', '[btn_type=createFill]', function(){
-        var item = $(this).parent().attr('id');      
+        var item = $(this).parent().parent().parent().attr('id');      
         var parent = '';
         if($(this).attr('parent') == '0'){
             parent = '0';
@@ -264,7 +264,7 @@ $(document).ready(function() {
         $(document).find('#createFill').attr('parent', parent);
         $(document).find('#createFill').attr('parent_div', $(this).attr('parent'));
         $(document).find('#createFill').attr('item', item);
-        //alert(parent); 
+        alert(item); 
     })
     $(document).on('click', '[btn_type=hidenotice]', function(){
         var vin = $(this).attr('target-arg');
