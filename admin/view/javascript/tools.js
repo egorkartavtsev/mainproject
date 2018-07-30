@@ -1024,6 +1024,11 @@ $(document).ready(function() {
         })
         $(this).parent().html('<button class="btn btn-success" btn_type="saveChangeFillName"><i class="fa fa-floppy-o" ></i></button>');
     });
+    $(document).on( "click", "[id=rep_vin]", function() {
+        var vin = $(this).parent().find('#vin').val();       
+        var vin = $.trim(vin.replace(/\s+/g,""));
+        $(this).parent().find('#vin').val(vin);   ;
+    });
 })
 
 function addLibItem(){

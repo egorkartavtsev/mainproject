@@ -14,7 +14,7 @@
         <div class="container-fluid well">
             <h4><?php echo $lable_vn; ?></h4>
                 <input type='text' name='vin' id="vin"/>
-                <button class="btn btn-success" onclick="findprod('<?php echo $token_wo; ?>');">
+                <button class="btn btn-success" id="rep_vin" onclick="findprod('<?php echo $token_wo; ?>');">
                     Найти
                 </button>
         </div>
