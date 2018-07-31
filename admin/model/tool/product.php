@@ -512,4 +512,51 @@ class ModelToolProduct extends Model {
         return $result;
     }
     
+    public function searchingProds($request) {
+        $reqwords = explode(" ", $request);
+
+        $query = "SELECT pd.name AS name, p.vin AS vin, p.product_id FROM ".DB_PREFIX."product_description pd "
+                    . "LEFT JOIN ".DB_PREFIX."product p "
+                        . "ON pd.product_id = p.product_id "
+                    . "WHERE !LOCATE('complect', p.vin) ";
+        foreach ($reqwords as $word){
+            $query.="AND (LOCATE ('" . $this->db->escape($word) . "', pd.name) OR p.vin = '".$this->db->escape($word)."') ";
+        }
+        $result = $this->db->query($query);
+        return $result->rows;
+    }
+    
+    public function getProdInfo($id) {
+        $result = array();
+        $this->load->model("tool/image");
+        $sup = $this->db->query("SELECT * "
+                . "FROM ".DB_PREFIX."product p "
+                . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
+                . "WHERE p.product_id = ".(int)$id);
+        $result = array(
+            'image' => $this->model_tool_image->resize($sup->row['image'], 1200, 900),
+            'vin' => $sup->row['vin'],
+            'name' => $sup->row['name'],
+            'price' => $sup->row['price'],
+            'quantity' => $sup->row['quantity'],
+            'edit' => $this->url->link('production/catalog/edit', 'token='.$this->session->data['token'].'&product_id='.$sup->row['product_id']),
+            'go_site' => HTTP_CATALOG.'index.php?route=catalog/product&product_id='.$sup->row['product_id'],
+            //опциональная строчка!!!!! Удалить для дальнейшей эксплуатации!!!!
+            'location' => $sup->row['stock'].'/'.$sup->row['stell'].'/'.$sup->row['jar'].'/'.$sup->row['shelf'].'/'.$sup->row['box']
+        );
+        
+        $type = $this->getOptions($sup->row['structure']);
+        foreach($type['options'] as $option){
+            if($sup->row[$option['name']]!=='' && $option['name'] !== 'stock' && $option['name'] !== 'stell' && $option['name'] !== 'jar' && $option['name'] !== 'shelf' && $option['name'] !== 'box'){
+                $result['options'][$option['name']] = array(
+                    'text' => $option['text'],
+                    'value' => $sup->row[$option['name']]
+                );
+            }
+        }
+        
+        
+        return $result;
+    }
+    
 }

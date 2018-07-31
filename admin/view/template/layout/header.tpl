@@ -89,48 +89,22 @@
   <?php if ($logged) { ?>
     <ul class="nav pull-right">
         <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search fa-lg"></i></a>
+            <div class="pull-left form-inline dropdown-toggle" data-toggle="dropdown" style="padding: 9px 10px;">
+                <div class="form-group-sm">
+                     <label for="searchInp"><i class="fa fa-search fa-lg"></i> Быстрый поиск по каталогу</label>
+                     <input type="text" class="form-control" oninput="searchingProds('<?php echo $ses_token; ?>');" id="searchInp">
+                 </div>
+           </div>
+            
             <ul class="dropdown-menu dropdown-menu-right alerts-dropdown">
                 <li class="dropdown-header" style="max-width: 100%;">
-                    <div class="form-group-sm">
-                        <label for="searchInp">Введите название</label>
-                        <input type="text" class="form-control" oninput="searchingProds('<?php echo $ses_token; ?>');" id="searchInp">
-                    </div>
-                <li id="headSearchBox" style="overflow-y: scroll; max-height: 300px;"></li>
-              </li>
+                    <label for="searchInp">Результаты поиска</label>
+                </li>
+                <li id="headSearchBox" style="overflow-y: scroll; max-height: 300px;">Введите подкатегорию/марку/модель</li>
             </ul>
         </li>
-    <?php if(0){ ?><li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><?php if($alerts > 0) { ?><span class="label label-danger pull-left"><?php echo $alerts; ?></span><?php } ?> <i class="fa fa-bell fa-lg"></i></a>
-      <ul class="dropdown-menu dropdown-menu-right alerts-dropdown">
-        <li class="dropdown-header"><?php echo $text_order; ?></li>
-        <li><a href="<?php echo $processing_status; ?>" style="display: block; overflow: auto;"><span class="label label-warning pull-right"><?php echo $processing_status_total; ?></span><?php echo $text_processing_status; ?></a></li>
-        <li><a href="<?php echo $complete_status; ?>"><span class="label label-success pull-right"><?php echo $complete_status_total; ?></span><?php echo $text_complete_status; ?></a></li>
-        <li><a href="<?php echo $return; ?>"><span class="label label-danger pull-right"><?php echo $return_total; ?></span><?php echo $text_return; ?></a></li>
-        <li class="divider"></li>
-        <li class="dropdown-header"><?php echo $text_customer; ?></li>
-        <li><a href="<?php echo $online; ?>"><span class="label label-success pull-right"><?php echo $online_total; ?></span><?php echo $text_online; ?></a></li>
-        <li><a href="<?php echo $customer_approval; ?>"><span class="label label-danger pull-right"><?php echo $customer_total; ?></span><?php echo $text_approval; ?></a></li>
-        <li class="divider"></li>
-        <li class="dropdown-header"><?php echo $text_product; ?></li>
-        <li><a href="<?php echo $product; ?>"><span class="label label-danger pull-right"><?php echo $product_total; ?></span><?php echo $text_stock; ?></a></li>
-        <li><a href="<?php echo $review; ?>"><span class="label label-danger pull-right"><?php echo $review_total; ?></span><?php echo $text_review; ?></a></li>
-        <li class="divider"></li>
-        <li class="dropdown-header"><?php echo $text_affiliate; ?></li>
-        <li><a href="<?php echo $affiliate_approval; ?>"><span class="label label-danger pull-right"><?php echo $affiliate_total; ?></span><?php echo $text_approval; ?></a></li>
-      </ul>
-    </li><?php }?>
-    <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-home fa-lg"></i></a>
-      <ul class="dropdown-menu dropdown-menu-right">
-        <li class="dropdown-header"><?php echo $text_store; ?></li>
-        <?php foreach ($stores as $store) { ?>
-        <li><a href="<?php echo $store['href']; ?>" target="_blank"><?php echo $store['name']; ?></a></li>
-        <?php } ?>
-      </ul>
-    </li>
+    <li class="dropdown"><a href="<?php echo $stores[0]['href']; ?>" target="_blank"><i class="fa fa-home fa-lg"></i></a></li>
     <li><a href="<?php echo $logout; ?>"><span class="hidden-xs hidden-sm hidden-md"><?php echo $text_logout; ?></span> <i class="fa fa-sign-out fa-lg"></i></a></li>
   </ul>
   <?php } ?>
-  <script type="text/javascript">
-      $('.dropdown-menu').on('click', function(){return false;});
-  </script>
 </header>

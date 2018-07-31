@@ -10,7 +10,12 @@ class ControllerLayoutFooter extends Controller {
 		} else {
 			$data['text_version'] = '';
 		}
-		
+                $modal = array(
+                    'target' => 'productInfo',
+                    'key' => 'prodinfocard',
+                    'header' => 'Информация о продукте'
+                );
+		$data['product_modal'] = $this->load->view('modals/clear', $modal);
 		return $this->load->view('layout/footer', $data);
 	}
 }

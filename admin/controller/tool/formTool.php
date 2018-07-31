@@ -89,5 +89,41 @@ class ControllerToolFormTool extends Controller {
         echo $res;
         
     }
+    
+    public function getProdCard() {
+        $this->load->model("tool/product");
+        $data = $this->model_tool_product->getProdInfo($this->request->post['prod']);
+        echo $this->load->view('form/prodCard', $data);
+    }
+    
+    
+    public function searchingProds() {
+        $request = trim($this->request->post['request']);
+        $i = 0;
+        $output = '<table class="table table-responsive table-bordered table-hover">'
+                . '<tbody>';
+        if($request==''){
+            $output.= 'Введите название детали';
+        } else {
+            $this->load->model('tool/product');
+            $total = $this->model_tool_product->searchingProds($request);
+            if(!empty($total)){
+                foreach ($total as $prod) {
+                    if($i<30){
+                        $output.='<tr>'
+                                    . '<td>'.$prod['name'].'</td>'
+                                    . '<td><a class="btn btn-warning" btn_type="showProd" target="'.$prod['product_id'].'" title="Информация о товаре" data-toggle="modal" data-target="#productInfoModal"><i class="fa fa-eye"></i></a></td>'
+                                . '</tr>';
+                        ++$i;
+                    }
+                }
+            }else{
+                exit('Ничего не найдено');
+            }
+        }
+        $output.='</tbody></table>';
+        echo $output;
+    }
+    
 }
 

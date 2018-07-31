@@ -127,7 +127,5 @@
     <li><a href="<?php echo $logout; ?>"><span class="hidden-xs hidden-sm hidden-md"><?php echo $text_logout; ?></span> <i class="fa fa-sign-out fa-lg"></i></a></li>
   </ul>
   <?php } ?>
-  <script type="text/javascript">
-      $('.dropdown-menu').on('click', function(){return false;});
-  </script>
+
 </header>

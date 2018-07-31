@@ -38,6 +38,18 @@ function addOption(){
 }
 $(document).ready(function() {
     
+    $(document).on('click', '[btn_type=showProd]', function(){
+        var prod = $(this).attr('target');
+        ajax({
+            url:"index.php?route=tool/formTool/getProdCard&token="+getURLVar('token'),
+            method:"POST",
+            data:{prod:prod},
+            success:function(data){
+                $("#prodinfocard").html(data)
+            }
+        })
+    });
+    
     $(document).on('click', '[btn_type=label_settings]', function(){
         var target = $(this).attr('target');
         var old = $(this).attr('old_field');
@@ -265,8 +277,7 @@ $(document).ready(function() {
         }
         $(document).find('#createFill').attr('parent', parent);
         $(document).find('#createFill').attr('parent_div', $(this).attr('parent'));
-        $(document).find('#createFill').attr('item', item);
-        alert(item); 
+        $(document).find('#createFill').attr('item', item); 
     })
     $(document).on('click', '[btn_type=hidenotice]', function(){
         var vin = $(this).attr('target-arg');

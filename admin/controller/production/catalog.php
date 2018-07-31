@@ -411,7 +411,6 @@ class ControllerProductionCatalog extends Controller {
 		}
 
 		$data['add'] = $this->url->link('production/addition', 'token=' . $this->session->data['token'] . $url, true);
-		$data['copy'] = $this->url->link('production/catalog/copy', 'token=' . $this->session->data['token'] . $url, true);
 		$data['delete'] = $this->url->link('production/catalog/delete', 'token=' . $this->session->data['token'] . $url, true);
                 $data['go_site'] = HTTPS_CATALOG.'index.php?route=catalog/product&product_id=';
 		$data['products'] = array();

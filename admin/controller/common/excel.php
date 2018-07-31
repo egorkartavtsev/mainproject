@@ -245,34 +245,6 @@
             }   
         }
         
-        public function searchingProds() {
-            $request = trim($this->request->post['request']);
-            $i = 0;
-            $output = '<table class="table table-responsive table-bordered table-hover">'
-                    . '<tbody>';
-            if($request==''){
-                $output.= 'Введите название детали';
-            } else {
-                $this->load->model('common/excel');
-                $total = $this->model_common_excel->searchingProds($request);
-                if(!empty($total)){
-                    foreach ($total as $prod) {
-                        if($i<30){
-                            $output.='<tr>'
-                                        . '<td>'.$prod['vin'].'</td>'
-                                        . '<td>'.$prod['name'].'</td>'
-                                    . '</tr>';
-                            ++$i;
-                        }
-                    }
-                }else{
-                    exit('Ничего не найдено');
-                }
-            }
-            $output.='</tbody></table>';
-            echo $output;
-        }
-        
         public function updateImportantInfo() {
             $listProds = $this->db->query("SELECT 
                                 p2c.product_id, 

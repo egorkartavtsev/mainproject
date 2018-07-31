@@ -71,6 +71,8 @@ class ModelToolOrder extends Model{
             );
             if($psup->num_rows){
                 $result['products'] = $psup->rows;
+            } else {
+                $result['products'] = array();
             }
         }
         return $result;

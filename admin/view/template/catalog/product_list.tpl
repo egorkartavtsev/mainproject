@@ -2,8 +2,8 @@
 <div id="content">
   <div class="page-header">
     <div class="container-fluid">
-      <div class="pull-right"><a href="<?php echo $add; ?>" data-toggle="tooltip" title="<?php echo $button_add; ?>" class="btn btn-primary"><i class="fa fa-plus"></i></a>
-        <button type="submit" form="form-product" formaction="<?php echo $copy; ?>" data-toggle="tooltip" title="<?php echo $button_copy; ?>" class="btn btn-default"><i class="fa fa-copy"></i></button>
+      <div class="pull-right">
+        <a href="<?php echo $add; ?>" data-toggle="tooltip" title="<?php echo $button_add; ?>" class="btn btn-success"><i class="fa fa-plus"></i></a>
         <button type="button" data-toggle="tooltip" title="<?php echo $button_delete; ?>" class="btn btn-danger" onclick="confirm('<?php echo $text_confirm; ?>') ? $('#form-product').submit() : false;"><i class="fa fa-trash-o"></i></button>
       </div>
       <h1><?php echo $heading_title; ?></h1>
@@ -131,8 +131,8 @@
             <table class="table table-bordered table-hover table-responsive">
               <thead>
                 <tr>
-                  <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
-                  <td>#</td>
+                  <td colspan="2" style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+
                   <td class="text-center"><?php echo $column_image; ?></td>
                   <td class="text-left"><?php if ($sort == 'pd.name') { ?>
                     <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_name; ?></a>
@@ -201,7 +201,11 @@
                     <?php } else { ?>
                     <input type="checkbox" name="selected[]" value="<?php echo $product['product_id']; ?>" />
                     <?php } ?></td>
-                  <td><a class="btn btn-success" btn_type="descText" desc-target="<?php echo $product['product_id']; ?>" data-toggle="modal" data-target="#proDescription"><i class="fa fa-text-height"></i></a></td>
+                  <td>
+                      <a class="btn btn-success" btn_type="descText" desc-target="<?php echo $product['product_id']; ?>" title="Описание для ДРОМ" data-toggle="modal" data-target="#proDescription"><i class="fa fa-text-height"></i></a>
+                      <a class="btn btn-warning" btn_type="showProd" target="<?php echo $product['product_id']; ?>" title="Информация о товаре" data-toggle="modal" data-target="#productInfoModal"><i class="fa fa-eye"></i></a>
+                      <a href="<?php echo $product['edit'];?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                  </td>
                   <td class="text-center"><?php if ($product['image']) { ?>
                     <img src="<?php echo $product['image']; ?>" alt="<?php echo $product['name']; ?>" class="img-thumbnail" />
                     <?php } else { ?>
@@ -268,6 +272,7 @@
       </div>
     </div>
   </div>
+  <?php echo $productModal;?>
   <div class="modal fade" id="proDescription" tabindex="-1" role="dialog" aria-labelledby="proDescriptionLabel">
         <div class="modal-dialog" role="document">
           <div class="modal-content">

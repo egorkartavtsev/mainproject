@@ -17,21 +17,30 @@
     </div>
     <?php } ?>
     <div class="row">
-        <div class="alert alert-success col-sm-12">
-            <?php foreach($fcItems as $fc){ ?>
-            <a class="btn btn-success" data-toggle="tooltip" data-placement="bottom" data-original-title="<?php echo $fc['text'];?>" href="<?php echo $fc['href'];?>"><i class="fa <?php echo $fc['icon'];?>"></i> <?php echo $fc['text'];?></a> 
-            <?php }?>
-            <a href="index.php?route=setting/fastCallMenu&token=<?php echo $ses_token;?>" class="btn btn-info">настроить</a>
+        
+        <div class="col-md-6">
+            <div class="alert alert-success">
+                <h3><b>Добро пожаловать!</b></h3>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="alert alert-success">
+                <h3><b>Меню быстрого доступа:</b></h3>
+                <?php foreach($fcItems as $fc){ ?>
+                <a class="btn btn-success" data-toggle="tooltip" data-placement="bottom" data-original-title="<?php echo $fc['text'];?>" href="<?php echo $fc['href'];?>"><i class="fa <?php echo $fc['icon'];?>"></i> <?php echo $fc['text'];?></a> 
+                <?php }?>
+                <a href="index.php?route=setting/fastCallMenu&token=<?php echo $ses_token;?>" class="btn btn-info">настроить</a>
+            </div>
+            <?php if(isset($notice['order'])){ 
+                      echo $notice['order'];
+                  }
+                  if(isset($notice['avito'])){ 
+                      echo $notice['avito'];
+                  }  
+            ?>
         </div>
     </div>
     <div class="row">
-      <?php if(isset($notice['order'])){ 
-                echo $notice['order'];
-            }
-            if(isset($notice['avito'])){ 
-                echo $notice['avito'];
-            }  
-      ?>
     </div>
   </div>
 </div>

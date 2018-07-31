@@ -447,18 +447,18 @@
         });   
     }
     
-    function searchingProds($token){
-        document.getElementById("headSearchBox").innerHTML='идёт поиск, ожидайте...';
+    function searchingProds(){
+        $("#headSearchBox").html('идёт поиск, ожидайте...');
         ajax({
-                url:"index.php?route=common/excel/searchingProds&token="+$token,
+                url:"index.php?route=tool/formTool/searchingProds&token="+getURLVar('token'),
                 statbox:"status",
                 method:"POST",
                 data:
                 {
-                    request: document.getElementById('searchInp').value
+                    request: $('#searchInp').val()
                 },
                 success:function(data){
-                    document.getElementById("headSearchBox").innerHTML=data;
+                    $("#headSearchBox").html(data);
                 }
             })
     }
