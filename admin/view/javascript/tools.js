@@ -40,6 +40,7 @@ $(document).ready(function() {
     
     $(document).on('click', '[btn_type=label_settings]', function(){
         var target = $(this).attr('target');
+        var old = $(this).attr('old_field');
         var field = $(this).parent().find('[name=field]').val();
         var color = $(this).parent().find('[name=color]').val();
         ajax({
@@ -48,6 +49,7 @@ $(document).ready(function() {
             data: {
                 label: target,
                 field: field,
+                old: old,
                 color: color
             },
             success:function(data){

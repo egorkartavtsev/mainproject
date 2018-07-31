@@ -67,6 +67,10 @@ class ControllerSettingProdTypes extends Controller {
         $divInfo = '';
         $divsOpt = '';
         
+        $oldlbl1 = 0;
+        $oldlbl2 = 0;
+        $oldlbl3 = 0;
+        
         $lblopt1 = '<option value="-" selected>Выключен</option>';
         $lblopt2 = '<option value="-" selected>Выключен</option>';
         $lblopt3 = '<option value="-" selected>Выключен</option>';
@@ -118,6 +122,7 @@ class ControllerSettingProdTypes extends Controller {
                         $lblcol1 = '<option value="eanr" '.($result['label_color']=='eanr'?'selected':'').'>Красный</option>'
                                  . '<option value="eanb" '.($result['label_color']=='eanb'?'selected':'').'>Синий</option>'
                                  . '<option value="eang" '.($result['label_color']=='eang'?'selected':'').'>Зелёный</option>';
+                        $oldlbl1 = $result['lib_id'];
                     break;
                     case '2':
                         $lblopt1.= '<option value="'.$result['lib_id'].'" disabled>'.$result['text'].'</option>';
@@ -126,6 +131,7 @@ class ControllerSettingProdTypes extends Controller {
                         $lblcol2 = '<option value="eanr" '.($result['label_color']=='eanr'?'selected':'').'>Красный</option>'
                                  . '<option value="eanb" '.($result['label_color']=='eanb'?'selected':'').'>Синий</option>'
                                  . '<option value="eang" '.($result['label_color']=='eang'?'selected':'').'>Зелёный</option>';
+                        $oldlbl2 = $result['lib_id'];
                     break;
                     case '3':
                         $lblopt1.= '<option value="'.$result['lib_id'].'" disabled>'.$result['text'].'</option>';
@@ -139,6 +145,7 @@ class ControllerSettingProdTypes extends Controller {
                         $lblopt1.= '<option value="'.$result['lib_id'].'">'.$result['text'].'</option>';
                         $lblopt2.= '<option value="'.$result['lib_id'].'">'.$result['text'].'</option>';
                         $lblopt3.= '<option value="'.$result['lib_id'].'">'.$result['text'].'</option>';
+                        $oldlbl3 = $result['lib_id'];
                     break;
                 }
             }
@@ -178,7 +185,7 @@ class ControllerSettingProdTypes extends Controller {
                                     . '<label>Выберите цвет:</label>'
                                     . '<select name="color" class="form-control">'.$lblcol1.'</select>'
                                 . '</div>'
-                                . '<button class="btn btn-success btn-sm" btn_type="label_settings" target="1"><i class="fa fa-floppy-o"></i> сохранить ярлык</button>'
+                                . '<button class="btn btn-success btn-sm" btn_type="label_settings" target="1" old_field="'.$oldlbl1.'"><i class="fa fa-floppy-o"></i> сохранить ярлык</button>'
                             . '</div>'
                         . '</div>'
                         . '<div class="col-md-4">'
@@ -192,7 +199,7 @@ class ControllerSettingProdTypes extends Controller {
                                     . '<label>Выберите цвет:</label>'
                                     . '<select name="color" class="form-control">'.$lblcol2.'</select>'
                                 . '</div>'
-                                . '<button class="btn btn-success btn-sm" btn_type="label_settings" target="2"><i class="fa fa-floppy-o"></i> сохранить ярлык</button>'
+                                . '<button class="btn btn-success btn-sm" btn_type="label_settings" target="2" old_field="'.$oldlbl2.'"><i class="fa fa-floppy-o"></i> сохранить ярлык</button>'
                             . '</div>'
                         . '</div>'
                         . '<div class="col-md-4">'
@@ -206,7 +213,7 @@ class ControllerSettingProdTypes extends Controller {
                                     . '<label>Выберите цвет:</label>'
                                     . '<select name="color" class="form-control">'.$lblcol3.'</select>'
                                 . '</div>'
-                                . '<button class="btn btn-success btn-sm" btn_type="label_settings" target="3"><i class="fa fa-floppy-o"></i> сохранить ярлык</button>'
+                                . '<button class="btn btn-success btn-sm" btn_type="label_settings" target="3" old_field="'.$oldlbl3.'"><i class="fa fa-floppy-o"></i> сохранить ярлык</button>'
                             . '</div>'
                         . '</div>'
                     . '</div>'
@@ -373,7 +380,7 @@ class ControllerSettingProdTypes extends Controller {
     
     public function saveTypeLabel(){
         $this->load->model('tool/product');
-        echo $this->model_tool_product->saveTypeLabel($this->request->post['label'], $this->request->post['field'], $this->request->post['color']);
+        echo $this->model_tool_product->saveTypeLabel($this->request->post['label'], $this->request->post['field'], $this->request->post['old'], $this->request->post['color']);
     }
     
     public function saveExcelTempl(){

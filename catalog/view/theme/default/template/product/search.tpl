@@ -41,15 +41,15 @@
         <?php foreach ($products as $product) { ?>
         <div class="product-layout product-list col-xs-12">
           <div class="label-thumd">
-            <?php if ($product['type']){ ?>
-                <?php if(strripos($product['type'], 'ВЫЙ') || strripos($product['type'], 'вый')){ ?>
-                    <div class="eanb">Новый</div>
-                <?php } else { ?>
-                    <div class="eanr">Б/У</div>
-                <?php }?>
-            <?php }?>
+            <?php if (isset($product['labels']) && count($product['labels'])){ 
+                for($i = 1; $i < 4; ++$i){ 
+                    if(isset($product['labels'][$i]) && $product['labels'][$i]['value']!=='' && $product['labels'][$i]['value']!=='-'){ ?>
+                    <div class="<?php echo $product['labels'][$i]['color']; ?>"><?php echo $product['labels'][$i]['value']; ?></div>
+                <?php }
+                }
+            }?>
             <?php if ($product['comp']){ ?>
-                <?php if ($product['com_whole'] == 1){ ?>
+                <?php if ($product['comp_whole'] == 1){ ?>
                 <div class="whole" title="На фото изображен полный комплект, содержащий данную деталь. &#013Цена указана за полный комплект.">
                         Продажа комплектом
                     </div>
@@ -64,36 +64,33 @@
             <div class="image"><a href="<?php echo $product['href']; ?>"><img src="<?php echo $product['thumb']; ?>" alt="<?php echo $product['name']; ?>" title="<?php echo $product['name']; ?>" class="img-responsive" /></a></div>
             <div>
               <div class="caption">
-                  <h4><a href="<?php echo $product['href']; ?>"><?php echo $product['name']; ?></a></h4>
-                    <?php if ($product['type'] && $product['type']=='Б/У') { ?>
-                        <p><b>Внутренний номер:</b> <?php echo $product['description']; ?></p>
-                        <?php if ($product['catN']) { ?>
-                            <p><b>Каталожный номер:</b> <?php echo $product['catN']; ?></p>
-                        <?php }?>
-                    <?php }?>
-                    <?php if ($product['note']) { ?>
-                        <p><b>Примечание:</b> <?php echo $product['note']; ?></p>
-                    <?php }?>
-                    <?php if ($product['type']) { ?>
-                        <p><b>Тип:</b> <?php echo $product['type']; ?></p>
-                    <?php }?>
-                    <?php if ($product['compability']) { ?>
-                        <p><b>Применимость:</b> <?php echo $product['compability']; ?></p>
-                    <?php }?>
-                    <?php if (isset($product['cond']) && $product['cond']!='-') { ?>
-                        <p><b>Состояние:</b> <?php echo $product['cond']; ?></p>
-                    <?php }?>
-                    <?php if ($product['com_whole'] == 1 && $product['com_price'] != 0)  { ?>
-                        <p class="price"><b>Цена комплекта: <?php echo $product['com_price']; ?></b></p>
-                    <?php } elseif ($product['price'] != 0.00) { ?>
-                        <p class="price"><b>Цена: <?php echo $product['price']; ?></b></p>
-                    <?php }?>   
+                  <h4><a href="<?php echo $product['href'];?>" ><?php echo $product['name'];?></a></h4>
+                  <p>Артикул: <?php echo $product['vin'];?></p>
+                  <?php foreach($product['options'] as $option){ ?>
+                    <?php if($option['value']!='-'){ ?><p><?php echo $option['text'];?>: <?php echo htmlspecialchars_decode($option['value']);?></p><?php }?>
+                  <?php }?>
+                  <?php if ($product['price'] !== '0') { ?>
+                  <p><b>Цена: <?php echo $product['price'];?></b></p>
+                  <?php }?>
               </div>
               <div class="button-group">
-                <button type="button" onclick="cart.add('<?php echo $product['product_id']; ?>', '<?php echo $product['minimum']; ?>');"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo $button_cart; ?></span></button>
-                <button type="button" data-toggle="tooltip" title="<?php echo $button_wishlist; ?>" onclick="wishlist.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-heart"></i></button>
-                <button type="button" data-toggle="tooltip" title="<?php echo $button_compare; ?>" onclick="compare.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-exchange"></i></button>
+                <?php if ($product['status'] == '2') { ?>
+                    <button btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pname ="<?php echo $product['name'];?>" pvin="<?php echo $product['vin'];?>"><span class="hidden-xs hidden-sm hidden-md">Уточнить наличие</span></button>
+                <?php } else { ?>                   
+                    <?php if ($product['price'] == 0.00 || $product['quantity'] == 0)  { ?>
+                        <?php if ($product['price'] == 0.00) { ?>
+                            <button btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pname ="<?php echo $product['name'];?>" pvin="<?php echo $product['vin'];?>"><span class="hidden-xs hidden-sm hidden-md">Узнать стоимость</span></button>
+                        <?php } else { ?>
+                            <button btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pname ="<?php echo $product['name'];?>" pvin="<?php echo $product['vin'];?>"><span class="hidden-xs hidden-sm hidden-md">Заказать товар</span></button> 
+                        <?php } ?>
+                    <?php } else { ?>  
+                        <button type="button" onclick="cart.add('<?php echo $key; ?>', '1');"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md"> В КОРЗИНУ</span></button>
+                    <?php } ?>
+                <?php } ?>    
+                <button type="button" data-toggle="tooltip" title="Добавить в избранное" onclick="wishlist.add('<?php echo $key; ?>');"><i class="fa fa-heart"></i></button>
+                <button type="button" data-toggle="tooltip" title="Добавить в список сравнения" onclick="compare.add('<?php echo $key; ?>');"><i class="fa fa-exchange"></i></button>
               </div>
+            <?php echo $modal_window; ?>  
             </div>
           </div>
         </div>

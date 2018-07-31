@@ -720,21 +720,7 @@ class ModelCatalogProduct extends Model {
         public function searchProducts($request) {
             $fields = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE searching = 1 ");
             $reqwords = explode(" ", $request);
-            $query = "SELECT "
-                    . "p.product_id AS product_id, "
-                    . "pd.name AS name, "
-                    . "p.vin AS vin, "
-                    . "p.image AS image, "
-                    . "p.note AS note, "
-                    . "p.type AS type, "
-                    . "p.compability AS compability, "
-                    . "p.catn AS cat_numb, "
-                    . "p.price AS price, "
-                    . "p.comp AS comp, "
-                    . "p.minimum AS minimum, "
-                    . "c.whole AS com_whole, "
-                    . "c.price AS com_price "
-                    . "FROM " . DB_PREFIX . "product p "
+            $query = "SELECT *, p.image AS img, pd.name AS title, p.price AS product_price FROM " . DB_PREFIX . "product p "
                     . "LEFT JOIN " . DB_PREFIX . "product_description pd "
                         . "ON (p.product_id = pd.product_id) "
                     . "LEFT JOIN ". DB_PREFIX . "complects c "

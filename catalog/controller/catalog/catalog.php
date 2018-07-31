@@ -217,6 +217,7 @@ class ControllerCatalogCatalog extends Controller{
     public function search() {
         $this->load->model('tool/layout');
         $this->load->model('tool/image');
+        $data = array();
         $request = trim($this->request->post['request']);
         $library = $this->request->post['lib_id'];
         if($request!==''){
@@ -247,8 +248,6 @@ class ControllerCatalogCatalog extends Controller{
                 'href' => $href
             );
         }
-//        $data['items'] = $this->load->view('catalog/showlib', $data);
-//        exit(var_dump($library));
         echo $this->load->view('catalog/showlib', $data);
     }
     
@@ -328,8 +327,10 @@ class ControllerCatalogCatalog extends Controller{
                     'thumb' => $image,
                     'href' => $this->url->link('catalog/product', 'product_id='.$prod['product_id']),
                     'name' => $prod['name'],
+                    'status' => $prod['status'],
                     'vin' => $prod['vin'],
-                    'type' => $prod['type'],
+                    //'type' => $prod['type'],
+                    'quantity' => $prod['quantity'],
                     'comp' => $prod['comp']==''?FALSE:$prod['comp'],
                     'com_whole' => $prod['comp_whole'],
                     'price' => $prod['price']
@@ -341,6 +342,12 @@ class ControllerCatalogCatalog extends Controller{
                                 'text' => $types[$prod['structure']][$key]['text'],
                                 'value' => $field
                             );
+                            if((int)$types[$prod['structure']][$key]['label_order']){
+                                $list['products'][$prod['product_id']]['labels'][(int)$types[$prod['structure']][$key]['label_order']] = array(
+                                    'color' => $types[$prod['structure']][$key]['label_color'],
+                                    'value' => $field
+                                );
+                            }
                         }
                     }
                 }

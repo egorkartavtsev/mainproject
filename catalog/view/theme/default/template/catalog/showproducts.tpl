@@ -27,7 +27,7 @@
           <?php foreach($products as $key => $product){ ?>
             <div class="product-layout product-list col-xs-12">
                 <div class="label-thumd">
-                    <?php if (count($product['labels'])){ 
+                    <?php if (isset($product['labels']) && count($product['labels'])){ 
                         for($i = 1; $i < 4; ++$i){ 
                             if(isset($product['labels'][$i]) && $product['labels'][$i]['value']!=='' && $product['labels'][$i]['value']!=='-'){ ?>
                             <div class="<?php echo $product['labels'][$i]['color']; ?>"><?php echo $product['labels'][$i]['value']; ?></div>
@@ -45,9 +45,6 @@
                             </div>
                         <?php }?>
                     <?php }?>
-                <!--<?php if ($product['okraska'] == 'Окрашенный'){ ?>
-                        <div class="okraska">Деталь в цвете</div>
-                    <?php }?>-->  
                 </div>
               <div class="product-thumb">
                 <div class="image"><a href="<?php echo $product['href']; ?>"><img src="<?php echo $product['thumb']; ?>" alt="<?php echo $product['name']; ?>" title="<?php echo $product['name']; ?>" class="img-responsive" /></a></div>

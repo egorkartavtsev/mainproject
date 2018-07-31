@@ -131,6 +131,7 @@ class ControllerProductSearch extends Controller {
 		$data['compare'] = $this->url->link('product/compare');
 
 		$this->load->model('catalog/category');
+		$this->load->model('tool/product');
 
 		$data['products'] = array();
 
@@ -144,26 +145,23 @@ class ControllerProductSearch extends Controller {
 				'limit'               => $limit
 			);
 			
-                        //exit(var_dump($byvin));
+                        
 			$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
 			$results = $this->model_catalog_product->searchProducts($filter_data['filter_name'], $byvin);
-                        //exit (var_dump($results));
+                        
 			foreach ($results as $result) {
-				if ($result['image']) {
+                                $type = $this->model_tool_product->getType($result['structure']);
+//                                exit(var_dump($type));
+				if ($result['img']) {
 					$image = $this->model_tool_image->resize($result['image'], $this->config->get($this->config->get('config_theme') . '_image_product_width'), $this->config->get($this->config->get('config_theme') . '_image_product_height'));
 				} else {
 					$image = $this->model_tool_image->resize('placeholder.png', $this->config->get($this->config->get('config_theme') . '_image_product_width'), $this->config->get($this->config->get('config_theme') . '_image_product_height'));
 				}
-
-				if ($this->customer->isLogged() || !$this->config->get('config_customer_price')) {
-					$price = $this->currency->format($result['price'], $this->session->data['currency']);
-				} else {
-					$price = false;
-				}
-                                 if ($result['com_whole']) {
-                                   $com_whole = $result['com_whole'];
+                                
+                                 if ($result['comp_whole']) {
+                                   $comp_whole = $result['comp_whole'];
                                 } else {
-                                   $com_whole = false; 
+                                   $comp_whole = false; 
                                 } 
                                 
                                 if ($result['comp']) {
@@ -172,79 +170,42 @@ class ControllerProductSearch extends Controller {
                                    $comp = ''; 
                                 } 
                                 
-                                if ($result['com_price']) {
-                                   $com_price = $result['com_price'];
+                                if ($result['comp_price']) {
+                                   $comp_price = $result['comp_price'];
                                 } else {
-                                   $com_price = false; 
-                                }
-                                //Старая версия таблици. 
-                                /**
-				if (isset($result['special'])) {
-					$special = $this->currency->format($this->tax->calculate($result['special'], $result['tax_class_id'], $this->config->get('config_tax')), $this->session->data['currency']);
-				} else {
-					$special = false;
-				}
-
-				if ($this->config->get('config_tax')) {
-					$tax = $this->currency->format((float)$result['special'] ? $result['special'] : $result['price'], $this->session->data['currency']);
-				} else {
-					$tax = false;
-				}
-                                **/
-//				if ($this->config->get('config_review_status')) {
-//					$rating = (int)$result['rating'];
-//				} else {
-//					$rating = false;
-//				}
-                                if ($result['cat_numb'] != ''){
-                                    $catN = $result['cat_numb'];
-                                }
-                                else{
-                                    $catN = '';
-                                }
-                                //exit(var_dump($result));
-                                if (isset($result['type']) && ($result['type'] != '')){
-                                    $type = $result['type'];
-                                }
-                                else{
-                                    $type= '';
-                                }    
-                                if (isset($result['note']) && ($result['note'] != '')){
-                                    $note = $result['note'];
-                                }
-                                else{
-                                    $note = '';
+                                   $comp_price = false; 
                                 }
                                 
-                                if (isset($result['compability']) && ($result['compability'] != '')){
-                                    $compability = $result['compability'];
-                                }
-                                else{
-                                    $compability = '';
-                                }
-                                
-                                
-				$data['products'][] = array(
-					'product_id'  => $result['product_id'],
+                                $data['products'][$result['product_id']] = array(
 					'thumb'       => $image,
-					'name'        => $result['name'],
-					'description' => $result['vin'],
-					'catN'        => $catN,
-					'compability' => $compability,
-                                        'type'         => $type,
-					'note'        => $note,
-					'price'       => $price,
-                                        'com_whole'   => $com_whole,
+					'name'        => $result['title'],
+                                        'vin'      => $result['vin'],
+                                        'status'      => $result['status'],
+					'quantity' => $result['quantity'],
+					'price'       => $result['product_price'],
+                                        'comp_whole'  => $comp_whole,
                                         'comp'        => $comp,
-                                        'com_price'   => $com_price,
-					//'special'     => $special,
-					//'tax'         => $tax,
+                                        'comp_price'  => $comp_price,
 					'minimum'     => ($result['minimum'] > 0) ? $result['minimum'] : 1,
-//					'rating'      => $rating,
 					'href'        => $this->url->link('catalog/product', 'product_id=' . $result['product_id'] . $url)
 				);
+                                
+                                foreach($type as $field => $value){
+                                    if(($value['viewed'] == '1' || $value['viewed'] == '2') && $result[$field] !== '' && $result[$field] !== '-'){
+                                        $data['products'][$result['product_id']]['options'][] = array(
+                                            'text' => $value['text'],
+                                            'value' => $result[$field]
+                                        );
+                                        if((int)$value['label_order']){
+                                            $data['products'][$result['product_id']]['labels'][(int)$value['label_order']] = array(
+                                                'color' => $value['label_color'],
+                                                'value' => $result[$field]
+                                            );
+                                        }
+                                    }
+                                }
 			}
-
+                        $data['modal_window'] = $this->load->view('modal_window/Modal_window');
 			$url = '';
 
 			if (isset($this->request->get['search'])) {

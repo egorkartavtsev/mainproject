@@ -114,8 +114,8 @@ class ModelToolProduct extends Model {
         return $result;
     }
     
-    public function saveTypeLabel($label, $field, $color) {
-        $this->db->query("UPDATE ".DB_PREFIX."type_lib SET label_color = 0, label_order = 0 WHERE label_order = ".(int)$label);
+    public function saveTypeLabel($label, $field, $old, $color) {
+        $this->db->query("UPDATE ".DB_PREFIX."type_lib SET label_color = 0, label_order = 0 WHERE lib_id = ".(int)$old);
         if($field!=='-'){
             $this->db->query("UPDATE ".DB_PREFIX."type_lib SET label_color = '".$color."', label_order = ".(int)$label." WHERE lib_id = ".(int)$field);
         }
