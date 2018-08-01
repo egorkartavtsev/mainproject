@@ -3,31 +3,44 @@
   <div class="page-header">
     <div class="container-fluid">
       <h1><?php echo $heading_title; ?></h1>
-      <ul class="breadcrumb">
-        <?php foreach ($breadcrumbs as $breadcrumb) { ?>
-        <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
-        <?php } ?>
-      </ul>
     </div>
   </div>
   <div class="container-fluid">
-    <?php if ($error_install) { ?>
-    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> <?php echo $error_install; ?>
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
-    </div>
-    <?php } ?>
+    <?php if($messages){ ?>
+      <div class="row">
+          <div class="col-lg-12">
+              <div class="alert alert-danger">
+              </div>
+          </div>
+      </div>
+    <?php }?>
     <div class="row">
-        
         <div class="col-md-6">
             <div class="alert alert-success">
-                <h3><b>Добро пожаловать!</b></h3>
+                <h3>Привет, <b><?php echo $user['first'];?></b>! Добро пожаловать в ASM.</h3><h4><?php echo $version;?></h4>
+                <div class="col-md-6">
+                    <img src="<?php echo $user['avatar'];?>" class="img-responsive img-thumbnail img-circle" title="Тут должен быть аватар">
+                </div>
+                <div class="col-md-6">
+                    <table class="table">
+                        <tr>
+                            <td class="h4"><?php echo $user['first']." ".$user['last'];?></td>
+                        </tr>
+                        <tr>
+                            <td class="h4"><?php echo $user['group'];?></td>
+                        </tr>
+                        <tr>
+                            <td class="h4"><?php echo $user['email'];?></td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
         <div class="col-md-6">
             <div class="alert alert-success">
                 <h3><b>Меню быстрого доступа:</b></h3>
                 <?php foreach($fcItems as $fc){ ?>
-                <a class="btn btn-success" data-toggle="tooltip" data-placement="bottom" data-original-title="<?php echo $fc['text'];?>" href="<?php echo $fc['href'];?>"><i class="fa <?php echo $fc['icon'];?>"></i> <?php echo $fc['text'];?></a> 
+                    <a class="btn btn-success" data-toggle="tooltip" data-placement="bottom" data-original-title="<?php echo $fc['text'];?>" href="<?php echo $fc['href'];?>"><i class="fa <?php echo $fc['icon'];?>"></i> <?php echo $fc['text'];?></a> 
                 <?php }?>
                 <a href="index.php?route=setting/fastCallMenu&token=<?php echo $ses_token;?>" class="btn btn-info">настроить</a>
             </div>

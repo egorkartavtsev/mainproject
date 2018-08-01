@@ -10,6 +10,8 @@ class User {
         private $minaccesslevel;
         private $useral;
 	private $permission = array();
+        private $info;
+        
 
 	public function __construct($registry) {
 		$this->db = $registry->get('db');
@@ -20,6 +22,7 @@ class User {
 			$user_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "user WHERE user_id = '" . (int)$this->session->data['user_id'] . "' AND status = '1'");
 			if ($user_query->num_rows) {
                                 $this->setLayout($user_query->row['user_id']);
+                                $this->info = $user_query->row;
 				$this->user_id = $user_query->row['user_id'];
 				$this->username = $user_query->row['username'];
 				$this->user_group_id = $user_query->row['user_group_id'];
@@ -154,6 +157,12 @@ class User {
 
 	public function getUserName() {
 		return $this->username;
+	}
+	
+        public function getUserInfo() {
+            $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."user_group WHERE user_group_id = ".(int)$this->user_group_id);
+            $this->info['user_group'] = $sup->row['text'];
+		return $this->info;
 	}
 
 	public function getGroupId() {

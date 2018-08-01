@@ -3,6 +3,7 @@ class ControllerCommonDashboard extends Controller {
 	public function index() {
 		$this->load->language('common/dashboard');
                 $this->load->model('tool/layout');
+                $this->load->model('tool/image');
                 $data = $this->model_tool_layout->getLayout($this->request->get['route']);
                 $this->model_tool_layout->updateADS($this->request->get['route']);
                 
@@ -10,71 +11,6 @@ class ControllerCommonDashboard extends Controller {
 		$data['breadcrumbs'] = array();
                 $fcItems = $this->user->getLayout();
                 $data['fcItems'] = $fcItems['fcmenu'];
-		
-
-		// Check install directory exists
-		if (is_dir(dirname(DIR_APPLICATION) . '/install')) {
-			$data['error_install'] = $this->language->get('error_install');
-		} else {
-			$data['error_install'] = '';
-		}
-
-		// Dashboard Extensions
-		$dashboards = array();
-
-		$this->load->model('extension/extension');
-
-		// Get a list of installed modules
-		$extensions = $this->model_extension_extension->getInstalled('dashboard');
-		
-		// Add all the modules which have multiple settings for each module
-		foreach ($extensions as $code) {
-			if ($this->config->get('dashboard_' . $code . '_status') && $this->user->hasPermission('access', 'extension/dashboard/' . $code)) {
-				$output = $this->load->controller('extension/dashboard/' . $code . '/dashboard');
-				
-				if ($output) {
-					$dashboards[] = array(
-						'code'       => $code,
-						'width'      => $this->config->get('dashboard_' . $code . '_width'),
-						'sort_order' => $this->config->get('dashboard_' . $code . '_sort_order'),
-						'output'     => $output
-					);
-				}
-			}
-		}
-
-		$sort_order = array();
-
-		foreach ($dashboards as $key => $value) {
-			$sort_order[$key] = $value['sort_order'];
-		}
-
-		array_multisort($sort_order, SORT_ASC, $dashboards);
-		
-		// Split the array so the columns width is not more than 12 on each row.
-		$width = 0;
-		$column = array();
-		$data['rows'] = array();
-		
-		foreach ($dashboards as $dashboard) {
-			$column[] = $dashboard;
-			
-			$width = ($width + $dashboard['width']);
-			
-			if ($width >= 12) {
-				$data['rows'][] = $column;
-				
-				$width = 0;
-				$column = array();
-			}
-		}
-
-		// Run currency update
-		if ($this->config->get('config_currency_auto')) {
-			$this->load->model('localisation/currency');
-
-			$this->model_localisation_currency->refresh();
-		}
                 
                 $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."order WHERE viewed = 0 ");
                 if($sup->num_rows){
@@ -94,6 +30,20 @@ class ControllerCommonDashboard extends Controller {
                             . '</div>'
                         . '</a>';
                 }
+                
+                $data['messages'] = FALSE;
+                $data['version'] = sprintf('Версия программы V %s', VERSION);
+                $user = $this->user->getUserInfo();
+                if(!is_file(DIR_IMAGE.$user['image'])){
+                    $data['version'].= ' (Аватар не добавлен. Аватар добавляется администратором.)';
+                }
+                $data['user'] = array(
+                    'avatar' => $this->model_tool_image->resize($user['image'], 1200, 1200),
+                    'group' => $user['user_group'],
+                    'email' => $user['email'],
+                    'first' => $user['firstname'],
+                    'last' => $user['lastname']
+                );
                 
 		$this->response->setOutput($this->load->view('common/dashboard', $data));
 	}
