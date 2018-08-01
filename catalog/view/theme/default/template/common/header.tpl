@@ -81,7 +81,7 @@
     <div class="">
         <p class="alert alert-danger col-sm-7 pull-left text-center">
             ВНИМАНИЕ! Если Вы не нашли необходимую деталь - можете уточнить о наличии по телефону<br class="hidden-sm">
-            <a href="tel: +79124750870" class="hidden-md hidden-lg btn btn-info col-lg-6"><span><i class="fa fa-phone"></i><?php echo $telephone; ?></span></a>
+            <a href="tel: +79124750870" class="hidden-md hidden-lg btn btn-danger col-lg-6"><span><i class="fa fa-phone"></i><?php echo $telephone; ?></span></a>
             <span class="hidden-xs hidden-sm"><?php echo $telephone; ?></span>
         </p>
         <div class="col-sm-5 pull-right text-right">
@@ -126,28 +126,6 @@
     </div>
     <div class="collapse navbar-collapse navbar-ex1-collapse">
       <ul class="nav navbar-nav">
-    
-        
-         <!--<?php foreach ($categories as $category) { ?>
-            <?php if ($category['children']) { ?>
-            <li class="dropdown visible-xs visible-sm"><a href="<?php echo $category['href']; ?>" class="dropdown-toggle" data-toggle="dropdown"><?php echo $category['name']; ?></a>
-              <div class="dropdown-menu">
-                <div class="dropdown-inner">
-                  <?php foreach (array_chunk($category['children'], ceil(count($category['children']) / $category['column'])) as $children) { ?>
-                  <ul class="list-unstyled">
-                    <?php foreach ($children as $child) { ?>
-                    <li><a href="<?php echo $child['href']; ?>"><?php echo $child['name']; ?></a></li>
-                    <?php } ?>
-                  </ul>
-                  <?php } ?>
-                </div>
-                <a href="<?php echo $category['href']; ?>" class="see-all"><?php echo $text_all; ?> <?php echo $category['name']; ?></a> </div>
-            </li>
-            <?php } else { ?>
-                <li class="visible-xs visible-sm"><a href="<?php echo $category['href']; ?>"><?php echo $category['name']; ?></a></li>
-            <?php } ?>
-        <?php } ?>
-        <hr class="visible-xs visible-sm">--> 
         <?php echo $menu; ?>
         <li><a href="index.php?route=catalog/foreignparts">Контрактные автозапчасти</a></li>
       </ul>

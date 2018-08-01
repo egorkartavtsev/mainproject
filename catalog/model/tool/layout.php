@@ -94,7 +94,7 @@ class ModelToolLayout extends Model {
                 $i = 1;
                 $max = $pageCount;
                 while ($i<=$max){
-                    $pagination.= ' <a class="btn btn-default" href="'.$this->url->link('catalog/catalog/products', $flag.'='.$this->request->get[$flag].'&page='.$i).'">'.$i.'</a> ';
+                    $pagination.= ' <a class="btn btn-danger" href="'.$this->url->link('catalog/catalog/products', $flag.'='.$this->request->get[$flag].'&page='.$i).'">'.$i.'</a> ';
                     ++$i;
                 }
                 return $pagination;
@@ -108,31 +108,31 @@ class ModelToolLayout extends Model {
                 $min = 1;
                 $max = $i+4;
                 while ($min<=$max){
-                    $pagination.= ' <a class="btn btn-default" href="'.$this->url->link('catalog/catalog/products', $flag.'='.$this->request->get[$flag].'&page='.$min).'">'.$min.'</a> ';
+                    $pagination.= ' <a class="btn btn-danger" href="'.$this->url->link('catalog/catalog/products', $flag.'='.$this->request->get[$flag].'&page='.$min).'">'.$min.'</a> ';
                     ++$min;
                 }
-                $pagination.= ' ... <a class="btn btn-default" href="'.$this->url->link('catalog/catalog/products', $flag.'='.$this->request->get[$flag].'&page='.$pageCount).'">'.$pageCount.'</a>';
+                $pagination.= ' ... <a class="btn btn-danger" href="'.$this->url->link('catalog/catalog/products', $flag.'='.$this->request->get[$flag].'&page='.$pageCount).'">'.$pageCount.'</a>';
                 $pagination.= '<div class="clearfix"></div><div class="pull-left">Показаны товары с '.$start.' по '.$end.' (всего '.$total.')</div>';
 
             } elseif($i>=($pageCount-5)) {
                 $min = $pageCount-8;
                 $max = $pageCount;
-                $pagination = '<a class="btn btn-default" href="'.$this->url->link('catalog/catalog/products', $flag.'='.$this->request->get[$flag].'&page=1').'">1</a> ... ';
+                $pagination = '<a class="btn btn-danger" href="'.$this->url->link('catalog/catalog/products', $flag.'='.$this->request->get[$flag].'&page=1').'">1</a> ... ';
                 while ($min<=$max){
-                    $pagination.= '<a class="btn btn-default" href="'.$this->url->link('catalog/catalog/products', $flag.'='.$this->request->get[$flag].'&page='.$min).'">'.$min.'</a>';
+                    $pagination.= '<a class="btn btn-danger" href="'.$this->url->link('catalog/catalog/products', $flag.'='.$this->request->get[$flag].'&page='.$min).'">'.$min.'</a>';
                     ++$min;
                 }
                 $pagination.= '<div class="clearfix"></div><div class="pull-left">Показаны товары с '.$start.' по '.$end.' (всего '.$total.')</div>';
             } else {
                 $min = $i-4;
                 $max = $i+4;
-                $pagination = '<a class="btn btn-default" href="'.$this->url->link('catalog/catalog/products', $flag.'='.$this->request->get[$flag].'&page=1').'">1</a> ... ';
+                $pagination = '<a class="btn btn-danger" href="'.$this->url->link('catalog/catalog/products', $flag.'='.$this->request->get[$flag].'&page=1').'">1</a> ... ';
                 while ($min<=$max){
-                    $pagination.= ' <a class="btn btn-default" href="'.$this->url->link('catalog/catalog/products', $flag.'='.$this->request->get[$flag].'&page='.$min).'">'.$min.'</a> ';
+                    $pagination.= ' <a class="btn btn-danger" href="'.$this->url->link('catalog/catalog/products', $flag.'='.$this->request->get[$flag].'&page='.$min).'">'.$min.'</a> ';
                     ++$min;
                 }         
-                $pagination.= '... <a class="btn btn-default" href="'.$this->url->link('catalog/catalog/products', $flag.'='.$this->request->get[$flag].'&page='.$pageCount).'">'.$pageCount.'</a>';
-                $pagination.= '<div class="clearfix"></div><div class="pull-left">Показаны товары с '.$start.' по '.$end.' (всего '.$total.')</div>';
+                $pagination.= '... <a class="btn btn-danger" href="'.$this->url->link('catalog/catalog/products', $flag.'='.$this->request->get[$flag].'&page='.$pageCount).'">'.$pageCount.'</a>';
+                $pagination.= '<div class="clearfix"></div><div class="">Показаны товары с '.$start.' по '.$end.' (всего '.$total.')</div>';
             }
         }
         return $pagination;

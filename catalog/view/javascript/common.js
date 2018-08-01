@@ -30,7 +30,7 @@ function validation(field_type, value, req){
             reg = /^([a-zа-яё]+)$/i;
         break;
         case 'varchar':
-            reg = /^([a-zа-яё\d\s\\\.\,\-,\/]+)$/i;
+            reg = /^([a-zа-яё\d\s\\\.\,\-\,\+\/]+)$/i;
         break;
         case 'numeric':
             reg = /^\d+$/;
