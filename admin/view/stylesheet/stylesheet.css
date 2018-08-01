@@ -25,7 +25,7 @@ h1, h2, h3, h4, h5, h6, p {
     margin-right: 5px;
     border-radius: 10px 10px 10px 10px;
     min-height: 40px;
-    padding: 10px 25px;
+    padding: 9px 10px;
 }
 
 .db-notice > h1{
