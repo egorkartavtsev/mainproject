@@ -4,7 +4,7 @@
         <div class="btn-group">
             <a class="btn btn-primary" target="_blank" href="<?php echo $edit; ?>"><i class="fa fa-pencil"></i> редактировать</a> 
             <a class="btn btn-success" target="_blank" href="<?php echo $go_site; ?>"><i class="fa fa-arrow-circle-right"></i> на витрине</a>
-            <button type="button" data-toggle="tooltip" disabled class="btn btn-warning" title="Не работает"><i class="fa fa-copy"></i> копировать ссылку</button>
+            <button btn_type="copyToSend" data-text="<?php echo $go_site; ?>" type="button" data-toggle="tooltip" class="btn btn-warning"><i class="fa fa-copy"></i> копировать ссылку</button>
         </div>
     </div>
     <div class="col-lg-12"><p></p></div>
@@ -42,6 +42,3 @@
     <?php }?>    
     </table>
 </div>
-<script type="text/javascript">
-    
-</script>

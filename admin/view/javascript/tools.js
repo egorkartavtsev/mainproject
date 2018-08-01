@@ -12,6 +12,26 @@ function showStructOptions($parent){
     });
 }
 
+function copyLinkToSend(btn, text){
+    btn.parent().before('<div id="sendLink"></div>');
+    var sLink = btn.parent().parent().find('#sendLink');
+    var target = document.createElement("textarea");
+    sLink.append(target);
+    target.class = 'form-control';
+    target.style.width = '100%';
+    target.textContent = text;
+    target.focus();
+    target.setSelectionRange(0, target.value.length);
+    var secceed = false;
+    secceed = document.execCommand("copy");
+    if(!secceed){
+        alert('Не удалось скопировать ссылку! Возможно, Ваш браузер не поддерживает этот функционал!');
+    } else {
+        console.log(secceed);
+    }
+    sLink.remove();
+}
+
 function saveControllerInfo($id){
     ajax({
       url:"index.php?route=setting/menu/saveControllerInfo&token="+getURLVar('token'),
@@ -37,6 +57,10 @@ function addOption(){
     });
 }
 $(document).ready(function() {
+    
+    $(document).on('click', '[btn_type=copyToSend]', function(){
+        copyLinkToSend($(this), $(this).attr('data-text'));
+    })
     
     $(document).on('click', '[btn_type=showProd]', function(){
         var prod = $(this).attr('target');
