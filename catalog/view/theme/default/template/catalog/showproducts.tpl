@@ -25,7 +25,7 @@
         </div>
         <div class="row">
           <?php foreach($products as $key => $product){ ?>
-            <div class="product-layout product-list col-xs-12">
+            <div class="product-layout product-grid col-xs-12 col-sm-6 col-lg-4">
                 <div class="label-thumd center-block">
                     <?php if (isset($product['labels']) && count($product['labels'])){ 
                         for($i = 1; $i < 4; ++$i){ 
@@ -48,26 +48,27 @@
                 </div>
               <div class="product-thumb">
                 <div class="image"><a href="<?php echo $product['href']; ?>"><img src="<?php echo $product['thumb']; ?>" alt="<?php echo $product['name']; ?>" title="<?php echo $product['name']; ?>" class="img-responsive" /></a></div>
-                <div>
                   <div class="col-lg-12 nameProd">
                     <h4><a href="<?php echo $product['href'];?>" ><?php echo $product['name'];?></a></h4>
                   </div>
-                  <div class="caption text-center">
-                    <p>Артикул: <?php echo $product['vin'];?></p>
-                    <?php foreach($product['options'] as $option){ ?>
-                      <?php if($option['value']!='-'){ ?><p><?php echo $option['text'];?>: <?php echo htmlspecialchars_decode($option['value']);?></p><?php }?>
-                    <?php }?>
-                </div>
-                <div class="col-lg-12 text-center priceProd">
-                    <p>
-                        <?php if ($product['price'] !== '0') { ?>
-                            <b>Цена: <?php echo $product['price'];?> &#8381;</b>
-                        <?php } else { ?>
-                            &nbsp;
+                <div>
+                    <div class="caption text-center">
+                        <p>Артикул: <?php echo $product['vin'];?></p>
+                        <?php foreach($product['options'] as $option){ ?>
+                          <?php if($option['value']!='-'){ ?><p><?php echo $option['text'];?>: <?php echo htmlspecialchars_decode($option['value']);?></p><?php }?>
                         <?php }?>
-                    </p>
+                    </div>
+                    <div class="col-lg-12 text-center priceProd">
+                        <p>
+                            <?php if ($product['price'] !== '0') { ?>
+                                <b>Цена: <?php echo $product['price'];?> &#8381;</b>
+                            <?php } else { ?>
+                                &nbsp;
+                            <?php }?>
+                        </p>
+                    </div>
                 </div>
-                    <?php echo $modal_window; ?>  
+                <?php echo $modal_window; ?>  
                     <?php if ($product['status'] == '2') { ?>
                       <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pname ="<?php echo $product['name'];?>" pvin="<?php echo $product['vin'];?>">Уточнить наличие</button>
                     <?php } else { ?>                   
@@ -81,7 +82,6 @@
                             <button class="btn btn-lg btn-danger center-block checkPr" type="button" onclick="cart.add('<?php echo $key; ?>', '1');"><i class="fa fa-shopping-cart"></i> В КОРЗИНУ</button>
                         <?php } ?>
                     <?php } ?> 
-                  </div>
               </div>
             </div>
           <?php }?>
