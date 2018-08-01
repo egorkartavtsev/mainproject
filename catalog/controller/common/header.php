@@ -42,7 +42,7 @@ class ControllerCommonHeader extends Controller {
 		} else {
 			$data['logo'] = '';
 		}
-                
+                $data['whatsapp'] = $server . 'image/whatsapp.png';
                 $data['lvk'] = $server . 'image/vk.png';
                 $data['wapp'] = $server . 'image/wapp.png';
                 $data['viber'] = $server . 'image/viber.png';

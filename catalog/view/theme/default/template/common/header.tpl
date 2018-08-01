@@ -85,12 +85,13 @@
             <span class="hidden-xs hidden-sm"><?php echo $telephone; ?></span>
         </p>
         <div class="col-sm-5 pull-right text-right">
-            <a style="cursor: pointer;"><img data-toggle="modal" data-target="#wapp_viber" src="<?php echo $viber;?>" width="50"></a>
-            <a  target="blank" href="https://vk.com/mgnautorazbor"><img src="<?php echo $lvk;?>" width="50"></a>
-            <a  target="blank" href="https://www.instagram.com/autorazbor174"><img src="<?php echo $linst;?>" width="50"></a>
-            <a  target="blank" href="https://www.youtube.com/channel/UCNgBC4t07efN7qMYUls0fcw"><img src="<?php echo $lyt;?>" width="50"></a>
-            <a  target="blank" href="https://baza.drom.ru/user/AUTORAZBOR174RU"><img src="<?php echo $ldrom;?>" width="50"></a>
-            <a  target="blank" href="https://www.avito.ru/autorazbor174"><img src="<?php echo $lavito;?>" width="50"></a>
+            <a style="cursor: pointer;" href="viber://chat?number=+79124750870"><img src="<?php echo $viber;?>" width="50"></a>
+            <a style="cursor: pointer;" href="https://wa.me/79124750870"><img src="<?php echo $whatsapp;?>" width="50"></a>
+            <a  target="_blank" href="https://vk.com/mgnautorazbor"><img src="<?php echo $lvk;?>" width="50"></a>
+            <a  target="_blank" href="https://www.instagram.com/autorazbor174"><img src="<?php echo $linst;?>" width="50"></a>
+            <a  target="_blank" href="https://www.youtube.com/channel/UCNgBC4t07efN7qMYUls0fcw"><img src="<?php echo $lyt;?>" width="50"></a>
+            <a  target="_blank" href="https://baza.drom.ru/user/AUTORAZBOR174RU"><img src="<?php echo $ldrom;?>" width="50"></a>
+            <a  target="_blank" href="https://www.avito.ru/autorazbor174"><img src="<?php echo $lavito;?>" width="50"></a>
         </div>
     </div>
 </div>

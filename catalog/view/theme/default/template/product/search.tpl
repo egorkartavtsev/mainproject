@@ -106,10 +106,12 @@
     <?php echo $column_right; ?></div>
 </div>
 <script type="text/javascript">
-$('#button-search').bind('click', function() { <!--
+$('#button-search').bind('click', function() {
 	url = 'index.php?route=product/search';
 
-	var search = $('#content input[name=\'search\']').prop('value');
+	var trimsearch = $('#content input[name=\'search\']').prop('value').replace(/\s+/g," ");
+        var search = $.trim(trimsearch);
+        $('#content input[name=\'search\']').val(search);
 
 	if (search) {
 		url += '&search=' + encodeURIComponent(search);
@@ -151,6 +153,5 @@ $('select[name=\'category_id\']').on('change', function() {
 });
 
 $('select[name=\'category_id\']').trigger('change');
--->
 </script>
 <?php echo $footer; ?>
