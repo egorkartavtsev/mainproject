@@ -256,7 +256,6 @@
       </div>
     </div>
   </div>
-  <?php echo $productModal;?>
   <div class="modal fade" id="proDescription" tabindex="-1" role="dialog" aria-labelledby="proDescriptionLabel">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
