@@ -763,3 +763,20 @@ div.ckeditor {
 	float: left;
 	margin-left: 20px;
 }
+::-webkit-scrollbar{
+    width: 10px;
+}
+::-webkit-scrollbar-thumb{
+    border-width: 1px 1px 1px 2px;
+    border-color: #7aae50;
+    background-color: #8fbb6c;
+    border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover{
+    border-width: 1px 1px 1px 2px;
+    border-color: #7aae50;
+    background-color: #7aae50;
+}
+::-webkit-scrollbar-track{
+    border-width:0;
+}

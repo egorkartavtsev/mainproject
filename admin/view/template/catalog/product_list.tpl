@@ -131,9 +131,13 @@
             <table class="table table-bordered table-hover table-responsive">
               <thead>
                 <tr>
-                  <td colspan="2" style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+                  <?php if($user['access'] == 19 || $user['access'] == 99999) { ?>
+                    <td class="text-center" colspan="2" style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+                  <?php } else { ?>
+                    <td class="text-center"><i class="fa fa-android"></i></td>
+                  <?php }?>
 
-                  <td class="text-center"><?php echo $column_image; ?></td>
+                  <td class="text-center col-sm-2"><?php echo $column_image; ?></td>
                   <td class="text-left"><?php if ($sort == 'pd.name') { ?>
                     <a href="<?php echo $sort_name; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_name; ?></a>
                     <?php } else { ?>
@@ -145,37 +149,29 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_locate; ?>">Расположение</a>
                     <?php } ?></td>
-                  <td class="text-left"><?php if ($sort == 'p.length') { ?>
-                    <a href="<?php echo $sort_model; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_model; ?></a>
-                    <?php } else { ?>
-                    <a href="<?php echo $sort_model; ?>"><?php echo $column_model; ?></a>
-                    <?php } ?></td>
                   <td class="text-right"><?php if ($sort == 'p.price') { ?>
                     <a href="<?php echo $sort_price; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_price; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_price; ?>"><?php echo $column_price; ?></a>
                     <?php } ?></td>
                   
-                  <td class="text-left"><?php if ($sort == 'p2c.category_id') { ?>
-                    <a href="<?php echo $sort_category; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_category; ?></a>
-                    <?php } else { ?>
-                    <a href="<?php echo $sort_category; ?>"><?php echo $column_category; ?></a>
-                    <?php } ?></td>
+                  <td class="text-left">Примечание</td>
+                  <td class="text-left">Допинфо</td>
                   
                   <td>Донор</td>
                   
                   <td class="text-right"><?php if ($sort == 'p.quantity') { ?>
                     <a href="<?php echo $sort_quantity; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_quantity; ?></a>
                     <?php } else { ?>
-                    <a href="<?php echo $sort_quantity; ?>"><?php echo $column_quantity; ?></a>
+                    <a href="<?php echo $sort_quantity; ?>">Кол-во</a>
                     <?php } ?></td>
                   <td class="text-left"><?php if ($sort == 'p.status') { ?>
                     <a href="<?php echo $sort_status; ?>" class="<?php echo strtolower($order); ?>"><?php echo $column_status; ?></a>
                     <?php } else { ?>
                     <a href="<?php echo $sort_status; ?>"><?php echo $column_status; ?></a>
                     <?php } ?></td>
-                  <td>Дата продажи</td>
-                  <?php if($utype == 'adm') { ?>
+                  <?php if($user['access'] == 19 || $user['access'] == 99999) { ?><td>Дата продажи</td><?php } ?>
+                  <?php if($user['access'] == 19 || $user['access'] == 99999) { ?>
                   <td class="text-left"><?php if ($sort == 'p.manager') { ?>
                     <a href="<?php echo $sort_manager; ?>" class="<?php echo strtolower($order); ?>">Менеджер</a>
                     <?php } else { ?>
@@ -188,20 +184,19 @@
                     <?php } else { ?>
                     <a href="<?php echo $sort_date_added; ?>">Дата создания</a>
                     <?php } ?></td>
-                  <?php if($utype == 'adm') { ?><td class="text-left">Дней на складе</td><?php }?>
-                  <td class="text-right"><?php echo $column_action; ?></td>
+                  <?php if($user['access'] == 19 || $user['access'] == 99999) { ?><td class="text-left">Дней на складе</td><?php }?>
                 </tr>
               </thead>
               <tbody>
                 <?php if ($products) { ?>
                 <?php foreach ($products as $product) { ?>
                 <tr>
-                  <td class="text-center"><?php if (in_array($product['product_id'], $selected)) { ?>
+                  <?php if($user['access'] == 19 || $user['access'] == 99999) { ?><td class="text-center"><?php if (in_array($product['product_id'], $selected)) { ?>
                     <input type="checkbox" name="selected[]" value="<?php echo $product['product_id']; ?>" checked="checked" />
                     <?php } else { ?>
                     <input type="checkbox" name="selected[]" value="<?php echo $product['product_id']; ?>" />
-                    <?php } ?></td>
-                  <td>
+                    <?php } ?></td><?php }?>
+                  <td class="text-center">
                       <a class="btn btn-success" btn_type="descText" desc-target="<?php echo $product['product_id']; ?>" title="Описание для ДРОМ" data-toggle="modal" data-target="#proDescription"><i class="fa fa-text-height"></i></a>
                       <a class="btn btn-warning" btn_type="showProd" target="<?php echo $product['product_id']; ?>" title="Информация о товаре" data-toggle="modal" data-target="#productInfoModal"><i class="fa fa-eye"></i></a>
                       <a href="<?php echo $product['edit'];?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
@@ -211,26 +206,16 @@
                     <?php } else { ?>
                     <span class="img-thumbnail list"><i class="fa fa-camera fa-2x"></i></span>
                     <?php } ?></td>
+                  
                   <td class="text-left"><a href="<?php echo $go_site; ?><?php echo $product['product_id']; ?>" target="blank" data-toggle="tooltip" title="" data-original-title="Перейти к продукту"><?php echo $product['name']; ?></a></td>
+
                   <td><?php echo $product['vin']; ?></td>
                   <td><?php echo $product['stock'].'/'.$product['stell'].'/'.$product['jar'].'/'.$product['shelf'].'/'.$product['box']; ?></td>
-                  <td class="text-left"><?php echo $product['model']; ?></td>
-                  <td class="text-right"><?php if ($product['special']) { ?>
-                    <span style="text-decoration: line-through;"><?php echo $product['price']; ?></span><br/>
-                    <div class="text-danger"><?php echo $product['special']; ?></div>
-                    <?php } else { ?>
-                    <?php echo $product['price']; ?>
-                    <?php } ?></td>
-
-                  <td class="text-left">
-                    <?php foreach ($categories as $category) { ?>
-                    <?php if (in_array($category['category_id'], $product['category'])) { ?>
-                    <?php echo $category['name'];?><br>
-                    <?php } ?>
-                    <?php } ?></td>
+                  <td class="text-right"><?php echo $product['price']; ?></td>
+                  <td class="text-left"><?php echo htmlspecialchars_decode($product['note']); ?></td>
+                  <td class="text-left"><?php echo htmlspecialchars_decode($product['dop']);?></td>
+                  <td class="text-left"><?php echo $product['donor'];?></td>
                   
-                  <td class="text-left">
-                    <?php echo $product['donor'];?></td>
 
                   <td class="text-right"><?php if ($product['quantity'] <= 0) { ?>
                     <span class="label label-warning"><?php echo $product['quantity']; ?></span>
@@ -240,10 +225,10 @@
                     <span class="label label-success"><?php echo $product['quantity']; ?></span>
                     <?php } ?></td>
                   <td class="text-left"><?php echo $product['status']; ?></td>
-                  <td class="text-left"><?php echo $product['saled']; ?></td>
-                  <?php if($utype == 'adm') { ?><td class="text-left"><?php echo $product['manager']; ?></td><?php }?>
+                  <?php if($user['access'] == 19 || $user['access'] == 99999) { ?><td class="text-left"><?php echo $product['saled']; ?></td><?php }?>
+                  <?php if($user['access'] == 19 || $user['access'] == 99999) { ?><td class="text-left"><?php echo $product['manager']; ?></td><?php }?>
                   <td class="text-left"><?php echo DateTime::createFromFormat('Y-m-d H:i:s', $product['date_added'])->format('d.‌​m.Y'); ?></td>
-                  <?php if($utype == 'adm') { ?>
+                  <?php if($user['access'] == 19 || $user['access'] == 99999) { ?>
                     <td class="text-left">
                         <?
                             if($product['dateDif']>=361){$class='label label-danger';}
@@ -253,7 +238,6 @@
                         ?>
                         <span class="<?php echo $class;?>"><?php echo $product['dateDif'];?></span>
                     </td><?php }?>
-                  <td class="text-right"><a href="<?php echo $product['edit'];?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
                 </tr>
                 <?php } ?>
                 <?php } else { ?>

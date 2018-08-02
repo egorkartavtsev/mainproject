@@ -15,62 +15,64 @@
             <label>Поиск проводится по марке, модели, модельному ряду, году выпуска, VIN, ДВС и внутреннему номеру донора</label>
             <input type="text" id="searchd" class="form-control" placeholder="Введите условия поиска" />
         </div>
-        <table class="table table-bordered table-responsive table-striped">
-            <thead>
-                <tr>
-                    <td>Изображение</td>
-                    <td>Название</td>
-                    <td>Внутренний номер</td>
-                    <td>Марка</td>
-                    <td>Модель</td>
-                    <td>Модельный ряд</td>
-                    <td>Тип кузова</td>
-                    <td>Год выпуска</td>
-                    <td>Пробег</td>
-                    <td>VIN</td>
-                    <td>ДВС</td>
-                    <td>Трансмиссия</td>
-                    <td>Привод</td>
-                    <td>Цвет кузова</td>
-                    <?php if($utype=='adm') { ?>
-                        <td>Стоимость</td>
-                        <td>К-во деталей</td>
-                        <td>Цена деталей</td>
-                    <?php }?>
-                    <td>Действие</td>
-                </tr>
-            </thead>
-            <tbody id="listDonors">
-                <?php foreach($donors as $donor) { ?>
+        <div class="col-sm-12" style="overflow-x: scroll;">
+            <table class="table table-bordered table-responsive table-striped">
+                <thead>
                     <tr>
-                        <td class="text-center"><img src="<?php echo $donor['image'];?>"></td>
-                        <td><?php echo $donor['name'];?></td>
-                        <td><?php echo $donor['numb'];?></td>
-                        <td><?php echo $donor['brand'];?></td>
-                        <td><?php echo $donor['model'];?></td>
-                        <td><?php echo $donor['mod_row'];?></td>
-                        <td><?php echo $donor['ctype'];?></td>
-                        <td><?php echo $donor['year'];?></td>
-                        <td><?php echo $donor['kmeters'];?></td>
-                        <td><?php echo $donor['vin'];?></td>
-                        <td><?php echo $donor['dvs'];?></td>
-                        <td><?php echo $donor['trmiss'];?></td>
-                        <td><?php echo $donor['priv'];?></td>
-                        <td><?php echo $donor['color'];?></td>
+                        <td>Изображение</td>
+                        <td>Название</td>
+                        <td>Внутренний номер</td>
+                        <td>Марка</td>
+                        <td>Модель</td>
+                        <td>Модельный ряд</td>
+                        <td>Тип кузова</td>
+                        <td>Год выпуска</td>
+                        <td>Пробег</td>
+                        <td>VIN</td>
+                        <td>ДВС</td>
+                        <td>Трансмиссия</td>
+                        <td>Привод</td>
+                        <td>Цвет кузова</td>
                         <?php if($utype=='adm') { ?>
-                            <td><?php echo $donor['price'];?></td>
-                            <td><?php echo $donor['quant'];?></td>
-                            <td><?php echo $donor['totalp'];?></td>
+                            <td>Стоимость</td>
+                            <td>К-во деталей</td>
+                            <td>Цена деталей</td>
                         <?php }?>
-                        <td>
-                            <a href="<?php echo $donor['show'];?>" class="btn btn-primary"><i class="fa fa-eye"></i></a>
-                            <a href="<?php echo $donor['edit'];?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
-                            <a href="<?php echo $donor['delete'];?>" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>
-                        </td>
+                        <td>Действие</td>
                     </tr>
-                <?php } ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody id="listDonors">
+                    <?php foreach($donors as $donor) { ?>
+                        <tr>
+                            <td class="text-center"><img src="<?php echo $donor['image'];?>"></td>
+                            <td><?php echo $donor['name'];?></td>
+                            <td><?php echo $donor['numb'];?></td>
+                            <td><?php echo $donor['brand'];?></td>
+                            <td><?php echo $donor['model'];?></td>
+                            <td><?php echo $donor['mod_row'];?></td>
+                            <td><?php echo $donor['ctype'];?></td>
+                            <td><?php echo $donor['year'];?></td>
+                            <td><?php echo $donor['kmeters'];?></td>
+                            <td><?php echo $donor['vin'];?></td>
+                            <td><?php echo $donor['dvs'];?></td>
+                            <td><?php echo $donor['trmiss'];?></td>
+                            <td><?php echo $donor['priv'];?></td>
+                            <td><?php echo $donor['color'];?></td>
+                            <?php if($utype=='adm') { ?>
+                                <td><?php echo $donor['price'];?></td>
+                                <td><?php echo $donor['quant'];?></td>
+                                <td><?php echo $donor['totalp'];?></td>
+                            <?php }?>
+                            <td>
+                                <a href="<?php echo $donor['show'];?>" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                                <a href="<?php echo $donor['edit'];?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                                <a href="<?php echo $donor['delete'];?>" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <script src="view/javascript/donor.js"></script>
