@@ -276,6 +276,8 @@ class ModelToolForms extends Model {
                     ++$i;
                 }
             }
+            //product history
+            $this->db->query("INSERT INTO ".DB_PREFIX."product_history SET sku = '".$prodItem['vin']."', manager = '".$this->session->data['username']."', date_added = NOW(), type_modify = 'Создание товара' ");            
             //product to store
             $this->db->query("INSERT INTO ".DB_PREFIX."product_to_store (product_id, store_id) VALUES (".(int)$product_id.", 0)");
             //old link-tables

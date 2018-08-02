@@ -34,19 +34,21 @@
                 'sale'      => $query_comp->row['sale']
             );
             
-            $query = 'SELECT p.vin AS vin, pd.name AS name, p.price AS price '
+            $query = 'SELECT p.product_id, p.vin AS vin, pd.name AS name, p.price AS price '
                    . 'FROM '.DB_PREFIX.'product p '
                    . 'LEFT JOIN '.DB_PREFIX.'product_description pd '
                         . 'ON pd.product_id = p.product_id '
-                    . "WHERE p.comp = '".$complect_info['heading']."' ";
+                    . "WHERE p.comp = '".$complect_info['heading']."' OR p.vin = '".$complect_info['heading']."' ";
             $query_acc = $this->db->query($query);
             $complect_info['accessories'] = array();
             foreach ($query_acc->rows as $prod) {
                 $complect_info['accessories'][] = array(
-                    'vin'     => $prod['vin'],
-                    'price'   => $prod['price'],
-                    'name'    => $prod['name'],
-                    'cp_link' => $this->url->link('production/catalog/edit', 'token=' . $this->session->data['token'] . '&product_id=' . $this->db->query("SELECT product_id FROM ".DB_PREFIX."product WHERE vin = '".$prod['vin']."'")->row['product_id'])
+                    'vin'           => $prod['vin'],
+                    'product_id'    => $prod['product_id'],
+                    'heading'       => $complect_info['heading']==$prod['vin']?TRUE:FALSE,
+                    'price'         => $prod['price'],
+                    'name'          => $prod['name'],
+                    'cp_link'       => $this->url->link('production/catalog/edit', 'token=' . $this->session->data['token'] . '&product_id=' . $prod['product_id'])
                 );
             }
             
