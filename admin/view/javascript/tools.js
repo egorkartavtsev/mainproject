@@ -1085,6 +1085,37 @@ $(document).ready(function() {
         var vin = $.trim(vin.replace(/\s+/g,""));
         $(this).parent().find('#vin').val(vin);   ;
     });
+    $(document).on( "click", "[id=button-rotate]", function() {
+        var image_src = $(this).parent().parent().parent().find('[data-toggle="image"]').attr('image_src');
+        var src_now = $(this).parent().parent().parent().find('[class="img-responsive"]').attr('src');
+        ajax({
+            url:"index.php?route=production/catalog/rotate_image&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data: {
+              image_src: image_src,
+              src_now: src_now
+            },
+        });
+    });
+    $(document).on( "click", "[id=button-rotate]", function() {
+        var angle = $(this).parent().parent().parent().find('[data-toggle="image"]').attr('rotate_now');
+        var image_id = $(this).parent().parent().parent().find('[data-toggle="image"]').attr('id'); 
+        angle = (angle - 90) % 360;
+        $("[id="+ image_id +"]").css({'-moz-transform':'rotate(' + angle + 'deg)',
+                                    '-ms-transform':'rotate(' + angle + 'deg)',
+                                    '-webkit-transform':'rotate(' + angle + 'deg)',
+                                    '-o-transform':'rotate(' + angle + 'deg)',
+                                    'transform':'rotate(' + angle + 'deg)'});
+        $("[id="+ image_id +"]").attr('rotate_now',angle);                        
+    });
+    $(document).ready(function(){
+         $("#sort_image").sortable({update: function () {
+            $("[data-trigger=image_elm]").each(function(indx){
+                $(this).find("[data-trigger=sort_input]").val(indx);
+            });
+        }});
+    });
 })
 
 function addLibItem(){

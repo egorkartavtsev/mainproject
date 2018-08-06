@@ -49,22 +49,24 @@
                         </div>
                     </div>
                     <div class="col-md-6">                     
-                        <div class="well col-sm-12">
+                        <div class="well col-sm-12" >
                             <h3>Фотографии:</h3>
                             <hr>
+                            <div id="sort_image">
                             <?php $count = 0; ?>
                             <?php if(isset($images)) { foreach($images as $img) { ?>
-                                <div style="float: left;" class="col-sm-4">
-                                    <a href="" id="thumb-image<?php echo $img['lid']?>" data-toggle="image" class="img-thumbnail" data-toggle="popover" <?php if($img['main']){echo 'style="box-shadow: 0px 0px 50px #4CAF50;"';} ?>>
-                                       <img src="<?php echo $img['thumb']; ?>" alt="" title="" class="img-responsive" data-placeholder="<?php echo $placeholder; ?>" />
+                                <div style="float: left;" class="col-sm-3" data-trigger="image_elm">
+                                    <a href="" id="thumb-image<?php echo $img['lid']?>" data-toggle="image" class="img-thumbnail" rotate_now="" image_src="<?php echo $img['image'];?>" data-toggle="popover" <?php if($img['main']){echo 'style="box-shadow: 0px 0px 50px #4CAF50;"';} ?>>
+                                       <img src="<?php echo $img['thumb'].'?'.time();?>" alt="" title="" class="img-responsive" data-placeholder="<?php echo $placeholder; ?>" />
                                     </a>
-                                    <div class="col-sm-8">
-                                        <input type="text" class="form-control" name="image[<?php echo $img['lid']?>][sort-order]" value="<?php echo $img['sort_order']; ?>" />
+                                    <div>
+                                       <input type="hidden" data-trigger="sort_input" class="form-control" name="image[<?php echo $img['lid']?>][sort_order]" value="<?php echo $img['sort_order']; ?>"/>
                                     </div>
                                     <input type="hidden" data-toggle='input-image' id="input-image<?php echo $img['lid']?>" name="image[<?php echo $img['lid']?>][img]" value="<?php echo $img['image']; ?>"/>
                                 </div>
                             <?php ++$count; ?>
                             <?php } } ?>
+                            </div>
                             <input type="hidden" name="info[image]" value="<?php echo $mainimage; ?>" id="input-main-image" />
                             <div class="text-center" style="float: left; padding: 3.5%;">
                                 <button id="button-add-image" data-toggle="tooltip" data-original-title="Добавить фото" data-pointer="<?php echo $count;?>" class="btn btn-success btn-lg"><i class="fa fa-plus-circle"></i></button>
@@ -77,6 +79,7 @@
                                     <a class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i> - изменить фотографию </a><br>
                                     <a class="btn btn-sm btn-danger"><i class="fa fa-trash-o"></i> - удалить фотографию </a><br>
                                     <a class="btn btn-sm btn-warning"><i class="fa fa-exclamation-circle"></i>  - сделать фотографию главной</a><br>
+                                    <a class="btn btn-sm btn-default"><i class="fa fa-rotate-left"></i>  - Повернуть фото на 90 градусов</a><br>
                                 </p>
                             </div>
                         </div>
@@ -202,7 +205,9 @@
           </div>
         </div>
       </div>
-    </div>   
+    </div>
+    <script type="text/javascript" src="view/javascript/jquery/jquery-ui/jquery-ui.js"></script>
+    <link href="view/javascript/jquery/jquery-ui/jquery-ui.css" type="text/css" rel="stylesheet"/>
     <script type="text/javascript">
         $("#heading").on('input', function(){
             ajax({
@@ -236,7 +241,7 @@
             var heading = '<?php echo $complect; ?>';
             var item = getURLVar('product_id');
             remCompl(item, heading);
-        })
+        }) 
     </script>
     <style>
         .cpbItem{

@@ -9,6 +9,7 @@ class ControllerProductProductEdit extends Controller {
         $data['uName'] = $this->session->data['username'];
         $product = $this->model_tool_product->getProduct($this->request->get['product_id']);
         $photos = $this->model_tool_product->getProdImg($this->request->get['product_id']);
+        //exit(var_dump($photos));
         $type = $this->model_tool_product->getOptions($product['structure']);
         $info = array();
         foreach ($type['options'] as $field) {
@@ -58,6 +59,7 @@ class ControllerProductProductEdit extends Controller {
                     'thumb'         => $this->model_tool_image->resize($img['image'], 100, 100),
                     'lid'           => $local_id,
                     'main'          => $img['image']==$product['image']?TRUE:FALSE
+//                    'image_id'      => $img['product_image_id']
                 );
             ++$local_id;
         }

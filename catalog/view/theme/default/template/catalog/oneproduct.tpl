@@ -34,7 +34,7 @@
                     <div class="sp-wrap">
                         <?php if ($images) { ?>
                             <?php foreach ($images as $image) { ?>
-                                <a href="<?php echo $image['popup']; ?>" title="<?php echo $product['name']; ?>"> <img src="<?php echo $image['popup']; ?>" title="<?php echo $product['name']; ?>" alt="<?php echo $product['name']; ?>" /></a>
+                                <a href="<?php echo $image['popup'].'?'.time(); ?>" title="<?php echo $product['name']; ?>"> <img src="<?php echo $image['popup'].'?'.time(); ?>" title="<?php echo $product['name']; ?>" alt="<?php echo $product['name']; ?>" /></a>
                             <?php } ?>
                         <?php } ?>
                     </div>

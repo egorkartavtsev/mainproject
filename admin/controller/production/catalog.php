@@ -1001,7 +1001,7 @@ class ControllerProductionCatalog extends Controller {
         $info['options']['avitoname'] = $this->request->post['info']['avitoname'];
         $info['options']['vin'] = $info['vin'];
         $info['options']['pid'] = $this->request->get['product_id'];
-        //exit(var_dump($this->request->post));
+        //exit(var_dump($info));
         if($this->user->hasPermission('', 'common/autoload') && $this->request->post['allowavito']==='да'){
             $this->model_tool_xml->avitoFind($info);
         }
@@ -1011,4 +1011,24 @@ class ControllerProductionCatalog extends Controller {
         $this->response->redirect($this->url->link('production/catalog', 'token=' . $this->session->data['token'], true));
 //        exit(var_dump($this->request->post));
     }
+    public function rotate_image(){
+        $image_src = $this->request->post['image_src'];
+        $src = DIR_IMAGE . $image_src;
+        $pos = strripos($image_src, "/");
+        $src_cache = substr_replace($image_src,'',$pos);
+        $src_cache_dir = DIR_IMAGE . "cache/" . $src_cache;
+        if (file_exists($src_cache_dir)){
+            foreach (glob(DIR_IMAGE . "cache/" . $src_cache."/*") as $file){
+                unlink($file);
+            }
+        }    
+        $degrees = 90;
+        header('Content-type: image/jpeg');
+        $source = imagecreatefromjpeg($src);
+        $rotate = imagerotate($source, $degrees, 0);
+        imagejpeg($rotate, $src);
+        imagedestroy($source);
+        imagedestroy($rotate);
+        echo 1;
+    }  
 }

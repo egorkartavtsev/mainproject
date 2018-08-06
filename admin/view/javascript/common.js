@@ -129,6 +129,7 @@ $(document).ready(function() {
                                 var $content = '<button type="button" data-toggle="tooltip" data-original-title="Изменить фото" id="button-image" class="btn btn-primary"><i class="fa fa-pencil"></i></button>';
 				$content += ' <button type="button" id="button-clear" class="btn btn-danger" data-toggle="tooltip" data-original-title="Удалить фото"><i class="fa fa-trash-o"></i></button>';
 				$content += ' <button type="button" id="button-gen-phot" class="btn btn-warning" data-toggle="tooltip" data-original-title="Сделать главным"><i class="fa fa-exclamation-circle"></i></button>';
+                                $content += ' <button type="button" id="button-rotate" class="btn btn-default" data-toggle="tooltip" data-original-title="Повернуть фото на 90 градусов"><i class="fa fa-rotate-left"></i></button>';
                                 return $content;
 			}
 		});
