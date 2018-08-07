@@ -24,10 +24,7 @@
               </div>
               <div class="form-group">
                   <label>Телефон:</label>
-                  <div class="input-group">
-                    <div class="input-group-addon">+7</div>
-                    <input class="form-control" field_type="numeric" name="telephone" target_req="1" placeholder="без восьмёрки. слитно"/>
-                  </div>
+                  <input class="form-control" field_type="varchar" name="telephone" target_req="1" placeholder="без восьмёрки. слитно"/>
               </div>
               <div class="form-group">
                   <label>Email:</label>

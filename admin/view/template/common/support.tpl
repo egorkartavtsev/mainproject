@@ -10,10 +10,12 @@
             </ul>
         </div>
     </div>
-    <div class="col-lg-12">
-        <?php foreach($sql as $quer){
-            echo $quer.'<br>';
-        }?>
+    <div class="row">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">
+            <?php echo $res->num_rows;?>
+        </div>
+        <div class="col-lg-4"></div>
     </div>
 </div>
 <?php echo $footer;?>

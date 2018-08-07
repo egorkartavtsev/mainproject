@@ -65,10 +65,11 @@
                     <thead>
                         <tr>
                             <td>Наименование</td>
+                            <td>Артикул</td>
                             <td>Стоимость</td>
                             <td>Количество</td>
                             <td>Итого</td>
-                            <td></td>
+                            <td class="text-center"><i class="fa fa-android"></i></td>
                         </tr>
                     </thead>
                     <tbody>
@@ -76,6 +77,7 @@
                       <?php foreach($order['products'] as $prod){ ?>
                         <tr>
                             <td><a href="<?php echo $catalog.'&product_id='.$prod['product_id'];?>"><?php echo $prod['name'];?></a></td>
+                            <td><?php echo $prod['vin']?></td>
                             <td><?php echo (int)$prod['price']?></td>
                             <td><?php echo (int)$prod['quantity']?></td>
                             <td><?php echo (int)$prod['total']?></td>
@@ -83,9 +85,9 @@
                         </tr>
                       <?php } ?>
                     <?php } ?>
-                      <tr><td colspan="3" style="text-align: right;">Итого:</td><td colspan="2"><?php echo $order['total'];?></td></tr>
+                      <tr><td colspan="4" style="text-align: right;">Итого:</td><td colspan="2"><?php echo $order['total'];?></td></tr>
                       <tr>
-                          <td colspan="3">
+                          <td colspan="4">
                               <label for="addedVin">Добавить товар к заказу</label>
                               <input class="form-control" type="text" placeholder="Введите артикул товара..." id="addedVin">
                           </td>

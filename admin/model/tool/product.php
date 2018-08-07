@@ -527,15 +527,21 @@ class ModelToolProduct extends Model {
     }
     
     public function getProdInfo($id) {
-        $result = array();
         $this->load->model("tool/image");
+        $this->load->model("complect/complect");
+        $this->load->model("tool/complect");
+        $result = array();
         $sup = $this->db->query("SELECT * "
                 . "FROM ".DB_PREFIX."product p "
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
                 . "WHERE p.product_id = ".(int)$id);
+        
+    //get options + systems
         $result = array(
             'image' => $this->model_tool_image->resize($sup->row['image'], 1200, 900),
             'vin' => $sup->row['vin'],
+            'status' => $sup->row['status'],
+            'complect' => FALSE,
             'name' => $sup->row['name'],
             'price' => $sup->row['price'],
             'quantity' => $sup->row['quantity'],
@@ -554,7 +560,58 @@ class ModelToolProduct extends Model {
                 );
             }
         }
+    
+    //get complect info
+        $result['complect'] = $this->model_tool_complect->isCompl($result['vin']);
+        if($result['complect']){
+            $comp = $this->model_complect_complect->getComplect($result['complect']['complect']['id']);
+            $result['complect']['accs'] = $comp['accessories'];
+        }
         
+        $histsup = $this->db->query("SELECT * FROM ".DB_PREFIX."product_history WHERE sku = '".$result['vin']."' ");
+        $result['history'] = array();
+        foreach ($histsup->rows as $hItem) {
+            if((string)$hItem['date_added']!=='0000-00-00 00:00:00'){
+                $result['history'][] = array(
+                    'date'      => date("d.m.Y", strtotime($hItem['date_added'])),
+                    'label'     => '<span class="btn btn-info btn-sm" style="cursor: auto!important;"><i class="fa fa-plus"></i></span>',
+                    'type'      => $hItem['type_modify'],
+                    'manager'   => $hItem['manager']
+                );
+            } elseif((string)$hItem['date_sale']!=='0000-00-00 00:00:00'){
+                $result['history'][] = array(
+                    'date'      => date("d.m.Y", strtotime($hItem['date_sale'])),
+                    'label'     => '<span class="btn btn-success btn-sm" style="cursor: auto!important;"><i class="fa fa-recycle"></i></span>',
+                    'type'      => $hItem['type_modify'],
+                    'manager'   => $hItem['manager']
+                );
+            } elseif((string)$hItem['date_refund']!=='0000-00-00 00:00:00'){
+                $result['history'][] = array(
+                    'date'      => date("d.m.Y", strtotime($hItem['date_refund'])),
+                    'label'     => '<span class="btn btn-warning btn-sm" style="cursor: auto!important;"><i class="fa fa-frown-o"></i></span>',
+                    'type'      => $hItem['type_modify'],
+                    'manager'   => $hItem['manager']
+                );
+            } elseif((string)$hItem['date_modify']!=='0000-00-00 00:00:00'){
+                $result['history'][] = array(
+                    'date'      => date("d.m.Y", strtotime($hItem['date_modify'])),
+                    'label'     => '<span class="btn btn-primary btn-sm" style="cursor: auto!important;"><i class="fa fa-upload"></i></span>',
+                    'type'      => $hItem['type_modify'],
+                    'manager'   => $hItem['manager']
+                );
+            }
+        }
+        //saled product
+        if($result['quantity'] == '0' && $result['status'] == '0'){
+            $sisup = $this->db->query("SELECT * FROM ".DB_PREFIX."sales_info WHERE sku = '".$result['vin']."'");
+            if($sisup->num_rows){
+                $result['date_sale'] = date("d.m.Y",strtotime($sisup->row['date_mod']));
+            } else {
+                $result['date_sale'] = FALSE;
+            }
+        } else {
+            $result['date_sale'] = FALSE;
+        }
         
         return $result;
     }

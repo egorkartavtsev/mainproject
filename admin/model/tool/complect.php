@@ -65,12 +65,13 @@ class ModelToolComplect extends Model {
     public function isCompl($vin) {
         $sup = $this->db->query("SELECT price, comp FROM ".DB_PREFIX."product WHERE vin = '".$vin."'");
         $comp = $this->db->query("SELECT * FROM ".DB_PREFIX."complects WHERE heading = '".$sup->row['comp']."' OR heading = '".$vin."'");
-        if(empty($comp->row)){
+        if(empty($comp->row) || $sup->row['comp'] == ''){
             return FALSE;
         } else {
             $result = array(
                 'product'   => $sup->row,
                 'complect'  => $comp->row,
+                'clink'     => $this->url->link('complect/complect/edit', 'token=' . $this->session->data['token'] . '&complect=' . $comp->row['id']),
                 'heading'   => $this->isHeading($vin)
             );
             return $result;

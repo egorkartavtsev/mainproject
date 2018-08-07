@@ -217,12 +217,18 @@ div.required .control-label:before {
 #cart .dropdown-menu li p {
 	margin: 20px 0;
 }
+
+.input-group-btn button{
+    border-radius: 0px 4px 4px 0px!important;
+}
+
+.checkPr{
+    margin-bottom: 15px;
+}
+
 /* menu */
 #menu {
-	background-color: #c9302c;
-        background-image: linear-gradient(to bottom, #ee5f5b, #bd362f);
-        background-repeat: repeat-x;
-        border-color: #bd362f #bd362f #802420;
+	background-color: #d9534f;
         min-height: 40px;
 }
 #menu .nav > li > a {
@@ -442,63 +448,6 @@ footer h5 {
 	background-repeat: repeat-x;
 	border-color: #dddddd #dddddd #b3b3b3 #b7b7b7;
 }
-.btn-primary {
-	color: #ffffff;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-	background-color: #229ac8;
-	background-image: linear-gradient(to bottom, #23a1d1, #1f90bb);
-	background-repeat: repeat-x;
-	border-color: #1f90bb #1f90bb #145e7a;
-}
-.btn-primary:hover, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary[disabled] {
-	background-color: #1f90bb;
-	background-position: 0 -15px;
-}
-.btn-warning {
-	color: #ffffff;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-	background-color: #faa732;
-	background-image: linear-gradient(to bottom, #fbb450, #f89406);
-	background-repeat: repeat-x;
-	border-color: #f89406 #f89406 #ad6704;
-}
-.btn-warning:hover, .btn-warning:active, .btn-warning.active, .btn-warning.disabled, .btn-warning[disabled] {
-	box-shadow: inset 0 1000px 0 rgba(0, 0, 0, 0.1);
-}
-.btn-danger {
-	color: #ffffff;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-	background-color: #da4f49;
-	background-image: linear-gradient(to bottom, #ee5f5b, #bd362f);
-	background-repeat: repeat-x;
-	border-color: #bd362f #bd362f #802420;
-}
-.btn-danger:hover, .btn-danger:active, .btn-danger.active, .btn-danger.disabled, .btn-danger[disabled] {
-	box-shadow: inset 0 1000px 0 rgba(0, 0, 0, 0.1);
-}
-.btn-success {
-	color: #ffffff;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-	background-color: #5bb75b;
-	background-image: linear-gradient(to bottom, #62c462, #51a351);
-	background-repeat: repeat-x;
-	border-color: #51a351 #51a351 #387038;
-}
-.btn-success:hover, .btn-success:active, .btn-success.active, .btn-success.disabled, .btn-success[disabled] {
-	box-shadow: inset 0 1000px 0 rgba(0, 0, 0, 0.1);
-}
-.btn-info {
-	color: #ffffff;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-	background-color: #df5c39;
-	background-image: linear-gradient(to bottom, #e06342, #dc512c);
-	background-repeat: repeat-x;
-	border-color: #dc512c #dc512c #a2371a;
-}
-.btn-info:hover, .btn-info:active, .btn-info.active, .btn-info.disabled, .btn-info[disabled] {
-	background-image: none;
-	background-color: #df5c39;
-}
 .btn-link {
 	border-color: rgba(0, 0, 0, 0);
 	cursor: pointer;
@@ -553,11 +502,24 @@ footer h5 {
 	content: '\f054';
 	font-family: FontAwesome;
 }
-/* product list */
+/* product list *
 .product-thumb {
-	border: 1px solid #ddd;
+	border-top: 1px solid #ddd;
+	border-right: 1px solid #ddd;
 	margin-bottom: 20px;
 	overflow: auto;
+}*/
+.priceProd{
+    font-size: 12pt;
+}
+.product-thumb {
+	border-top: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        background-color: #fdf5f0;
+        box-shadow: 0px 0px 20px 2px #c9c5c0;
+        margin-bottom: 20px;
+        overflow: auto;
+        border-radius: 10px;
 }
 .product-thumb .image {
 	text-align: center;
@@ -584,9 +546,38 @@ footer h5 {
 .product-thumb h4 {
 	font-weight: bold;
 }
+
+::-webkit-scrollbar{
+    width: 6px;
+}
+::-webkit-scrollbar-thumb{
+    border-width: 1px 1px 1px 2px;
+    border-color: #ac2925;
+    background-color: #d9534f;
+    border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover{
+    border-width: 1px 1px 1px 2px;
+    border-color: #ac2925;
+    background-color: #ac2925;
+}
+::-webkit-scrollbar-track{
+    border-width:0;
+}
+
+.product-thumb .nameProd {
+    height: 60px;
+    vertical-align: bottom;
+    text-align: center;
+}
+
 .product-thumb .caption {
-	padding: 0 20px;
-	min-height: 180px;
+	padding: 0 5px;
+        margin-bottom: 15px;
+        height: 140px;
+        overflow-y: scroll;
+        border-top: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
 }
 .product-list .product-thumb .caption {
 	margin-left: 230px;
@@ -653,7 +644,7 @@ h2.price {
 }
 
 .label-thumd .eanr {
-        background-color: #da4f49;
+        background-color: #d9534f;
         border: 5px solid #da4f49;
 }
 .label-thumd .eanb {

@@ -249,8 +249,13 @@ class ControllerProductionCatalog extends Controller {
 	}
 
 	protected function getList() {
-            $this->load->model('tool/layout');
+                $this->load->model('tool/layout');
                 $data = $this->model_tool_layout->getLayout($this->request->get['route']);
+                
+                $user = $this->user->getUserInfo();
+                $data['user'] = array(
+                    'access' => (int)$user['userAL']
+                );
 		if (isset($this->request->get['filter_name'])) {
 			$filter_name = trim($this->request->get['filter_name']);
 		} else {
@@ -453,24 +458,10 @@ class ControllerProductionCatalog extends Controller {
 //                exit(var_dump($results));
 		foreach ($results as $result) {
 
-                    $category =  $this->model_catalog_product->getProductCategories($result['product_id']);
-
 			if (is_file(DIR_IMAGE . $result['image'])) {
-				$image = $this->model_tool_image->resize($result['image'], 40, 40);
+				$image = $this->model_tool_image->resize($result['image'], 400, 300);
 			} else {
-				$image = $this->model_tool_image->resize('no_image.png', 40, 40);
-			}
-
-			$special = false;
-
-			$product_specials = $this->model_catalog_product->getProductSpecials($result['product_id']);
-
-			foreach ($product_specials  as $product_special) {
-				if (($product_special['date_start'] == '0000-00-00' || strtotime($product_special['date_start']) < time()) && ($product_special['date_end'] == '0000-00-00' || strtotime($product_special['date_end']) > time())) {
-					$special = $product_special['price'];
-
-					break;
-				}
+				$image = $this->model_tool_image->resize('no_image.png', 400, 300);
 			}
                         
                         $now = time();
@@ -513,12 +504,11 @@ class ControllerProductionCatalog extends Controller {
                                     'donor'      => $result['donor']!=''?'<a target="_blank" href="'.$this->url->link('donor/show', 'token=' . $this->session->data['token'] . '&numb=' . $result['donor'] . $url, true).'">'.$result['donor'].'</a>':'-',
                                     'stock'      => (isset($result['stock'])) && ($result['stock']!=='') && ($result['stock']!=='-')?$result['stock']:'не указан',
                                     'adress'     => (isset($result['adress'])) && ($result['adress']!=='') && ($result['adress']!=='-')?$result['adress']:'не указан',
-                                    'model'      => $result['modR'],
+                                    'note'       => $result['note'],
                                     'price'      => $result['price'],
                                     'date_added' => $result['date_added'],
                                     'dateDif'    => $dateRes,
-                                    'category'   => $category,
-                                    'special'    => $special,
+                                    'dop'        => $result['dop'],
                                     'quantity'   => $result['quantity'],
                                     'status'     => $stat,
                                     'edit'       => $this->url->link('production/catalog/edit', 'token=' . $this->session->data['token'] . '&product_id=' . $result['product_id'] . $url, true)
