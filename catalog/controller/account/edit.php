@@ -91,6 +91,11 @@ class ControllerAccountEdit extends Controller {
 		} else {
 			$data['error_lastname'] = '';
 		}
+                if (isset($this->error['patron'])) {
+			$data['error_patron'] = $this->error['patron'];
+		} else {
+			$data['error_patron'] = '';
+		}
 
 		if (isset($this->error['email'])) {
 			$data['error_email'] = $this->error['email'];
@@ -130,6 +135,13 @@ class ControllerAccountEdit extends Controller {
 			$data['lastname'] = $customer_info['lastname'];
 		} else {
 			$data['lastname'] = '';
+		}
+                if (isset($this->request->post['patron'])) {
+			$data['patron'] = $this->request->post['patron'];
+		} elseif (!empty($customer_info)) {
+			$data['patron'] = $customer_info['patron'];
+		} else {
+			$data['patron'] = '';
 		}
 
 		if (isset($this->request->post['email'])) {
@@ -189,7 +201,9 @@ class ControllerAccountEdit extends Controller {
 		if ((utf8_strlen(trim($this->request->post['lastname'])) < 1) || (utf8_strlen(trim($this->request->post['lastname'])) > 32)) {
 			$this->error['lastname'] = $this->language->get('error_lastname');
 		}
-
+                if ((utf8_strlen(trim($this->request->post['patron'])) < 1) || (utf8_strlen(trim($this->request->post['patron'])) > 32)) {
+			$this->error['patron'] = $this->language->get('error_patron');
+		}
 		if ((utf8_strlen($this->request->post['email']) > 96) || !preg_match($this->config->get('config_mail_regexp'), $this->request->post['email'])) {
 			$this->error['email'] = $this->language->get('error_email');
 		}

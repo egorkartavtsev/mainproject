@@ -8,6 +8,33 @@
   <div class="row">
       
       <div id="orderInfo">
+          <?php if (isset($customer_check)) { ?>
+          <div class="col-md-4 well well-sm" step="1">
+              <h4>Шаг 1: Информация о покупателе</h4>
+              <div class="form-group">
+                  <label>Фамилия:</label>
+                  <input class="form-control" field_type="char" target_req="1" name="secondname" value="<?php echo $customer_info['lastname'] ;?>"/>
+              </div>
+              <div class="form-group">
+                  <label>Имя:</label>
+                  <input class="form-control" field_type="char" target_req="1" name="firstname" value="<?php echo $customer_info['firstname'] ;?>"/>
+              </div>
+              <div class="form-group">
+                  <label>Отчество:</label>
+                  <input class="form-control" field_type="char" target_req="1" name="patron" value="<?php echo $customer_info['patron'] ;?>"/>
+              </div>
+              <div class="form-group">
+                  <label>Телефон:</label>
+                  <input class="form-control" field_type="varchar" name="telephone" target_req="1" placeholder="без восьмёрки. слитно" value="<?php echo $fix_telephone ;?>"/>
+              </div>
+              <div class="form-group">
+                  <label>Email:</label>
+                  <input class="form-control" field_type="email" target_req="0" name="email" value="<?php echo $customer_info['email'] ;?>"/>
+              </div>
+              <?php echo $captcha;?>
+              <button class="btn btn-danger" btn_type="nextstep" disabled>Продолжить</button>
+          </div>
+          <?php } else { ?>
           <div class="col-md-4 well well-sm" step="1">
               <h4>Шаг 1: Информация о покупателе</h4>
               <div class="form-group">
@@ -16,7 +43,7 @@
               </div>
               <div class="form-group">
                   <label>Имя:</label>
-                  <input class="form-control" field_type="char" target_req="1" name="firstname" />
+                  <input class="form-control" field_type="char" target_req="1" name="firstname"/>
               </div>
               <div class="form-group">
                   <label>Отчество:</label>
@@ -24,7 +51,7 @@
               </div>
               <div class="form-group">
                   <label>Телефон:</label>
-                  <input class="form-control" field_type="varchar" name="telephone" target_req="1" placeholder="без восьмёрки. слитно"/>
+                  <input class="form-control" field_type="varchar" name="telephone" target_req="1" placeholder="без восьмёрки. слитно" val=""/>
               </div>
               <div class="form-group">
                   <label>Email:</label>
@@ -33,6 +60,7 @@
               <?php echo $captcha;?>
               <button class="btn btn-danger" btn_type="nextstep" disabled>Продолжить</button>
           </div>
+          <?php }?>
           <div class="col-md-4 well well-sm hidden" step="2">
               <h4>Шаг 2: информация о доставке</h4>
               <div class="form-group">

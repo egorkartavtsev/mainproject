@@ -762,7 +762,7 @@ class ControllerProductionCatalog extends Controller {
                 $data['images'][] = array(
                         'image'         => $img['image'],
                         'sort_order'    => $img['sort_order'],
-                        'thumb'         => $this->model_tool_image->resize($img['image'], 100, 100),
+                        'thumb'         => $this->model_tool_image->resize($img['image'], 200, 200),
                         'lid'           => $local_id,
                         'main'          => $img['image']==$product['image']?TRUE:FALSE
                     );
@@ -791,7 +791,7 @@ class ControllerProductionCatalog extends Controller {
                 $data['plink'] = $this->url->link('production/catalog/edit', 'token=' . $this->session->data['token'] . '&product_id=' . $this->db->query("SELECT product_id FROM ".DB_PREFIX."product WHERE vin = '".$kit['heading']."'")->row['product_id']);
                 $data['kit'] = $kit;
             }
-            $data['placeholder'] = $this->model_tool_image->resize('no_image.png', 100, 100);     
+            $data['placeholder'] = $this->model_tool_image->resize('no_image.png', 200, 200);     
             $this->response->setOutput($this->load->view('product/product_edit', $data));
         }
 
@@ -967,9 +967,9 @@ class ControllerProductionCatalog extends Controller {
         $html = '';
         if($compl){
             $this->load->model('tool/image');
-            $image = $this->model_tool_image->resize($compl['image'], 100, 100);
+            $image = $this->model_tool_image->resize($compl['image'], 200, 200);
             $html.= '<div class="col-sm-3">';
-                $html.='<img src="'.trim($image).'" class="thumb" alt="" title="" data-placeholder="'.$this->model_tool_image->resize('no_image.png', 100, 100).'" />';
+                $html.='<img src="'.trim($image).'" class="thumb" alt="" title="" data-placeholder="'.$this->model_tool_image->resize('no_image.png', 200, 200).'" />';
             $html.= '</div>';
             $html.= '<div class="col-sm-9">';
                 $html.= '<h3>'.$compl['name'].'</h3>';

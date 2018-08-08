@@ -35,7 +35,7 @@ class ControllerCheckoutCheckout extends Controller {
 				$this->response->redirect($this->url->link('checkout/cart'));
 			}
 		}
-
+                $this->load->model('account/customer');
 		$this->load->language('checkout/checkout');
 
 		$this->document->setTitle($this->language->get('heading_title'));
@@ -65,6 +65,16 @@ class ControllerCheckoutCheckout extends Controller {
                         $data['captcha'] = $this->load->controller('extension/captcha/' . $this->config->get('config_captcha'));
                 } else {
                         $data['captcha'] = '';
+                }
+                
+                if (isset($this->session->data['customer_id'])){
+                    $data['customer_info'] = $this->model_account_customer->getCustomer($this->session->data['customer_id']);
+                    $data['customer_check'] = $this->session->data['customer_id'];
+                    if (substr_count($data['customer_info']['telephone'], '+') > 0){
+                        $data['fix_telephone'] = substr_replace($data['customer_info']['telephone'],'', 0, 2);
+                    } else {
+                        $data['fix_telephone'] = substr_replace($data['customer_info']['telephone'],'', 0, 1);
+                    }
                 }
 		$this->response->setOutput($this->load->view('checkout/checkout', $data));
 	}
