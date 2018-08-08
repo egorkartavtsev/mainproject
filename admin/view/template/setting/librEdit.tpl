@@ -55,17 +55,26 @@
       <div class="modal-body">
           <div class="col-lg-12 form-group">
             <div class="col-lg-8"><label for="librName">Наименование библиотеки:</label>
-            <input class="form-control" id="librName" type="text" type_id="<?php echo $library['settings']['library_id'];?>" value="<?php echo $library['settings']['name'];?>"/></div>
-            <label>&nbsp;</label><br><button class="btn btn-success" disabled btn_type="librNameSave"><i class="fa fa-floppy-o"></i></button>
+            <input class="form-control" id="librName" type="text" type_id="<?php echo $library['settings']['library_id'];?>" inp_type="librSettInp" value="<?php echo $library['settings']['name'];?>"/></div>
+            <label>&nbsp;</label><br><button class="btn btn-success" target="text" disabled btn_type="librSetSave"><i class="fa fa-floppy-o"></i></button>
           </div>
           <div class="col-lg-12 form-group">
             <div class="col-lg-8"><label for="showNav">Отображение в верхнем меню витрины:</label>
-            <select class="form-control" id="showNav" library_id="<?php echo $library['settings']['library_id'];?>">
+            <select class="form-control" id="showNav" inp_type="librSettSlct" type_id="<?php echo $library['settings']['library_id'];?>">
                 <option value="0" <?php if($library['settings']['top_nav']==='0'){echo 'selected';}?>>Не отображать</option>
                 <option value="1" <?php if($library['settings']['top_nav']==='1'){echo 'selected';}?>>Отображать</option>
             </select>
             </div>
-            <label>&nbsp;</label><br><button class="btn btn-success" disabled btn_type="librShowNavSave"><i class="fa fa-floppy-o"></i></button>
+            <label>&nbsp;</label><br><button class="btn btn-success" target="top_nav" disabled btn_type="librSetSave"><i class="fa fa-floppy-o"></i></button>
+          </div>
+          <div class="col-lg-12 form-group">
+            <div class="col-lg-8"><label for="showNav">Отображение в форме создания товара:</label>
+            <select class="form-control" id="showNav" inp_type="librSettSlct" type_id="<?php echo $library['settings']['library_id'];?>">
+                <option value="0" <?php if($library['settings']['smart']==='0'){echo 'selected';}?>>Выбор вариантов</option>
+                <option value="1" <?php if($library['settings']['smart']==='1'){echo 'selected';}?>>"Умный" поиск</option>
+            </select>
+            </div>
+            <label>&nbsp;</label><br><button class="btn btn-success" target="smart" disabled btn_type="librSetSave"><i class="fa fa-floppy-o"></i></button>
           </div>
       </div>
       <div class="modal-footer">

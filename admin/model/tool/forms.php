@@ -86,20 +86,37 @@ class ModelToolForms extends Model {
                     $selectF.='</div>';
                     break;
                 case 'library':
-                    $sup = $this->db->query("SELECT *, (SELECT name FROM ".DB_PREFIX."lib_struct WHERE parent_id = ".(int)$option['libraries'].") AS child FROM ".DB_PREFIX."lib_struct WHERE item_id = ".(int)$option['libraries']);
-                    if($sup->row['parent_id']){
-                        $librF.='<div class="form-group-sm col-md-4" id="'.$option['name'].'">'
-                              . '</div>'.($sup->row['isparent']?'':'<div class="clearfix"></div>');
-                    }else{
-                        $fillsquer = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE item_id = ".(int)$option['libraries']." ORDER BY name ");
-                        $librF.='<div class="form-group-sm col-md-4" id="'.$option['name'].'">'
-                                . '<label>'.$option['text'].'</label>'
-                                . '<select class="form-control" name="info['.$num.']['.$option['name'].']" select_type="librSelect" child="'.$sup->row['child'].'">'
-                                . '<option value="-">-</option>';
-                        foreach ($fillsquer->rows as $fill) {
-                            $librF.='<option value="'.$fill['id'].'">'.trim($fill['name']).'</option>';
+                    $sup = $this->db->query("SELECT *, (SELECT name FROM ".DB_PREFIX."lib_struct WHERE parent_id = ".(int)$option['libraries'].") AS child, (SELECT l.smart FROM ".DB_PREFIX."libraries l WHERE l.library_id = ls.library_id) AS smart FROM ".DB_PREFIX."lib_struct ls WHERE ls.item_id = ".(int)$option['libraries']);
+                    if((int)$sup->row['smart']){
+                        if(!(int)$sup->row['isparent']){
+                            $librF.='<div class="form-group-sm col-md-4" id="'.$option['name'].'">'
+                                    . '<label>'.$option['text'].'</label>'
+                                    . '<input class="form-control" inp_type="smart" type="text" item="'.$option['libraries'].'">'
+                                    . '<ul class="dropdown-menu" id="dropD" style="left: 15px; display: none;">'
+                                      . '<li class="dropdown-header">Выберите значение</li>'
+                                      . '<li class="devider"></li>'
+                                      . '<div id="devList"></div>'
+                                    . '</ul>'
+                                    . '<input type="hidden" name="info['.$num.']['.$option['name'].']" value=""/>'
+                                  . '</div><div class="clearfix"></div>';
+                        } else {
+                            $librF.='';                            
                         }
-                        $librF.='</select></div>';
+                    } else {
+                        if($sup->row['parent_id']){
+                            $librF.='<div class="form-group-sm col-md-4" id="'.$option['name'].'">'
+                                  . '</div>'.($sup->row['isparent']?'':'<div class="clearfix"></div>');
+                        }else{
+                            $fillsquer = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE item_id = ".(int)$option['libraries']." ORDER BY name ");
+                            $librF.='<div class="form-group-sm col-md-4" id="'.$option['name'].'">'
+                                    . '<label>'.$option['text'].'</label>'
+                                    . '<select class="form-control" name="info['.$num.']['.$option['name'].']" select_type="librSelect" child="'.$sup->row['child'].'">'
+                                    . '<option value="-">-</option>';
+                            foreach ($fillsquer->rows as $fill) {
+                                $librF.='<option value="'.$fill['id'].'">'.trim($fill['name']).'</option>';
+                            }
+                            $librF.='</select></div>';
+                        }
                     }
                     break;
             }            
@@ -297,11 +314,9 @@ class ModelToolForms extends Model {
                 //--------------//
                 if ($file['type'] == 'image/jpeg'){
                     $source = imagecreatefromjpeg ($file['tmp_name']);
-                }
-                elseif ($file['type'] == 'image/png'){
+                } elseif ($file['type'] == 'image/png'){
                     $source = imagecreatefrompng ($file['tmp_name']);
-                }
-                elseif ($file['type'] == 'image/gif'){
+                } elseif ($file['type'] == 'image/gif'){
                     $source = imagecreatefromgif ($file['tmp_name']);
                 }
                 else{

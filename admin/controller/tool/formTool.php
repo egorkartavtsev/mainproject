@@ -125,5 +125,35 @@ class ControllerToolFormTool extends Controller {
         echo $output;
     }
     
+    public function getSmartVariants() {
+        $req = $this->request->post;
+        $request = explode(" ", $req['value']);
+        $this->load->model('tool/product');
+        $result = $this->model_tool_product->getSmartVariants($request, $req['item']);
+        if(count($result)){
+            $list = '';
+            foreach ($result as $res) {
+                $list.='<li class="searchItem" li-type="smartItem" fill="'.$res['id'].'" library="'.$res['library_id'].'">'.trim($res['name']).'</li>';
+            }
+        } else {
+            $list = '<li>В базе нет похожих значениий. Изменение запроса может исправить ситуацию.</li>';            
+        }
+        echo $list;
+    }
+    
+    public function getSmartVarParents() {
+        $req = $this->request->post['fill'];
+        $this->load->model('tool/product');
+        $result = $this->model_tool_product->getSmartVarParents($req);
+        $list = '';
+        foreach ($result as $res) {
+            $list.='<div class="form-group-sm col-md-4" id="temp'.$res['library_id'].'">'
+                    . '<label>'.$res['text'].'</label>'
+                    . '<input class="form-control" disabled type="text" value="'.$res['name'].'">'
+                    . '<input type="hidden" name="info['.$this->request->post['num'].']['.$res['itemName'].']" value="'.trim($res['id']).'"/>'
+                  . '</div>';
+        }
+        echo $list;
+    }
 }
 

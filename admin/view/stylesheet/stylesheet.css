@@ -41,6 +41,29 @@ h1, h2, h3, h4, h5, h6, p {
     padding-right: 15px;
 }
 
+.cpbItem{
+    cursor: pointer;
+}
+.searchItem{
+    cursor: pointer;
+    padding: 3px 8px;
+}
+.searchItem:hover{
+    background-color: rgba(100, 100, 100 , 0.25);
+}
+
+.pag-block{
+    position: fixed;
+    bottom: 3%;
+    background: #8fbb6c;
+    padding: 10px;
+    border-radius: 10px;
+    opacity: 0.67;
+}
+.pag-block:hover{
+    opacity: 1;
+}
+
 .editForm{
     margin-bottom: 5px;
 }
