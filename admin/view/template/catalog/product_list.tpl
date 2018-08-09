@@ -250,13 +250,13 @@
           </div>
         </form>
         <div class="row">
-          <div class="col-sm-6 text-left"><?php echo $pagination; ?></div>
+          <div class="pag-block hidden-xs"><?php echo $pagination; ?></div>
+          <div class="col-sm-6 text-left hidden-sm hidden-lg hidden-md"><?php echo $pagination; ?></div>
           <div class="col-sm-6 text-right"><?php echo $results; ?></div>
         </div>
       </div>
     </div>
   </div>
-  <?php echo $productModal;?>
   <div class="modal fade" id="proDescription" tabindex="-1" role="dialog" aria-labelledby="proDescriptionLabel">
         <div class="modal-dialog" role="document">
           <div class="modal-content">

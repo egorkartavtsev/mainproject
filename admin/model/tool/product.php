@@ -167,6 +167,7 @@ class ModelToolProduct extends Model {
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."libraries WHERE library_id = '".$id."'");
         $result['text'] = $sup->row['text'];
         $result['description'] = $sup->row['description'];
+        $result['settings']['smart'] = $sup->row['smart'];
         $result['settings']['top_nav'] = $sup->row['top_nav'];
         $result['settings']['name'] = $sup->row['text'];
         $result['settings']['library_id'] = $sup->row['library_id'];
@@ -391,16 +392,8 @@ class ModelToolProduct extends Model {
         $this->db->query("UPDATE ".DB_PREFIX."product_type SET text = '".$temp."' WHERE type_id = ".(int)$type);
     }
     
-    public function savelibrName($name, $library_id) {
-        $this->db->query("UPDATE ".DB_PREFIX."libraries SET text = '".$name."' WHERE library_id = ".(int)$library_id);
-    }
-    
     public function saveShowNav($temp, $type) {
         $this->db->query("UPDATE ".DB_PREFIX."product_type SET top_nav = ".(int)$temp." WHERE type_id = ".(int)$type);
-    }
-    
-    public function saveLibrShowNav($show, $library_id) {
-        $this->db->query("UPDATE ".DB_PREFIX."libraries SET top_nav = ".(int)$show." WHERE library_id = ".(int)$library_id);
     }
     
     public function saveTemp($temp, $type) {
@@ -616,4 +609,31 @@ class ModelToolProduct extends Model {
         return $result;
     }
     
+    public function librSetSave($data) {
+        $this->db->query("UPDATE ".DB_PREFIX."libraries SET ".$data['target']." = '".$data['value']."' WHERE library_id = ".(int)$data['library_id']);
+    }
+    
+    public function getSmartVariants($req, $item) {
+        $query = "SELECT * FROM ".DB_PREFIX."lib_fills WHERE item_id = ".(int)$item." ";
+        foreach ($req as $word){
+            $query.="AND (LOCATE('".$this->db->escape($word)."', name) OR LOCATE('".$this->db->escape($word)."', translate) )";
+        }
+        $result = $this->db->query($query);
+        return $result->rows;
+    }
+    
+    public function getSmartVarParents($req) {
+        $result = array();
+        $sup = $this->db->query("SELECT *, (SELECT ls.text FROM ".DB_PREFIX."lib_struct ls WHERE lf.item_id = ls.item_id) AS text FROM ".DB_PREFIX."lib_fills lf WHERE lf.id = ".(int)$req);
+        $id = (int)$sup->row['id'];
+        $goal = (int)$sup->row['parent_id'];
+        while ($goal>0) {
+            $sup = $this->db->query("SELECT *, (SELECT ls.text FROM ".DB_PREFIX."lib_struct ls WHERE lf.item_id = ls.item_id) AS text, (SELECT ls.name FROM ".DB_PREFIX."lib_struct ls WHERE lf.item_id = ls.item_id) AS itemName FROM ".DB_PREFIX."lib_fills lf WHERE lf.id = ".(int)$goal);            
+            $result[] = $sup->row;
+            $id = (int)$sup->row['id'];
+            $goal = (int)$sup->row['parent_id'];
+        }
+        
+        return $result;
+    }
 }

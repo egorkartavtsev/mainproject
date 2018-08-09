@@ -781,8 +781,10 @@ class ControllerProductionCatalog extends Controller {
             if($data['complect']!='') {
                 $this->load->model('complect/complect');
                 if ($data['comp_price']=='') {
-                    $sup = $this->db->query("SELECT id FROM ".DB_PREFIX."complects WHERE heading = '".$data['complect']."'")->row['id'];
-                    $kit = $this->model_complect_complect->getComplect($sup);
+                    $sup = $this->db->query("SELECT id FROM ".DB_PREFIX."complects WHERE heading = '".$data['complect']."'");
+                    if($sup->num_rows){
+                        $kit = $this->model_complect_complect->getComplect($sup->row['id']);
+                    }
                 } else {
                     $kit = $this->model_complect_complect->getComplect($data['complect']); 
                 }

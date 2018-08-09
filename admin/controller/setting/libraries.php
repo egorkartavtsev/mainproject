@@ -190,5 +190,10 @@ class ControllerSettingLibraries extends Controller {
         echo $res;
     }
     
+    public function librSetSave() {
+        $this->load->model('tool/product');
+        $this->model_tool_product->librSetSave($this->request->post);
+        echo "Готово";
+    }
 }
 

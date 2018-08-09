@@ -57,6 +57,50 @@ function addOption(){
     });
 }
 $(document).ready(function() {
+    $(document).on('input', '[inp_type=smart]', function(){
+        var inp = $(this);
+        var dD = inp.parent().find("#dropD");
+        if(inp.val()!==''){
+            ajax({
+                    url:"index.php?route=tool/formTool/getSmartVariants&token="+getURLVar('token'),
+                    statbox:"status",
+                    method:"POST",
+                    data:
+                    {
+                        value: inp.val(),
+                        item: inp.attr('item')
+                    },
+                   success:function(data){
+                       dD.find("#devList").html(data); 
+                       dD.show('slow', function(){});
+                   }
+                })
+        } else{
+            dD.hide('fast', function(){});
+        }
+    })
+        
+    $(document).on('click', '[li-type="smartItem"]', function(){
+        $(this).parent().parent().hide('fast', function(){});
+        var item = $(this);
+        var totalPar = item.parent().parent().parent().parent();
+        var formgroup = item.parent().parent().parent();
+        ajax({
+            url:"index.php?route=tool/formTool/getSmartVarParents&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data:{
+                fill: item.attr('fill'),
+                num: totalPar.attr('num')
+            },
+           success:function(data){
+               formgroup.find('input').val(item.attr('fill'));
+               formgroup.find('[inp_type=smart]').val(item.text());
+               totalPar.find('#temp'+item.attr('library')).remove();
+               formgroup.after(data);
+           }
+        })
+    })
     
     $(document).on('click', '[btn_type=copyToSend]', function(){
         copyLinkToSend($(this), $(this).attr('data-text'));
@@ -753,62 +797,79 @@ $(document).ready(function() {
         });
     })
     
-    //libr change Name
-    $(document).on('input', '#librName', function(){
+    $(document).on('input', '[inp_type=librSettInp]', function(){
+        if($(this).val()!==''){
+            $(this).parent().parent().find('button').removeAttr('disabled');
+        }
+    })
+    $(document).on('change', '[inp_type=librSettSlct]', function(){
         $(this).parent().parent().find('button').removeAttr('disabled');
     })
     
     //option templName save
-    $(document).on("click", "[btn_type=librNameSave]", function(){
+    $(document).on("click", "[btn_type=librSetSave]", function(){
         var button = $(this);
-        var tempName = button.parent().find('input').val();
-        var type_id = button.parent().find('input').attr('type_id');
+        var target = button.attr('target');
+        if(button.parent().find('input').val()){
+            var value = button.parent().find('input').val();
+            var type_id = button.parent().find('input').attr('type_id');
+        } else {
+            var value = button.parent().find('select').val();
+            var type_id = button.parent().find('select').attr('type_id');
+        }
         ajax({
-            url:"index.php?route=setting/libraries/savelibrName&token="+getURLVar('token'),
+            url:"index.php?route=setting/libraries/librSetSave&token="+getURLVar('token'),
             statbox:"status",
             method:"POST",
-            data: {librName: tempName, library_id: type_id},
+            data: {value: value, library_id: type_id, target:target},
             success:function(data){
                 button.attr('disabled', 'disabled');
+                alert(data);
             }
         });
     })
+    
+    //libr change Name
+//    $(document).on('input', '#librName', function(){
+//        $(this).parent().parent().find('button').removeAttr('disabled');
+//    })
+//    
+//    //option templName save
+//    $(document).on("click", "[btn_type=librNameSave]", function(){
+//        var button = $(this);
+//        var tempName = button.parent().find('input').val();
+//        var type_id = button.parent().find('input').attr('type_id');
+//        ajax({
+//            url:"index.php?route=setting/libraries/savelibrName&token="+getURLVar('token'),
+//            statbox:"status",
+//            method:"POST",
+//            data: {librName: tempName, library_id: type_id},
+//            success:function(data){
+//                button.attr('disabled', 'disabled');
+//            }
+//        });
+//    })
     
     //option tempName
-    $(document).on('change', '#showNav', function(){
-        $(this).parent().parent().find('button').removeAttr('disabled');
-    })
-    
-    //option show to top-navigation save
-    $(document).on("click", "[btn_type=showNavSave]", function(){
-        var button = $(this);
-        var show = button.parent().find('select').val();
-        var type_id = button.parent().find('select').attr('type_id');
-        ajax({
-            url:"index.php?route=setting/prodtypes/saveShowNav&token="+getURLVar('token'),
-            statbox:"status",
-            method:"POST",
-            data: {show: show, type_id: type_id},
-            success:function(data){
-                button.attr('disabled', 'disabled');
-            }
-        });
-    })
-    //option show to top-navigation save
-    $(document).on("click", "[btn_type=librShowNavSave]", function(){
-        var button = $(this);
-        var show = button.parent().find('select').val();
-        var library_id = button.parent().find('select').attr('library_id');
-        ajax({
-            url:"index.php?route=setting/libraries/saveShowNav&token="+getURLVar('token'),
-            statbox:"status",
-            method:"POST",
-            data: {show: show, library_id: library_id},
-            success:function(data){
-                button.attr('disabled', 'disabled');
-            }
-        });
-    })
+//    $(document).on('change', '#showNav', function(){
+//        $(this).parent().parent().find('button').removeAttr('disabled');
+//    })
+//    
+//    //option show to top-navigation save
+//    $(document).on("click", "[btn_type=showNavSave]", function(){
+//        var button = $(this);
+//        var show = button.parent().find('select').val();
+//        var type_id = button.parent().find('select').attr('type_id');
+//        ajax({
+//            url:"index.php?route=setting/prodtypes/saveShowNav&token="+getURLVar('token'),
+//            statbox:"status",
+//            method:"POST",
+//            data: {show: show, type_id: type_id},
+//            success:function(data){
+//                button.attr('disabled', 'disabled');
+//            }
+//        });
+//    })
     
     //add new product
     $(document).on("click", "[btn_type=addProduct]", function(){
