@@ -9,8 +9,40 @@
     </div>
     <div class="col-lg-12"><p></p></div>
     <div class="col-md-6">
-        <img src="<?php echo $image;?>" class="img-responsive img-rounded img-thumbnail thumbnail">
-    </div>
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <?php foreach($images as $img) { ?>
+                    <?php if (isset($img['main']) && $img['main'] == true) { ?> 
+                        <li data-target="#carousel-example-generic" data-slide-to="<?php echo $img['lid']?>" class="active"></li>
+                    <?php } else { ?>
+                        <li data-target="#carousel-example-generic" data-slide-to="<?php echo $img['lid']?>"></li>
+                    <?php }?>
+                <?php }?> 
+            </ol>
+                <div class="carousel-inner" role="listbox">
+                        <?php foreach($images as $img) { ?> 
+                            <?php if (isset($img['main']) && $img['main'] == true) { ?> 
+                               <div class="item active">
+                            <?php } else { ?>
+                               <div class="item ">
+                            <?php }?>
+                                <img src="<?php echo $img['thumb'];?>"class="img-thumbnail d-block w-100" />
+                            </div>   
+                        <?php }?>  
+                </div>
+                <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                    <span class="fa fa-angle-left fa-2x" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                    <span class="fa fa-angle-right fa-2x" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>            
+            </div>
+            <script type="text/javascript">
+                    $('#carousel-example-generic').carousel();    
+            </script> 
+        </div>
     <div class="col-md-6">
         <table class="table table-striped">
             <tr>

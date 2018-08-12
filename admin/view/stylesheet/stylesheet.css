@@ -786,6 +786,12 @@ div.ckeditor {
 	float: left;
 	margin-left: 20px;
 }
+.icon-plus-pupup {
+    position: absolute;
+    z-index: 5;
+    display: block;
+    top: 0px;
+}
 ::-webkit-scrollbar{
     width: 10px;
 }

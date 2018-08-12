@@ -20,8 +20,7 @@
                   <option value="<?php echo $link?>">Дата - сначала новые</option>
               </select>
             </div>
-          </div>
-
+          </div
         </div>
         <div class="row">
           <?php foreach($products as $key => $product){ ?>
