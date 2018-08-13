@@ -90,6 +90,23 @@
           </div>
         </div>     
     <?php } else { ?>
-        <?php echo '<div class="col-lg-12 text-center"><img src="sad.png" width="150"/><br><h4>К сожалению, ничего не найдено. Позвоните нам, чтобы уточнить наличие детали по телефону.<br><b>+ ‎7 (912) 475 08 70</b></h4></div>';?>
+        <div class="col-lg-12 text-center">
+            <img src="sad.png" width="150"/><br>
+            <h4>
+                К сожалению, ничего не найдено. Позвоните нам, чтобы уточнить наличие детали по телефону.<br>
+                <a href="tel: +79124750870" class="hidden-md hidden-lg btn btn-danger col-lg-6"><span><i class="fa fa-phone"></i><b>+ ‎7 (912) 475 08 70</b></span></a>
+                <span class="hidden-xs hidden-sm"><b>+ ‎7 (912) 475 08 70</b></span>
+                <div class="col-sm-12 text-center">
+                    Или любым удобным для Вас способом:<br>
+                    <a style="cursor: pointer;" href="viber://chat?number=+79124750870"><img src="<?php echo $viber;?>" width="50"></a>
+                    <a style="cursor: pointer;" href="https://wa.me/79124750870"><img src="<?php echo $whatsapp;?>" width="50"></a>
+                    <a  target="_blank" href="https://vk.com/mgnautorazbor"><img src="<?php echo $lvk;?>" width="50"></a>
+                    <a  target="_blank" href="https://www.instagram.com/autorazbor174"><img src="<?php echo $linst;?>" width="50"></a>
+                    <a  target="_blank" href="https://www.youtube.com/channel/UCNgBC4t07efN7qMYUls0fcw"><img src="<?php echo $lyt;?>" width="50"></a>
+                    <a  target="_blank" href="https://baza.drom.ru/user/AUTORAZBOR174RU"><img src="<?php echo $ldrom;?>" width="50"></a>
+                    <a  target="_blank" href="https://www.avito.ru/autorazbor174"><img src="<?php echo $lavito;?>" width="50"></a>
+                </div>
+            </h4>
+        </div>
     <?php }?>
 </div>

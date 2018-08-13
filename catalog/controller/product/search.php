@@ -5,7 +5,7 @@ class ControllerProductSearch extends Controller {
 		$this->load->model('catalog/category');
 		$this->load->model('catalog/product');
 		$this->load->model('tool/image');
-
+                $server = $this->config->get('config_url');
 		if (isset($this->request->get['search'])) {
 			$search = $this->request->get['search'];
 		} else {
@@ -433,6 +433,15 @@ class ControllerProductSearch extends Controller {
 		$data['footer'] = $this->load->controller('common/footer');
 		$data['header'] = $this->load->controller('common/header');
                 $data['byvin'] = $byvin;
+                $data['whatsapp'] = $server . 'image/whatsapp.png';
+                $data['lvk'] = $server . 'image/vk.png';
+                $data['wapp'] = $server . 'image/wapp.png';
+                $data['viber'] = $server . 'image/viber.png';
+                $data['linst'] = $server . 'image/inst.png';
+                $data['ldrom'] = $server . 'image/drom.png';
+                $data['lavito'] = $server . 'image/avito.png';
+                $data['lyt'] = $server . 'image/lyt.png';
+                
                 
 		$this->response->setOutput($this->load->view('product/search', $data));
 	}

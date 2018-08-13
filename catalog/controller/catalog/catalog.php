@@ -121,6 +121,15 @@ class ControllerCatalogCatalog extends Controller{
                 $list['suc_text'] = 'Ваша заявка успешно отправлена';
             }
             $list['modal_window'] = $this->load->view('modal_window/Modal_window');
+            $server = $this->config->get('config_url');
+            $list['whatsapp'] = $server . 'image/whatsapp.png';
+            $list['lvk'] = $server . 'image/vk.png';
+            $list['wapp'] = $server . 'image/wapp.png';
+            $list['viber'] = $server . 'image/viber.png';
+            $list['linst'] = $server . 'image/inst.png';
+            $list['ldrom'] = $server . 'image/drom.png';
+            $list['lavito'] = $server . 'image/avito.png';
+            $list['lyt'] = $server . 'image/lyt.png';
             $data['productsDiv'] = $this->load->view('catalog/showproducts', $list);
         //----------------------------------------------------------------------------------
             $this->document->setTitle($this->config->get('config_meta_title'));
@@ -132,6 +141,7 @@ class ControllerCatalogCatalog extends Controller{
             $data['content_bottom'] = $this->load->controller('common/content_bottom');
             $data['footer'] = $this->load->controller('common/footer');
             $data['header'] = $this->load->controller('common/header');
+            
         /*-------------------------------------------------------------------------------------------*/
             $this->response->setOutput($this->load->view('catalog/prodslist', $data));
             //$this->response->setOutput($this->load->view('catalog/product_page', $data));
@@ -315,6 +325,7 @@ class ControllerCatalogCatalog extends Controller{
             $list['link'] = $this->url->link('catalog/catalog/products', 'type='.$this->request->get['type']);
         }
 //        exit(var_dump($products));
+        $server = $this->config->get('config_url');
         if(count($products)){
             $list['products'] = array();
             foreach ($products as $prod){
@@ -353,9 +364,34 @@ class ControllerCatalogCatalog extends Controller{
                 }
             }
             $list['modal_window'] = $this->load->view('modal_window/Modal_window');
+            $list['whatsapp'] = $server . 'image/whatsapp.png';
+            $list['lvk'] = $server . 'image/vk.png';
+            $list['wapp'] = $server . 'image/wapp.png';
+            $list['viber'] = $server . 'image/viber.png';
+            $list['linst'] = $server . 'image/inst.png';
+            $list['ldrom'] = $server . 'image/drom.png';
+            $list['lavito'] = $server . 'image/avito.png';
+            $list['lyt'] = $server . 'image/lyt.png';
             $result = $this->load->view('catalog/showproducts', $list);
         } else {
-            $result = '<div class="col-lg-12 text-center"><img src="sad.png" width="150"/><br><h4>К сожалению, ничего не найдено. Попробуйте изменить значения фильтра или позвоните нам, чтобы уточнить наличие детали по телефону.<br><b>+ ‎7 (912) 475 08 70</b></h4></div>';
+            $result = '<div class="col-lg-12 text-center">
+            <img src="sad.png" width="150"/><br>
+            <h4>
+                К сожалению, ничего не найдено. Позвоните нам, чтобы уточнить наличие детали по телефону.<br>
+                <a href="tel: +79124750870" class="hidden-md hidden-lg btn btn-danger col-lg-6"><span><i class="fa fa-phone"></i><b>+ ‎7 (912) 475 08 70</b></span></a>
+                <span class="hidden-xs hidden-sm"><b>+ ‎7 (912) 475 08 70</b></span>
+                <div class="col-sm-12 text-center">
+                    Или любым удобным для Вас способом:<br>
+                    <a style="cursor: pointer;" href="viber://chat?number=+79124750870"><img src="'.$server . 'image/viber.png" width="50"></a>
+                    <a style="cursor: pointer;" href="https://wa.me/79124750870"><img src="'.$server . 'image/whatsapp.png" width="50"></a>
+                    <a  target="_blank" href="https://vk.com/mgnautorazbor"><img src="'.$server . 'image/vk.png" width="50"></a>
+                    <a  target="_blank" href="https://www.instagram.com/autorazbor174"><img src="'.$server . 'image/inst.png" width="50"></a>
+                    <a  target="_blank" href="https://www.youtube.com/channel/UCNgBC4t07efN7qMYUls0fcw"><img src="'.$server . 'image/lyt.png" width="50"></a>
+                    <a  target="_blank" href="https://baza.drom.ru/user/AUTORAZBOR174RU"><img src="'.$server . 'image/drom.png" width="50"></a>
+                    <a  target="_blank" href="https://www.avito.ru/autorazbor174"><img src="'.$server . 'image/avito.png" width="50"></a>
+                </div>
+            </h4>
+        </div>';
         }
         echo $result;
     }
