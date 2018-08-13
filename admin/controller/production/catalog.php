@@ -439,7 +439,7 @@ class ControllerProductionCatalog extends Controller {
 			'start'           => ($page - 1) * $this->config->get('config_limit_admin'),
 			'limit'           => $this->config->get('config_limit_admin')
 		);
-
+                $this->load->model('tool/product');        
 		$this->load->model('tool/image');
 
 		$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
@@ -452,17 +452,30 @@ class ControllerProductionCatalog extends Controller {
 			'sort'        => 'name',
 			'order'       => 'ASC'
 		);
-
+                        
 		$data['categories'] = $this->model_catalog_category->getCategories($filter_data);
                 $data['utype'] = $this->session->data['uType'];
 //                exit(var_dump($results));
 		foreach ($results as $result) {
-
-			if (is_file(DIR_IMAGE . $result['image'])) {
-				$image = $this->model_tool_image->resize($result['image'], 400, 300);
-			} else {
-				$image = $this->model_tool_image->resize('no_image.png', 400, 300);
-			}
+                        $photos = $this->model_tool_product->getProdImg($result['product_id']);
+                        $image = array();
+                        $local_id = 0;
+                        foreach($photos as $img){
+                            $image[] = array (
+                                    'thumb'         => $this->model_tool_image->resize($img['image'], 400, 300),
+                                    'main'          => $img['image']==$result['image']?TRUE:FALSE,
+                                    'lid'           => $local_id
+                            );
+                        ++$local_id;    
+                        }
+                        if (!in_array(TRUE,array_column($image,'main'))) {
+                            $image[0]['main'] = TRUE; 
+                        }
+//			if (is_file(DIR_IMAGE . $result['image'])) {
+//				$image = $this->model_tool_image->resize($result['image'], 400, 300);
+//			} else {
+//				$image = $this->model_tool_image->resize('no_image.png', 400, 300);
+//			}
                         
                         $now = time();
                         $added = strtotime($result['date_added']);
@@ -513,9 +526,8 @@ class ControllerProductionCatalog extends Controller {
                                     'status'     => $stat,
                                     'edit'       => $this->url->link('production/catalog/edit', 'token=' . $this->session->data['token'] . '&product_id=' . $result['product_id'] . $url, true)
                             );
-                        }
-		}
-
+                        }       
+		}  
 		$data['text_list'] = $this->language->get('text_list');
 		$data['text_enabled'] = $this->language->get('text_enabled');
 		$data['text_disabled'] = $this->language->get('text_disabled');
@@ -716,7 +728,7 @@ class ControllerProductionCatalog extends Controller {
 
 		$data['sort'] = $sort;
 		$data['order'] = $order;
-                
+                //exit(var_dump($data['products']));
 		$this->response->setOutput($this->load->view('catalog/product_list', $data));
 	}
         
@@ -762,6 +774,7 @@ class ControllerProductionCatalog extends Controller {
                 $data['images'][] = array(
                         'image'         => $img['image'],
                         'sort_order'    => $img['sort_order'],
+                        'popup'         => $this->model_tool_image->resize($img['image'], 1024, 768),
                         'thumb'         => $this->model_tool_image->resize($img['image'], 200, 200),
                         'lid'           => $local_id,
                         'main'          => $img['image']==$product['image']?TRUE:FALSE

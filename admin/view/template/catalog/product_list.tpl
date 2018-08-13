@@ -201,11 +201,41 @@
                       <a class="btn btn-warning" btn_type="showProd" target="<?php echo $product['product_id']; ?>" title="Информация о товаре" data-toggle="modal" data-target="#productInfoModal"><i class="fa fa-eye"></i></a>
                       <a href="<?php echo $product['edit'];?>" data-toggle="tooltip" title="<?php echo $button_edit; ?>" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
                   </td>
-                  <td class="text-center"><?php if ($product['image']) { ?>
-                    <img src="<?php echo $product['image'].'?'.time(); ?>" alt="<?php echo $product['name']; ?>" class="img-thumbnail" />
-                    <?php } else { ?>
-                    <span class="img-thumbnail list"><i class="fa fa-camera fa-2x"></i></span>
-                    <?php } ?></td>
+                  <td class="text-center">
+                    <div id="carousel-example-generic<?php echo $product['product_id']; ?>" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <?php foreach($product['image'] as $image) { ?>
+                                <?php if (isset($image['main']) && $image['main'] == true) { ?> 
+                                    <li data-target="#carousel-example-generic<?php echo $product['product_id']; ?>" data-slide-to="<?php echo $image['lid']?>" class="active"></li>
+                                <?php } else { ?>
+                                    <li data-target="#carousel-example-generic<?php echo $product['product_id']; ?>" data-slide-to="<?php echo $image['lid']?>"></li>
+                                <?php }?>
+                            <?php }?> 
+                        </ol>
+                        <div class="carousel-inner" role="listbox">
+                                <?php foreach($product['image'] as $image) { ?> 
+                                    <?php if (isset($image['main']) && $image['main'] == true) { ?> 
+                                       <div class="item active">
+                                    <?php } else { ?>
+                                       <div class="item ">
+                                    <?php }?>
+                                        <img src="<?php echo $image['thumb'];?>" alt="<?php echo $product['name']; ?>" class="img-thumbnail d-block w-100" />
+                                    </div>   
+                                <?php }?>  
+                        </div>
+                        <a class="left carousel-control" href="#carousel-example-generic<?php echo $product['product_id']; ?>" role="button" data-slide="prev">
+                            <span class="fa fa-angle-left fa-2x" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-example-generic<?php echo $product['product_id']; ?>" role="button" data-slide="next">
+                            <span class="fa fa-angle-right fa-2x" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>            
+                    </div>
+                    <script type="text/javascript" async>
+                            $('#carousel-example-generic<?php echo $product['product_id']; ?>').carousel();    
+                    </script>     
+                  </td>
                   
                   <td class="text-left"><a href="<?php echo $go_site; ?><?php echo $product['product_id']; ?>" target="blank" data-toggle="tooltip" title="" data-original-title="Перейти к продукту"><?php echo $product['name']; ?></a></td>
 
@@ -269,7 +299,7 @@
             </div>
           </div>
         </div>
-    </div>
+    </div>                     
   <script type="text/javascript"><!--
       
       $('#btn-clear-filters').on('click', function(){

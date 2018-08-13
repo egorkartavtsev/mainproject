@@ -57,12 +57,13 @@
                             <?php if(isset($images)) { foreach($images as $img) { ?>
                                 <div style="float: left;" class="col-sm-3" data-trigger="image_elm">
                                     <a href="" id="thumb-image<?php echo $img['lid']?>" data-toggle="image" class="img-thumbnail" rotate_now="" image_src="<?php echo $img['image'];?>" data-toggle="popover" <?php if($img['main']){echo 'style="box-shadow: 0px 0px 50px #4CAF50;"';} ?>>
-                                       <img src="<?php echo $img['thumb'].'?'.time();?>" alt="" title="" class="img-responsive" data-placeholder="<?php echo $placeholder; ?>" />
+                                       <img src="<?php echo $img['thumb'].'?'.time();?>" alt="" title="" class="img-responsive" data-placeholder="<?php echo $placeholder; ?>"
                                     </a>
                                     <div>
                                        <input type="hidden" data-trigger="sort_input" class="form-control" name="image[<?php echo $img['lid']?>][sort_order]" value="<?php echo $img['sort_order']; ?>"/>
                                     </div>
                                     <input type="hidden" data-toggle='input-image' id="input-image<?php echo $img['lid']?>" name="image[<?php echo $img['lid']?>][img]" value="<?php echo $img['image']; ?>"/>
+                                    <a class="icon-plus-pupup" href="<?php echo $img['popup'].'?'.time();?>"><i class="fa fa-search-plus fa-2x" aria-hidden="true"></i></a>
                                 </div>
                             <?php ++$count; ?>
                             <?php } } ?>
@@ -206,6 +207,8 @@
         </div>
       </div>
     </div>
+    <script type="text/javascript" src="view/javascript/jquery/magnific/jquery.magnific-popup.min.js"></script>
+    <link href="view/javascript/jquery/magnific/magnific-popup.css" type="text/css" rel="stylesheet"/>
     <script type="text/javascript" src="view/javascript/jquery/jquery-ui/jquery-ui.js"></script>
     <link href="view/javascript/jquery/jquery-ui/jquery-ui.css" type="text/css" rel="stylesheet"/>
     <script type="text/javascript">

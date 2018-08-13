@@ -1177,6 +1177,15 @@ $(document).ready(function() {
             });
         }});
     });
+    $(document).ready(function(){
+        $('.icon-plus-pupup').magnificPopup({
+		type: 'image',
+		closeOnContentClick: true,
+		image: {
+			verticalFit: false
+		}
+	});
+    });   
 })
 
 function addLibItem(){
