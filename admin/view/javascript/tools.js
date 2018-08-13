@@ -96,7 +96,9 @@ $(document).ready(function() {
            success:function(data){
                formgroup.find('input').val(item.attr('fill'));
                formgroup.find('[inp_type=smart]').val(item.text());
-               totalPar.find('#temp'+item.attr('library')).remove();
+               $('.temp'+item.attr('library')).each(function(){
+                   $(this).remove();
+               });
                formgroup.after(data);
            }
         })

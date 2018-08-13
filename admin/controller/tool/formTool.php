@@ -176,7 +176,7 @@ class ControllerToolFormTool extends Controller {
         $result = $this->model_tool_product->getSmartVarParents($req);
         $list = '';
         foreach ($result as $res) {
-            $list.='<div class="form-group-sm col-md-4" id="temp'.$res['library_id'].'">'
+            $list.='<div class="form-group-sm col-md-4 temp'.$res['library_id'].'" id="">'
                     . '<label>'.$res['text'].'</label>'
                     . '<input class="form-control" disabled type="text" value="'.$res['name'].'">'
                     . '<input type="hidden" name="info['.$this->request->post['num'].']['.$res['itemName'].']" value="'.trim($res['id']).'"/>'
