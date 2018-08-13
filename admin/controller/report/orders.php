@@ -43,7 +43,15 @@ class ControllerReportOrders extends Controller{
         $data['href'].= $url;
         $data['orders'] = $this->model_tool_order->getOrders($offset, $filter);
         $data['total_orders'] = $this->model_tool_order->getTotalOrders($filter);
-        $data['pagination'] = $this->model_tool_order->pagination($data['total_orders'], $page, $url);
+        
+        $pagination = new Pagination();
+        $pagination->total = $data['total_orders'];
+        $pagination->page = $page;
+        $pagination->limit = 30;
+        $pagination->url = $this->url->link('report/orders', 'token=' . $this->session->data['token'] . $url . '&page={page}', true);
+
+        $data['pagination'] = $pagination->render();
+        
         $this->response->setOutput($this->load->view('sale/orders', $data));
     }
 }

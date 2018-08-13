@@ -106,19 +106,16 @@ $(document).ready(function() {
                         if(parseInt($(this).attr('target_req'))){
                             allow.push(false);
                             inval = $(this).parent();
+                            $(this).text('Продолжить');
                         } else {
                             allow.push(true);
                             $(this).parent().removeClass('invalid');
+                            $(this).text('Продолжить');
                         }
                     } else{
-                        if(validation($(this).attr('field_type'), $(this).val())){
-                            allow.push(true);
-                            $(this).parent().removeClass('invalid');
-                            form.push($(this).attr('name') + ':' + $(this).val());
-                        } else {
-                            allow.push(false);
-                            inval = $(this).parent();
-                        }
+                        allow.push(true);
+                        $(this).parent().removeClass('invalid');
+                        form.push($(this).attr('name') + ':' + $(this).val());
                     }
                 });
                 if ($.inArray(false, allow)<0){

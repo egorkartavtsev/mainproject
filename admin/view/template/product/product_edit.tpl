@@ -7,14 +7,14 @@
             <h1><?php echo $name; ?></h1>
             <?php if($complect != '') { ?>
                 <br>
-                <?php if($comp_price=='') { ?>
-                    <h4><span class="label label-primary">комплектующее</span> - <span class="label label-primary"><a target="blank" href="<?php echo $clink;?>" style="color: #FFFFFF!important;"><?php echo $cname;?></a></span></h4>
-                <?php } else { ?>
+                <?php if($isHead) { ?>
                     <h4><span class="label label-primary">головной товар в комплекте</span></h4>
+                <?php } else { ?>
+                    <h4><span class="label label-primary">комплектующее</span> - <span class="label label-primary"><a target="blank" href="<?php echo $clink;?>" style="color: #FFFFFF!important;"><?php echo $cname;?></a></span></h4>
                 <?php } ?>
             <?php } ?>
             <?php if($complect === '') { ?><br><button class="btn btn-sm btn-success" type="button" data-toggle="modal" data-target="#compModal"><i class="fa fa-plus-circle"></i> прикрепить к комплекту</button><?php } ?>
-            <?php if($complect != '' && $comp_price=='') { ?>
+            <?php if($complect != '' && !$isHead) { ?>
                 <button class="btn btn-sm btn-danger" id="remCopml"><i class="fa fa-minus-circle"></i> открепить</button>
             <?php } ?>
             <ul class="breadcrumb">

@@ -34,7 +34,7 @@
                         <label>&nbsp;</label><br><button class="btn btn-success" disabled btn_type="tempNameSave"><i class="fa fa-floppy-o"></i></button>
                   </div>
                   <div class="col-lg-6 form-group">
-                      <form action="index.php?route=common/desctemp&token=<?php echo $token_add;?>" method="POST">
+                      <form action="index.php?route=common/desctemp&token=<?php echo $token;?>" method="POST">
                         <label>Шаблон описания продуктов данного типа:</label>
                         <textarea name="template" data-lang="1" class="form-control summernote"><?php echo $type['desctemp']; ?></textarea>
                         <p></p>

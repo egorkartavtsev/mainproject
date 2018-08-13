@@ -486,10 +486,9 @@ class ModelToolForms extends Model {
     public function updateProduct($info, $id) {
         //exit(var_dump($info));
         $this->load->model('tool/product');
+        $this->load->model('tool/complect');
         $links = array();
         $vin = $this->db->query("SELECT vin FROM ".DB_PREFIX."product WHERE product_id = ".(int)$id);
-        $this->load->model('tool/complect');
-        $this->model_tool_complect->compReprice($vin->row['vin']);
         $sup = $this->db->query("SELECT temp, desctemp FROM ".DB_PREFIX."product_type WHERE type_id = (SELECT structure FROM ".DB_PREFIX."product WHERE product_id = ".(int)$id.")");
         $name = $sup->row['temp'];
         $description = $sup->row['desctemp'];
@@ -529,8 +528,8 @@ class ModelToolForms extends Model {
         foreach($links as $link){
             $this->db->query("INSERT INTO ".DB_PREFIX."product_to_lib SET product_id = ".(int)$id.", fill_id = ".(int)$link." ");
         }
-        
         $this->db->query("INSERT INTO ".DB_PREFIX."product_history SET sku = '".$vin->row['vin']."', manager = '".$info['manager']."', date_modify = NOW(), type_modify = 'Обновление товара' ");
+        $this->model_tool_complect->repriceById($id);        
     }
     
     public function createFill($parent, $name) {

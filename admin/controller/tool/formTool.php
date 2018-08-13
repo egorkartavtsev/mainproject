@@ -108,10 +108,18 @@ class ControllerToolFormTool extends Controller {
             $this->load->model('tool/product');
             $total = $this->model_tool_product->searchingProds($request);
             if(!empty($total)){
+                $output.='<tr>'
+                            . '<td>Наимен.</td>'
+                            . '<td>Склад</td>'
+                            . '<td>К-во</td>'
+                            . '<td class="text-center"><i class="fa fa-android"></i></td>'
+                        . '</tr>';
                 foreach ($total as $prod) {
                     if($i<30){
                         $output.='<tr>'
                                     . '<td>'.$prod['name'].'</td>'
+                                    . '<td>'.$prod['stock'].'</td>'
+                                    . '<td>'.$prod['quantity'].'</td>'
                                     . '<td><a class="btn btn-warning" btn_type="showProd" target="'.$prod['product_id'].'" title="Информация о товаре" data-toggle="modal" data-target="#productInfoModal"><i class="fa fa-eye"></i></a></td>'
                                 . '</tr>';
                         ++$i;

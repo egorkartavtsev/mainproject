@@ -27,16 +27,16 @@
                           <td><?php echo $order['date_added'] ?></td>
                       </tr>
                       <tr>
+                          <td>Фамилия</td>
+                          <td><?php echo $order['lastname'] ?></td>
+                      </tr>
+                      <tr>
                           <td>Имя</td>
                           <td><?php echo $order['firstname'] ?></td>
                       </tr>
                       <tr>
                           <td>Отчество</td>
                           <td><?php echo $order['patron'] ?></td>
-                      </tr>
-                      <tr>
-                          <td>Фамилия</td>
-                          <td><?php echo $order['lastname'] ?></td>
                       </tr>
                       <tr>
                           <td>Регион</td>
@@ -172,7 +172,7 @@
             },
             success:function(data){
                 if(data){
-                    //$('#debug').html(data);
+//                    $('#debug').html(data);
                     location.reload();
                 } else {
                     alert('Товар с таким артикулом не найден либо отсутствует в наличии.');

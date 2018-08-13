@@ -66,9 +66,8 @@ class ControllerReportOrdersInfo extends Controller{
             foreach($comp['prods'] as $prod){
                 $result = $this->model_tool_order->update_prod($prod['vin'], 2);
             }
-        } else {
         }
-        $result = $this->model_tool_order->added_prod($prod[''], $this->request->post['order']);
+        $result = $this->model_tool_order->added_prod($this->request->post['vin'], $this->request->post['order']);
         echo $result;
     }
     public function delete_prod() {
@@ -102,6 +101,7 @@ class ControllerReportOrdersInfo extends Controller{
                                 'manager' => $this->session->data['username'],
                                 'location' => '',
                                 'summ' => $prod['factquantity']*$compl['factprice'],
+                                'date' => date("d.m.Y"),
                                 'city' => $prods['city'],
                                 'client' => $prods['lastname'].' '.$prods['firstname'].' '.$prods['patron']
                             );
@@ -118,6 +118,7 @@ class ControllerReportOrdersInfo extends Controller{
                             'wherefrom' => 'сайт',
                             'manager' => $this->session->data['username'],
                             'location' => '',
+                            'date' => date("d.m.Y"),
                             'summ' => $prod['factquantity']*$prod['price'],
                             'city' => $prods['city'],
                             'client' => $prods['lastname'].' '.$prods['firstname'].' '.$prods['patron']

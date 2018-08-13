@@ -508,12 +508,12 @@ class ModelToolProduct extends Model {
     public function searchingProds($request) {
         $reqwords = explode(" ", $request);
 
-        $query = "SELECT pd.name AS name, p.vin AS vin, p.product_id FROM ".DB_PREFIX."product_description pd "
+        $query = "SELECT pd.name AS name, p.stock AS stock, p.quantity AS quantity, p.vin AS vin, p.product_id FROM ".DB_PREFIX."product_description pd "
                     . "LEFT JOIN ".DB_PREFIX."product p "
                         . "ON pd.product_id = p.product_id "
                     . "WHERE !LOCATE('complect', p.vin) ";
         foreach ($reqwords as $word){
-            $query.="AND (LOCATE ('" . $this->db->escape($word) . "', pd.name) OR p.vin = '".$this->db->escape($word)."') ";
+            $query.="AND (LOCATE('" . $this->db->escape($word) . "', pd.name) OR p.vin = '".$this->db->escape($word)."') ";
         }
         $result = $this->db->query($query);
         return $result->rows;
@@ -598,7 +598,7 @@ class ModelToolProduct extends Model {
         if($result['quantity'] == '0' && $result['status'] == '0'){
             $sisup = $this->db->query("SELECT * FROM ".DB_PREFIX."sales_info WHERE sku = '".$result['vin']."'");
             if($sisup->num_rows){
-                $result['date_sale'] = date("d.m.Y",strtotime($sisup->row['date_mod']));
+                $result['date_sale'] = date("d.m.Y",strtotime($sisup->row['date']));
             } else {
                 $result['date_sale'] = FALSE;
             }

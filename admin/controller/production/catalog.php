@@ -769,29 +769,27 @@ class ControllerProductionCatalog extends Controller {
                 ++$local_id;
             }
             $data['mainimage'] = $product['image']!=''?$product['image']:'no_image.png';
-            if($product['avitoname']==''){
+            if($product['avitoname']=='' && isset($mtr->row['name']) && isset($mtr->row['translate'])){
                 $brtr = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE name = '".$product['brand']."'");
                 $mtr = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE name = '".$product['model']."'");
                 $data['avitoname'] = $product['podcateg'].' '.$mtr->row['name'].' '.$mtr->row['translate'];
             } else {
                 $data['avitoname'] = $product['avitoname'];
             }
-            $data['complect'] = $product['comp'];
+            $this->load->model('complect/complect');
+            $this->load->model('tool/complect');
             $data['comp_price'] = $product['comp_price'];  
-            if($data['complect']!='') {
-                $this->load->model('complect/complect');
-                if ($data['comp_price']=='') {
-                    $sup = $this->db->query("SELECT id FROM ".DB_PREFIX."complects WHERE heading = '".$data['complect']."'");
-                    if($sup->num_rows){
-                        $kit = $this->model_complect_complect->getComplect($sup->row['id']);
-                    }
-                } else {
-                    $kit = $this->model_complect_complect->getComplect($data['complect']); 
-                }
+            if($this->model_tool_complect->isCompl($product['vin'])) {
+                $sup = $this->db->query("SELECT id FROM ".DB_PREFIX."complects WHERE heading = '".$product['comp']."' OR heading = '".$product['vin']."'");
+                $kit = $this->model_complect_complect->getComplect($sup->row['id']);
                 $data['cname'] = $kit['name'];
                 $data['clink'] = $this->url->link('complect/complect/edit', 'token=' . $this->session->data['token'] . '&complect=' . $kit['id'], true);
                 $data['plink'] = $this->url->link('production/catalog/edit', 'token=' . $this->session->data['token'] . '&product_id=' . $this->db->query("SELECT product_id FROM ".DB_PREFIX."product WHERE vin = '".$kit['heading']."'")->row['product_id']);
                 $data['kit'] = $kit;
+                $data['complect'] = $product['comp'];
+                $data['isHead'] = $this->model_tool_complect->isHeading($product['vin']);
+            } else {
+                $data['complect'] = $product['comp'];
             }
             $data['placeholder'] = $this->model_tool_image->resize('no_image.png', 200, 200);     
             $this->response->setOutput($this->load->view('product/product_edit', $data));
@@ -970,10 +968,11 @@ class ControllerProductionCatalog extends Controller {
         if($compl){
             $this->load->model('tool/image');
             $image = $this->model_tool_image->resize($compl['image'], 200, 200);
-            $html.= '<div class="col-sm-3">';
-                $html.='<img src="'.trim($image).'" class="thumb" alt="" title="" data-placeholder="'.$this->model_tool_image->resize('no_image.png', 200, 200).'" />';
+            $html.= '<div class="col-sm-12"><p></p></div>';
+            $html.= '<div class="col-sm-4">';
+                $html.='<img src="'.trim($image).'" class="thumbnail img-responsive" alt="" title="" data-placeholder="'.$this->model_tool_image->resize('no_image.png', 200, 200).'" />';
             $html.= '</div>';
-            $html.= '<div class="col-sm-9">';
+            $html.= '<div class="col-sm-8">';
                 $html.= '<h3>'.$compl['name'].'</h3>';
                 $html.= '<p>Стоимость: <span class="label label-primary">'.$compl['price'].'</span></p>';
                 $html.= '<p>Скидка на комплект: <span class="label label-primary">'.$compl['sale'].'</span></p>';
@@ -990,18 +989,18 @@ class ControllerProductionCatalog extends Controller {
         $this->load->model('tool/product');
         $info = $this->model_tool_product->getProdStructure($this->request->post, $this->request->get['product_id']);
         $this->model_tool_forms->updateProduct($info, $this->request->get['product_id']);
-        $info['options']['avitoname'] = $this->request->post['info']['avitoname'];
-        $info['options']['vin'] = $info['vin'];
-        $info['options']['pid'] = $this->request->get['product_id'];
-        //exit(var_dump($info));
-        if($this->user->hasPermission('', 'common/autoload') && $this->request->post['allowavito']==='да'){
-            $this->model_tool_xml->avitoFind($info);
-        }
-        $this->model_tool_xml->ARUFind($info);
+        /************** - XML edit - *****************/
+            $info['options']['avitoname'] = $this->request->post['info']['avitoname'];
+            $info['options']['vin'] = $info['vin'];
+            $info['options']['pid'] = $this->request->get['product_id'];
+            //exit(var_dump($info));
+            if($this->user->hasPermission('', 'common/autoload') && $this->request->post['allowavito']==='да'){
+                $this->model_tool_xml->avitoFind($info);
+            }
+            $this->model_tool_xml->ARUFind($info);
+        /*******************************/
         
-//        $this->model_tool_xml->findARPart($alinfo);
         $this->response->redirect($this->url->link('production/catalog', 'token=' . $this->session->data['token'], true));
-//        exit(var_dump($this->request->post));
     }
     public function rotate_image(){
         $image_src = $this->request->post['image_src'];
