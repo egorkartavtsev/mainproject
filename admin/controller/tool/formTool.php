@@ -95,6 +95,7 @@ class ControllerToolFormTool extends Controller {
         $data = $this->model_tool_product->getProdInfo($this->request->post['prod']);
         $photos = $this->model_tool_product->getProdImg($this->request->post['prod']);
         $local_id = 0; 
+        $images = array();
         foreach($photos as $img){
             $images[] = array (
                     'thumb'         => $this->model_tool_image->resize($img['image'], 400, 300),
@@ -103,8 +104,14 @@ class ControllerToolFormTool extends Controller {
             );
         ++$local_id;    
         }
-        if (!in_array(TRUE,array_column($images,'main'))) {
-            $images[0]['main'] = TRUE; 
+        if(!count($images)){
+            $images[] = array (
+                    'thumb'         => $this->model_tool_image->resize('no-image.png', 400, 300),
+                    'main'          => TRUE,
+                    'lid'           => 0
+            );
+        } elseif (!in_array(TRUE,array_column($images,'main'))) {
+                $images[0]['main'] = TRUE;
         }
         $data['images'] = $images;
         echo $this->load->view('form/prodCard', $data);

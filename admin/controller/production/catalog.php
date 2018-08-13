@@ -468,9 +468,7 @@ class ControllerProductionCatalog extends Controller {
                             );
                         ++$local_id;    
                         }
-                        if (!in_array(TRUE,array_column($image,'main'))) {
-                            $image[0]['main'] = TRUE; 
-                        }
+                        
 //			if (is_file(DIR_IMAGE . $result['image'])) {
 //				$image = $this->model_tool_image->resize($result['image'], 400, 300);
 //			} else {
@@ -490,18 +488,26 @@ class ControllerProductionCatalog extends Controller {
                             $saleDate = 'В наличии';
                         }
                         $stat ='';
-                        switch ($result['status']):
-                        case 0:
-                            $stat=$this->language->get('text_disabled');
-                            break;
-                        case 1:
-                            $stat=$this->language->get('text_enabled');
-                            break;
-                        case 2:
-                            $stat=$this->language->get('text_reserve');
-                            break;
-                        endswitch;
-                        
+                        switch ($result['status']){
+                            case 0:
+                                $stat=$this->language->get('text_disabled');
+                                break;
+                            case 1:
+                                $stat=$this->language->get('text_enabled');
+                                break;
+                            case 2:
+                                $stat=$this->language->get('text_reserve');
+                                break;
+                        }
+                        if(!count($image)){
+                            $image[] = array (
+                                    'thumb'         => $this->model_tool_image->resize('no-image.png', 400, 300),
+                                    'main'          => TRUE,
+                                    'lid'           => 0
+                            );
+                        } elseif (!in_array(TRUE,array_column($image,'main'))) {
+                                $image[0]['main'] = TRUE;
+                        }
                         if($result['product_id']!=NULL){
                             $data['products'][] = array(
                                     'product_id' => $result['product_id'],
