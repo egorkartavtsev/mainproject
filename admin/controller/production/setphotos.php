@@ -11,139 +11,116 @@ private $error = array();
         
         public function upload() {
             
-            $piq = $this->db->query("SELECT `product_id` FROM ".DB_PREFIX."product WHERE `vin` = '".$_POST['vin']."'");
-			//exit(var_dump($piq));
-			if (!empty($piq->rows)) {
-				$product_id = $piq->row['product_id'];
-				/**************************************/
-				$vins = array();
-				$query = $this->db->query("SELECT `vin` AS vin FROM ".DB_PREFIX."product WHERE 1");
-				$vins = $query->rows;
-				/*************************************/
-				$uploaddir = DIR_IMAGE.'catalog/demo/production/';
-				$err = 0;
-				$error = 0;
-				$error_info = '';
-				$dirs = scandir($uploaddir);
-				mkdir(DIR_IMAGE . "catalog/demo/production/".$_POST['vin']);
-				
-				foreach ($vins as $numb) {
-					if ($_POST['vin'] == $numb['vin']) {
-						$err++;
-					}
-				}
-				if ($err = 0){
-					$error_info = 'Такого товара не существует. Проверьте правильность введения номера или добавьте товар в соответствующем разделе.';
-					$error = 1;
-				}
-				elseif ($err > 1) {
-					$error_info = 'Товаров с таким номером более одного. Ошибка на сервере. Свяжитесь с разработчиком';
-					$error = 1;
-				}
-				else {
-					$err = 0;
-					foreach ($dirs as $numb) {
-						if ($_POST['vin'] == $numb){
-							$err++;
-						}
-					}
-					if ($err > 0){
-						$error_info = 'Данный товар уже есть базе, и папка с фотографиями уже сознада для него.';
-						$error = 1;
-					}
-					else {
-						
-						$vin = $this->request->post['vin'];
-						$uploadtmpdir = DIR_IMAGE . "tmp/";
-						$uploaddir.=$vin.'/';
-									
-						$photo = array();
+            $piq = $this->db->query("SELECT `product_id`, image FROM ".DB_PREFIX."product WHERE `vin` = '".$this->request->post['vin']."'");
+            //exit(var_dump($piq));
+            if ($piq->num_rows) {
+                $product_id = $piq->row['product_id'];
+                /*************************************/
+                $uploaddir = DIR_IMAGE.'catalog/demo/production/';
+                $err = 0;
+                $error = 0;
+                $error_info = '';
+                $dirs = scandir($uploaddir);
+//                echo var_dump(in_array($this->request->post['vin'], $dirs)).'<br><br>';
+//                exit(var_dump($dirs));
+                if(!in_array($this->request->post['vin'], $dirs)){
+                    mkdir($uploaddir);
+                }
+                $uploaddir.= $this->request->post['vin'];
+                if (!$piq->num_rows){
+                    $error_info = 'Такого товара не существует. Проверьте правильность введения номера или добавьте товар в соответствующем разделе.';
+                    $error = 1;
+                } elseif ($piq->num_rows > 1) {
+                    $error_info = 'Товаров с таким номером более одного. Ошибка на сервере. Свяжитесь с разработчиком';
+                    $error = 1;
+                } else {
+                    $vin = $this->request->post['vin'];
+                    $uploadtmpdir = DIR_IMAGE . "tmp/";
+                    $uploaddir.= '/';
 
-						$i = 0;
-						foreach ($_FILES['photo']['name'] as $crit){
-							$photo[$i]['name'] = $crit;
-							$i++;
-						}
-						$i = 0;
-						foreach ($_FILES['photo']['type'] as $crit){
-							$photo[$i]['type'] = $crit;
-							$i++;
-						}
-						$i = 0;
-						foreach ($_FILES['photo']['error'] as $crit){
-							$photo[$i]['error'] = $crit;
-							$i++;
-						}
-						$i = 0;
-						foreach ($_FILES['photo']['tmp_name'] as $crit){
-							$photo[$i]['tmp_name'] = $crit;
-							$i++;
-						}
-						$i = 0;
-						foreach ($_FILES['photo']['size'] as $crit){
-							$photo[$i]['size'] = $crit;
-							$i++;
-						}
+                    $photo = array();
 
-						$optw = 1200;
-						$name = 0;
-						foreach ($photo as $file){
-							//--------------//
-							if ($file['type'] == 'image/jpeg'){
-								$source = imagecreatefromjpeg ($file['tmp_name']);
-							}
-							elseif ($file['type'] == 'image/png'){
-								$source = imagecreatefrompng ($file['tmp_name']);
-							}
-							elseif ($file['type'] == 'image/gif'){
-								$source = imagecreatefromgif ($file['tmp_name']);
-							}
-							else{
-								exit ('wtf, dude?!');
-							}
-						   /*****************/
+                    $i = 0;
+                    foreach ($_FILES['photo']['name'] as $crit){
+                            $photo[$i]['name'] = $crit;
+                            $i++;
+                    }
+                    $i = 0;
+                    foreach ($_FILES['photo']['type'] as $crit){
+                            $photo[$i]['type'] = $crit;
+                            $i++;
+                    }
+                    $i = 0;
+                    foreach ($_FILES['photo']['error'] as $crit){
+                            $photo[$i]['error'] = $crit;
+                            $i++;
+                    }
+                    $i = 0;
+                    foreach ($_FILES['photo']['tmp_name'] as $crit){
+                            $photo[$i]['tmp_name'] = $crit;
+                            $i++;
+                    }
+                    $i = 0;
+                    foreach ($_FILES['photo']['size'] as $crit){
+                            $photo[$i]['size'] = $crit;
+                            $i++;
+                    }
 
-							$w_src = imagesx($source); 
-							$h_src = imagesy($source);
+                    $optw = 1200;
+                    foreach ($photo as $file){
+                        //--------------//
+                        if ($file['type'] == 'image/jpeg'){
+                                $source = imagecreatefromjpeg ($file['tmp_name']);
+                        }
+                        elseif ($file['type'] == 'image/png'){
+                                $source = imagecreatefrompng ($file['tmp_name']);
+                        }
+                        elseif ($file['type'] == 'image/gif'){
+                                $source = imagecreatefromgif ($file['tmp_name']);
+                        }
+                        else{
+                                exit ('wtf, dude?!');
+                        }
+                   /*****************/
 
-							$ratio = $w_src/$optw;
-							$w_dest = $optw;
-							$h_dest = round($h_src/$ratio);
+                        $w_src = imagesx($source); 
+                        $h_src = imagesy($source);
 
-							$dest = imagecreatetruecolor($optw, $h_dest);
+                        $ratio = $w_src/$optw;
+                        $w_dest = $optw;
+                        $h_dest = round($h_src/$ratio);
 
-							imagecopyresampled($dest, $source, 0, 0, 0, 0, $optw, $h_dest, $w_src, $h_src);
+                        $dest = imagecreatetruecolor($optw, $h_dest);
 
-							$marge_right = 10;
-							$marge_bottom = 10;
+                        imagecopyresampled($dest, $source, 0, 0, 0, 0, $optw, $h_dest, $w_src, $h_src);
 
-							imagejpeg($dest, $uploadtmpdir . $file['name'], 90);
-							imagedestroy($dest);
-							imagedestroy($source);
+                        $marge_right = 10;
+                        $marge_bottom = 10;
 
-							copy($uploadtmpdir . $file['name'], $uploaddir . $name . '.jpg');
+                        imagejpeg($dest, $uploadtmpdir . $file['name'], 90);
+                        imagedestroy($dest);
+                        imagedestroy($source);
 
-							unlink($uploadtmpdir . $file['name']);
-							
-							$photo_name = $name.'.jpg';
-							
-							$this->db->query("INSERT INTO ". DB_PREFIX ."product_image "
-									. "SET "
-									. "product_id = ". (string)$product_id .", "
-									. "image = 'catalog/demo/production/".$vin."/".$photo_name."' ");
-							
-							$name++;
-							$data['success_message'] = 'Фотографии загружены и прикреплены.';
-							$this->db->query("UPDATE `oc_product` SET `image` = 'catalog/demo/production/".$vin."/0.jpg' WHERE `vin` = '".$vin."'");
-						}                   
-					}
-					
-				}
-			}
-			else{
-				$error = 1;
-				$error_info = 'Такой товар не существует!';
-			}
+                        $photo_name = $vin.'-'.$file['name'].'.jpg';
+                        copy($uploadtmpdir . $file['name'], $uploaddir .$photo_name);
+
+                        unlink($uploadtmpdir . $file['name']);
+
+
+                        $this->db->query("INSERT INTO ". DB_PREFIX ."product_image "
+                                        . "SET "
+                                        . "product_id = ". (string)$product_id .", "
+                                        . "image = 'catalog/demo/production/".$vin."/".$photo_name."' ");
+                        $data['success_message'] = 'Фотографии загружены и прикреплены.';
+                        if($piq->row['image']==""){
+                            $this->db->query("UPDATE `oc_product` SET `image` = 'catalog/demo/production/".$vin."/".$photo_name."' WHERE `vin` = '".$vin."'");
+                        }
+                    }                   
+                }
+            } else{
+                $error = 1;
+                $error_info = 'Такой товар не существует!';
+            }
             $this->load->model('tool/layout');
             $data = $this->model_tool_layout->getLayout($this->request->get['route']);
             $data['error'] = $error;

@@ -12,7 +12,34 @@ html, body {
 h1, h2, h3, h4, h5, h6, p {
 	margin-top: 0;
 }
-
+.notice{
+    position: fixed;
+    top: 12%;
+    right: 0%;
+} 
+.toolbar{
+    background-color: #f5d3e4;
+    padding: 5px 15px;
+    padding-right: 5px;
+    border-radius: 15px 0px 0px 15px;
+    border-right: 10px solid #e0c0d0;
+}
+.toolbar span{
+    color: cornsilk;
+    padding: 3px 12px;
+    margin-right: 5px;
+    font-size: 18pt;
+    float: left;
+    border-radius: 25px;
+    background-color: rgba(100, 100, 100, 0.4);
+}
+.toolbar span:hover{
+    background-color: rgba(100, 100, 100, 0.7);
+    cursor: pointer;
+}
+.events{
+    
+}
 .center-btn{
     padding: 29% 0;
 }

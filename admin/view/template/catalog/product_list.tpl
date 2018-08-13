@@ -203,7 +203,7 @@
                   </td>
                   <td class="text-center">
                     <div id="carousel-example-generic<?php echo $product['product_id']; ?>" class="carousel slide" data-ride="carousel">
-                        <ol class="carousel-indicators">
+                        <ol class="carousel-indicators" style="display: none;">
                             <?php foreach($product['image'] as $image) { ?>
                                 <?php if (isset($image['main']) && $image['main'] == true) { ?> 
                                     <li data-target="#carousel-example-generic<?php echo $product['product_id']; ?>" data-slide-to="<?php echo $image['lid']?>" class="active"></li>

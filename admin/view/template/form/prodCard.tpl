@@ -10,7 +10,7 @@
     <div class="col-lg-12"><p></p></div>
     <div class="col-md-6">
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
+            <ol class="carousel-indicators" style="display: none;">
                 <?php foreach($images as $img) { ?>
                     <?php if (isset($img['main']) && $img['main'] == true) { ?> 
                         <li data-target="#carousel-example-generic" data-slide-to="<?php echo $img['lid']?>" class="active"></li>

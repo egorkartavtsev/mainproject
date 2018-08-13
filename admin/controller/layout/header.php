@@ -165,6 +165,8 @@ class ControllerLayoutHeader extends Controller {
                     );
                 }
                 
+                $data['events'] = false;
+                
 		return $this->load->view('layout/header', $data);
 	}
 }

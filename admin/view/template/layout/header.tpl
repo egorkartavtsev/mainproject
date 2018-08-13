@@ -107,4 +107,12 @@
     <li><a href="<?php echo $logout; ?>"><span class="hidden-xs hidden-sm hidden-md"><?php echo $text_logout; ?></span> <i class="fa fa-sign-out fa-lg"></i></a></li>
   </ul>
   <?php } ?>
+  <?php if($events){ ?>
+    <div class="notice toolbar events">
+        <span  data-toggle="modal" data-target="#persModal"><i class="fa fa-envelope"></i></span>
+        <span  data-toggle="modal" data-target="#persModal"><i class="fa fa-user"></i></span>
+        <span  data-toggle="modal" data-target="#persModal"><i class="fa fa-male"></i></span>
+        <span  data-toggle="modal" data-target="#persModal"><i class="fa fa-female"></i></span>
+    </div>
+  <?php } ?>
 </header>
