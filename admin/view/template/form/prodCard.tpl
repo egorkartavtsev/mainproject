@@ -26,15 +26,15 @@
                             <?php } else { ?>
                                <div class="item ">
                             <?php }?>
-                                <img src="<?php echo $img['thumb'];?>"class="img-thumbnail d-block w-100" />
+                                <img src="<?php echo $img['thumb'];?>"class="img-thumbnail img-responsive d-block w-100" />
                             </div>   
                         <?php }?>  
                 </div>
-                <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                <a class="left carousel-control center-btn" href="#carousel-example-generic" role="button" data-slide="prev">
                     <span class="fa fa-angle-left fa-2x" aria-hidden="true"></span>
                     <span class="sr-only">Previous</span>
                 </a>
-                <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                <a class="right carousel-control center-btn" href="#carousel-example-generic" role="button" data-slide="next">
                     <span class="fa fa-angle-right fa-2x" aria-hidden="true"></span>
                     <span class="sr-only">Next</span>
                 </a>            
