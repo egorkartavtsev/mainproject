@@ -13,14 +13,6 @@ class ControllerProductionWriteoff extends Controller {
             $this->load->controller('common/excelTools');
             $tools = new ControllerCommonExcelTools($this->registry);
             $info = $tools->constructSaleArray($this->request->post);
-            $this->load->model('tool/xml');
-            foreach ($this->request->post['products'] as $vin => $item) {
-//                exit($vin);
-                $APinfo = array('vin' => $vin, 'write_off' => 1, 'price' => $item['price'], 'structure' => 1);
-//                exit(var_dump($APinfo));
-                $this->model_tool_xml->avitoFind($APinfo);
-                $this->model_tool_xml->ARUFind($APinfo);
-            }
             $id_invoice = uniqid('r_');
             $prods = $this->model_common_write_off->sale($info, $id_invoice);
             $this->response->setOutput($this->load->view('common/write_off_form', $data));
