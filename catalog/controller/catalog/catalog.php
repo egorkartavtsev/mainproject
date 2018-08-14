@@ -7,6 +7,7 @@ class ControllerCatalogCatalog extends Controller{
             $this->load->model('product/product');
             $this->load->model('tool/layout');
             $this->load->model('tool/image');
+            $this->load->model("tool/product");
             $list = array();
             $filter = array();
             $data['breadcrumbs'][] = array(
@@ -69,15 +70,34 @@ class ControllerCatalogCatalog extends Controller{
             }
             $list['products'] = array();
             foreach ($products as $prod){
-//                exit(var_dump($prod));
-//                exit(var_dump($types));
-                if ($prod['image']) {
-                    $image = $this->model_tool_image->resize($prod['image'], 228, 228);
-                } else {
-                    $image = $this->model_tool_image->resize('placeholder.png', 228, 228);
+                $photos = $this->model_tool_product->getProdImg($prod['product_id']);
+                $image = array();
+                $local_id = 0;
+                foreach($photos as $img){
+                    $image[] = array (
+                            'thumb'         => $this->model_tool_image->resize($img['image'], 228, 228),
+                            'main'          => $img['image']==$prod['image']?TRUE:FALSE,
+                            'lid'           => $local_id
+                    );
+                ++$local_id;    
                 }
+                if(!count($image)){
+                    $image[] = array (
+                            'thumb'         => $this->model_tool_image->resize('no-image.png', 228, 228),
+                            'main'          => TRUE,
+                            'lid'           => 0
+                    );
+                } elseif (!in_array(TRUE,array_column($image,'main'))) {
+                    $image[0]['main'] = TRUE;
+                }
+//                if ($prod['image']) {
+//                    $image = $this->model_tool_image->resize($prod['image'], 228, 228);
+//                } else {
+//                    $image = $this->model_tool_image->resize('placeholder.png', 228, 228);
+//                }
                 $list['products'][$prod['product_id']] = array(
-                    'thumb' => $image,
+                    'image' => $image,
+                    'product_id' => $prod['product_id'],
                     'href' => $this->url->link('catalog/product', 'product_id='.$prod['product_id']),
                     'name' => $prod['name'],
                     'vin' => $prod['vin'],
@@ -130,6 +150,7 @@ class ControllerCatalogCatalog extends Controller{
             $list['ldrom'] = $server . 'image/drom.png';
             $list['lavito'] = $server . 'image/avito.png';
             $list['lyt'] = $server . 'image/lyt.png';
+            //exit(var_dump($list['products']));
             $data['productsDiv'] = $this->load->view('catalog/showproducts', $list);
         //----------------------------------------------------------------------------------
             $this->document->setTitle($this->config->get('config_meta_title'));

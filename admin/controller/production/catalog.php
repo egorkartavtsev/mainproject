@@ -463,6 +463,7 @@ class ControllerProductionCatalog extends Controller {
                         foreach($photos as $img){
                             $image[] = array (
                                     'thumb'         => $this->model_tool_image->resize($img['image'], 400, 300),
+                                    'popup'         => $this->model_tool_image->resize($img['image'], 1024, 768),
                                     'main'          => $img['image']==$result['image']?TRUE:FALSE,
                                     'lid'           => $local_id
                             );
