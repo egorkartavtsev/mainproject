@@ -513,7 +513,9 @@ class ModelToolProduct extends Model {
                         . "ON pd.product_id = p.product_id "
                     . "WHERE !LOCATE('complect', p.vin) ";
         foreach ($reqwords as $word){
-            $query.="AND (LOCATE('" . $this->db->escape($word) . "', pd.name) OR p.vin = '".$this->db->escape($word)."') ";
+            $query.="AND (LOCATE('" . $this->db->escape($word) . "', pd.name) "
+                       . "OR p.vin = '".$this->db->escape($word)."' "
+                       . "OR LOCATE('" . $this->db->escape($word) . "', p.catn)) ";
         }
         $result = $this->db->query($query);
         return $result->rows;

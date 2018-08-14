@@ -788,9 +788,9 @@ class ControllerProductionCatalog extends Controller {
                 ++$local_id;
             }
             $data['mainimage'] = $product['image']!=''?$product['image']:'no_image.png';
-            if($product['avitoname']=='' && isset($mtr->row['name']) && isset($mtr->row['translate'])){
-                $brtr = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE name = '".$product['brand']."'");
-                $mtr = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE name = '".$product['model']."'");
+            $brtr = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE name = '".$product['brand']."'");
+            $mtr = $this->db->query("SELECT name, translate FROM ".DB_PREFIX."lib_fills WHERE name = '".$product['model']."'");
+            if($product['avitoname']=='' && (isset($mtr->row['name']) || isset($mtr->row['translate']))){
                 $data['avitoname'] = $product['podcateg'].' '.$mtr->row['name'].' '.$mtr->row['translate'];
             } else {
                 $data['avitoname'] = $product['avitoname'];
