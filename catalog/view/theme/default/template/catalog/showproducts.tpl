@@ -46,7 +46,40 @@
                     <?php }?>
                 </div>
               <div class="product-thumb">
-                <div class="image"><a href="<?php echo $product['href'].'?'.time(); ?>"><img src="<?php echo $product['thumb'].'?'.time(); ?>" alt="<?php echo $product['name']; ?>" title="<?php echo $product['name']; ?>" class="img-responsive" /></a></div>
+                    <div id="carousel-example-generic<?php echo $product['product_id']; ?>" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators" style="display: none;">
+                            <?php foreach($product['image'] as $image) { ?>
+                                <?php if (isset($image['main']) && $image['main'] == true) { ?> 
+                                    <li data-target="#carousel-example-generic<?php echo $product['product_id']; ?>" data-slide-to="<?php echo $image['lid']?>" class="active"></li>
+                                <?php } else { ?>
+                                    <li data-target="#carousel-example-generic<?php echo $product['product_id']; ?>" data-slide-to="<?php echo $image['lid']?>"></li>
+                                <?php }?>
+                            <?php }?> 
+                        </ol>
+                        <div class="carousel-inner" role="listbox">
+                                <?php foreach($product['image'] as $image) { ?> 
+                                    <?php if (isset($image['main']) && $image['main'] == true) { ?> 
+                                       <div class="item active">
+                                    <?php } else { ?>
+                                       <div class="item">
+                                    <?php }?>
+                                    <div class="image"><a href="<?php echo $product['href'].'?'.time();?>"><img src="<?php echo $image['thumb'].'?'.time();?>" alt="<?php echo $product['name'];?>" title="<?php echo $product['name']; ?>" class="img-thumbnail d-block w-100 img-responsive" /></a></div>
+                                    </div>   
+                                <?php }?>  
+                        </div>
+                        <a class="left carousel-control" href="#carousel-example-generic<?php echo $product['product_id']; ?>" role="button" data-slide="prev">
+                            <span class="fa fa-angle-left fa-2x" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-example-generic<?php echo $product['product_id']; ?>" role="button" data-slide="next">
+                            <span class="fa fa-angle-right fa-2x" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>            
+                    </div>
+                    <script type="text/javascript" async>
+                        $('#carousel-example-generic<?php echo $product['product_id']; ?>').carousel();    
+                    </script>    
+                <!--<div class="image"><a href="<?php echo $product['href'].'?'.time(); ?>"><img src="<?php echo $product['thumb'].'?'.time(); ?>" alt="<?php echo $product['name']; ?>" title="<?php echo $product['name']; ?>" class="img-responsive" /></a></div>-->
                   <div class="col-lg-12 nameProd">
                     <h4><a href="<?php echo $product['href'];?>" ><?php echo $product['name'];?></a></h4>
                   </div>

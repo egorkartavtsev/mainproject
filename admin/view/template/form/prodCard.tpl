@@ -26,7 +26,7 @@
                             <?php } else { ?>
                                <div class="item ">
                             <?php }?>
-                                <img src="<?php echo $img['thumb'];?>"class="img-thumbnail img-responsive d-block w-100" />
+                                <a class="plus-popup" href="<?php echo $img['popup'].'?'.time();?>"><img src="<?php echo $img['thumb'];?>"class="img-thumbnail img-responsive d-block w-100" /></a>
                             </div>   
                         <?php }?>  
                 </div>
@@ -150,6 +150,17 @@
 
     </div>
 </div>
+<script type="text/javascript" src="view/javascript/jquery/magnific/jquery.magnific-popup.min.js"></script>
+<link href="view/javascript/jquery/magnific/magnific-popup.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript">
+    $('.plus-popup').magnificPopup({
+        type: 'image',
+        closeOnContentClick: true,
+        image: {
+                verticalFit: false
+        }
+    });
+</script>      
 <script type="text/javascript">
     $('#myTabs a').click(function (e) {
       e.preventDefault()

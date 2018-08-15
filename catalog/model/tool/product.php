@@ -73,8 +73,10 @@ class ModelToolProduct extends Model {
                 }
 		return FALSE;
 	}
-    
-        
+    public function getProdImg($id) {
+        $photos = $this->db->query("SELECT * FROM ".DB_PREFIX."product_image WHERE product_id = ".(int)$id." ORDER BY sort_order ");
+        return $photos->rows;
+    }     
 }    
 /* 
  * To change this license header, choose License Headers in Project Properties.

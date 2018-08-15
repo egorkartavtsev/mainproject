@@ -819,7 +819,6 @@ div.ckeditor {
 }
 .icon-plus-pupup {
     position: absolute;
-    z-index: 5;
     display: block;
     top: 0px;
 }

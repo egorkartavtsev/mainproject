@@ -217,9 +217,9 @@
                                     <?php if (isset($image['main']) && $image['main'] == true) { ?> 
                                        <div class="item active">
                                     <?php } else { ?>
-                                       <div class="item ">
+                                       <div class="item">
                                     <?php }?>
-                                        <img src="<?php echo $image['thumb'];?>" alt="<?php echo $product['name']; ?>" class="img-thumbnail d-block w-100" />
+                                    <a class="plus-pupup" href="<?php echo $image['popup'].'?'.time();?>"><img src="<?php echo $image['thumb'];?>" alt="<?php echo $product['name']; ?>" class="img-thumbnail d-block w-100" /></a>
                                     </div>   
                                 <?php }?>  
                         </div>
@@ -299,7 +299,18 @@
             </div>
           </div>
         </div>
-    </div>                     
+    </div>
+  <script type="text/javascript" src="view/javascript/jquery/magnific/jquery.magnific-popup.min.js"></script>
+  <link href="view/javascript/jquery/magnific/magnific-popup.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript">
+        $('.plus-pupup').magnificPopup({
+            type: 'image',
+            closeOnContentClick: true,
+            image: {
+                    verticalFit: false
+            }
+        });
+    </script>     
   <script type="text/javascript"><!--
       
       $('#btn-clear-filters').on('click', function(){

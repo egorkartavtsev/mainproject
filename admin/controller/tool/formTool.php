@@ -99,6 +99,7 @@ class ControllerToolFormTool extends Controller {
         foreach($photos as $img){
             $images[] = array (
                     'thumb'         => $this->model_tool_image->resize($img['image'], 400, 300),
+                    'popup'         => $this->model_tool_image->resize($img['image'], 1024, 768),
                     'main'          => $img['image']==$data['image']?TRUE:FALSE,
                     'lid'           => $local_id
             );
@@ -107,6 +108,7 @@ class ControllerToolFormTool extends Controller {
         if(!count($images)){
             $images[] = array (
                     'thumb'         => $this->model_tool_image->resize('no-image.png', 400, 300),
+                    'popup'         => $this->model_tool_image->resize('no-image.png', 1024, 768),               
                     'main'          => TRUE,
                     'lid'           => 0
             );
