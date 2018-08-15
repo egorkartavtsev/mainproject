@@ -94,16 +94,16 @@
                                         <?php }?>
                                 <?php } else { ?>
                                     <tr>
-                                        <td colspan='2' style="text-align: center;"><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal"> Узнать стоимость комплекта</button></td>
+                                        <td colspan='2' style="text-align: center;"><button type="button" class="btn btn-primary btn-lg" btn_type="reqPrice" data-toggle="modal" data-target="#myModal" pcause="4">Узнать стоимость комплекта</button></td>
                                     </tr>                                       
                                 <?php }?>
                             <?php } else { ?>
                                 <tr>
-                                    <td colspan='2' style="text-align: center;"><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal"> Уточнить наличие</button></td>                                
+                                    <td colspan='2' style="text-align: center;"><button type="button" class="btn btn-primary btn-lg" btn_type="reqPrice" data-toggle="modal" data-target="#myModal" pcause="1">Уточнить наличие</button></td>                                
                                 </tr> 
                             <?php }?>
                         </table>
-                        <?php echo $modal_window; ?>
+                        
                     </div>
                 <?php }?>
                 <div class="tab-pane active" id="tab-description"><?php echo $description; ?></div>
@@ -118,6 +118,7 @@
                 <button type="button" data-toggle="tooltip" class="btn btn-default" title="<?php echo $button_wishlist; ?>" onclick="wishlist.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-heart"></i></button>
                 <button type="button" data-toggle="tooltip" class="btn btn-default" title="<?php echo $button_compare; ?>" onclick="compare.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-exchange"></i></button>
                 <button type="button" data-toggle="tooltip" class="btn btn-default" title="Скопировать ссылку" id="send_prod"><i class="fa fa-copy"></i></button>
+                <button type="button" class="btn btn-info" btn_type="reqPrice" data-toggle="modal" data-target="#myModal"  data-whatever="question_modal" pcause="5">Задать вопрос о товаре</button>
             </div>
             <h1><?php echo $product['name']; ?></h1>
             <ul class="list-unstyled">
@@ -135,11 +136,11 @@
             <?php if ($product['price'] == 0.00 || $stock == 0)  { ?>
                 <?php if ($product['price'] == 0.00) { ?>
                     <hr>
-                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Узнать стоимость товара</button>
+                    <button type="button" class="btn btn-primary btn-lg" btn_type="reqPrice" data-toggle="modal" data-target="#myModal" pcause="2">Узнать стоимость товара</button>
                 <?php } else { ?>
                     <h2><?php echo $product['price']; ?></h2>
                     <hr>
-                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Заказать товар</button>
+                    <button type="button" class="btn btn-primary btn-lg" btn_type="reqPrice" data-toggle="modal" data-target="#myModal" pcause="3">Заказать товар</button>
                 <?php } ?>
                 <?php echo $modal_window; ?>
             <?php } else { ?>
@@ -184,6 +185,7 @@
         <?php echo $column_right; ?>
     <?php } ?> 
     </div>
+    <?php echo $modal_window; ?>
 </div> 
 <script src="catalog/view/javascript/clipboard.min.js" type="text/javascript"></script>
         <!------------------------------------Стоит вынести скрипты в отдельный файл------------------------------------------------------------->

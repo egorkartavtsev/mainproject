@@ -147,10 +147,10 @@ $(document).ready(function() {
     
         //Send data to the modal window for mail
         $(document).on('click',"[btn_type=reqPrice]", function(){
-            var vin = $(this).attr('pvin'); 
-            $('#pvin').val(vin);
-            var pname = $(this).attr('pname');
-            $('#pname').val(pname);
+            var pid = $(this).attr('pid');
+            $('#pid').val(pid);
+            var pcause = $(this).attr('pcause');
+            $('#pcause').val(pcause);
         });
         
         //smartSearch
