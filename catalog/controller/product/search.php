@@ -5,6 +5,7 @@ class ControllerProductSearch extends Controller {
 		$this->load->model('catalog/category');
 		$this->load->model('catalog/product');
 		$this->load->model('tool/image');
+                $this->load->model("tool/product");
                 $server = $this->config->get('config_url');
 		if (isset($this->request->get['search'])) {
 			$search = $this->request->get['search'];
@@ -152,12 +153,32 @@ class ControllerProductSearch extends Controller {
 			foreach ($results as $result) {
                                 $type = $this->model_tool_product->getType($result['structure']);
 //                                exit(var_dump($type));
-				if ($result['img']) {
-					$image = $this->model_tool_image->resize($result['img'], $this->config->get($this->config->get('config_theme') . '_image_product_width'), $this->config->get($this->config->get('config_theme') . '_image_product_height'));
-				} else {
-					$image = $this->model_tool_image->resize('placeholder.png', $this->config->get($this->config->get('config_theme') . '_image_product_width'), $this->config->get($this->config->get('config_theme') . '_image_product_height'));
-				}
-                                
+//				if ($result['img']) {
+//					$image = $this->model_tool_image->resize($result['img'], $this->config->get($this->config->get('config_theme') . '_image_product_width'), $this->config->get($this->config->get('config_theme') . '_image_product_height'));
+//				} else {
+//					$image = $this->model_tool_image->resize('placeholder.png', $this->config->get($this->config->get('config_theme') . '_image_product_width'), $this->config->get($this->config->get('config_theme') . '_image_product_height'));
+//				}
+                                $photos = $this->model_tool_product->getProdImg($result['product_id']);
+                                $image = array();
+                                $local_id = 0;
+                                foreach($photos as $img){
+                                    $image[] = array (
+                                            'thumb'         => $this->model_tool_image->resize($img['image'], 228, 228),
+                                            'main'          => $img['image']==$result['img']?TRUE:FALSE,
+                                            'lid'           => $local_id
+                                    );
+                                ++$local_id;    
+                                }
+                                if(!count($image)){
+                                    $image[] = array (
+                                            'thumb'         => $this->model_tool_image->resize('no-image.png', 228, 228),
+                                            'main'          => TRUE,
+                                            'lid'           => 0
+                                    );
+                                } elseif (!in_array(TRUE,array_column($image,'main'))) {
+                                    $image[0]['main'] = TRUE;
+                                }
+                                //exit(var_dump($image));
                                  if ($result['comp_whole']) {
                                    $comp_whole = $result['comp_whole'];
                                 } else {
@@ -177,11 +198,12 @@ class ControllerProductSearch extends Controller {
                                 }
                                 
                                 $data['products'][$result['product_id']] = array(
-					'thumb'       => $image,
+					'image'       => $image,
+                                        'product_id'  => $result['product_id'],
 					'name'        => $result['title'],
-                                        'vin'      => $result['vin'],
+                                        'vin'         => $result['vin'],
                                         'status'      => $result['status'],
-					'quantity' => $result['quantity'],
+					'quantity'     => $result['quantity'],
 					'price'       => $result['product_price'],
                                         'comp_whole'  => $comp_whole,
                                         'comp'        => $comp,
@@ -442,7 +464,7 @@ class ControllerProductSearch extends Controller {
                 $data['lavito'] = $server . 'image/avito.png';
                 $data['lyt'] = $server . 'image/lyt.png';
                 
-                
+                //exit(var_dump($data));
 		$this->response->setOutput($this->load->view('product/search', $data));
 	}
         

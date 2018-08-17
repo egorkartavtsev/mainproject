@@ -195,5 +195,10 @@ class ControllerSettingLibraries extends Controller {
         $this->model_tool_product->librSetSave($this->request->post);
         echo "Готово";
     }
+    public function Reminder() {
+        //$fill = $this->request->post['fill_id'];
+        $prompt = $this->db->query("SELECT prompt FROM ".DB_PREFIX."lib_fills WHERE id = '2'")->row['prompt'];
+        echo "asdasd";
+    }
 }
 
