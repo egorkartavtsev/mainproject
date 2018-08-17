@@ -34,7 +34,7 @@
                         }
                     }?>
                     <?php if ($product['comp']){ ?>
-                        <?php if ($product['com_whole'] == 1){ ?>
+                        <?php if ($product['com_whole'] == '1'){ ?>
                             <div class="whole" title="На фото изображен полный комплект, содержащий данную деталь. &#013Цена указана за полный комплект.">
                                 Продажа комплектом
                             </div>
@@ -57,15 +57,15 @@
                             <?php }?> 
                         </ol>
                         <div class="carousel-inner" role="listbox">
-                                <?php foreach($product['image'] as $image) { ?> 
-                                    <?php if (isset($image['main']) && $image['main'] == true) { ?> 
-                                       <div class="item active">
-                                    <?php } else { ?>
-                                       <div class="item">
-                                    <?php }?>
-                                    <div class="image"><a href="<?php echo $product['href'].'?'.time();?>"><img src="<?php echo $image['thumb'].'?'.time();?>" alt="<?php echo $product['name'];?>" title="<?php echo $product['name']; ?>" class="img-thumbnail d-block w-100 img-responsive" /></a></div>
-                                    </div>   
-                                <?php }?>  
+                            <?php foreach($product['image'] as $image) { ?> 
+                                <?php if (isset($image['main']) && $image['main'] == true) { ?> 
+                                   <div class="item active">
+                                <?php } else { ?>
+                                   <div class="item">
+                                <?php }?>
+                                <div class="image"><a href="<?php echo $product['href'];?>"><img src="<?php echo $image['thumb'].'?'.time();?>" alt="<?php echo $product['name'];?>" title="<?php echo $product['name']; ?>" class="img-thumbnail d-block w-100 img-responsive" /></a></div>
+                                </div>   
+                            <?php }?>  
                         </div>
                         <a class="left carousel-control" href="#carousel-example-generic<?php echo $product['product_id']; ?>" role="button" data-slide="prev">
                             <span class="fa fa-angle-left fa-2x" aria-hidden="true"></span>
@@ -92,7 +92,7 @@
                     </div>
                     <div class="col-lg-12 text-center priceProd">
                         <p>
-                            <?php if ($product['price'] !== '0') { ?>
+                            <?php if ($product['price'] !== '0' && $product['com_whole'] !== '1') { ?>
                                 <b>Цена: <?php echo $product['price'];?> &#8381;</b>
                             <?php } else { ?>
                                 &nbsp;
@@ -102,20 +102,18 @@
                 </div>
                 <?php echo $modal_window; ?>  
                     <?php if ($product['status'] == '2') { ?>
-                      <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pname ="<?php echo $product['name'];?>" pvin="<?php echo $product['vin'];?>">Уточнить наличие</button>
-                    <?php } else { ?>                   
-                        <?php if ($product['price'] == 0.00 || $product['quantity'] == 0)  { ?>
-                            <?php if ($product['price'] == 0.00) { ?>
-                                <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pname ="<?php echo $product['name'];?>" pvin="<?php echo $product['vin'];?>">Узнать стоимость</button>
-                            <?php } else { ?>
-                                <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pname ="<?php echo $product['name'];?>" pvin="<?php echo $product['vin'];?>">Заказать товар</button> 
-                            <?php } ?>
-                        <?php } else { ?>  
-                            <button class="btn btn-lg btn-danger center-block checkPr" type="button" onclick="cart.add('<?php echo $key; ?>', '1');"><i class="fa fa-shopping-cart"></i> В КОРЗИНУ</button>
-                        <?php } ?>
+                        <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="1">Уточнить наличие</button>
+                    <?php } elseif ($product['price'] == 0.00 && $product['quantity'] !== 0) { ?>                                           
+                        <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="2">Узнать стоимость</button>
+                    <?php } elseif ($product['price'] !== 0.00 && $product['quantity'] == 0) { ?>
+                        <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="3">Заказать товар</button> 
+                    <?php } elseif ($product['com_whole'] == '1') { ?>
+                        <a href="<?php echo $product['href'];?>"><button class="btn btn-lg btn-danger center-block checkPr">Посмотреть комплект</button></a>
+                    <?php } else { ?>     
+                        <button class="btn btn-lg btn-danger center-block checkPr" type="button" onclick="cart.add('<?php echo $key; ?>', '1');"><i class="fa fa-shopping-cart"></i> В КОРЗИНУ</button>
                     <?php } ?> 
-              </div>
-            </div>
+                </div>
+          </div>
           <?php }?>
           <div class="clearfix"></div>
           <div class="col-lg-12 text-center">
