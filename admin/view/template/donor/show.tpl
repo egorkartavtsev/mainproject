@@ -20,7 +20,7 @@
                 <tr><td><b>Стоимость: </b></td><td><?php echo $donor['price'];?></td></tr>
                 <tr><td><b>Марка: </b></td><td><?php echo $donor['brand'];?></td></tr>
                 <tr><td><b>Модель: </b></td><td><?php echo $donor['model'];?></td></tr>
-                <tr><td><b>Модельный ряд: </b></td><td><?php echo $donor['mod_row'];?></td></tr>
+                <tr><td><b>Модельный ряд: </b></td><td><?php echo $donor['modR'];?></td></tr>
                 <tr><td><b>ДВС: </b></td><td><?php echo $donor['dvs'];?></td></tr>
                 <tr><td><b>Цвет: </b></td><td><?php echo $donor['color'];?></td></tr>
                 <tr><td><b>Трансмиссия: </b></td><td><?php echo $donor['trmiss'];?></td></tr>

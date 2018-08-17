@@ -162,7 +162,8 @@ class User {
         public function getUserInfo() {
             $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."user_group WHERE user_group_id = ".(int)$this->user_group_id);
             $this->info['user_group'] = $sup->row['text'];
-		return $this->info;
+            $this->info['minaccesslevel'] = $this->minaccesslevel;
+            return $this->info;
 	}
 
 	public function getGroupId() {

@@ -521,7 +521,7 @@ class ControllerProductionCatalog extends Controller {
                                     'jar'        => (isset($result['jar'])) && ($result['jar']!=='')?$result['jar']:'-',
                                     'shelf'      => (isset($result['shelf'])) && ($result['shelf']!=='')?$result['shelf']:'-',
                                     'box'        => (isset($result['box'])) && ($result['box']!=='')?$result['box']:'-',
-                                    'donor'      => $result['donor']!=''?'<a target="_blank" href="'.$this->url->link('donor/show', 'token=' . $this->session->data['token'] . '&numb=' . $result['donor'] . $url, true).'">'.$result['donor'].'</a>':'-',
+                                    'donor'      => $result['numb']!=''?'<a target="_blank" href="'.$this->url->link('donor/show', 'token=' . $this->session->data['token'] . '&numb=' . $result['numb'] . $url, true).'">'.$result['numb'].'</a>':'-',
                                     'stock'      => (isset($result['stock'])) && ($result['stock']!=='') && ($result['stock']!=='-')?$result['stock']:'не указан',
                                     'adress'     => (isset($result['adress'])) && ($result['adress']!=='') && ($result['adress']!=='-')?$result['adress']:'не указан',
                                     'note'       => $result['note'],

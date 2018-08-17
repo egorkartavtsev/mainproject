@@ -34,7 +34,7 @@ class ControllerDonorList extends Controller {
                 'year' => $donor['year'],
                 'brand' => $donor['brand'],
                 'model' => $donor['model'],
-                'mod_row' => $donor['mod_row'],
+                'mod_row' => $donor['modR'],
                 'kmeters' => $donor['kmeters'],
                 'trmiss' => $donor['trmiss'],
                 'priv' => $donor['priv'],

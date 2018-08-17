@@ -56,6 +56,33 @@
             <option value="1" <?php echo $filter=='1'?'selected':'';?>>Отображать в фильтрах</option>
         </select>
     </div>
+    <div class="form-group-sm col-md-12">
+        <label>Автозаполнение:</label>
+        <select class="form-control" id="chooseWay" target="<?php echo $type_id;?>">
+            <option value="0">Обычный ввод текста</option>
+            <option value="1" <?php echo ($similar!='' && $similar!='null')?'selected':'';?>>Автозаполнение свойств товара при вводе</option>
+        </select>
+    </div>
+    <?php if($similar!=='' && $similar!=='null'){ ?>
+        <?php $similar = '_'.$similar;?>
+        <div class="form-group-sm col-md-12">
+            <label>Способ заполнения:</label>
+            <select class="form-control" id="sim_showlistOption">
+                <option value="product">По подобным товарам</option>
+                <option value="donor" <?php echo $sim_showlist=='donor'?'selected':'';?>>По донорам</option>
+            </select>
+        </div>
+        <div class="form-group-sm col-md-12">
+            <label>Поля для заполнения:</label>
+            <select class="form-control" style="min-height: 100px;" multiple id="similarOption">
+                <?php foreach($opts['options'] as $opt){ ?>
+                    <?php if($opt['name']!==$name){ ?>
+                        <option value="<?php echo $opt['name'];?>" <?php echo stripos($similar, $opt['name'])?'selected':'';?>><?php echo $opt['text'];?></option>
+                    <?php }?>
+                <?php }?>
+            </select>
+        </div>
+    <?php }?>
     <div class="clearfix"></div>
     <div class="clearfix"><p></p></div>
     <div class="col-lg-12">

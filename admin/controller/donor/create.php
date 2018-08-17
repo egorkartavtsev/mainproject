@@ -30,7 +30,9 @@ class ControllerDonorCreate extends Controller {
     
     public function setPhoto($vin) {
         $uploadtmpdir = DIR_IMAGE . "tmp/";
-        mkdir(DIR_IMAGE . "catalog/demo/donor/".$vin);
+        if(!is_dir(DIR_IMAGE . "catalog/demo/donor/".$vin."/")){
+            mkdir(DIR_IMAGE . "catalog/demo/donor/".$vin);
+        }
         $uploaddir = DIR_IMAGE . "catalog/demo/donor/".$vin."/";
         $watermark = imagecreatefrompng(DIR_IMAGE . "watermark.png");
 

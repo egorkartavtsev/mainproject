@@ -105,8 +105,8 @@ class ControllerCommonLogin extends Controller {
 			$data['forgotten'] = '';
 		}
 
-		$data['header'] = $this->load->controller('common/header');
-		$data['footer'] = $this->load->controller('common/footer');
+		$data['header'] = $this->load->controller('layout/header');
+		$data['footer'] = $this->load->controller('layout/footer');
 
 		$this->response->setOutput($this->load->view('common/login', $data));
 	}

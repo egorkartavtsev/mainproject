@@ -115,7 +115,7 @@ class ControllerDonorEdit extends Controller {
             );
         }
         
-        $data['go_site'] = HTTPS_CATALOG.'index.php?route=product/product&product_id=';
+        $data['go_site'] = HTTPS_CATALOG.'index.php?route=catalog/product&product_id=';
         $data['action'] = $this->url->link('donor/edit/save_form', 'token=' . $this->session->data['token'] . '&donor_id=' . $this->request->get['donor_id'], true);
         $data['placeholder'] = $this->model_tool_image->resize('no_image.png', 100, 100);
         $data['token_add'] = $this->session->data['token'];

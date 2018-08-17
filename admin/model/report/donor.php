@@ -47,7 +47,7 @@ class ModelReportDonor extends Model{
                 ."FROM `".DB_PREFIX."product` p "
                 ."LEFT JOIN `".DB_PREFIX."sales_info` si ON si.sku = p.vin "
                 ."LEFT JOIN `".DB_PREFIX."product_description` pd ON pd.product_id = p.product_id "
-                ."WHERE p.donor = '".$request."'";
+                ."WHERE p.numb = '".$request."'";
         $iquer = $this->db->query($sql);
         $tableCurr = '<div class="clearfix"></div>
                       <div class="clearfix"><p></p></div>

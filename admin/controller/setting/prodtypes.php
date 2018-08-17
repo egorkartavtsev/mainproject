@@ -289,7 +289,7 @@ class ControllerSettingProdTypes extends Controller {
     }
     
     public function saveOption() {
-        $rows = explode(",", $this->request->post['data']);
+        $rows = explode(";", trim($this->request->post['data']));
         $res = array();
         foreach ($rows as $field) {
             $sup = explode(": ", $field);
@@ -302,7 +302,6 @@ class ControllerSettingProdTypes extends Controller {
         $this->load->model('tool/product');
         $result = $this->model_tool_product->saveOption($res);
         if($res['field_type']==='libraries'){
-            //exit('не работает бэк');
             $divsOpt.= '<div class="alert alert-success">';
             $divsOpt.= '<h4>Библиотека: '.$result[0]['library_name'].'</h4>';
             foreach ($result as $item) {
@@ -363,6 +362,7 @@ class ControllerSettingProdTypes extends Controller {
         $output = '';
         switch ($result['field_type']) {
             case 'input':
+                $result['opts'] = $this->model_tool_product->getOptions($result['type_id']);
                 $output = $this->load->view('form/sets_input', $result);
             break;
             case 'select':
@@ -395,5 +395,25 @@ class ControllerSettingProdTypes extends Controller {
         }
         $this->model_tool_product->saveExcelTemplate($templ);
         echo 'COXPAHEHO';
+    }
+    
+    public function getFields() {
+        $this->load->model('tool/product');
+        $sup = $this->model_tool_product->getOptions($this->request->post['target']);
+        $output = '<div class="form-group-sm col-md-12">
+                        <label>Способ заполнения:</label>
+                        <select class="form-control" id="sim_showlistOption">
+                            <option value="product">По подобным товарам</option>
+                            <option value="donor">По донорам</option>
+                        </select>
+                    </div>
+                    <div class="form-group-sm col-md-12">
+                        <label>Поля для заполнения:</label>
+                        <select class="form-control" multiple id="similarOption">';
+        foreach ($sup['options'] as $value) {
+            $output.= '<option value="'.$value['name'].'">'.$value['text'].'</option>';
+        }
+        $output.= '</select></div>';
+        echo $output;
     }
 }

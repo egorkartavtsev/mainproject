@@ -57,6 +57,134 @@ function addOption(){
     });
 }
 $(document).ready(function() {
+    
+    $(document).on('click', '[btn_type=upd-notice]', function(){
+        var btn = $(this);
+        ajax({
+            url:"index.php?route=tool/formTool/fastviewed&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data: {
+                target: btn.attr('aria-controls')
+            },
+            success:function(data){
+                btn.parent().parent().find('.hasNew').remove();
+                btn.parent().parent().parent().removeClass('pulse');
+            }
+        });
+    }) 
+    
+    $(document).on('click', '[data-toggle=tab]', function(){
+        var target = $(this).attr('aria-controls');
+        $(document).find('li[role=presentation]').each(function(){
+            $(this).removeClass('active');
+            if($(this).find('a[aria-controls='+target+']').html()){
+                $(this).addClass('active');
+            };
+        });
+    })    
+    
+    $(document).on('click', '[li-type=simItem]', function(){
+        var liItem = $(this);
+        var pardiv = liItem.parent().parent().parent();
+        var target = pardiv.find('input').attr('target');
+        var field = pardiv.find('input').attr('field');
+        var opt = pardiv.find('input').attr('opt');
+        var num = pardiv.parent().attr('num');
+        var type = pardiv.parent().attr('type');
+        pardiv.find('input').val(liItem.attr('item_id'));
+        liItem.parent().parent().hide('slow', function(){});
+        ajax({
+            url:"index.php?route=tool/formTool/autoload&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            datatype: "json",
+            data: {
+                req: liItem.attr('item_id'),
+                type: type,
+                target: target,
+                opt: opt,
+                num: num,
+                field: field
+            },
+            success:function(data){
+                sup = JSON.parse(data);
+                $.each(sup, function(key, val){
+                    var tmp = pardiv.parent().find('[link='+key+']');
+                    if(tmp.html()){
+                        var tmp1 = tmp.find('[inp_type=smart]');
+                        if(tmp1.parent().html()){
+                            tmp1.val(val);
+                            tmp1.parent().addClass('attention');
+                        } else {
+                            tmp.find('[name*=info]').val(val);
+                        }
+                    }
+                })
+            }
+        });
+    })
+    
+    $(document).on('click', '#closeDd', function(){
+        $(this).parent().parent().hide('slow', function(){});
+    })
+    
+    $(document).on('click', '[btn_type=remFromList]', function(){
+        $(this).parent().parent().remove();
+    })
+    
+    $(document).on('change', '#chooseWay', function(){
+        var sel = $(this);
+        if(sel.val()==='1'){
+            sel.parent().parent().find('#similarOption').parent().remove();
+            sel.parent().parent().find('#sim_showlistOption').parent().remove();
+            ajax({
+                url:"index.php?route=setting/prodtypes/getFields&token="+getURLVar('token'),
+                    statbox:"status",
+                    method:"POST",
+                    data:{target: sel.attr('target')},
+                   success:function(data){
+                       sel.parent().after(data);
+                   }
+            })            
+        } else {
+            sel.parent().parent().find('#similarOption').parent().remove();
+            sel.parent().parent().find('#sim_showlistOption').parent().remove();
+            sel.parent().after('<div><input type="hidden" value="" id="similarOption"></div>');
+            sel.parent().after('<div><input type="hidden" value="" id="sim_showlistOption"></div>');
+        }
+    })
+    
+    $(document).on('input', '[inp_type=chooseSim]', function(){
+        var inp = $(this);
+        var dD = inp.parent().find("#dropD");
+        if(inp.val()!==''){
+            ajax({
+                    url:"index.php?route=tool/formTool/getSimilarVariants&token="+getURLVar('token'),
+                    statbox:"status",
+                    method:"POST",
+                    data:
+                    {
+                        value: inp.val(),
+                        target: inp.attr('target'),
+                        opt: inp.attr('opt'),
+                        field: inp.attr('field')
+                    },
+                   success:function(data){
+                       dD.find("#devList").html(data); 
+                       dD.show('slow', function(){});
+                   }
+                })
+        } else{
+            dD.find("#devList").html(); 
+            dD.hide('slow', function(){});
+        }
+    })
+    
+    $(document).on('click', '[inp_type=smart]', function(){
+        $(this).trigger('input');
+    });
+    
     $(document).on('input', '[inp_type=smart]', function(){
         var inp = $(this);
         var dD = inp.parent().find("#dropD");
@@ -79,7 +207,7 @@ $(document).ready(function() {
             dD.hide('fast', function(){});
         }
     })
-        
+     
     $(document).on('click', '[li-type="smartItem"]', function(){
         $(this).parent().parent().hide('fast', function(){});
         var item = $(this);
@@ -95,6 +223,7 @@ $(document).ready(function() {
             },
            success:function(data){
                formgroup.find('input').val(item.attr('fill'));
+               formgroup.removeClass('attention');
                formgroup.find('[inp_type=smart]').val(item.text());
                $('.temp'+item.attr('library')).each(function(){
                    $(this).remove();
@@ -837,48 +966,6 @@ $(document).ready(function() {
         });
     })
     
-    //libr change Name
-//    $(document).on('input', '#librName', function(){
-//        $(this).parent().parent().find('button').removeAttr('disabled');
-//    })
-//    
-//    //option templName save
-//    $(document).on("click", "[btn_type=librNameSave]", function(){
-//        var button = $(this);
-//        var tempName = button.parent().find('input').val();
-//        var type_id = button.parent().find('input').attr('type_id');
-//        ajax({
-//            url:"index.php?route=setting/libraries/savelibrName&token="+getURLVar('token'),
-//            statbox:"status",
-//            method:"POST",
-//            data: {librName: tempName, library_id: type_id},
-//            success:function(data){
-//                button.attr('disabled', 'disabled');
-//            }
-//        });
-//    })
-    
-    //option tempName
-//    $(document).on('change', '#showNav', function(){
-//        $(this).parent().parent().find('button').removeAttr('disabled');
-//    })
-//    
-//    //option show to top-navigation save
-//    $(document).on("click", "[btn_type=showNavSave]", function(){
-//        var button = $(this);
-//        var show = button.parent().find('select').val();
-//        var type_id = button.parent().find('select').attr('type_id');
-//        ajax({
-//            url:"index.php?route=setting/prodtypes/saveShowNav&token="+getURLVar('token'),
-//            statbox:"status",
-//            method:"POST",
-//            data: {show: show, type_id: type_id},
-//            success:function(data){
-//                button.attr('disabled', 'disabled');
-//            }
-//        });
-//    })
-    
     //add new product
     $(document).on("click", "[btn_type=addProduct]", function(){
         var button = $(this);
@@ -1031,7 +1118,7 @@ $(document).ready(function() {
         var fieldText = optionDiv.find("[id=textOption]").val();
         var formArr = '';
         optionDiv.find("[id*=Option]").each(function(){
-            formArr = formArr + " " + $( this ).attr('id') + ": " + ($( this ).val()===''?$( this ).text():$( this ).val()) + ", ";
+            formArr = formArr + " " + $( this ).attr('id') + ": " + ($( this ).val()===''?$( this ).text():$( this ).val()) + "; ";
         });
         ajax({
             url:"index.php?route=setting/prodtypes/saveOption&token="+getURLVar('token'),
@@ -1052,7 +1139,6 @@ $(document).ready(function() {
                     $("#newOpt").removeAttr('disabled');
                 }
                 optionDiv.attr('class', 'alert alert-success');
-                alert(data);
                 alert('Сохранено');
             }
         });

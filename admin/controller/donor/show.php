@@ -88,7 +88,7 @@ class ControllerDonorShow extends Controller {
         $data['donor']['quant'] = $quant;
         $data['donor']['totalp'] = $total_price;
         
-        $data['go_site'] = HTTPS_CATALOG.'index.php?route=product/product&product_id=';
+        $data['go_site'] = HTTPS_CATALOG.'index.php?route=catalog/product&product_id=';
         $data['placeholder'] = $this->model_tool_image->resize('no_image.png', 100, 100);
         $data['token_add'] = $this->session->data['token'];
         

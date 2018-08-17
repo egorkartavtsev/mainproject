@@ -39,8 +39,8 @@ class ModelToolProduct extends Model {
         $sup = $this->db->query("SELECT "
                     . "tl.name, tl.description, "
                     . "tl.text, tl.type_id, "
-                    . "tl.lib_id, tl.vals, "
-                    . "tl.def_val, tl.required, "
+                    . "tl.lib_id, tl.vals, tl.type_id, "
+                    . "tl.def_val, tl.required, tl.similar, tl.sim_showlist, "
                     . "tl.field_type, tl.libraries, tl.sort_order, tl.viewed, "
                     . "tl.unique_field, tl.searching, tl.filter, "
                     . "l.text AS lib_name "
@@ -637,5 +637,32 @@ class ModelToolProduct extends Model {
         }
         
         return $result;
+    }
+    
+    public function getSimilarVariants($request, $target, $field, $opt) {
+        $sql = '';
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE lib_id = ".(int)$opt);
+        $fields = explode(",", $sup->row['similar']);
+        $result = array();
+        $sql = "SELECT * FROM ".DB_PREFIX.$target." WHERE 1 ";
+        foreach ($request as $word) {
+            $sql.= "AND LOCATE('".$this->db->escape($word)."', ".$field.") ";
+        }
+        $sup = $this->db->query($sql);
+        foreach ($sup->rows as $row) {
+            $text = '';
+            foreach ($fields as $val) {
+                $text.= $row[$val].' | ';
+            }
+            $text.= $row[$field];
+            $result[] = array('text' => $text, 'id' => $row[$field]);
+        }
+        return $result;
+    }
+    
+    public function getItemInfo($req) {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE lib_id = ".$req['opt']);
+        return $this->db->query("SELECT ".$sup->row['similar']." FROM ".DB_PREFIX.$req['target']." WHERE ".$req['field']." = '".$req['req']."' GROUP BY ".$req['field']." ")->row;
+        
     }
 }
