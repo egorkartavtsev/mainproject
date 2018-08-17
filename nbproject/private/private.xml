@@ -11,6 +11,12 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/catalog/view/theme/default/template/catalog/showproducts.tpl</file>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/catalog/view/theme/default/template/modal_window/Modal_window.tpl</file>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/catalog/view/javascript/common.js</file>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/catalog/view/theme/default/template/catalog/oneproduct.tpl</file>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/catalog/controller/catalog/product.php</file>
+        </group>
     </open-files>
 </project-private>
