@@ -107,12 +107,34 @@
     <li><a href="<?php echo $logout; ?>"><span class="hidden-xs hidden-sm hidden-md"><?php echo $text_logout; ?></span> <i class="fa fa-sign-out fa-lg"></i></a></li>
   </ul>
   <?php } ?>
-  <?php if($events){ ?>
-    <div class="notice toolbar events">
-        <span  data-toggle="modal" data-target="#persModal"><i class="fa fa-envelope"></i></span>
-        <span  data-toggle="modal" data-target="#persModal"><i class="fa fa-user"></i></span>
-        <span  data-toggle="modal" data-target="#persModal"><i class="fa fa-male"></i></span>
-        <span  data-toggle="modal" data-target="#persModal"><i class="fa fa-female"></i></span>
-    </div>
-  <?php } ?>
+  <?php if(isset($notices)){echo $notices;} ?>
 </header>
+<div class="modal fade" id="persModal" tabindex="-1" role="dialog" aria-labelledby="persInfoModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="persInfoLabel">Важное</h4>
+      </div>
+      <div class="modal-body" id="persInfo">
+          <div>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active"><a href="#user" aria-controls="user" role="tab" data-toggle="tab"><i class="fa fa-user"></i> Пользователь</a></li>
+              <?php foreach($persMod as $ntc){
+                echo $ntc['link'];
+              }?>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="user"><h3 class="text-center"><i class="fa fa-lock"></i> Раздел в разработке разработке.</h3></div>
+              <?php foreach($persMod as $ntc){
+                echo $ntc['tab'];
+              }?>              
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>

@@ -24,7 +24,7 @@ private $error = array();
 //                echo var_dump(in_array($this->request->post['vin'], $dirs)).'<br><br>';
 //                exit(var_dump($dirs));
                 if(!in_array($this->request->post['vin'], $dirs)){
-                    mkdir($uploaddir);
+                    mkdir($uploaddir.$this->request->post['vin']);
                 }
                 $uploaddir.= $this->request->post['vin'];
                 if (!$piq->num_rows){

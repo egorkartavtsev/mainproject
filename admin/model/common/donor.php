@@ -31,7 +31,7 @@ class ModelCommonDonor extends Model {
                             . "name = '".$name."', "
                             . "brand = '".$brand."', "
                             . "model = '".$model."', "
-                            . "mod_row = '".$model_row."', "
+                            . "modR = '".$model_row."', "
                             . "youtube = '".$youtube."', "
                             . "ctype = '".$data['cuzov']."', "
                             . "year = '".$data['year']."', "
@@ -120,7 +120,7 @@ class ModelCommonDonor extends Model {
     public function getProds($donor){
         $query = $this->db->query("SELECT * FROM ".DB_PREFIX."product p "
                 . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
-                . "WHERE p.donor = '".$donor."'");
+                . "WHERE p.numb = '".$donor."'");
         
         $results = array();
         
@@ -165,7 +165,7 @@ class ModelCommonDonor extends Model {
                             . "image = '".$data['main-image']."', "
                             . "brand = '".$brand."', "
                             . "model = '".$model."', "
-                            . "mod_row = '".$model_row."', "
+                            . "modR = '".$model_row."', "
                             . "ctype = '".$data['cuzov']."', "
                             . "year = '".$data['year']."', "
                             . "note = '".$data['note']."', "
@@ -189,9 +189,9 @@ class ModelCommonDonor extends Model {
     
     public function filterList($request) {
         $rWords = explode(" ", trim($request));
-        $sql = "SELECT * FROM ".DB_PREFIX."donor WHERE 0 ";
+        $sql = "SELECT * FROM ".DB_PREFIX."donor WHERE 1 ";
         foreach ($rWords as $word) {
-            $sql.="OR LOCATE('".$word."', name) OR LOCATE('".$word."', numb) OR LOCATE('".$word."', dvs) ";
+            $sql.="AND (LOCATE('".$word."', name) OR LOCATE('".$word."', numb) OR LOCATE('".$word."', dvs)) ";
         }
         $sql.="ORDER BY id DESC";
         $result = $this->db->query($sql);

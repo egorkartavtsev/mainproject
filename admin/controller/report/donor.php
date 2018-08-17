@@ -48,7 +48,7 @@ class ControllerReportDonor extends Controller{
                                 .'<tr><td><b>VIN: </b></td><td>'.$info['info']['vin'].'</td></tr>'
                                 .'<tr><td><b>Марка: </b></td><td>'.$info['info']['brand'].'</td></tr>'
                                 .'<tr><td><b>Модель: </b></td><td>'.$info['info']['model'].'</td></tr>'
-                                .'<tr><td><b>Модельный ряд: </b></td><td>'.$info['info']['mod_row'].'</td></tr>'
+                                .'<tr><td><b>Модельный ряд: </b></td><td>'.$info['info']['modR'].'</td></tr>'
                                 .'<tr><td><b>ДВС: </b></td><td>'.$info['info']['dvs'].'</td></tr>'
                                 .'<tr><td><b>Цвет: </b></td><td>'.$info['info']['color'].'</td></tr>'
                                 .'<tr><td><b>Трансмиссия: </b></td><td>'.$info['info']['trmiss'].'</td></tr>'

@@ -121,7 +121,7 @@
                     <div id="model_row">
                         <select name='modelRow_id' id='model_row_id' class='form-control'>
                             <?php foreach ($model_rows as $model_row) { ?>
-                                <option value="<?php echo $model_row['val']; ?>" <?php if ($model_row['name']===$donor['mod_row']){echo 'selected';} ?>><?php echo $model_row['name']; ?></option>
+                                <option value="<?php echo $model_row['val']; ?>" <?php if ($model_row['name']===$donor['modR']){echo 'selected';} ?>><?php echo $model_row['name']; ?></option>
                             <?php } ?>
                         </select>
                     </div>

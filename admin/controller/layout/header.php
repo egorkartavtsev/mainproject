@@ -142,30 +142,36 @@ class ControllerLayoutHeader extends Controller {
                         
                         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."order WHERE viewed = 0 ");
                         if($sup->num_rows){
-                            $data['notice']['order'] = '<a href="'.$this->url->link('report/orders', 'token='.$this->session->data['token']).'" style="float: left;"><div class="top-notice orders"><h3><b style="color: white;">'.$sup->num_rows.'</b></h3></div></a>';
+                            $data['notice']['order'] = '<a class="hidden-md hidden-lg" href="'.$this->url->link('report/orders', 'token='.$this->session->data['token']).'" style="float: left;"><div class="top-notice orders"><h3><b style="color: white;">'.$sup->num_rows.'</b></h3></div></a>';
                         }
                         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."product_to_avito WHERE message = 1 ");
                         if($sup->num_rows){
                             $data['notice']['avito'] = '<a href="'.$this->url->link('avito/avito_list', 'token='.$this->session->data['token']).'" style="float: left;"><div class="top-notice avito"><h3><b style="color: white;">'.$sup->num_rows.'</b></h3></div></a>';
                         }
+                        //CKEditor
+                        if ($this->config->get('config_editor_default')) {
+                            $data['scripts'][]='view/javascript/ckeditor/ckeditor.js';
+                            $data['scripts'][]='view/javascript/ckeditor/ckeditor_init.js';
+                        } else {
+                            $data['scripts'][]='view/javascript/summernote/summernote.js';
+                            $data['scripts'][]='view/javascript/summernote/lang/summernote-'.$this->language->get('lang').'.js';
+                            $data['scripts'][]='view/javascript/summernote/opencart.js';
+                            $data['styles'][] = array(
+                                'href'=>'view/javascript/summernote/summernote.css',
+                                'rel'=>'stylesheet',
+                                'media'=>'screen'
+                            );
+                        }
+                        $data['notices'] = $this->load->controller('layout/notices');
+                        $this->load->model('tool/layout');
+                        $notices = $this->model_tool_layout->getnoticeTotals();
+
+                        foreach ($notices['notices'] as $key => $notice) {
+                            $tmp = 'get'.$key;
+                            $data['persMod'][$key]['link'] = '<li role="presentation"><a href="#'.$key.'" '.((int)$notice['fastviewed']?'btn_type="upd-notice"':'').' aria-controls="'.$key.'" role="tab" data-toggle="tab"><i class="'.$notice['icon'].'" btn_type="upd-notice"></i> '.$notice['text'].' '.($notice['new']?'<span class="hasNew">'.$notice['new'].'</span>':'').'</a></li>';
+                            $data['persMod'][$key]['tab'] = $this->model_tool_layout->$tmp();
+                        }
 		}
-                
-                //CKEditor
-                if ($this->config->get('config_editor_default')) {
-                    $data['scripts'][]='view/javascript/ckeditor/ckeditor.js';
-                    $data['scripts'][]='view/javascript/ckeditor/ckeditor_init.js';
-                } else {
-                    $data['scripts'][]='view/javascript/summernote/summernote.js';
-                    $data['scripts'][]='view/javascript/summernote/lang/summernote-'.$this->language->get('lang').'.js';
-                    $data['scripts'][]='view/javascript/summernote/opencart.js';
-                    $data['styles'][] = array(
-                        'href'=>'view/javascript/summernote/summernote.css',
-                        'rel'=>'stylesheet',
-                        'media'=>'screen'
-                    );
-                }
-                
-                $data['events'] = false;
                 
 		return $this->load->view('layout/header', $data);
 	}

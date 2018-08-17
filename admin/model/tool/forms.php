@@ -5,10 +5,11 @@ class ModelToolForms extends Model {
         'vin' => 'Внутренний номер', 'quantity' => 'Количество', 'price' => 'Цена', 'youtube' => 'YouTube(только код!)'
     );
     private $ignoreFields = array('complect', 'heading', 'type_id', 'manager', 'status');
+
     public function generateAddForm($id, $num){
         $this->load->model('tool/complect');
         $form = '';
-        $systemF = '';
+        $systemF = '<div class="col-lg-12"><a class="btn btn-danger btn-sm pull-right" btn_type="remFromList"><i class="fa fa-trash-o"></i> удалить из списка</a></div>';
         $librF = '';
         $selectF = '';
         $inputF = '';
@@ -27,16 +28,24 @@ class ModelToolForms extends Model {
                     $description = $option['description']===''?'':'data-toggle="tooltip" data-placement="bottom" data-original-title="'.$option['description'].'"';
                     $required = $option['required']==='1'?' required="required" aria-required="true"':'';
                     $unique = $option['unique_field']==='1'?' unique="unique" field="'.$option['name'].'"':'';
-                    $inputF.='<div class="form-group-sm col-md-3">'
-                        . '<label>'.$option['text'].($option['required']==='1'?'<span style="color: red;">*</span>':'').'</label>'
-                        . '<input class="form-control" name="info['.$num.']['.$option['name'].']" '.$description.$required.$unique.' value="'.$option['def_val'].'"/>'
-                    . '</div>';
+                    $similar = ($option['similar']!=='' && $option['similar']!=='null')?' inp_type="chooseSim" field="'.$option['name'].'" target="'.$option['sim_showlist'].'" opt="'.$option['lib_id'].'"':'';
+                    $inputF.='<div class="form-group-sm col-md-3" link="'.$option['name'].'">'
+                              . '<label>'.$option['text'].($option['required']==='1'?'<span style="color: red;">*</span>':'').'</label>'
+                              . '<input class="form-control" name="info['.$num.']['.$option['name'].']" '.$description.$required.$unique.$similar.' value="'.$option['def_val'].'" />';
+                    if($option['similar']!=='' && $option['similar']!=='null'){
+                        $inputF.= '<ul class="dropdown-menu" id="dropD" style="left: 15px; max-height: 170px; overflow-y: scroll; display: none;">'
+                                  . '<li class="dropdown-header"><span class="pull-left">Выберите значение</span><span class="pull-right btn btn-default btn-sm" id="closeDd">&times;</span></li>'
+                                  . '<li class="devider"><hr></li>'
+                                  . '<div id="devList"></div>'
+                                . '</ul>';
+                    }
+                    $inputF.= '</div>';
                     break;
                 case 'compability':
                     $description = $option['description']===''?'':'data-toggle="tooltip" data-placement="bottom" data-original-title="'.$option['description'].'"';
                     $required = $option['required']==='1'?' required="required" aria-required="true"':'';
                     $unique = $option['unique_field']==='1'?' unique="unique" field="'.$option['name'].'"':'';
-                    $inputF.='<div class="form-group-sm col-md-3"><div class="col-lg-10">'
+                    $inputF.='<div class="form-group-sm col-md-6" link="'.$option['name'].'"><div class="col-lg-10">'
                         . '<label>'.$option['text'].($option['required']==='1'?'<span style="color: red;">*</span>':'').'</label>'
                         . '<input class="form-control" name="info['.$num.']['.$option['name'].']" id="'.$option['name'].$num.'" '.$description.$required.$unique.' value="'.$option['def_val'].'"/>'
                     . '</div><div class="col-lg-1"><label>&nbsp;</label><br><a class="btn btn-success" btn_type="compability" data-toggle="modal" data-target="#'.$option['name'].'-'.$num.'"><i class="fa fa-search"></i></a></div></div>';
@@ -74,7 +83,7 @@ class ModelToolForms extends Model {
                     </div>';
                     break;
                 case 'select':
-                    $selectF.='<div class="form-group-sm  col-md-3">'
+                    $selectF.='<div class="form-group-sm  col-md-3" link="'.$option['name'].'">'
                              . '<label>'.$option['text'].'</label>';
                         $selectF.='<select class="form-control" name="info['.$num.']['.$option['name'].']">';
                         $vals = explode(';', $option['vals']);
@@ -89,7 +98,7 @@ class ModelToolForms extends Model {
                     $sup = $this->db->query("SELECT *, (SELECT name FROM ".DB_PREFIX."lib_struct WHERE parent_id = ".(int)$option['libraries'].") AS child, (SELECT l.smart FROM ".DB_PREFIX."libraries l WHERE l.library_id = ls.library_id) AS smart FROM ".DB_PREFIX."lib_struct ls WHERE ls.item_id = ".(int)$option['libraries']);
                     if((int)$sup->row['smart']){
                         if(!(int)$sup->row['isparent']){
-                            $librF.='<div class="form-group-sm col-md-4" id="'.$option['name'].'">'
+                            $librF.='<div class="form-group-sm col-md-4" link="'.$option['name'].'" id="'.$option['name'].'">'
                                     . '<label>'.$option['text'].'</label>'
                                     . '<input class="form-control" inp_type="smart" type="text" item="'.$option['libraries'].'">'
                                     . '<ul class="dropdown-menu" id="dropD" style="left: 15px; display: none;">'
@@ -104,7 +113,7 @@ class ModelToolForms extends Model {
                         }
                     } else {
                         if($sup->row['parent_id']){
-                            $librF.='<div class="form-group-sm col-md-4" id="'.$option['name'].'">'
+                            $librF.='<div class="form-group-sm col-md-4" link="'.$option['name'].'" id="'.$option['name'].'">'
                                   . '</div>'.($sup->row['isparent']?'':'<div class="clearfix"></div>');
                         }else{
                             $fillsquer = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE item_id = ".(int)$option['libraries']." ORDER BY name ");
@@ -195,6 +204,7 @@ class ModelToolForms extends Model {
             
         }
         foreach ($prodlist as $num => $product){
+            $this->load->model('tool/complect');
             //upload photos
             if($photo[$num][0]['size']!='0'){
                 $this->uploadPhoto($product['vin'], $photo[$num]);
@@ -299,6 +309,10 @@ class ModelToolForms extends Model {
             $this->db->query("INSERT INTO ".DB_PREFIX."product_to_store (product_id, store_id) VALUES (".(int)$product_id.", 0)");
             //old link-tables
             $this->model_tool_product->oldLinks($product_id, $prod2Lib);
+            //complect settings
+            if((int)$product['price'] && $this->model_tool_complect->isCompl($product['vin'])){
+                $this->model_tool_complect->compReprice($product['vin']);
+            }
         }
         
     }

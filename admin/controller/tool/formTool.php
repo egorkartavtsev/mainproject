@@ -156,6 +156,23 @@ class ControllerToolFormTool extends Controller {
         echo $output;
     }
     
+    public function getSimilarVariants() {
+        $req = $this->request->post;
+        $request = explode(" ", $req['value']);
+        $this->load->model('tool/product');
+        $result = $this->model_tool_product->getSimilarVariants($request, $req['target'], $req['field'], $req['opt']);
+        if(count($result)){
+            $list = '';
+            foreach ($result as $res) {
+                $list.='<li class="searchItem" li-type="simItem" item_id="'.$res['id'].'" >'.$res['text'].'</li>';
+            }
+        } else {
+            $list = '<li>В базе нет похожих значениий. Изменение запроса может исправить ситуацию.</li>';            
+        }
+//        $list = var_dump($result);
+        echo $list;
+    }
+    
     public function getSmartVariants() {
         $req = $this->request->post;
         $request = explode(" ", $req['value']);
@@ -186,5 +203,20 @@ class ControllerToolFormTool extends Controller {
         }
         echo $list;
     }
+    
+    public function autoload() {
+        $req = $this->request->post;
+        $this->load->model('tool/product');
+        $result = $this->model_tool_product->getItemInfo($req);
+        
+        echo json_encode($result);
+    }
+    
+    public function fastviewed(){
+        $target = $this->request->post['target'];
+        $this->load->model('tool/layout');
+        $this->model_tool_layout->checkfastviewed($target);
+    }
+    
 }
 
