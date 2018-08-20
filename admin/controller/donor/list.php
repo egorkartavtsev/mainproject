@@ -87,7 +87,7 @@ class ControllerDonorList extends Controller {
             $table.='<td>'.$donor['numb'].'</td>';
             $table.='<td>'.$donor['brand'].'</td>';
             $table.='<td>'.$donor['model'].'</td>';
-            $table.='<td>'.$donor['mod_row'].'</td>';
+            $table.='<td>'.$donor['modR'].'</td>';
             $table.='<td>'.$donor['ctype'].'</td>';
             $table.='<td>'.$donor['year'].'</td>';
             $table.='<td>'.$donor['kmeters'].'</td>';
