@@ -116,10 +116,42 @@
           <div class="clearfix"></div>
           <div class="clearfix"><p></p></div>
           <div class="row">
+              <div class="col-lg-4">
+                  <div class="well">
+                      <h3>Информация о доставке: <button id="save_shipinfo" disabled class="btn btn-success"><i class="fa fa-floppy-o"></i></button></h3>
+                      <div class="form-group">
+                          <label>Выберите транспортную компанию:</label>
+                          <select class="form-control" info-target="shipinfo" id="ship_comp">
+                              <?php foreach($ship as $key => $sc){ ?>
+                                <option value="<?php echo $key; ?>" <?php echo ($sc['name']==$order['ship_comp'])?'selected':''; ?>><?php echo $sc['name']; ?></option>
+                              <?php }?>
+                          </select>
+                      </div>
+                      <div id="ship_href"><a href="<?php echo $order['ship_href']; ?>" class="bnt btn-sm btn-info">Отслеживание по трекномеру</a></div>
+                      <div class="form-group">
+                          <label>Трек-номер отправления:</label>
+                          <input class="form-control" value="<?php echo $order['track_id']; ?>" info-target="shipinfo" id="track_id">
+                      </div>
+                      
+                      <div class="form-group">
+                          <label>Дата отправки:</label>
+                            <div class='input-group date' id='datetimepicker2'>
+                                <input type='text' value="<?php echo date("d.m.Y H:i", strtotime($order['ship_date'])); ?>" class="form-control date" info-target="shipinfo" id="ship_date"/>
+                                <span class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="clearfix"></div>
+          <div class="clearfix"><p></p></div>
+          <div class="row">
             <?php if(count($complects)){ ?>
                 <h3>Включенные конплекты:</h3>
                 <?php foreach($complects as $c_name => $prods){ ?>
-                    <Div class="col-md-4">
+                    <div class="col-md-4">
                         <div class="alert alert-danger">
                             <h4><b>Комплект:</b> <?php echo $c_name;?></h4>
                             <table class="table table-striped">
@@ -181,6 +213,9 @@
             }
         })
     });
+    $(document).find("[id*='datetimepicker']").each(function(){
+        $(this).datetimepicker();
+    })
     $('[btn_type=delete_prod]').click(function(){
         var prod = $(this).attr('prod');
         ajax({

@@ -4,6 +4,7 @@ class ControllerReportOrdersInfo extends Controller{
     public function index() {
         $this->load->model('tool/order');
         $this->load->model("tool/layout");
+        $order = $this->model_tool_order->getOrderInfo($this->request->get['order_id']);
         $data = $this->model_tool_layout->getLayout($this->request->get['route']);
         $data['href'] = 'index.php?route=report/order_info&token='.$this->session->data['token'];
         $url = '';
@@ -24,21 +25,8 @@ class ControllerReportOrdersInfo extends Controller{
         if(isset($this->request->get['filter-telephone']) && $this->request->get['filter-telephone']!=''){
             $url.='&filter-telephone='.$this->request->get['filter-telephone'];
         }
-        $order = $this->model_tool_order->getOrderInfo($this->request->get['order_id']);
-        $data['order'] = array(
-            'id' => $order['id'],
-            'date_added' => $order['date_added'],
-            'firstname'  => $order['firstname'],
-            'lastname'   => $order['lastname'],
-            'patron'   => $order['patron'],
-            'email' => $order['email'],
-            'telephone' => $order['telephone'],
-            'zone' => $order['zone'],
-            'city' => $order['city'],
-            'address' => $order['address'],
-            'total' => $order['total'],
-            'order_status_id' => $order['order_status_id']
-        );
+        
+        $data['order'] = $order;
         $data['complects'] = array();
         foreach ($order['products'] as $prod) {
             $data['order']['products'][] = $prod;
@@ -55,6 +43,9 @@ class ControllerReportOrdersInfo extends Controller{
         }
         $data['utype'] = $this->session->data['uType'];
         $data['href'].= $url;
+        
+        $data['ship'] = $this->model_tool_order->getShipLib();
+        
         $this->response->setOutput($this->load->view('sale/orders_info', $data));
     }
     
@@ -134,5 +125,21 @@ class ControllerReportOrdersInfo extends Controller{
         $result = $this->model_tool_order->save_status($stat, $this->request->post['order']);
         echo $result;
     }
+    
+    public function saveShipInfo() {
+        $sup = explode(",", $this->request->post['data']);
+        $tmp = array();
+        foreach ($sup as $row) {
+            $i = explode("=", $row);
+            if(trim($i[0])!=''){
+                $tmp[$i[0]] = $i[1];
+            }
+        }
+        $tmp['target'] = $this->request->post['target'];
+        $this->load->model('tool/order');
+        $this->model_tool_order->saveShip($tmp);
+        echo var_dump($tmp);
+    }
+    
 }
 

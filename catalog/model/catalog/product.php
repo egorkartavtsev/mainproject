@@ -133,7 +133,7 @@ class ModelCatalogProduct extends Model {
 				
 				'length'           => $query->row['modR'], 
 				'width'            => $query->row['width'],
-				'height'           => $query->row['donor'],
+				'height'           => $query->row['numb'],
 				
 				//'subtract'         => $query->row['subtract'], используется в getProductOptions
 				'rating'           => round($query->row['rating']),

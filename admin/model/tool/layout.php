@@ -57,6 +57,7 @@ class ModelToolLayout extends Model {
         $sup = $this->getUserNotice($user);
         $result = array(
             'notices' => array(),
+            'notified' => 0,
             'new' => 0
         );
         foreach ($sup->rows as $row) {
@@ -68,13 +69,17 @@ class ModelToolLayout extends Model {
                 'new'  => 0
             );
             $sql = "SELECT * FROM ".DB_PREFIX.$row['target_table']." WHERE viewed = 0 ";
+            $sql1 = "UPDATE ".DB_PREFIX.$row['target_table']." SET notified = 1 WHERE viewed = 0 ";
             if(!(int)$row['overal']){
                 $sql.= "AND target_user = ".(int)$user['user_id'];
+                $sql1.= "AND target_user = ".(int)$user['user_id'];
             }
             $tmp = $this->db->query($sql);
             if($tmp->num_rows){
                 $result['notices'][$row['name']]['new'] = $tmp->num_rows;
                 $result['new'] = 1;
+                $result['notified'] = in_array(0,array_column($tmp->rows,'notified'))?1:0;
+                $this->db->query($sql1);
             }
         }
         return $result;

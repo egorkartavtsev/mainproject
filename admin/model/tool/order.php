@@ -66,6 +66,10 @@ class ModelToolOrder extends Model{
                 'zone' => $isup->row['payment_zone'],
                 'city' => $isup->row['payment_city'],
                 'address' => $isup->row['payment_address_1'],
+                'ship_comp' => $isup->row['ship_comp'],
+                'ship_date' => $isup->row['ship_date'],
+                'track_id' => $isup->row['track_id'],
+                'ship_href' => $isup->row['ship_href'],
                 'total' => (int)$isup->row['total'],
                 'order_status_id' => (int)$isup->row['order_status_id']
             );
@@ -213,5 +217,29 @@ class ModelToolOrder extends Model{
                             . "order_status_id = ".(int)$stat." "
                          . "WHERE order_id = ".(int)$order." ");
     }
+    
+    public function getShipLib(){
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE library_id = 12");
+        $result = array();
+        foreach ($sup->rows as $row) {
+            if((int)$row['parent_id']){
+                $result[$row['parent_id']]['href'] = $row['name'];
+            } else {
+                $result[$row['id']]['name'] = $row['name'];
+            }
+        }
+        return $result;
+    }
+    
+    public function saveShip($info) {
+        $tmp = $this->db->query("SELECT lf.name, (SELECT lf2.name FROM ".DB_PREFIX."lib_fills lf2 WHERE lf2.parent_id = ".(int)$info['ship_comp'].") AS href FROM ".DB_PREFIX."lib_fills lf WHERE lf.id=".(int)$info['ship_comp']);
+        $this->db->query("UPDATE ".DB_PREFIX."order SET "
+                . "ship_comp = '".$tmp->row['name']."', "
+                . "ship_href = '".$tmp->row['href']."', "
+                . "ship_date = '".date("Y-m-d H:i:s", strtotime($info['ship_date']))."', "
+                . "track_id = '".$info['track_id']."' "
+                . "WHERE order_id = ".(int)$info['target']);
+    }
+    
 }
 

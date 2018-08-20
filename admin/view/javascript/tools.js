@@ -1,3 +1,38 @@
+function checkEventes(){
+    $('#chatAudio')[0].autoplay;
+    ajax({
+      url:"index.php?route=tool/formTool/getNewNotices&token="+getURLVar('token'),
+      method:"POST",
+      datatype: "json",
+      success:function(data){
+            sup = JSON.parse(data);
+            if(parseInt(sup['notified'])){
+                $('#chatAudio')[0].play();
+                var toolbar =  $('.toolbar');
+                toolbar.addClass('pulse');
+                $.each(sup['notices'], function(k,v){
+                    if(parseInt(sup['notices'][k]['new'])){
+                        var tmp = '<re>';
+                                tmp+= '<a href="#'+k+'" data-toggle="tab" aria-controls="'+k+'" role="tab" ';
+                                if(parseInt(sup['notices'][k]['fastviewed'])){
+                                    tmp+= 'btn_type="upd-notice">';
+                                } else{
+                                    tmp+= '>';
+                                }
+                                    tmp+= '<span class="hasNew">!</span>';
+                                tmp+= '</a>';
+                            tmp+= '</re>';
+                        toolbar.find('[aria-controls='+k+']').parent().after(tmp);
+                        //alert(sup['notices'][k]['fastview']);
+                        $(document).find('#persInfo').find('#'+k).html(sup['notices'][k]['tab']);
+                    }
+                })
+            }
+            setTimeout(checkEventes, 1000);
+      }
+    });
+}
+
 function showStructOptions($parent){
     ajax({
       url:"index.php?route=setting/prodtypes/showOptions&token="+getURLVar('token'),
@@ -57,6 +92,33 @@ function addOption(){
     });
 }
 $(document).ready(function() {
+    
+    setTimeout(checkEventes, 1000);
+    
+    $(document).on('input', '[info-target=shipinfo]', function(){
+        $('#save_shipinfo').removeAttr('disabled');
+    });
+    
+    $(document).on('click', '#save_shipinfo', function(){
+        var res = '';
+        var btn = $(this);
+        btn.parent().parent().find('[info-target=shipinfo]').each(function(){
+            res+= $(this).attr('id')+'='+$(this).val()+',';
+        })
+        ajax({
+            url:"index.php?route=report/orders_info/saveShipInfo&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data: {
+                data: res,
+                target: getURLVar('order_id')
+            },
+            success:function(data){
+                btn.attr('disabled', 'disabled');
+                //alert(data);
+            }
+        });
+    });
     
     $(document).on('click', '[btn_type=upd-notice]', function(){
         var btn = $(this);
@@ -1266,22 +1328,21 @@ $(document).ready(function() {
                                     'transform':'rotate(' + angle + 'deg)'});
         $("[id="+ image_id +"]").attr('rotate_now',angle);                        
     });
-    $(document).ready(function(){
-         $("#sort_image").sortable({update: function () {
-            $("[data-trigger=image_elm]").each(function(indx){
-                $(this).find("[data-trigger=sort_input]").val(indx);
-            });
-        }});
-    });
-    $(document).ready(function(){
+    if($("#sort_image").html()){
+        $("#sort_image").sortable({update: function () {
+                $("[data-trigger=image_elm]").each(function(indx){
+                    $(this).find("[data-trigger=sort_input]").val(indx);
+                });
+            }});
         $('.icon-plus-pupup').magnificPopup({
-		type: 'image',
-		closeOnContentClick: true,
-		image: {
-			verticalFit: false
-		}
-	});
-    });
+                type: 'image',
+                closeOnContentClick: true,
+                image: {
+                        verticalFit: false
+                }
+        });
+    }
+    
 })
 
 function addLibItem(){
