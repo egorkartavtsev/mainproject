@@ -224,11 +224,11 @@
                                 <?php }?>  
                         </div>
                         <a class="left carousel-control" href="#carousel-example-generic<?php echo $product['product_id']; ?>" role="button" data-slide="prev">
-                            <span class="fa fa-angle-left fa-2x" aria-hidden="true"></span>
+                            <span class="fa fa-angle-left fa-2x" style="margin-top: 200%" aria-hidden="true"></span>
                             <span class="sr-only">Previous</span>
                         </a>
                         <a class="right carousel-control" href="#carousel-example-generic<?php echo $product['product_id']; ?>" role="button" data-slide="next">
-                            <span class="fa fa-angle-right fa-2x" aria-hidden="true"></span>
+                            <span class="fa fa-angle-right fa-2x" style="margin-top: 200%" aria-hidden="true"></span>
                             <span class="sr-only">Next</span>
                         </a>            
                     </div>

@@ -16,7 +16,7 @@ class ControllerToolFormTool extends Controller {
                     $result.= '<select class="form-control" '.$child['js'].'>';
                     $result.= '<option value="-">-</option>';
                     foreach ($child['fills'] as $fill) {
-                        $result.= '<option value="'.$fill['id'].'">'.$fill['name'].'</option>';
+                        $result.= '<option value="'.$fill['id'].'" prompt="'.$fill['prompt'].'">'.$fill['name'].'</option>';
                     }
                     $result.= '</select>';
                 } else {
@@ -31,7 +31,7 @@ class ControllerToolFormTool extends Controller {
                 $result.= '<select class="form-control" name = "info['.$fieldName.']" '.$child['js'].'>';
                 $result.= '<option value="-">-</option>';
                 foreach ($child['fills'] as $fill) {
-                    $result.= '<option value="'.$fill['id'].'">'.$fill['name'].'</option>';
+                    $result.= '<option value="'.$fill['id'].'" prompt="'.$fill['prompt'].'" >'.$fill['name'].'</option>';
                 }
                 $result.= '</select>';
             } elseif($num === 'createauto') {
@@ -39,20 +39,20 @@ class ControllerToolFormTool extends Controller {
                 $result.= '<select class="form-control" id = "select-'.$fieldName.'" '.$child['js'].'>';
                 $result.= '<option value="-">-</option>';
                 foreach ($child['fills'] as $fill) {
-                    $result.= '<option value="'.$fill['id'].'">'.$fill['name'].'</option>';
+                    $result.= '<option value="'.$fill['id'].'" prompt="'.$fill['prompt'].'">'.$fill['name'].'</option>';
                 }
                 $result.= '</select>';
             } else {
                 if($num !== 'no-num'){
                     $result.= '<div class = "row paddingrow"><label> '.$child['text'].' </label><div class ="floatright"><a class="btn btn-success btn-sm" data-toggle="modal" data-target="#createFillModal" parent="'.$child['parent_name'].'" btn_type="createFill"><i class="fa fa-plus"></i></a><a class="btn btn-info btn-sm" btn_type="changeFillprod" type="button" data-toggle="modal" fill="" data-target="#settingsLevel" btn_type="levelSettings"><i class="fa fa-pencil"></i></a></div></div>';
-                    $result.= '<select class="form-control" name = "info['.$num.']['.$fieldName.']" '.$child['js'].'>';
+                    $result.= '<select class="form-control" alert_triger="prompt" name = "info['.$num.']['.$fieldName.']" '.$child['js'].'>';
                 } else {
                     $result.= '<label>'.$child['text'].'</label>';
-                    $result.= '<select class="form-control" name = "info['.$fieldName.']" '.$child['js'].'>';
+                    $result.= '<select class="form-control" alert_triger="prompt" name = "info['.$fieldName.']" '.$child['js'].'>';
                 }
                 $result.= '<option value="-">-</option>';
                 foreach ($child['fills'] as $fill) {
-                    $result.= '<option value="'.$fill['id'].'">'.$fill['name'].'</option>';
+                    $result.= '<option value="'.$fill['id'].'" prompt="'.$fill['prompt'].'">'.$fill['name'].'</option>';
                 }
                 $result.= '</select>';
             }    
@@ -87,7 +87,6 @@ class ControllerToolFormTool extends Controller {
             $res = 'exists';
         }
         echo $res;
-        
     }
     
     public function getProdCard() {

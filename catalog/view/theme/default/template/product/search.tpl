@@ -61,7 +61,39 @@
             <?php }?>
             </div>  
           <div class="product-thumb">
-            <div class="image"><a href="<?php echo $product['href']; ?>"><img src="<?php echo $product['thumb'].'?'.time(); ?>" alt="<?php echo $product['name']; ?>" title="<?php echo $product['name']; ?>" class="img-responsive" /></a></div>
+            <div id="carousel-example-generic<?php echo $product['product_id']; ?>" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators" style="display: none;">
+                    <?php foreach($product['image'] as $image) { ?>
+                        <?php if (isset($image['main']) && $image['main'] == true) { ?> 
+                            <li data-target="#carousel-example-generic<?php echo $product['product_id']; ?>" data-slide-to="<?php echo $image['lid']?>" class="active"></li>
+                        <?php } else { ?>
+                            <li data-target="#carousel-example-generic<?php echo $product['product_id']; ?>" data-slide-to="<?php echo $image['lid']?>"></li>
+                        <?php }?>
+                    <?php }?> 
+                </ol>
+                <div class="carousel-inner" role="listbox">
+                    <?php foreach($product['image'] as $image) { ?> 
+                        <?php if (isset($image['main']) && $image['main'] == true) { ?> 
+                           <div class="item active">
+                        <?php } else { ?>
+                           <div class="item">
+                        <?php }?>
+                        <div class="image"><a href="<?php echo $product['href'];?>"><img src="<?php echo $image['thumb'].'?'.time();?>" alt="<?php echo $product['name'];?>" title="<?php echo $product['name']; ?>" class="img-thumbnail d-block w-100 img-responsive" /></a></div>
+                        </div>   
+                    <?php }?>  
+                </div>
+                <a class="left carousel-control" href="#carousel-example-generic<?php echo $product['product_id']; ?>" role="button" data-slide="prev">
+                    <span class="fa fa-angle-left" style="font-size: 2em; margin-top: 200%" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#carousel-example-generic<?php echo $product['product_id']; ?>" role="button" data-slide="next">
+                    <span class="fa fa-angle-right" style="font-size: 2em; margin-top: 200%" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>            
+            </div>
+            <script type="text/javascript" async>
+                $('#carousel-example-generic<?php echo $product['product_id']; ?>').carousel();    
+            </script>
             <div>
               <div class="col-lg-12 nameProd">
                 <h4><a href="<?php echo $product['href'];?>" ><?php echo $product['name'];?></a></h4>
@@ -69,32 +101,30 @@
               <div class="caption text-center">
                 <p>Артикул: <?php echo $product['vin'];?></p>
                 <?php foreach($product['options'] as $option){ ?>
-                  <?php if($option['value']!='-'){ ?><p><?php echo $option['text'];?>: <?php echo htmlspecialchars_decode($option['value']);?></p><?php }?>
+                    <?php if($option['value']!='-'){ ?><p><?php echo $option['text'];?>: <?php echo htmlspecialchars_decode($option['value']);?></p><?php }?>
                 <?php }?>
             </div>
             <div class="col-lg-12 text-center priceProd">
                 <p>
-                    <?php if ($product['price'] !== '0') { ?>
+                    <?php if ($product['price'] !== '0' && $product['comp_whole'] !== '1') { ?>
                         <b>Цена: <?php echo $product['price'];?> &#8381;</b>
                     <?php } else { ?>
                         &nbsp;
                     <?php }?>
                 </p>
             </div>
-                <?php echo $modal_window; ?>  
-                <?php if ($product['status'] == '2') { ?>
-                  <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pname ="<?php echo $product['name'];?>" pvin="<?php echo $product['vin'];?>">Уточнить наличие</button>
-                <?php } else { ?>                   
-                    <?php if ($product['price'] == 0.00 || $product['quantity'] == 0)  { ?>
-                        <?php if ($product['price'] == 0.00) { ?>
-                            <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pname ="<?php echo $product['name'];?>" pvin="<?php echo $product['vin'];?>">Узнать стоимость</button>
-                        <?php } else { ?>
-                            <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pname ="<?php echo $product['name'];?>" pvin="<?php echo $product['vin'];?>">Заказать товар</button> 
-                        <?php } ?>
-                    <?php } else { ?>  
-                        <button class="btn btn-lg btn-danger center-block checkPr" type="button" onclick="cart.add('<?php echo $key; ?>', '1');"><i class="fa fa-shopping-cart"></i> В КОРЗИНУ</button>
-                    <?php } ?>
-                <?php } ?> 
+            <?php echo $modal_window; ?>  
+            <?php if ($product['status'] == '2') { ?>
+                <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="1">Уточнить наличие</button>
+            <?php } elseif ($product['price'] == 0.00 && $product['quantity'] !== 0) { ?>                                           
+                <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="2">Узнать стоимость</button>
+            <?php } elseif ($product['price'] !== 0.00 && $product['quantity'] == 0) { ?>
+                <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="3">Заказать товар</button> 
+            <?php } elseif ($product['comp_whole'] == '1') { ?>
+                <a href="<?php echo $product['href'];?>"><button class="btn btn-lg btn-danger center-block checkPr">Посмотреть комплект</button></a>
+            <?php } else { ?>     
+                <button class="btn btn-lg btn-danger center-block checkPr" type="button" onclick="cart.add('<?php echo $key; ?>', '1');"><i class="fa fa-shopping-cart"></i> В КОРЗИНУ</button>
+            <?php } ?> 
           </div>
           </div>
         </div>

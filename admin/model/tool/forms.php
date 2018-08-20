@@ -63,10 +63,10 @@ class ModelToolForms extends Model {
                             $modal.='<div class="col-lg-4" id="'.$item['name'].'"></div>';
                         } else {
                             $query = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE item_id = ".(int)$item['item_id']);
-                            $modal.='<div class="col-lg-4" id="'.$item['name'].'"><label>'.$item['text'].'</label><select class="form-control" select_type="librSelect" child="'.$item['child'].'">';
+                            $modal.='<div class="col-lg-4" id="'.$item['name'].'"><label>'.$item['text'].'</label><select class="form-control" select_type="librSelect" alert_triger="prompt"  child="'.$item['child'].'">';
                             $modal.= '<option value="-">-</option>';
                             foreach ($query->rows as $value) {
-                                $modal.= '<option value="'.$value['id'].'">'.$value['name'].'</option>';
+                                $modal.= '<option value="'.$value['id'].'" prompt="'.$value['prompt'].'">'.$value['name'].'</option>';
                             }
                             $modal.='</select></div>';
                         }
@@ -119,10 +119,10 @@ class ModelToolForms extends Model {
                             $fillsquer = $this->db->query("SELECT * FROM ".DB_PREFIX."lib_fills WHERE item_id = ".(int)$option['libraries']." ORDER BY name ");
                             $librF.='<div class="form-group-sm col-md-4" id="'.$option['name'].'">'
                                     . '<label>'.$option['text'].'</label>'
-                                    . '<select class="form-control" name="info['.$num.']['.$option['name'].']" select_type="librSelect" child="'.$sup->row['child'].'">'
+                                    . '<select class="form-control" name="info['.$num.']['.$option['name'].']" select_type="librSelect" alert_triger="prompt" child="'.$sup->row['child'].'">'
                                     . '<option value="-">-</option>';
                             foreach ($fillsquer->rows as $fill) {
-                                $librF.='<option value="'.$fill['id'].'">'.trim($fill['name']).'</option>';
+                                $librF.='<option value="'.$fill['id'].'" prompt="'.$fill['prompt'].'">'.trim($fill['name']).'</option>';
                             }
                             $librF.='</select></div>';
                         }

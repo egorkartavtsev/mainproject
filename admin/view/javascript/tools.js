@@ -698,11 +698,17 @@ $(document).ready(function() {
           method:"POST",
           data: {parent: fill_id, parentName: child, num: num},
           success:function(data){
-              select.parent().parent().find('[id='+child+']').html(data);
-          }
-        });
+            select.parent().parent().find('[id='+child+']').html(data);
+          }  
+        });   
     })
-    
+    $(document).on('change', '[alert_triger=prompt]', function(){
+        var select = $(this);
+        var prompt = select.find('option:selected').attr('prompt');
+        if (prompt !== '' && prompt !== undefined) {
+            alert('Напоминание: '+prompt);
+        }   
+    }) 
     //validate unique fields
     $(document).on('input', '[unique=unique]', function(){
         var search = $(this).val();
@@ -1275,7 +1281,7 @@ $(document).ready(function() {
 			verticalFit: false
 		}
 	});
-    });   
+    });
 })
 
 function addLibItem(){

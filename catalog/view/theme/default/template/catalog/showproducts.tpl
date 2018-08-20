@@ -68,11 +68,11 @@
                             <?php }?>  
                         </div>
                         <a class="left carousel-control" href="#carousel-example-generic<?php echo $product['product_id']; ?>" role="button" data-slide="prev">
-                            <span class="fa fa-angle-left fa-2x" aria-hidden="true"></span>
+                            <span class="fa fa-angle-left" style="font-size: 2em; margin-top: 200%" aria-hidden="true"></span>
                             <span class="sr-only">Previous</span>
                         </a>
                         <a class="right carousel-control" href="#carousel-example-generic<?php echo $product['product_id']; ?>" role="button" data-slide="next">
-                            <span class="fa fa-angle-right fa-2x" aria-hidden="true"></span>
+                            <span class="fa fa-angle-right" style="font-size: 2em; margin-top: 200%" aria-hidden="true"></span>
                             <span class="sr-only">Next</span>
                         </a>            
                     </div>
@@ -101,17 +101,17 @@
                     </div>
                 </div>
                 <?php echo $modal_window; ?>  
-                    <?php if ($product['status'] == '2') { ?>
-                        <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="1">Уточнить наличие</button>
-                    <?php } elseif ($product['price'] == 0.00 && $product['quantity'] !== 0) { ?>                                           
-                        <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="2">Узнать стоимость</button>
-                    <?php } elseif ($product['price'] !== 0.00 && $product['quantity'] == 0) { ?>
-                        <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="3">Заказать товар</button> 
-                    <?php } elseif ($product['com_whole'] == '1') { ?>
-                        <a href="<?php echo $product['href'];?>"><button class="btn btn-lg btn-danger center-block checkPr">Посмотреть комплект</button></a>
-                    <?php } else { ?>     
-                        <button class="btn btn-lg btn-danger center-block checkPr" type="button" onclick="cart.add('<?php echo $key; ?>', '1');"><i class="fa fa-shopping-cart"></i> В КОРЗИНУ</button>
-                    <?php } ?> 
+                <?php if ($product['status'] == '2') { ?>
+                    <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="1">Уточнить наличие</button>
+                <?php } elseif ($product['price'] == 0.00 && $product['quantity'] !== 0) { ?>                                           
+                    <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="2">Узнать стоимость</button>
+                <?php } elseif ($product['price'] !== 0.00 && $product['quantity'] == 0) { ?>
+                    <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="3">Заказать товар</button> 
+                <?php } elseif ($product['com_whole'] == '1') { ?>
+                    <a href="<?php echo $product['href'];?>"><button class="btn btn-lg btn-danger center-block checkPr">Посмотреть комплект</button></a>
+                <?php } else { ?>     
+                    <button class="btn btn-lg btn-danger center-block checkPr" type="button" onclick="cart.add('<?php echo $key; ?>', '1');"><i class="fa fa-shopping-cart"></i> В КОРЗИНУ</button>
+                <?php } ?> 
                 </div>
           </div>
           <?php }?>
