@@ -12,12 +12,18 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/OpenServer/domains/mgnauto/admin/controller/setting/prodtypes.php</file>
-            <file>file:/D:/OpenServer/domains/mgnauto/admin/model/tool/forms.php</file>
-            <file>file:/D:/OpenServer/domains/mgnauto/admin/model/tool/product.php</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/controller/layout/notices.php</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/system/library/cart/user.php</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/model/tool/layout.php</file>
             <file>file:/D:/OpenServer/domains/mgnauto/admin/view/javascript/tools.js</file>
-            <file>file:/D:/OpenServer/domains/mgnauto/admin/view/template/form/sets_input.tpl</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/controller/layout/header.php</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/view/template/modals/tab_updates.tpl</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/controller/common/logout.php</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/view/template/layout/header.tpl</file>
             <file>file:/D:/OpenServer/domains/mgnauto/admin/controller/tool/formTool.php</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/controller/common/login.php</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/view/template/layout/notices.tpl</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/view/stylesheet/stylesheet.css</file>
         </group>
     </open-files>
 </project-private>

@@ -164,7 +164,7 @@ class ControllerToolFormTool extends Controller {
         if(count($result)){
             $list = '';
             foreach ($result as $res) {
-                $list.='<li class="searchItem" li-type="simItem" item_id="'.$res['id'].'" >'.$res['text'].'</li>';
+                $list.='<li class="searchItem" li-type="simItem" li-target="'.$res['tmp'].'" item_id="'.$res['id'].'" >'.$res['text'].'</li>';
             }
         } else {
             $list = '<li>В базе нет похожих значениий. Изменение запроса может исправить ситуацию.</li>';            

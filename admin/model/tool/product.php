@@ -649,20 +649,31 @@ class ModelToolProduct extends Model {
             $sql.= "AND LOCATE('".$this->db->escape($word)."', ".$field.") ";
         }
         $sup = $this->db->query($sql);
+        $tmp = 0;
         foreach ($sup->rows as $row) {
             $text = '';
             foreach ($fields as $val) {
                 $text.= $row[$val].' | ';
             }
             $text.= $row[$field];
-            $result[] = array('text' => $text, 'id' => $row[$field]);
+            if(isset($row['product_id'])){
+                $tmp = $row['product_id'];
+            } elseif (isset($row['id'])) {
+                $tmp = $row['id'];
+            }
+            $result[] = array('text' => $text, 'id' => $row[$field], 'tmp' => $tmp);
         }
         return $result;
     }
     
     public function getItemInfo($req) {
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE lib_id = ".$req['opt']);
-        return $this->db->query("SELECT ".$sup->row['similar']." FROM ".DB_PREFIX.$req['target']." WHERE ".$req['field']." = '".$req['req']."' GROUP BY ".$req['field']." ")->row;
+        if($req['target']=='product'){
+            $tmp = "product_id = ".(int)$req['tmp'];
+        } else {
+            $tmp = "id = ".(int)$req['tmp'];
+        }
+        return $this->db->query("SELECT ".$sup->row['similar']." FROM ".DB_PREFIX.$req['target']." WHERE ".$tmp." ")->row;
         
     }
 }

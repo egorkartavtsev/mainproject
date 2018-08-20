@@ -88,6 +88,7 @@ $(document).ready(function() {
         var liItem = $(this);
         var pardiv = liItem.parent().parent().parent();
         var target = pardiv.find('input').attr('target');
+        var tmp = liItem.attr('li-target');
         var field = pardiv.find('input').attr('field');
         var opt = pardiv.find('input').attr('opt');
         var num = pardiv.parent().attr('num');
@@ -102,6 +103,7 @@ $(document).ready(function() {
             data: {
                 req: liItem.attr('item_id'),
                 type: type,
+                tmp: tmp,
                 target: target,
                 opt: opt,
                 num: num,
