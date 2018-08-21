@@ -9,20 +9,20 @@ class ControllerCommonLogin extends Controller {
 
 		if ($this->user->isLogged() && isset($this->request->get['token']) && ($this->request->get['token'] == $this->session->data['token'])) {
 			$query = $this->db->query("SELECT user_group_id AS uType, firstname, lastname FROM ".DB_PREFIX."user WHERE user_id = '".$this->session->data['user_id']."' ");
-            $uType = $query->row['uType']=='1'?'adm':'usr';
-            $uName = $query->row['firstname']." ".$query->row['lastname'];
-            $this->session->data['uType'] = $uType;
-            $this->session->data['username'] = $uName;			
+                        $uType = $query->row['uType']=='1'?'adm':'usr';
+                        $uName = $query->row['firstname']." ".$query->row['lastname'];
+                        $this->session->data['uType'] = $uType;
+                        $this->session->data['username'] = $uName;			
 			$this->response->redirect($this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true));
 		}
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
 			$this->session->data['token'] = token(32);
 			$query = $this->db->query("SELECT user_group_id AS uType, firstname, lastname FROM ".DB_PREFIX."user WHERE user_id = '".$this->session->data['user_id']."' ");
-            $uType = $query->row['uType']=='1'?'adm':'usr';
-            $uName = $query->row['firstname']." ".$query->row['lastname'];
-            $this->session->data['uType'] = $uType;
-            $this->session->data['username'] = $uName;
+                        $uType = $query->row['uType']=='1'?'adm':'usr';
+                        $uName = $query->row['firstname']." ".$query->row['lastname'];
+                        $this->session->data['uType'] = $uType;
+                        $this->session->data['username'] = $uName;
 			if (isset($this->request->post['redirect']) && (strpos($this->request->post['redirect'], HTTP_SERVER) === 0 || strpos($this->request->post['redirect'], HTTPS_SERVER) === 0)) {
 								$query = $this->db->query("SELECT user_group_id AS uType, firstname, lastname FROM ".DB_PREFIX."user WHERE user_id = '".$this->session->data['user_id']."' ");
                                 $uType = $query->row['uType']=='1'?'adm':'usr';

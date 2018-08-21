@@ -98,6 +98,12 @@ class ModelToolLayout extends Model {
         return $this->load->view('modals/tab_updates', $data);
     }
     
+    public function getwarnings() {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."warnings WHERE target_user = ".$this->user->getId()." ORDER BY viewed, date_added DESC LIMIT 15 OFFSET 0");
+        $data['warns'] = $sup->rows;
+        return $this->load->view('modals/tab_warns', $data);
+    }
+    
     public function createNewUpdateMessage($info) {
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."user WHERE status = 1 ");
         foreach ($sup->rows as $usr) {
@@ -108,6 +114,34 @@ class ModelToolLayout extends Model {
                     . "text = '" . $this->db->escape($info['update_info']) . "', "
                     . "autor = '" . $this->db->escape($info['autor']) . "' ");
         }
+    }
+    
+    public function createNewWarnMessage($info, $users) {
+        $tmp1sql = "(";
+        $tmp2sql = "";
+        $i = 0;
+        foreach ($info as $key => $value) {
+            if($key!='files'){
+                $tmp1sql.= $key.",";
+            }
+        }
+        $tmp1sql.= "target_user,viewed,notified,date_added)";
+        foreach ($users as $usr) {
+            $tmp2sql.= "(";
+            foreach ($info as $key => $value) {
+                if($key!='files'){
+                    $tmp2sql.= "'".$this->db->escape($value)."',";
+                }
+            }
+            $tmp2sql.= "'".$usr."',0,0,NOW())";
+            ++$i;
+            if($i< count($users)){
+                $tmp2sql.= ", ";
+            }
+        }
+        $query = "INSERT INTO ".DB_PREFIX."warnings ".$tmp1sql." VALUES ".$tmp2sql;
+//        exit($query);
+        $this->db->query($query);
     }
     
     public function checkfastviewed($target) {
@@ -121,6 +155,11 @@ class ModelToolLayout extends Model {
             }
             $this->db->query($sql);
         }
+    }
+    
+    public function getUserList() {
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."user WHERE status = 1");
+        return $sup->rows;
     }
     
 }
