@@ -28,8 +28,8 @@ class ControllerReportOrdersInfo extends Controller{
         
         $data['order'] = $order;
         $data['complects'] = array();
+        $data['order_history'] = $this->model_tool_order->getHistInfo($this->request->get['order_id']);
         foreach ($order['products'] as $prod) {
-            $data['order']['products'][] = $prod;
             $comp = $this->model_tool_order->tryComp($prod['vin']);
             if($comp){
                 $data['complects'][$comp['key']] = $comp['prods'];

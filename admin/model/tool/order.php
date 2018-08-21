@@ -79,6 +79,7 @@ class ModelToolOrder extends Model{
                 $result['products'] = array();
             }
         }
+        
         return $result;
     }
     
@@ -180,6 +181,7 @@ class ModelToolOrder extends Model{
             $this->db->query("UPDATE ".DB_PREFIX."order SET "
                                 . "total = total + ".(int)$sup->row['price']." "
                              . "WHERE order_id = ".(int)$order_id." ");
+            $this->addHistInfo($order_id, 4, $this->db->escape($sup->row['name'].' | '.$vin));            
             return TRUE;
         } else {
             return FALSE;
@@ -187,9 +189,12 @@ class ModelToolOrder extends Model{
     }
     
     public function delete_prod($prod, $order) {
-        $sup = $this->db->query("SELECT op.total, op.price, op.quantity "
+        $sup = $this->db->query("SELECT op.total, op.price, op.quantity, op.name "
                                     . "FROM ".DB_PREFIX."order_product op "
                                     . "WHERE op.product_id = '".(int)$prod."' AND op.order_id = ".(int)$order);
+        $tmp = $this->db->query("SELECT vin "
+                                    . "FROM ".DB_PREFIX."product "
+                                    . "WHERE product_id = ".(int)$prod);
         if($sup->num_rows){
             if($sup->row['quantity']==1){
                 $this->db->query("DELETE FROM ".DB_PREFIX."order_product "
@@ -206,6 +211,7 @@ class ModelToolOrder extends Model{
             $this->db->query("UPDATE ".DB_PREFIX."product SET "
                                 . "status = 1 "
                              . "WHERE product_id = ".(int)$prod." ");
+            $this->addHistInfo($order, 3, $this->db->escape($sup->row['name'].' | '.$tmp->row['vin']));
             return TRUE;
         } else {
             return FALSE;
@@ -216,6 +222,8 @@ class ModelToolOrder extends Model{
         $this->db->query("UPDATE ".DB_PREFIX."order SET "
                             . "order_status_id = ".(int)$stat." "
                          . "WHERE order_id = ".(int)$order." ");
+        $tmp = $this->db->query("SELECT name FROM ".DB_PREFIX."order_status WHERE order_status_id = ".(int)$stat);
+        $this->addHistInfo($order, 2, $tmp->row['name']);
     }
     
     public function getShipLib(){
@@ -239,6 +247,25 @@ class ModelToolOrder extends Model{
                 . "ship_date = '".date("Y-m-d H:i:s", strtotime($info['ship_date']))."', "
                 . "track_id = '".$info['track_id']."' "
                 . "WHERE order_id = ".(int)$info['target']);
+        $comment = 'Трансп.комп.: '.$tmp->row['name'].'<br>Дата отправки: '.$info['ship_date'].'<br>Трек-номер: '.$info['track_id'];
+        $this->addHistInfo($info['target'], 1, $this->db->escape($comment));
+    }
+    
+    public function addHistInfo($order, $stat, $comment){
+        $user = $this->user->getUserInfo();
+        $this->db->query("INSERT INTO ".DB_PREFIX."order_history "
+                    . "(`order_id`, `order_modify_id`, `manager`, `comment`, `date_added`) VALUES "
+                    . "(".(int)$order.", ".(int)$stat.", '".$user['lastname'].' '.$user['firstname']."', '".$comment."', NOW())");
+    }
+    
+    public function getHistInfo($order) {
+        $sup = $this->db->query("SELECT "
+                . "oh.manager, oh.comment, oh.date_added, "
+                . "om.name, om.icon, om.color "
+                . "FROM ".DB_PREFIX."order_history oh "
+                . "LEFT JOIN ".DB_PREFIX."order_modify om ON om.order_modify_id = oh.order_modify_id "
+                . " WHERE order_id = ".(int)$order." ORDER by date_added DESC");
+        return $sup->rows;
     }
     
 }

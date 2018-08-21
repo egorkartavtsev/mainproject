@@ -59,6 +59,35 @@
                           <td><?php echo $order['telephone'] ?></td>
                       </tr>
                   </table>
+                  <div class="clearfix"></div>
+                  <div class="clearfix"><p></p></div>
+                  <div class="well">
+                      <h3>Информация о доставке: <button id="save_shipinfo" disabled class="btn btn-success"><i class="fa fa-floppy-o"></i></button></h3>
+                      <div class="form-group">
+                          <label>Выберите транспортную компанию:</label>
+                          <select class="form-control" info-target="shipinfo" id="ship_comp">
+                              <option value="">-</option>
+                              <?php foreach($ship as $key => $sc){ ?>
+                                <option value="<?php echo $key; ?>" <?php echo ($sc['name']==$order['ship_comp'])?'selected':''; ?>><?php echo $sc['name']; ?></option>
+                              <?php }?>
+                          </select>
+                      </div>
+                      <div id="ship_href"><a target="blank" href="<?php echo $order['ship_href']; ?>" class="bnt btn-sm btn-info">Отслеживание по трекномеру</a></div>
+                      <div class="form-group">
+                          <label>Трек-номер отправления:</label>
+                          <input class="form-control" value="<?php echo $order['track_id']; ?>" info-target="shipinfo" id="track_id">
+                      </div>
+                      
+                      <div class="form-group">
+                          <label>Дата отправки:</label>
+                            <div class='input-group date' id='datetimepicker2'>
+                                <input type='text' value="<?php echo date("d.m.Y H:i", strtotime($order['ship_date'])); ?>" class="form-control date" info-target="shipinfo" id="ship_date"/>
+                                <span class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </div>
+                      </div>
+                  </div>
               </div>
               <div class="col-md-5">
                   <table class="table table-bordered table-striped">
@@ -79,7 +108,7 @@
                             <td><a href="<?php echo $catalog.'&product_id='.$prod['product_id'];?>"><?php echo $prod['name'];?></a></td>
                             <td><?php echo $prod['vin']?></td>
                             <td><?php echo (int)$prod['price']?></td>
-                            <td><?php echo (int)$prod['quantity']?></td>
+                            <td><?php echo (int)$prod['factquantity']?></td>
                             <td><?php echo (int)$prod['total']?></td>
                             <td><button class="btn btn-danger" btn_type="delete_prod" prod="<?php echo $prod['product_id']?>"><i class="fa fa-trash-o"></i></button></td>
                         </tr>
@@ -112,36 +141,28 @@
                       <button id="save_order" disabled class="btn btn-success btn-block"><i class="fa fa-floppy-o"></i></button>
                   </div>
               </div>
-          </div>
-          <div class="clearfix"></div>
-          <div class="clearfix"><p></p></div>
-          <div class="row">
-              <div class="col-lg-4">
+              <div class="col-md-8">
                   <div class="well">
-                      <h3>Информация о доставке: <button id="save_shipinfo" disabled class="btn btn-success"><i class="fa fa-floppy-o"></i></button></h3>
-                      <div class="form-group">
-                          <label>Выберите транспортную компанию:</label>
-                          <select class="form-control" info-target="shipinfo" id="ship_comp">
-                              <?php foreach($ship as $key => $sc){ ?>
-                                <option value="<?php echo $key; ?>" <?php echo ($sc['name']==$order['ship_comp'])?'selected':''; ?>><?php echo $sc['name']; ?></option>
-                              <?php }?>
-                          </select>
-                      </div>
-                      <div id="ship_href"><a href="<?php echo $order['ship_href']; ?>" class="bnt btn-sm btn-info">Отслеживание по трекномеру</a></div>
-                      <div class="form-group">
-                          <label>Трек-номер отправления:</label>
-                          <input class="form-control" value="<?php echo $order['track_id']; ?>" info-target="shipinfo" id="track_id">
-                      </div>
-                      
-                      <div class="form-group">
-                          <label>Дата отправки:</label>
-                            <div class='input-group date' id='datetimepicker2'>
-                                <input type='text' value="<?php echo date("d.m.Y H:i", strtotime($order['ship_date'])); ?>" class="form-control date" info-target="shipinfo" id="ship_date"/>
-                                <span class="input-group-addon">
-                                    <span class="fa fa-calendar"></span>
-                                </span>
-                            </div>
-                      </div>
+                      <h3>История действий с заказом: </h3>
+                      <?php if(count($order_history)){ ?>
+                      <table class="table table-striped table-responsive">
+                          <?php foreach($order_history as $oHist){ ?>
+                              <tr>
+                                  <td class="col-sm-4">
+                                      <button class="btn btn-sm btn-<?php echo $oHist['color'];?>">
+                                          <i class="<?php echo $oHist['icon'];?>"></i>
+                                      </button> 
+                                      <?php echo $oHist['name'];?>
+                                  </td>
+                                  <td class="col-sm-4"><?php echo $oHist['comment'];?></td>
+                                  <td class="col-sm-2"><?php echo date("d.m.Y H:i:s", strtotime($oHist['date_added']));?></td>
+                                  <td class="col-sm-2"><?php echo $oHist['manager'];?></td>
+                              </tr>
+                          <?php }?>
+                      </table>
+                      <?php } else{ ?>
+                              <p>С заказом не производилось действий..</p>
+                      <?php }?>
                   </div>
               </div>
           </div>

@@ -107,7 +107,7 @@ class ControllerCheckoutCheckout extends Controller {
                     }
                 break;
                 case 'last':
-                        $this->model_checkout_newOrder->updateOrder('order_status_id', '1');
+                        $this->model_checkout_newOrder->updateOrder('order_status_id', '2');
                         if($this->session->data['cust_mail']){
                             mail($this->session->data['cust_mail'], 'сообщение с сайта авторазбор174.рф', 'Ваш заказ принят в обработку. В скором времени с Вами свяжется наш менеджер. Спасибо! \n\ Удачного Вам дня :-)');
                         }
