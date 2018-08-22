@@ -14,15 +14,18 @@ class ModelToolOrder extends Model{
         foreach ($sup->rows as $order) {
             $stat = $this->db->query("SELECT * FROM ".DB_PREFIX."order_status WHERE order_status_id = ".(int)$order['order_status_id']);
             $result[$order['order_id']] = array(
-                'store_name' => $order['store_name'],
-                'customer'   => $order['firstname'].'<br>'.$order['lastname'],
-                'contacts'   => $order['telephone'].'<br>'.$order['email'],
-                'viewed'     => (int)$order['viewed'],
-                'total'      => $order['total'],
-                'status'     => isset($stat->row['name'])?$stat->row['name']:'Не указано',
-                'date_added' => DateTime::createFromFormat('Y-m-d H:i:s', $order['date_added'])->format('d.‌​m.Y H:i')
+                'store_name'       => $order['store_name'],
+                'customer'         => $order['firstname'].'<br>'.$order['lastname'],
+                'contacts'         => $order['telephone'].'<br>'.$order['email'],
+                'payment_city'     => $order['payment_city'],
+                'shipping_address' => $order['shipping_country'].'<br>'.$order['shipping_city'].'<br>'.$order['shipping_address_1'],
+                'viewed'           => (int)$order['viewed'],
+                'total'            => $order['total'],
+                'status'           => isset($stat->row['name'])?$stat->row['name']:'Не указано',
+                'date_added'       => DateTime::createFromFormat('Y-m-d H:i:s', $order['date_added'])->format('d.‌​m.Y H:i')
             );
         }
+        //exit(var_dump($result));
         return $result;
     }
     

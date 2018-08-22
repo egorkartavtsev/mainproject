@@ -43,6 +43,7 @@
                           <td>№</td>
                           <td>Заказчик</td>
                           <td>Контакты</td>
+                          <td>Населенный пункт</td>
                           <td>Сумма</td>
                           <td>Статус</td>
                           <td>Дата заказа</td>
@@ -56,6 +57,7 @@
                           <td><?php echo $key; ?></td>
                           <td><?php echo $order['customer']; ?></td>
                           <td><?php echo $order['contacts']; ?></td>
+                          <td><?php echo $order['payment_city']; ?></td>
                           <td><?php echo (int)$order['total']; ?></td>
                           <td><?php echo $order['status']; ?></td>
                           <td><?php echo $order['date_added']; ?></td>

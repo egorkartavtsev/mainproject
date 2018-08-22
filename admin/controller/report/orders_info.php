@@ -25,7 +25,6 @@ class ControllerReportOrdersInfo extends Controller{
         if(isset($this->request->get['filter-telephone']) && $this->request->get['filter-telephone']!=''){
             $url.='&filter-telephone='.$this->request->get['filter-telephone'];
         }
-        
         $data['order'] = $order;
         $data['complects'] = array();
         $data['order_history'] = $this->model_tool_order->getHistInfo($this->request->get['order_id']);
