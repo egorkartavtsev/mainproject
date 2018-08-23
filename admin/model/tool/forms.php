@@ -176,32 +176,33 @@ class ModelToolForms extends Model {
         $this->load->model('tool/complect');
         $photo = array();
         foreach ($prodlist as $num => $product){
-            $i = 0;
-            foreach ($photos['photo']['name'][$num] as $name){
-                $photo[$num][$i]['name'] = $name;
-                ++$i;
+            if(isset($photos['photo']['name'][$num])){
+                $i = 0;
+                foreach ($photos['photo']['name'][$num] as $name){
+                    $photo[$num][$i]['name'] = $name;
+                    ++$i;
+                }
+                $i = 0;
+                foreach ($photos['photo']['type'][$num] as $name){
+                    $photo[$num][$i]['type'] = $name;
+                    ++$i;
+                }
+                $i = 0;
+                foreach ($photos['photo']['error'][$num] as $name){
+                    $photo[$num][$i]['error'] = $name;
+                    ++$i;
+                }
+                $i = 0;
+                foreach ($photos['photo']['tmp_name'][$num] as $name){
+                    $photo[$num][$i]['tmp_name'] = $name;
+                    ++$i;
+                }
+                $i = 0;
+                foreach ($photos['photo']['size'][$num] as $name){
+                    $photo[$num][$i]['size'] = $name;
+                    ++$i;
+                }
             }
-            $i = 0;
-            foreach ($photos['photo']['type'][$num] as $name){
-                $photo[$num][$i]['type'] = $name;
-                ++$i;
-            }
-            $i = 0;
-            foreach ($photos['photo']['error'][$num] as $name){
-                $photo[$num][$i]['error'] = $name;
-                ++$i;
-            }
-            $i = 0;
-            foreach ($photos['photo']['tmp_name'][$num] as $name){
-                $photo[$num][$i]['tmp_name'] = $name;
-                ++$i;
-            }
-            $i = 0;
-            foreach ($photos['photo']['size'][$num] as $name){
-                $photo[$num][$i]['size'] = $name;
-                ++$i;
-            }
-            
         }
         foreach ($prodlist as $num => $product){
             $this->load->model('tool/complect');
