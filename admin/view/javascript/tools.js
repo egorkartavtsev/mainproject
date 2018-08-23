@@ -289,7 +289,7 @@ $(document).ready(function() {
                formgroup.find('input').val(item.attr('fill'));
                formgroup.removeClass('attention');
                formgroup.find('[inp_type=smart]').val(item.text());
-               $('.temp'+item.attr('library')).each(function(){
+               totalPar.find('.temp'+item.attr('library')).each(function(){
                    $(this).remove();
                });
                formgroup.after(data);

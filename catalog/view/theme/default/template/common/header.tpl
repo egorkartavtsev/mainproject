@@ -76,7 +76,7 @@
       </ul>
     </div>
   </div>
-</nav>
+
 <div class="container">
     <div class="">
         <p class="alert alert-danger col-sm-7 pull-left text-center">
@@ -84,14 +84,14 @@
             <a href="tel: +79124750870" class="hidden-md hidden-lg btn btn-danger col-lg-6"><span><i class="fa fa-phone"></i><?php echo $telephone; ?></span></a>
             <span class="hidden-xs hidden-sm"><?php echo $telephone; ?></span>
         </p>
-        <div class="col-sm-5 pull-right text-right">
-            <a style="cursor: pointer;" href="viber://chat?number=+79124750870"><img src="<?php echo $viber;?>" width="50"></a>
-            <a style="cursor: pointer;" href="https://wa.me/79124750870"><img src="<?php echo $whatsapp;?>" width="50"></a>
-            <a  target="_blank" href="https://vk.com/mgnautorazbor"><img src="<?php echo $lvk;?>" width="50"></a>
-            <a  target="_blank" href="https://www.instagram.com/autorazbor174"><img src="<?php echo $linst;?>" width="50"></a>
-            <a  target="_blank" href="https://www.youtube.com/channel/UCNgBC4t07efN7qMYUls0fcw"><img src="<?php echo $lyt;?>" width="50"></a>
-            <a  target="_blank" href="https://baza.drom.ru/user/AUTORAZBOR174RU"><img src="<?php echo $ldrom;?>" width="50"></a>
-            <a  target="_blank" href="https://www.avito.ru/autorazbor174"><img src="<?php echo $lavito;?>" width="50"></a>
+        <div class="col-xs-5 pull-right text-right">
+            <a class="col-xs-1" style="cursor: pointer;" href="viber://chat?number=+79124750870"><img src="<?php echo $viber;?>" width="50"></a>
+            <a class="col-xs-1" style="cursor: pointer;" href="https://wa.me/79124750870"><img src="<?php echo $whatsapp;?>" width="50"></a>
+            <a class="col-xs-1" target="_blank" href="https://vk.com/mgnautorazbor"><img src="<?php echo $lvk;?>" width="50"></a>
+            <a class="col-xs-1" target="_blank" href="https://www.instagram.com/autorazbor174"><img src="<?php echo $linst;?>" width="50"></a>
+            <a class="col-xs-1" target="_blank" href="https://www.youtube.com/channel/UCNgBC4t07efN7qMYUls0fcw"><img src="<?php echo $lyt;?>" width="50"></a>
+            <a class="col-xs-1" target="_blank" href="https://baza.drom.ru/user/AUTORAZBOR174RU"><img src="<?php echo $ldrom;?>" width="50"></a>
+            <a class="col-xs-1" target="_blank" href="https://www.avito.ru/autorazbor174"><img src="<?php echo $lavito;?>" width="50"></a>
         </div>
     </div>
 </div>
@@ -132,4 +132,5 @@
     </div>
   </nav>
 </div>
+</nav>
 <?php } ?>

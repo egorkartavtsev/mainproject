@@ -568,7 +568,7 @@ class ModelToolProduct extends Model {
         foreach ($histsup->rows as $hItem) {
             if((string)$hItem['date_added']!=='0000-00-00 00:00:00'){
                 $result['history'][] = array(
-                    'date'      => date("d.m.Y", strtotime($hItem['date_added'])),
+                    'date'      => date("d.m.Y H:i", strtotime($hItem['date_added'])),
                     'label'     => '<span class="btn btn-info btn-sm" style="cursor: auto!important;"><i class="fa fa-plus"></i></span>',
                     'type'      => $hItem['type_modify'],
                     'manager'   => $hItem['manager']
