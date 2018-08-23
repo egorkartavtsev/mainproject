@@ -86,9 +86,9 @@ class ModelToolLayout extends Model {
     }
     
     public function getorders() {
-        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."order WHERE 1 ORDER BY viewed, date_added DESC LIMIT 15 OFFSET 0");
+        $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."order  LEFT JOIN ".DB_PREFIX."order_status ON ".DB_PREFIX."order.order_status_id = ".DB_PREFIX."order_status.order_status_id  WHERE 1 ORDER BY viewed, date_added DESC LIMIT 15 OFFSET 0");
         $data['token'] = $this->session->data['token'];
-        $data['orders'] = $sup->rows;
+        $data['orders'] = $sup->rows;     
         return $this->load->view('modals/tab_orders', $data);
     }
     

@@ -48,6 +48,7 @@ class ControllerCatalogProduct extends Controller {
 //      ------------------------------Осонованя информация--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
             $data['product'] = array(
                 'product_id' => $product['product_id'],
+                'gen_image'  => $product['image'],
                 'minimum'    => $product['minimum'] > 0 ? $product['minimum'] : 1,                 
                 'href'       => $this->url->link('catalog/product', 'product_id='.$product['product_id']),
                 'name'       => $description['name'],
@@ -56,8 +57,8 @@ class ControllerCatalogProduct extends Controller {
                 'comp'       => $product['comp']==''?FALSE:$product['comp'],
                 'com_whole'  => $product['comp_whole'],
                 'price'      => $product['price'],
-            );
-//      -------------------------------Изображения-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------                
+            );  
+//      -------------------------------Изображенияттттест-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------                
             if (isset($product['image']) && $product['image']!=''){
                 $data['images'] = array();
                 if ($product['image']) {

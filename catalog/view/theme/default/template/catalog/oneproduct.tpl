@@ -24,9 +24,6 @@
                         Деталь из комплекта
                     </div>
                 <?php }?>
-        <!--<?php if ($product['okraska'] == 'Окрашенный'){ ?>
-                <div class="okraska">Деталь в цвете</div>
-            <?php }?>-->    
             <?php }?>
             </div>
             <?php if (isset($images) || isset($thumbs)) { ?>
@@ -119,6 +116,9 @@
                 <button type="button" data-toggle="tooltip" class="btn btn-default" title="<?php echo $button_compare; ?>" onclick="compare.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-exchange"></i></button>
                 <button type="button" data-toggle="tooltip" class="btn btn-default" title="Скопировать ссылку" id="send_prod"><i class="fa fa-copy"></i></button>
                 <button type="button" class="btn btn-info" btn_type="reqPrice" data-toggle="modal" data-target="#myModal"  data-whatever="question_modal" pcause="5">Задать вопрос о товаре</button>
+            </div>
+            <div style="margin-top:5%">
+               <script type="text/javascript">document.write(VK.Share.button({title:"<?php echo $product['name']; ?>",image:"<?php echo $images[1]['popup'].'?'.time(); ?>",},{type: "round", text: "Сохранить"}))</script>
             </div>
             <h1><?php echo $product['name']; ?></h1>
             <ul class="list-unstyled">

@@ -75,17 +75,17 @@ class ControllerCatalogCatalog extends Controller{
                 $local_id = 0;
                 foreach($photos as $img){
                     $image[] = array (
-                            'thumb'         => $this->model_tool_image->resize($img['image'], 228, 228),
-                            'main'          => $img['image']==$prod['image']?TRUE:FALSE,
-                            'lid'           => $local_id
+                        'thumb'         => $this->model_tool_image->resize($img['image'], 228, 228),
+                        'main'          => $img['image']==$prod['image']?TRUE:FALSE,
+                        'lid'           => $local_id
                     );
                 ++$local_id;    
                 }
                 if(!count($image)){
                     $image[] = array (
-                            'thumb'         => $this->model_tool_image->resize('no-image.png', 228, 228),
-                            'main'          => TRUE,
-                            'lid'           => 0
+                        'thumb'         => $this->model_tool_image->resize('no-image.png', 228, 228),
+                        'main'          => TRUE,
+                        'lid'           => 0
                     );
                 } elseif (!in_array(TRUE,array_column($image,'main'))) {
                     $image[0]['main'] = TRUE;
