@@ -122,26 +122,27 @@ class ControllerToolFormTool extends Controller {
     public function searchingProds() {
         $request = trim($this->request->post['request']);
         $i = 0;
-        $output = '<table class="table table-responsive table-bordered table-hover">'
-                . '<tbody>';
+        $output = '<table class="table table-responsive table-bordered table-hover" style="width: 500px;">';
         if($request==''){
             $output.= 'Введите название детали';
         } else {
             $this->load->model('tool/product');
             $total = $this->model_tool_product->searchingProds($request);
             if(!empty($total)){
-                $output.='<tr>'
+                $output.='<tr style="width: 500px;">'
                             . '<td>Наимен.</td>'
                             . '<td>Склад</td>'
                             . '<td>К-во</td>'
+                            . '<td>Цена</td>'
                             . '<td class="text-center"><i class="fa fa-android"></i></td>'
                         . '</tr>';
                 foreach ($total as $prod) {
                     if($i<30){
                         $output.='<tr>'
-                                    . '<td>'.$prod['name'].'</td>'
+                                    . '<td>'.$prod['name'].'<br><b>Артикул: '.$prod['vin'].'</b></td>'
                                     . '<td>'.$prod['stock'].'</td>'
                                     . '<td>'.$prod['quantity'].'</td>'
+                                    . '<td>'.$prod['price'].'</td>'
                                     . '<td><a class="btn btn-warning" btn_type="showProd" target="'.$prod['product_id'].'" title="Информация о товаре" data-toggle="modal" data-target="#productInfoModal"><i class="fa fa-eye"></i></a></td>'
                                 . '</tr>';
                         ++$i;

@@ -117,9 +117,11 @@
                 <button type="button" data-toggle="tooltip" class="btn btn-default" title="Скопировать ссылку" id="send_prod"><i class="fa fa-copy"></i></button>
                 <button type="button" class="btn btn-info" btn_type="reqPrice" data-toggle="modal" data-target="#myModal"  data-whatever="question_modal" pcause="5">Задать вопрос о товаре</button>
             </div>
-            <div style="margin-top:5%">
-               <script type="text/javascript">document.write(VK.Share.button({title:"<?php echo $product['name']; ?>",image:"<?php echo $images[1]['popup'].'?'.time(); ?>",},{type: "round", text: "Сохранить"}))</script>
-            </div>
+            <?php if(isset($images[0]['popup'])){ ?>
+                <div style="margin-top:5%">
+                   <script type="text/javascript">document.write(VK.Share.button({title:"<?php echo $product['name']; ?>",image:"<?php echo $images[0]['popup'].'?'.time(); ?>",},{type: "round", text: "Сохранить"}))</script>
+                </div>
+            <?php } ?>
             <h1><?php echo $product['name']; ?></h1>
             <ul class="list-unstyled">
                 <li>Артикул: <?php echo $product['vin']; ?></li>  

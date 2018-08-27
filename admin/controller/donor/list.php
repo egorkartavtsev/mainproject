@@ -32,8 +32,6 @@ class ControllerDonorList extends Controller {
                 'color' => $donor['color'],
                 'ctype' => $donor['ctype'],
                 'year' => $donor['year'],
-                'brand' => $donor['brand'],
-                'model' => $donor['model'],
                 'mod_row' => $donor['modR'],
                 'kmeters' => $donor['kmeters'],
                 'trmiss' => $donor['trmiss'],
@@ -45,7 +43,8 @@ class ControllerDonorList extends Controller {
             );
         }
         $data['token_add'] = $this->session->data['token'];
-        $data['utype'] = $this->session->data['uType'];
+        $user = $this->user->getUserInfo();
+        $data['utype'] = ($user['userAL']==19 || $user['userAL']==99999)?1:0;
         $this->response->setOutput($this->load->view('donor/list', $data));
     }
     

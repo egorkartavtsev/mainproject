@@ -508,7 +508,14 @@ class ModelToolProduct extends Model {
     public function searchingProds($request) {
         $reqwords = explode(" ", $request);
 
-        $query = "SELECT pd.name AS name, p.stock AS stock, p.quantity AS quantity, p.vin AS vin, p.product_id FROM ".DB_PREFIX."product_description pd "
+        $query = "SELECT "
+                  . "pd.name AS name, "
+                  . "p.stock AS stock, "
+                  . "p.price AS price, "
+                  . "p.quantity AS quantity, "
+                  . "p.vin AS vin, "
+                  . "p.product_id "
+                . "FROM ".DB_PREFIX."product_description pd "
                     . "LEFT JOIN ".DB_PREFIX."product p "
                         . "ON pd.product_id = p.product_id "
                     . "WHERE !LOCATE('complect', p.vin) ";
