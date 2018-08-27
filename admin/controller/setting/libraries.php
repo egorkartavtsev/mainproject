@@ -26,8 +26,12 @@ class ControllerSettingLibraries extends Controller {
         }
         if(!empty($this->request->post)){
             //exit(var_dump($this->request->post));
-            $this->model_tool_product->saveLibrary($this->request->post);
-            $data['success'] = 'Библиотека успешно создана. Теперь вы можете её наполнить. Библиотека доступна для редактирования в левом меню, а также Вы можете использовать её в конструкторе типов товаров, подключив к одному из свойств.';
+            if(isset($this->request->post['field'])){
+                $this->model_tool_product->saveLibrary($this->request->post);
+                $data['success'] = 'Библиотека успешно создана. Теперь вы можете её наполнить. Библиотека доступна для редактирования в левом меню, а также Вы можете использовать её в конструкторе типов товаров, подключив к одному из свойств.';
+            } else {
+                $data['success'] = 'Библиотека НЕ СОЗДДАНА! в библиотеке должно быть ХОТЯ БЫ ОДНО поле.';
+            }
         }
         $this->response->setOutput($this->load->view('setting/libraries', $data));
     }

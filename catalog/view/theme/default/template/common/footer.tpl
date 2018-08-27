@@ -23,7 +23,7 @@
 <script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="catalog/view/javascript/common.js" type="text/javascript"></script>-->
 <script type="text/javascript">
-    VK.Widgets.Group("vk_groups", {mode: 3}, 91414223);
+    VK.Widgets.Group("vk_groups", {mode: 3, no_cover: 1}, 91414223);
     function fillSearchField($id){
         var text = $("#srcItem"+$id).text();
         $("#srcField").val(text);

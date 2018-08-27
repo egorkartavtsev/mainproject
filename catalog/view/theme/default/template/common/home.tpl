@@ -15,12 +15,8 @@
                 <?php foreach($brands as $brand) { ?>
                     <div style="min-height: 110px;" class="col-lg-1 col-md-2 col-sm-2 col-xs-2 text-center">
                        <a href='<?php echo $brand["href"];?>'>
-                           
-                               <img src="<?php echo $brand['img']; ?>" alt="<?php echo $brand['name']; ?>"/>
-                           
-                           
-                               <?php echo $brand['name']; ?>
-                           
+                           <img src="<?php echo $brand['img']; ?>" class="img-responsive center-block" alt="<?php echo $brand['name']; ?>"/>
+                           <?php echo $brand['name']; ?>
                        </a>
                     </div>
                 <?php } ?>

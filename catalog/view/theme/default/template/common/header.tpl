@@ -40,8 +40,7 @@
 <?php foreach ($links as $link) { ?>
 <link href="<?php echo $link['href']; ?>" rel="<?php echo $link['rel']; ?>" />
 <?php } ?>
-<script type="text/javascript" src="https://vk.com/js/api/openapi.js?146"></script>
-<script type="text/javascript" src="https://vk.com/js/api/share.js?93" charset="windows-1251"></script>
+<script type="text/javascript" src="https://vk.com/js/api/openapi.js?159"></script>
 <?php foreach ($scripts as $script) { ?>
 <script src="<?php echo $script; ?>" type="text/javascript"></script>
 <?php } ?>
@@ -49,77 +48,72 @@
 <?php echo $analytic; ?>
 <?php } ?>
 </head>
-<body class="<?php echo $class; ?>">
+<body>
 <nav id="top">
-  <div class="container">
-    <!--<?php echo $currency; ?>
-    <?php echo $language; ?>-->
+  <!--<div class="container">
     <div id="top-links" class="nav pull-right">
       <ul class="list-inline">
-        <li><a href="tel: +79124750870"><i class="fa fa-phone"></i></a> <span class="hidden-xs hidden-sm hidden-md"><?php echo $telephone; ?></span></li>
         <li class="dropdown"><a href="<?php echo $account; ?>" title="<?php echo $text_account; ?>" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo $text_account; ?></span> <span class="caret"></span></a>
-          <ul class="dropdown-menu dropdown-menu-right">
-            <?php if ($logged) { ?>
-            <li><a href="<?php echo $account; ?>"><?php echo $text_account; ?></a></li>
-            <li><a href="<?php echo $order; ?>"><?php echo $text_order; ?></a></li>
-            <li><a href="<?php echo $transaction; ?>"><?php echo $text_transaction; ?></a></li>
-            <li><a href="<?php echo $download; ?>"><?php echo $text_download; ?></a></li>
-            <li><a href="<?php echo $logout; ?>"><?php echo $text_logout; ?></a></li>
-            <?php } else { ?>
-            <li><a href="<?php echo $register; ?>"><?php echo $text_register; ?></a></li>
-            <li><a href="<?php echo $login; ?>"><?php echo $text_login; ?></a></li>
-            <?php } ?>
-          </ul>
+          
         </li>
-        <li><a href="<?php echo $wishlist; ?>" id="wishlist-total" title="<?php echo $text_wishlist; ?>"><i class="fa fa-heart"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo $text_wishlist; ?></span></a></li>
-        <li><a href="<?php echo $shopping_cart; ?>" title="<?php echo $text_shopping_cart; ?>"><i class="fa fa-shopping-cart"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo $text_shopping_cart; ?></span></a></li>
-        <li><a href="<?php echo $checkout; ?>" title="<?php echo $text_checkout; ?>"><i class="fa fa-share"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo $text_checkout; ?></span></a></li>
-      </ul>
+        </ul>
     </div>
-  </div>
-</nav>
+  </div>-->
+
 <div class="container">
-    <div class="">
-        <p class="alert alert-danger col-sm-7 pull-left text-center">
-            ВНИМАНИЕ! Если Вы не нашли необходимую деталь - можете уточнить о наличии по телефону<br class="hidden-sm">
-            <a href="tel: +79124750870" class="hidden-md hidden-lg btn btn-danger col-lg-6"><span><i class="fa fa-phone"></i><?php echo $telephone; ?></span></a>
-            <span class="hidden-xs hidden-sm"><?php echo $telephone; ?></span>
-        </p>
-        <div class="col-xs-5 pull-right text-right">
-            <a style="cursor: pointer;" href="viber://chat?number=+79124750870"><img src="<?php echo $viber;?>" width="50"></a>
-            <a style="cursor: pointer;" href="https://wa.me/79124750870"><img src="<?php echo $whatsapp;?>" width="50"></a>
-            <a target="_blank" href="https://vk.com/mgnautorazbor"><img src="<?php echo $lvk;?>" width="50"></a>
-            <a target="_blank" href="https://www.instagram.com/autorazbor174"><img src="<?php echo $linst;?>" width="50"></a>
-            <a target="_blank" href="https://www.youtube.com/channel/UCNgBC4t07efN7qMYUls0fcw"><img src="<?php echo $lyt;?>" width="50"></a>
-            <a target="_blank" href="https://baza.drom.ru/user/AUTORAZBOR174RU"><img src="<?php echo $ldrom;?>" width="50"></a>
-            <a target="_blank" href="https://www.avito.ru/autorazbor174"><img src="<?php echo $lavito;?>" width="50"></a>
+    <div class="row">
+        <div class="col-sm-2">
+            <div id="logo">
+              <?php if ($logo) { ?>
+                  <img src="<?php echo $logo; ?>" title="<?php echo $name; ?>" width="200" alt="<?php echo $name; ?>" class="img-responsive center-block" />
+              <?php } else { ?>
+                <h1><a href="<?php echo $home; ?>"><?php echo $name; ?></a></h1>
+              <?php } ?>
+            </div>
+        </div>
+        <div class="col-sm-10">
+            <div class="col-sm-12 pull-right text-right">
+                <a style="cursor: pointer;" href="viber://chat?number=+79124750870"><img src="<?php echo $viber;?>" width="40"></a>
+                <a style="cursor: pointer;" href="https://wa.me/79124750870"><img src="<?php echo $whatsapp;?>" width="40"></a>
+                <a target="_blank" href="https://vk.com/mgnautorazbor"><img src="<?php echo $lvk;?>" width="40"></a>
+                <a target="_blank" href="https://www.instagram.com/autorazbor174"><img src="<?php echo $linst;?>" width="40"></a>
+                <a target="_blank" href="https://www.youtube.com/channel/UCNgBC4t07efN7qMYUls0fcw"><img src="<?php echo $lyt;?>" width="40"></a>
+                <a target="_blank" href="https://baza.drom.ru/user/AUTORAZBOR174RU"><img src="<?php echo $ldrom;?>" width="40"></a>
+                <a target="_blank" href="https://www.avito.ru/autorazbor174"><img src="<?php echo $lavito;?>" width="40"></a>
+            </div>
+            <div class="col-sm-12">
+                <?php echo $search; ?>
+            </div>
+            <div class="col-sm-4 pull-right">
+              <button class="dropdown-toggle btn btn-danger btn-block btn-lg" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  <i class="fa fa-user"></i> личный кабинет
+              </button>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <?php if ($logged) { ?>
+                        <li><a href="<?php echo $account; ?>"><?php echo $text_account; ?></a></li>
+                        <li><a href="<?php echo $order; ?>"><?php echo $text_order; ?></a></li>
+                        <li><a href="<?php echo $transaction; ?>"><?php echo $text_transaction; ?></a></li>
+                        <li><a href="<?php echo $download; ?>"><?php echo $text_download; ?></a></li>
+                        <li><a href="<?php echo $logout; ?>"><?php echo $text_logout; ?></a></li>
+                    <?php } else { ?>
+                        <li><a href="<?php echo $register; ?>"><i class="fa fa-user-plus"></i> <?php echo $text_register; ?></a></li>
+                        <li><a href="<?php echo $login; ?>"><i class="fa fa-user-secret"></i> <?php echo $text_login; ?></a></li>
+                    <?php } ?>
+                    <li><a href="<?php echo $checkout; ?>" title="<?php echo $text_checkout; ?>"><i class="fa fa-share"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo $text_checkout; ?></span></a></li>
+                </ul>
+            </div>
+            <div class="col-sm-4 pull-right">
+              <?php echo $cart; ?>
+            </div>
         </div>
     </div>
 </div>
 <header>
   <div class="container">
-    <div class="row">
-      <div class="col-sm-4">
-        <div id="logo">
-          <?php if ($logo) { ?>
-            <?php if ($home == $og_url) { ?>
-              <img src="<?php echo $logo; ?>" title="<?php echo $name; ?>" alt="<?php echo $name; ?>" class="img-responsive" />
-            <?php } else { ?>
-              <a href="<?php echo $home; ?>"><img src="<?php echo $logo; ?>" title="<?php echo $name; ?>" alt="<?php echo $name; ?>" class="img-responsive" /></a>
-            <?php } ?>
-          <?php } else { ?>
-            <h1><a href="<?php echo $home; ?>"><?php echo $name; ?></a></h1>
-          <?php } ?>
-        </div>
-      </div>
-      <div class="col-sm-5" style="margin-top: 26px;"><?php echo $search; ?>
-      </div>
-      <div class="col-sm-3" style="margin-top: 25px;"><?php echo $cart; ?></div>
-    </div>
+      
   </div>
 </header>
-    
-<?php if ($categories) { ?>
+
 <div class="container">
   <nav id="menu" class="navbar">
     <div class="navbar-header"><span id="category" class="visible-xs">Меню</span>
@@ -133,5 +127,4 @@
     </div>
   </nav>
 </div>
-
-<?php } ?>
+</nav>

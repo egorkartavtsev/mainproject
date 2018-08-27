@@ -18,7 +18,7 @@ class ModelToolOrder extends Model{
                 'customer'         => $order['firstname'].'<br>'.$order['lastname'],
                 'contacts'         => $order['telephone'].'<br>'.$order['email'],
                 'payment_city'     => $order['payment_city'],
-                'shipping_address' => $order['shipping_country'].'<br>'.$order['shipping_city'].'<br>'.$order['shipping_address_1'],
+                'shipping_address' => $order['payment_city'].'<br>'.$order['payment_address_1'],
                 'viewed'           => (int)$order['viewed'],
                 'total'            => $order['total'],
                 'status'           => isset($stat->row['name'])?$stat->row['name']:'Не указано',

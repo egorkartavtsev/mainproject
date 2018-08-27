@@ -37,11 +37,14 @@ class ControllerCommonHeader extends Controller {
 
 		$data['name'] = $this->config->get('config_name');
 
-		if (is_file(DIR_IMAGE . $this->config->get('config_logo'))) {
-			$data['logo'] = $server . 'image/' . $this->config->get('config_logo');
-		} else {
-			$data['logo'] = '';
-		}
+//		if (is_file(DIR_IMAGE . $this->config->get('config_logo'))) {
+//			$data['logo'] = $server . 'image/' . $this->config->get('config_logo');
+//		} else {
+//			$data['logo'] = '';
+//		}
+                
+                $data['logo'] = $server . 'image/logo.png';
+                
                 $data['whatsapp'] = $server . 'image/whatsapp.png';
                 $data['lvk'] = $server . 'image/vk.png';
                 $data['wapp'] = $server . 'image/wapp.png';
@@ -101,38 +104,6 @@ class ControllerCommonHeader extends Controller {
 
 		$this->load->model('catalog/product');
 
-		$data['categories'] = array();
-
-		$categories = $this->model_catalog_category->getCategories(0);
-
-		foreach ($categories as $category) {
-			if ($category['top']) {
-				// Level 2
-				$children_data = array();
-
-				$children = $this->model_catalog_category->getCategories($category['category_id']);
-
-				foreach ($children as $child) {
-					$filter_data = array(
-						'filter_category_id'  => $child['category_id'],
-						'filter_sub_category' => true
-					);
-
-					$children_data[] = array(
-						'name'  => $child['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
-						'href'  => $this->url->link('product/category', 'path=' . $category['category_id'] . '_' . $child['category_id'])
-					);
-				}
-
-				// Level 1
-				$data['categories'][] = array(
-					'name'     => $category['name'],
-					'children' => $children_data,
-					'column'   => $category['column'] ? $category['column'] : 1,
-					'href'     => $this->url->link('product/category', 'path=' . $category['category_id'])
-				);
-			}
-		}
                 
                 //Menu_informations
                 
@@ -155,24 +126,7 @@ class ControllerCommonHeader extends Controller {
 		$data['search'] = $this->load->controller('common/search');
 		$data['cart'] = $this->load->controller('common/cart');
 
-		// For page specific css
-		if (isset($this->request->get['route'])) {
-			if (isset($this->request->get['product_id'])) {
-				$class = '-' . $this->request->get['product_id'];
-			} elseif (isset($this->request->get['path'])) {
-				$class = '-' . $this->request->get['path'];
-			} elseif (isset($this->request->get['manufacturer_id'])) {
-				$class = '-' . $this->request->get['manufacturer_id'];
-			} elseif (isset($this->request->get['information_id'])) {
-				$class = '-' . $this->request->get['information_id'];
-			} else {
-				$class = '';
-			}
-
-			$data['class'] = str_replace('/', '-', $this->request->get['route']) . $class;
-		} else {
-			$data['class'] = 'common-home';
-		}
+		
                 /*****************************************************************/
                     $useragent=$_SERVER['HTTP_USER_AGENT'];
                     if(preg_match('/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i',$useragent)
