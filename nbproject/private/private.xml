@@ -12,16 +12,18 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/OpenServer/domains/mgnauto/admin/model/tool/product.php</file>
-            <file>file:/D:/OpenServer/domains/mgnauto/admin/model/tool/forms.php</file>
-            <file>file:/D:/OpenServer/domains/mgnauto/catalog/view/theme/default/stylesheet/stylesheet.css</file>
-            <file>file:/D:/OpenServer/domains/mgnauto/admin/view/javascript/tools.js</file>
-            <file>file:/D:/OpenServer/domains/mgnauto/admin/view/template/form/prodCard.tpl</file>
-            <file>file:/D:/OpenServer/domains/mgnauto/admin/controller/tool/formTool.php</file>
-            <file>file:/D:/OpenServer/domains/mgnauto/catalog/controller/common/header.php</file>
-            <file>file:/D:/OpenServer/domains/mgnauto/catalog/controller/account/register.php</file>
-            <file>file:/D:/OpenServer/domains/mgnauto/catalog/view/theme/default/template/common/header.tpl</file>
-            <file>file:/D:/OpenServer/domains/mgnauto/catalog/view/theme/default/template/common/home.tpl</file>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/admin/model/tool/order.php</file>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/catalog/view/theme/default/template/catalog/showproducts.tpl</file>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/admin/view/template/sale/orders.tpl</file>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/admin/controller/report/orders_info.php</file>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/catalog/view/javascript/common.js</file>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/catalog/view/theme/default/template/catalog/oneproduct.tpl</file>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/catalog/controller/catalog/catalog.php</file>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/catalog/view/theme/default/template/common/header.tpl</file>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/catalog/controller/common/header.php</file>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/catalog/view/theme/default/stylesheet/stylesheet.css</file>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/admin/view/template/modals/tab_orders.tpl</file>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/admin/model/tool/layout.php</file>
         </group>
     </open-files>
 </project-private>

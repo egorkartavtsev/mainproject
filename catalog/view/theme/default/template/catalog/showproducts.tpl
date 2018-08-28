@@ -100,26 +100,30 @@
                         </p>
                     </div>
                 </div>
-                <?php echo $modal_window; ?>  
-                <?php if ($product['status'] == '2') { ?>
-                    <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="1">Уточнить наличие</button>
-                <?php } elseif ($product['price'] == 0.00 && $product['quantity'] !== 0) { ?>                                           
-                    <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="2">Узнать стоимость</button>
-                <?php } elseif ($product['price'] !== 0.00 && $product['quantity'] == 0) { ?>
-                    <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="3">Заказать товар</button> 
-                <?php } elseif ($product['com_whole'] == '1') { ?>
-                    <a href="<?php echo $product['href'];?>"><button class="btn btn-lg btn-danger center-block checkPr">Посмотреть комплект</button></a>
-                <?php } else { ?>     
-                    <button class="btn btn-lg btn-danger center-block checkPr" type="button" onclick="cart.add('<?php echo $key; ?>', '1');"><i class="fa fa-shopping-cart"></i> В КОРЗИНУ</button>
-                <?php } ?> 
-                </div>
+                <?php echo $modal_window; ?>
+                <div class="col-lg-12">
+                    <div class="btn-group center-block" style="width: fit-content">
+                        <?php if ($product['status'] == '2') { ?>
+                            <button class="btn btn-lg btn-danger checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="1">Уточнить наличие</button>
+                        <?php } elseif ($product['price'] == 0.00 && $product['quantity'] !== 0) { ?>                                           
+                            <button class="btn btn-lg btn-danger checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="2">Узнать стоимость</button>
+                        <?php } elseif ($product['price'] !== 0.00 && $product['quantity'] == 0) { ?>
+                            <button class="btn btn-lg btn-danger checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="3">Заказать товар</button> 
+                        <?php } elseif ($product['com_whole'] == '1') { ?>
+                            <a href="<?php echo $product['href'];?>"><button class="btn btn-lg btn-danger checkPr">Посмотреть комплект</button></a>
+                        <?php } else { ?>     
+                            <button class="btn btn-lg btn-danger checkPr" type="button" onclick="cart.add('<?php echo $key; ?>', '1');"><i class="fa fa-shopping-cart"></i> В КОРЗИНУ</button>
+                        <?php } ?>
+                        <button type="button" style="margin-left: 5px" data-toggle="tooltip" btn_type="copyToSend" data-text="<?php echo $product['href'];?>"  trigger="clipb" class="btn btn-lg btn-default checkPr" title="Скопировать ссылку"><i class="fa fa-copy"></i></button>
+                    </div>
+                </div> 
+            </div> 
           </div>
           <?php }?>
           <div class="clearfix"></div>
           <div class="col-lg-12 text-center">
               <?php echo $pagination; ?>
-          </div>
-        </div>     
+          </div>    
     <?php } else { ?>
         <div class="col-lg-12 text-center">
             <img src="sad.png" width="150"/><br>
