@@ -53,6 +53,7 @@ class ControllerCommonHeader extends Controller {
                 $data['ldrom'] = $server . 'image/drom.png';
                 $data['lavito'] = $server . 'image/avito.png';
                 $data['lyt'] = $server . 'image/lyt.png';
+                $data['tg'] = $server . 'image/telegram.png';
 
 		$this->load->language('common/header');
 		$data['og_url'] = (isset($this->request->server['HTTPS']) ? HTTPS_SERVER : HTTP_SERVER) . substr($this->request->server['REQUEST_URI'], 1, (strlen($this->request->server['REQUEST_URI'])-1));
