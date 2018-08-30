@@ -181,6 +181,8 @@
                 <?php }?>
             <?php }?>
             <div class="col-lg-12"<p>&nbsp;</p></div>
+            <div id="vk_poll"></div>
+            <div class="col-lg-12"<p>&nbsp;</p></div>
             <div id="vk_groups"></div>
         </div>
     <?php  if (isset($column_right)) { ?>

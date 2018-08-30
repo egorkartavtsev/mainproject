@@ -66,14 +66,14 @@
         <div class="col-sm-2">
             <div id="logo">
               <?php if ($logo) { ?>
-                  <img src="<?php echo $logo; ?>" title="<?php echo $name; ?>" width="200" alt="<?php echo $name; ?>" class="img-responsive center-block" />
+                <a href="<?php echo $home; ?>"><img src="<?php echo $logo; ?>" title="<?php echo $name; ?>" width="200" alt="<?php echo $name; ?>" class="img-responsive center-block" /></a>
               <?php } else { ?>
                 <h1><a href="<?php echo $home; ?>"><?php echo $name; ?></a></h1>
               <?php } ?>
             </div>
         </div>
         <div class="col-sm-10">
-            <div class="col-sm-12 pull-right text-right">
+            <div class="text-right">
                 <a style="cursor: pointer;" href="viber://chat?number=+79124750870"><img src="<?php echo $viber;?>" width="40"></a>
                 <a style="cursor: pointer;" href="https://wa.me/79124750870"><img src="<?php echo $whatsapp;?>" width="40"></a>
                 <a target="_blank" href="https://vk.com/mgnautorazbor"><img src="<?php echo $lvk;?>" width="40"></a>
@@ -82,29 +82,32 @@
                 <a target="_blank" href="https://baza.drom.ru/user/AUTORAZBOR174RU"><img src="<?php echo $ldrom;?>" width="40"></a>
                 <a target="_blank" href="https://www.avito.ru/autorazbor174"><img src="<?php echo $lavito;?>" width="40"></a>
             </div>
-            <div class="col-sm-12">
+            <div><p></p></div>
+            <div class="">
                 <?php echo $search; ?>
             </div>
-            <div class="col-sm-4 pull-right">
-              <button class="dropdown-toggle btn btn-danger btn-block btn-lg" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                  <i class="fa fa-user"></i> личный кабинет
-              </button>
-                <ul class="dropdown-menu dropdown-menu-right">
-                    <?php if ($logged) { ?>
-                        <li><a href="<?php echo $account; ?>"><?php echo $text_account; ?></a></li>
-                        <li><a href="<?php echo $order; ?>"><?php echo $text_order; ?></a></li>
-                        <li><a href="<?php echo $transaction; ?>"><?php echo $text_transaction; ?></a></li>
-                        <li><a href="<?php echo $download; ?>"><?php echo $text_download; ?></a></li>
-                        <li><a href="<?php echo $logout; ?>"><?php echo $text_logout; ?></a></li>
-                    <?php } else { ?>
-                        <li><a href="<?php echo $register; ?>"><i class="fa fa-user-plus"></i> <?php echo $text_register; ?></a></li>
-                        <li><a href="<?php echo $login; ?>"><i class="fa fa-user-secret"></i> <?php echo $text_login; ?></a></li>
-                    <?php } ?>
-                    <li><a href="<?php echo $checkout; ?>" title="<?php echo $text_checkout; ?>"><i class="fa fa-share"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo $text_checkout; ?></span></a></li>
-                </ul>
-            </div>
-            <div class="col-sm-4 pull-right">
-              <?php echo $cart; ?>
+            <div class="row">
+                <div class="col-sm-4 pull-right">
+                  <button class="dropdown-toggle btn btn-danger btn-block btn-lg" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      <i class="fa fa-user"></i> личный кабинет
+                  </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <?php if ($logged) { ?>
+                            <li><a href="<?php echo $account; ?>"><?php echo $text_account; ?></a></li>
+                            <li><a href="<?php echo $order; ?>"><?php echo $text_order; ?></a></li>
+                            <li><a href="<?php echo $transaction; ?>"><?php echo $text_transaction; ?></a></li>
+                            <li><a href="<?php echo $download; ?>"><?php echo $text_download; ?></a></li>
+                            <li><a href="<?php echo $logout; ?>"><?php echo $text_logout; ?></a></li>
+                        <?php } else { ?>
+                            <li><a href="<?php echo $register; ?>"><i class="fa fa-user-plus"></i> <?php echo $text_register; ?></a></li>
+                            <li><a href="<?php echo $login; ?>"><i class="fa fa-user-secret"></i> <?php echo $text_login; ?></a></li>
+                        <?php } ?>
+                        <li><a href="<?php echo $checkout; ?>" title="<?php echo $text_checkout; ?>"><i class="fa fa-share"></i> <?php echo $text_checkout; ?></a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-4 pull-right">
+                  <?php echo $cart; ?>
+                </div>
             </div>
         </div>
     </div>

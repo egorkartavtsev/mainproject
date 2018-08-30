@@ -33,7 +33,7 @@ class ModelToolOrder extends Model{
         $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."order_product WHERE order_id = ".(int)$order);
         $sql = "UPDATE ".DB_PREFIX."product SET status = 1 WHERE 0 ";
         foreach ($sup->rows as $prod) {
-            $sql.= "OR product_id = ".(int)$prod['product_id'];
+            $sql.= "OR product_id = ".(int)$prod['product_id']." ";
         }
         $this->db->query($sql);
     }

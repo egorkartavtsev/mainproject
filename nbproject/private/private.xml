@@ -12,16 +12,25 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/OpenServer/domains/mgnauto/admin/model/tool/product.php</file>
             <file>file:/D:/OpenServer/domains/mgnauto/admin/model/tool/forms.php</file>
-            <file>file:/D:/OpenServer/domains/mgnauto/catalog/view/theme/default/stylesheet/stylesheet.css</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/system/library/cart/user.php</file>
             <file>file:/D:/OpenServer/domains/mgnauto/admin/view/javascript/tools.js</file>
-            <file>file:/D:/OpenServer/domains/mgnauto/admin/view/template/form/prodCard.tpl</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/catalog/view/theme/default/template/common/footer.tpl</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/view/template/layout/header.tpl</file>
             <file>file:/D:/OpenServer/domains/mgnauto/admin/controller/tool/formTool.php</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/view/template/donor/list.tpl</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/catalog/view/theme/default/template/common/home.tpl</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/model/tool/product.php</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/catalog/view/theme/default/stylesheet/stylesheet.css</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/controller/setting/libraries.php</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/catalog/view/theme/default/template/catalog/prodslist.tpl</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/catalog/view/theme/default/template/catalog/oneproduct.tpl</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/controller/donor/list.php</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/view/template/form/prodCard.tpl</file>
             <file>file:/D:/OpenServer/domains/mgnauto/catalog/controller/common/header.php</file>
+            <file>file:/D:/OpenServer/domains/mgnauto/admin/view/stylesheet/stylesheet.css</file>
             <file>file:/D:/OpenServer/domains/mgnauto/catalog/controller/account/register.php</file>
             <file>file:/D:/OpenServer/domains/mgnauto/catalog/view/theme/default/template/common/header.tpl</file>
-            <file>file:/D:/OpenServer/domains/mgnauto/catalog/view/theme/default/template/common/home.tpl</file>
         </group>
     </open-files>
 </project-private>

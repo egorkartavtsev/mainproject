@@ -62,9 +62,13 @@
               </div>
             </div>
             <div class="col-sm-4">
-              <div class="form-group">
-                <label class="control-label" for="input-price"><?php echo $entry_price; ?></label>
-                <input type="text" name="filter_price" value="<?php echo $filter_price; ?>" placeholder="<?php echo $entry_price; ?>" id="input-price" class="form-control" />
+              <div class="form-group col-sm-6">
+                <label class="control-label" for="input-price">Цена от:</label>
+                <input type="text" name="filter_price_from" value="<?php echo $filter_price_from; ?>" placeholder="<?php echo $entry_price; ?>" id="input-price" class="form-control" />
+              </div>
+              <div class="form-group col-sm-6">
+                <label class="control-label" for="input-price">Цена до:</label>
+                <input type="text" name="filter_price_to" value="<?php echo $filter_price_to; ?>" placeholder="<?php echo $entry_price; ?>" id="input-price" class="form-control" />
               </div>
               <div class="form-group">
                 <label class="control-label" for="input-quantity"><?php echo $entry_quantity; ?></label>
@@ -350,12 +354,19 @@ $('#button-filter').on('click', function() {
 		url += '&filter_model=' + encodeURIComponent(filter_model);
 	}
 
-	var filter_price = $('input[name=\'filter_price\']').val();
-        var filter_price = filter_price.replace(/\s+/g," ");
-        $('input[name=\'filter_price\']').val($.trim(filter_price));
+	var filter_price_from = $('input[name=\'filter_price_from\']').val();
+        var filter_price_from = filter_price_from.replace(/\s+/g," ");
+        $('input[name=\'filter_price_from\']').val($.trim(filter_price_from));
 
-	if (filter_price) {
-		url += '&filter_price=' + encodeURIComponent(filter_price);
+	if (filter_price_from) {
+		url += '&filter_price_from=' + encodeURIComponent(filter_price_from);
+	}
+	var filter_price_to = $('input[name=\'filter_price_to\']').val();
+        var filter_price_to = filter_price_to.replace(/\s+/g," ");
+        $('input[name=\'filter_price_to\']').val($.trim(filter_price_to));
+
+	if (filter_price_to) {
+		url += '&filter_price_to=' + encodeURIComponent(filter_price_to);
 	}
         
         var filter_vin = $('input[name=\'filter_vin\']').val();

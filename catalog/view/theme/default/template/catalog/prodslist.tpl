@@ -14,7 +14,10 @@
             </div>
             <div class="clearfix"></div>
             <div class="hidden-sm hidden-xs">
-                <div class="hidden-sm" id="vk_groups"></div>
+                <div class="col-lg-12"<p>&nbsp;</p></div>
+                <div id="vk_poll"></div>
+                <div class="col-lg-12"<p>&nbsp;</p></div>
+                <div id="vk_groups"></div>
             </div>
         </div>
         <div class="col-lg-9">

@@ -49,8 +49,11 @@ class ControllerProductionCatalog extends Controller {
 				$url .= '&filter_model=' . urlencode(html_entity_decode($this->request->get['filter_model'], ENT_QUOTES, 'UTF-8'));
 			}
 
-			if (isset($this->request->get['filter_price'])) {
-				$url .= '&filter_price=' . $this->request->get['filter_price'];
+			if (isset($this->request->get['filter_price_from'])) {
+				$url .= '&filter_price_from=' . $this->request->get['filter_price_from'];
+			}
+			if (isset($this->request->get['filter_price_to'])) {
+				$url .= '&filter_price_to=' . $this->request->get['filter_price_to'];
 			}
 			
                         if (isset($this->request->get['filter_vin'])) {
@@ -134,8 +137,11 @@ class ControllerProductionCatalog extends Controller {
 				$url .= '&filter_model=' . urlencode(html_entity_decode($this->request->get['filter_model'], ENT_QUOTES, 'UTF-8'));
 			}
 
-			if (isset($this->request->get['filter_price'])) {
-				$url .= '&filter_price=' . $this->request->get['filter_price'];
+			if (isset($this->request->get['filter_price_from'])) {
+				$url .= '&filter_price_from=' . $this->request->get['filter_price_from'];
+			}
+			if (isset($this->request->get['filter_price_to'])) {
+				$url .= '&filter_price_to=' . $this->request->get['filter_price_to'];
 			}
                         
                         if (isset($this->request->get['filter_vin'])) {
@@ -203,8 +209,11 @@ class ControllerProductionCatalog extends Controller {
 				$url .= '&filter_model=' . urlencode(html_entity_decode($this->request->get['filter_model'], ENT_QUOTES, 'UTF-8'));
 			}
 
-			if (isset($this->request->get['filter_price'])) {
-				$url .= '&filter_price=' . $this->request->get['filter_price'];
+			if (isset($this->request->get['filter_price_from'])) {
+				$url .= '&filter_price_from=' . $this->request->get['filter_price_from'];
+			}
+			if (isset($this->request->get['filter_price_to'])) {
+				$url .= '&filter_price_to=' . $this->request->get['filter_price_to'];
 			}
 			
                         if (isset($this->request->get['filter_vin'])) {
@@ -293,10 +302,15 @@ class ControllerProductionCatalog extends Controller {
 			$filter_model = null;
 		}
 
-		if (isset($this->request->get['filter_price'])) {
-			$filter_price = trim($this->request->get['filter_price']);
+		if (isset($this->request->get['filter_price_from'])) {
+			$filter_price_from = trim($this->request->get['filter_price_from']);
 		} else {
-			$filter_price = null;
+			$filter_price_from = null;
+		}
+		if (isset($this->request->get['filter_price_to'])) {
+			$filter_price_to = trim($this->request->get['filter_price_to']);
+		} else {
+			$filter_price_to = null;
 		}
 		
                 if (isset($this->request->get['filter_vin'])) {
@@ -376,8 +390,11 @@ class ControllerProductionCatalog extends Controller {
 			$url .= '&filter_model=' . urlencode(html_entity_decode($this->request->get['filter_model'], ENT_QUOTES, 'UTF-8'));
 		}
 
-		if (isset($this->request->get['filter_price'])) {
-			$url .= '&filter_price=' . $this->request->get['filter_price'];
+		if (isset($this->request->get['filter_price_from'])) {
+			$url .= '&filter_price_from=' . $this->request->get['filter_price_from'];
+		}
+		if (isset($this->request->get['filter_price_to'])) {
+			$url .= '&filter_price_to=' . $this->request->get['filter_price_to'];
 		}
 		
                 if (isset($this->request->get['filter_vin'])) {
@@ -425,7 +442,8 @@ class ControllerProductionCatalog extends Controller {
 			'filter_donor'	  => $filter_donor,
 			'filter_catn'	  => $filter_catn,
 			'filter_model'	  => $filter_model,
-			'filter_price'	  => $filter_price,
+			'filter_price_from'	  => $filter_price_from,
+			'filter_price_to'	  => $filter_price_to,
 			'filter_vin'	  => $filter_vin,
 			'filter_brand'	  => $filter_brand,
 			'filter_drom'	  => $filter_drom,
@@ -603,8 +621,11 @@ class ControllerProductionCatalog extends Controller {
 			$url .= '&filter_model=' . urlencode(html_entity_decode($this->request->get['filter_model'], ENT_QUOTES, 'UTF-8'));
 		}
 
-		if (isset($this->request->get['filter_price'])) {
-			$url .= '&filter_price=' . $this->request->get['filter_price'];
+		if (isset($this->request->get['filter_price_from'])) {
+			$url .= '&filter_price_from=' . $this->request->get['filter_price_from'];
+		}
+		if (isset($this->request->get['filter_price_to'])) {
+			$url .= '&filter_price_to=' . $this->request->get['filter_price_to'];
 		}
 		
                 if (isset($this->request->get['filter_vin'])) {
@@ -647,16 +668,16 @@ class ControllerProductionCatalog extends Controller {
 			$url .= '&page=' . $this->request->get['page'];
 		}
 
-		$data['sort_name'] = $this->url->link('catalog/product', 'token=' . $this->session->data['token'] . '&sort=pd.name' . $url, true);
-		$data['sort_model'] = $this->url->link('catalog/product', 'token=' . $this->session->data['token'] . '&sort=p.length' . $url, true);
-		$data['sort_manager'] = $this->url->link('catalog/product', 'token=' . $this->session->data['token'] . '&sort=p.manager' . $url, true);
-		$data['sort_locate'] = $this->url->link('catalog/product', 'token=' . $this->session->data['token'] . '&sort=p.weight' . $url, true);
-		$data['sort_date_added'] = $this->url->link('catalog/product', 'token=' . $this->session->data['token'] . '&sort=p.date_added' . $url, true);
-		$data['sort_price'] = $this->url->link('catalog/product', 'token=' . $this->session->data['token'] . '&sort=p.price' . $url, true);
-		$data['sort_category'] = $this->url->link('catalog/product', 'token=' . $this->session->data['token'] . '&sort=p2c.category_id' . $url, true);
-		$data['sort_quantity'] = $this->url->link('catalog/product', 'token=' . $this->session->data['token'] . '&sort=p.quantity' . $url, true);
-		$data['sort_status'] = $this->url->link('catalog/product', 'token=' . $this->session->data['token'] . '&sort=p.status' . $url, true);
-		$data['sort_order'] = $this->url->link('catalog/product', 'token=' . $this->session->data['token'] . '&sort=p.sort_order' . $url, true);
+		$data['sort_name'] = $this->url->link('production/catalog', 'token=' . $this->session->data['token'] . '&sort=pd.name' . $url, true);
+		$data['sort_model'] = $this->url->link('production/catalog', 'token=' . $this->session->data['token'] . '&sort=p.length' . $url, true);
+		$data['sort_manager'] = $this->url->link('production/catalog', 'token=' . $this->session->data['token'] . '&sort=p.manager' . $url, true);
+		$data['sort_locate'] = $this->url->link('production/catalog', 'token=' . $this->session->data['token'] . '&sort=p.weight' . $url, true);
+		$data['sort_date_added'] = $this->url->link('production/catalog', 'token=' . $this->session->data['token'] . '&sort=p.date_added' . $url, true);
+		$data['sort_price'] = $this->url->link('production/catalog', 'token=' . $this->session->data['token'] . '&sort=p.price' . $url, true);
+		$data['sort_category'] = $this->url->link('production/catalog', 'token=' . $this->session->data['token'] . '&sort=p2c.category_id' . $url, true);
+		$data['sort_quantity'] = $this->url->link('production/catalog', 'token=' . $this->session->data['token'] . '&sort=p.quantity' . $url, true);
+		$data['sort_status'] = $this->url->link('production/catalog', 'token=' . $this->session->data['token'] . '&sort=p.status' . $url, true);
+		$data['sort_order'] = $this->url->link('production/catalog', 'token=' . $this->session->data['token'] . '&sort=p.sort_order' . $url, true);
 
 		$url = '';
 
@@ -674,8 +695,11 @@ class ControllerProductionCatalog extends Controller {
 			$url .= '&filter_model=' . urlencode(html_entity_decode($this->request->get['filter_model'], ENT_QUOTES, 'UTF-8'));
 		}
 
-		if (isset($this->request->get['filter_price'])) {
-			$url .= '&filter_price=' . $this->request->get['filter_price'];
+		if (isset($this->request->get['filter_price_from'])) {
+			$url .= '&filter_price_from=' . $this->request->get['filter_price_from'];
+		}
+		if (isset($this->request->get['filter_price_to'])) {
+			$url .= '&filter_price_to=' . $this->request->get['filter_price_to'];
 		}
 
 		if (isset($this->request->get['filter_vin'])) {
@@ -723,7 +747,8 @@ class ControllerProductionCatalog extends Controller {
 		$data['filter_donor'] = $filter_donor;
 		$data['filter_catn'] = $filter_catn;
 		$data['filter_model'] = $filter_model;
-		$data['filter_price'] = $filter_price;
+		$data['filter_price_from'] = $filter_price_from;
+		$data['filter_price_to'] = $filter_price_to;
 		$data['filter_vin'] = $filter_vin;
 		$data['filter_brand'] = $filter_brand;
 		$data['filter_drom'] = $filter_drom;

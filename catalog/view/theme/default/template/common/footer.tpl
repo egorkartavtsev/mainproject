@@ -23,6 +23,7 @@
 <script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="catalog/view/javascript/common.js" type="text/javascript"></script>-->
 <script type="text/javascript">
+    VK.Widgets.Poll("vk_poll", {}, "302890946_c418af31437ce9bc70");
     VK.Widgets.Group("vk_groups", {mode: 3, no_cover: 1}, 91414223);
     function fillSearchField($id){
         var text = $("#srcItem"+$id).text();
