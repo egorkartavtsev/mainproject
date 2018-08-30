@@ -142,48 +142,50 @@ class ControllerCatalogProduct extends Controller {
             }
             if ($product['status'] == '2') {
                 $data['stock'] = 'Зарезервирован'; 
-            } 
+            }
+            $data['status']=$product['status'];
 //      =====================================Оповещение=======================================================================================================================================               
             $data['recurrings'] = $this->model_catalog_product->getProfiles($this->request->get['product_id']);
-            if (isset($this->request->post['suc'])){
-                $comment = wordwrap($this->request->post['comment'],70,"\r\n");
-                $cause = $this->request->post['cause'];
-                if ($cause == '5') {
-                    $quest = 'Вопрос:';
-                } else {
-                    $quest = 'Комментарий:';
-                }
-                $mail =  'Имя: '.$this->request->post['name'].'; '. "\r\n" .
-                         'Email: '.$this->request->post['email'].'; '. "\r\n" .
-                         'Телефон: '.$this->request->post['phone'].'; '. "\r\n" .
-                         'Артикул: '.$product['vin'].'; '. "\r\n" .
-                         'Наименование товара: '.$description['name'].'; '. "\r\n" . 
-                         $quest.$comment;
-                $headers  = 'From: autorazbor174@mail.ru' . "\r\n" . 
-                            'Reply-To: autorazbor174@mail.ru' . "\r\n" .
-                            'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-                $suc = true;
-                $subject ='';
-                switch ($cause){
-                    case 1:
-                        $subject = 'Заявка на уточнение наличия товара с сайта авторазбор174.рф';
-                        break;
-                    case 2:
-                        $subject = 'Заявка на уточнение стоимости товара с сайта авторазбор174.рф';
-                        break;
-                    case 3:
-                        $subject = 'Заявка на заказ товара с сайта авторазбор174.рф';
-                        break;
-                    case 4:
-                        $subject = 'Заявка на уточнение стоимости комплекта с сайта авторазбор174.рф';
-                        break;
-                    case 5:
-                        $subject = 'Вопрос о товаре: '.$description['name'].' с сайта авторазбор174.рф';
-                        break;
-                }
-                mail('autorazbor174@mail.ru', $subject, $mail, $headers);
-                $data['suc_text'] = 'Ваша заявка успешно отправлена';
-            }
+//            if (isset($this->request->post['suc'])){
+//                $charset ='utf-8';
+//                $comment = wordwrap($this->request->post['comment'],70,"\r\n");
+//                $cause = $this->request->post['cause'];
+//                if ($cause == '5') {
+//                    $quest = 'Вопрос:';
+//                } else {
+//                    $quest = 'Комментарий:';
+//                }
+//                $mail =  'Имя: '.$this->request->post['name'].'; '. "\r\n" .
+//                         'Email: '.$this->request->post['email'].'; '. "\r\n" .
+//                         'Телефон: '.$this->request->post['phone'].'; '. "\r\n" .
+//                         'Артикул: '.$product['vin'].'; '. "\r\n" .
+//                         'Наименование товара: '.$description['name'].'; '. "\r\n" . 
+//                         $quest.$comment;
+//                $headers  = 'From: autorazbor174@mail.ru' . "\r\n" . 
+//                            'Reply-To: autorazbor174@mail.ru' . "\r\n" .
+//                            'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+//                $suc = true;
+//                $subject ='';
+//                switch ($cause){
+//                    case 1:
+//                        $subject = 'Заявка на уточнение наличия товара с сайта авторазбор174.рф';
+//                        break;
+//                    case 2:
+//                        $subject = 'Заявка на уточнение стоимости товара с сайта авторазбор174.рф';
+//                        break;
+//                    case 3:
+//                        $subject = 'Заявка на заказ товара с сайта авторазбор174.рф';
+//                        break;
+//                    case 4:
+//                        $subject = 'Заявка на уточнение стоимости комплекта с сайта авторазбор174.рф';
+//                        break;
+//                    case 5:
+//                        $subject = 'Вопрос о товаре: '.$description['name'].' с сайта авторазбор174.рф';
+//                        break;
+//                }
+//                mail('autorazbor174@mail.ru', $subject, $mail, $headers);
+//                $data['suc_text'] = 'Ваша заявка успешно отправлена';
+//            }
 //      =====================================Отправка данных в tpl=============================================================================================================================              
             $data['modal_window'] = $this->load->view('modal_window/Modal_window');
             $data['sendLink'] = $this->url->link('catalog/product', 'product_id='.$this->request->get['product_id']);

@@ -76,7 +76,7 @@
             <div class="col-sm-12 pull-right text-right">
                 <a style="cursor: pointer;" href="viber://chat?number=+79124750870"><img src="<?php echo $viber;?>" width="40"></a>
                 <a style="cursor: pointer;" href="https://wa.me/79124750870"><img src="<?php echo $whatsapp;?>" width="40"></a>
-                <a style="cursor: pointer;" href="tg://resolve?domain=Dimadv"><img src="<?php echo $tg;?>" width="40"></a>
+                <a style="cursor: pointer;" href="tg://resolve?domain=Autorazbor174"><img src="<?php echo $tg;?>" width="40"></a>
                 <a target="_blank" href="https://vk.com/mgnautorazbor"><img src="<?php echo $lvk;?>" width="40"></a>
                 <a target="_blank" href="https://www.instagram.com/autorazbor174"><img src="<?php echo $linst;?>" width="40"></a>
                 <a target="_blank" href="https://www.youtube.com/channel/UCNgBC4t07efN7qMYUls0fcw"><img src="<?php echo $lyt;?>" width="40"></a>

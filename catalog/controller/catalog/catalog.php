@@ -126,34 +126,34 @@ class ControllerCatalogCatalog extends Controller{
                 }
             }
 //          exit(var_dump($list['products'][17311]['vin']));
-            if (isset($this->request->post['suc'])){
-                $cause = $this->request->post['cause'];
-                $pid = $this->request->post['product_id'];
-                $comment = wordwrap($this->request->post['comment'],70,"\r\n");
-                $mail =  'Имя: '.$this->request->post['name'].'; '. "\r\n" .
-                         'Email: '.$this->request->post['email'].'; '. "\r\n" .
-                         'Телефон: '.$this->request->post['phone'].'; '. "\r\n" .
-                         'Артикул: '.$list['products'][$pid]['vin'].'; '. "\r\n" .
-                         'Наименование товара: '.$list['products'][$pid]['name'].'; '. "\r\n" . 
-                         'Комментарий: '.$comment;
-                $headers  = 'From: autorazbor174@mail.ru' . "\r\n" . 
-                            'Reply-To: autorazbor174@mail.ru' . "\r\n" .
-                            'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-                $suc = true; 
-                switch ($cause){
-                    case 1:
-                        $subject = 'Заявка на уточнение наличия товара с сайта авторазбор174.рф';
-                        break;
-                    case 2:
-                        $subject = 'Заявка на уточнение стоимости товара с сайта авторазбор174.рф';
-                        break;
-                    case 3:
-                        $subject = 'Заявка на заказ товара с сайта авторазбор174.рф';
-                        break;
-                }
-                mail('autorazbor174@mail.ru', $subject, $mail, $headers);
-                $data['suc_text'] = 'Ваша заявка успешно отправлена';
-            }
+//            if (isset($this->request->post['suc'])){
+//                $cause = $this->request->post['cause'];
+//                $pid = $this->request->post['product_id'];
+//                $comment = wordwrap($this->request->post['comment'],70,"\r\n");
+//                $mail =  'Имя: '.$this->request->post['name'].'; '. "\r\n" .
+//                         'Email: '.$this->request->post['email'].'; '. "\r\n" .
+//                         'Телефон: '.$this->request->post['phone'].'; '. "\r\n" .
+//                         'Артикул: '.$list['products'][$pid]['vin'].'; '. "\r\n" .
+//                         'Наименование товара: '.$list['products'][$pid]['name'].'; '. "\r\n" . 
+//                         'Комментарий: '.$comment;
+//                $headers  = 'From: autorazbor174@mail.ru' . "\r\n" . 
+//                            'Reply-To: autorazbor174@mail.ru' . "\r\n" .
+//                            'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+//                $suc = true; 
+//                switch ($cause){
+//                    case 1:
+//                        $subject = 'Заявка на уточнение наличия товара с сайта авторазбор174.рф';
+//                        break;
+//                    case 2:
+//                        $subject = 'Заявка на уточнение стоимости товара с сайта авторазбор174.рф';
+//                        break;
+//                    case 3:
+//                        $subject = 'Заявка на заказ товара с сайта авторазбор174.рф';
+//                        break;
+//                }
+//                mail('autorazbor174@mail.ru', $subject, $mail, $headers);
+//                $data['suc_text'] = 'Ваша заявка успешно отправлена';
+//            }
             $list['modal_window'] = $this->load->view('modal_window/Modal_window');
             $server = $this->config->get('config_url');
             $list['whatsapp'] = $server . 'image/whatsapp.png';
