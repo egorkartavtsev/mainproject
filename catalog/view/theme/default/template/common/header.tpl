@@ -31,7 +31,6 @@
 <link href="catalog/view/javascript/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
 <script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 <link href="catalog/view/javascript/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-<!--<link href="//fonts.googleapis.com/css?family=Open+Sans:400,400i,300,700" rel="stylesheet" type="text/css" />-->
 <link href="catalog/view/theme/default/stylesheet/stylesheet.css?t=<?php echo(microtime(true)); ?>" rel="stylesheet">
 <?php foreach ($styles as $style) { ?>
 <link href="<?php echo $style['href']; ?>" type="text/css" rel="<?php echo $style['rel']; ?>" media="<?php echo $style['media']; ?>" />
@@ -51,16 +50,6 @@
 </head>
 <body>
 <nav id="top">
-  <!--<div class="container">
-    <div id="top-links" class="nav pull-right">
-      <ul class="list-inline">
-        <li class="dropdown"><a href="<?php echo $account; ?>" title="<?php echo $text_account; ?>" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <span class="hidden-xs hidden-sm hidden-md"><?php echo $text_account; ?></span> <span class="caret"></span></a>
-          
-        </li>
-        </ul>
-    </div>
-  </div>-->
-
 <div class="container">
     <div class="row">
         <div class="col-sm-2">
