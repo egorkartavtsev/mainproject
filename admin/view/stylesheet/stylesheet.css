@@ -60,7 +60,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .b-left{
-    margin-left: 5px;
+    margin-left: 0px;
 }
 
 .notice{
@@ -69,22 +69,22 @@ h1, h2, h3, h4, h5, h6, p {
     right: 0%;
 } 
 .toolbar{
-    background-color: #f5d3e4;
-    padding: 5px 15px;
+    background-color: #f56b6ba6;
+    padding: 5px;
     padding-right: 5px;
     border-radius: 15px 0px 0px 15px;
     border-right: 10px solid #e0c0d0;
 }
 .toolbar div{
-    float: left;
-    padding: 4px 12px;
-    margin-right: 5px;
+    padding: 4px 10px;
+    margin-bottom: 5px;
+    text-align: center;
     border-radius: 50%;
     background-color: rgba(100, 100, 100, 0.4);
 }
 .toolbar div span a{
     color: cornsilk;
-    font-size: 18pt;
+    font-size: 12pt;
     
 }
 .toolbar div:hover{

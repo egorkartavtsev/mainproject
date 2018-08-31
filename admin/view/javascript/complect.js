@@ -447,22 +447,6 @@
         });   
     }
     
-    function searchingProds(){
-        $("#headSearchBox").html('идёт поиск, ожидайте...');
-        ajax({
-                url:"index.php?route=tool/formTool/searchingProds&token="+getURLVar('token'),
-                statbox:"status",
-                method:"POST",
-                data:
-                {
-                    request: $('#searchInp').val()
-                },
-                success:function(data){
-                    $("#headSearchBox").html(data);
-                }
-            })
-    }
-    
     function searchComplects($token){
         ajax({
                 url:"index.php?route=complect/complect/searchComplects&token="+$token,

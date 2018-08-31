@@ -82,6 +82,7 @@
                 <a target="_blank" href="https://www.youtube.com/channel/UCNgBC4t07efN7qMYUls0fcw"><img src="<?php echo $lyt;?>" width="40"></a>
                 <a target="_blank" href="https://baza.drom.ru/user/AUTORAZBOR174RU"><img src="<?php echo $ldrom;?>" width="40"></a>
                 <a target="_blank" href="https://www.avito.ru/autorazbor174"><img src="<?php echo $lavito;?>" width="40"></a>
+                <a href="tel: +79124750870" class="btn btn-danger"><span><i class="fa fa-phone"></i> <b class="hidden-xs hidden-sm">+ ‎7 (912) 475 08 70</b><b class="hidden-md hidden-lg">Позвонить</b></span></a>
             </div>
             <div><p></p></div>
             <div class="">

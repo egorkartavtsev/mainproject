@@ -33,6 +33,22 @@ function checkEventes(){
     });
 }
 
+function searchingProds(){
+    $("#headSearchBox").html('<img src="wait.gif" style="width: 100px;" class="center-block">');
+    ajax({
+            url:"index.php?route=tool/formTool/searchingProds&token="+getURLVar('token'),
+            statbox:"status",
+            method:"POST",
+            data:
+            {
+                request: $('#searchInp').val()
+            },
+            success:function(data){
+                $("#headSearchBox").html(data);
+            }
+        })
+}
+
 function showStructOptions($parent){
     ajax({
       url:"index.php?route=setting/prodtypes/showOptions&token="+getURLVar('token'),
