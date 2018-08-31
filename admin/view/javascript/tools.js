@@ -28,7 +28,7 @@ function checkEventes(){
                     }
                 })
             }
-            setTimeout(checkEventes, 1000);
+            setTimeout(checkEventes, 2500);
       }
     });
 }
@@ -92,9 +92,7 @@ function addOption(){
     });
 }
 $(document).ready(function() {
-    
-    setTimeout(checkEventes, 1000);
-    
+    checkEventes();
     $(document).on('input', '[info-target=shipinfo]', function(){
         $('#save_shipinfo').removeAttr('disabled');
     });
