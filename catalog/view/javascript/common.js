@@ -387,7 +387,20 @@ $(document).ready(function() {
         
         $(document).on('click', '[btn_type=copyToSend]', function(){
         copyLinkToSend($(this), $(this).attr('data-text'));
-        })
+        });
+        //Отправка формы из модального окна к функцие отправки писем. 
+         $(document).on('submit', '[id=myModal]', function() { //событие
+            var form_data = $(this).find("form").serialize(); //собераем все данные из формы
+            $.ajax({
+                url: "index.php?route=tool/sendmail/send",
+                statbox: "igdhje83565",
+                method: "POST",
+                data: form_data,
+                success: function() {
+                        alert('Ваш запрос отправлен');
+                }
+            });
+        });
 });
 
 // Cart add remove functions

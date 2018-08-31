@@ -79,7 +79,7 @@
                            <div class="item">
                         <?php }?>
                         <div class="image"><a href="<?php echo $product['href'];?>"><img src="<?php echo $image['thumb'].'?'.time();?>" alt="<?php echo $product['name'];?>" title="<?php echo $product['name']; ?>" class="img-thumbnail d-block w-100 img-responsive" /></a></div>
-                        </div>   
+                           </div>   
                     <?php }?>  
                 </div>
                 <a class="left carousel-control" href="#carousel-example-generic<?php echo $product['product_id']; ?>" role="button" data-slide="prev">
@@ -95,39 +95,44 @@
                 $('#carousel-example-generic<?php echo $product['product_id']; ?>').carousel();    
             </script>
             <div>
-              <div class="col-lg-12 nameProd">
-                <h4><a href="<?php echo $product['href'];?>" ><?php echo $product['name'];?></a></h4>
-              </div>
-              <div class="caption text-center">
-                <p>Артикул: <?php echo $product['vin'];?></p>
-                <?php foreach($product['options'] as $option){ ?>
-                    <?php if($option['value']!='-'){ ?><p><?php echo $option['text'];?>: <?php echo htmlspecialchars_decode($option['value']);?></p><?php }?>
-                <?php }?>
-            </div>
-            <div class="col-lg-12 text-center priceProd">
-                <p>
-                    <?php if ($product['price'] !== '0' && $product['comp_whole'] !== '1') { ?>
-                        <b>Цена: <?php echo $product['price'];?> &#8381;</b>
-                    <?php } else { ?>
-                        &nbsp;
+                <div class="col-lg-12 nameProd">
+                    <h4><a href="<?php echo $product['href'];?>" ><?php echo $product['name'];?></a></h4>
+                </div>
+                <div class="caption text-center">
+                    <p>Артикул: <?php echo $product['vin'];?></p>
+                    <?php foreach($product['options'] as $option){ ?>
+                        <?php if($option['value']!='-'){ ?><p><?php echo $option['text'];?>: <?php echo htmlspecialchars_decode($option['value']);?></p><?php }?>
                     <?php }?>
-                </p>
+                </div>
+                <div class="col-lg-12 text-center priceProd">
+                    <p>
+                        <?php if ($product['price'] !== '0' && $product['comp_whole'] !== '1') { ?>
+                            <b>Цена: <?php echo $product['price'];?> &#8381;</b>
+                        <?php } else { ?>
+                            &nbsp;
+                        <?php }?>
+                    </p>
+                </div>
+                <?php echo $modal_window; ?>
+                <div class="col-lg-12">
+                    <div class="btn-group center-block" style="width: fit-content">
+                        <?php if ($product['status'] == '2') { ?>
+                            <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="1">Уточнить наличие</button>
+                        <?php } elseif ($product['price'] == 0.00 && $product['quantity'] !== 0) { ?>                                           
+                            <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="2">Узнать стоимость</button>
+                        <?php } elseif ($product['price'] !== 0.00 && $product['quantity'] == 0) { ?>
+                            <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="3">Заказать товар</button> 
+                        <?php } elseif ($product['comp_whole'] == '1') { ?>
+                            <a href="<?php echo $product['href'];?>"><button class="btn btn-lg btn-danger center-block checkPr">Посмотреть комплект</button></a>
+                        <?php } else { ?>     
+                            <button class="btn btn-lg btn-danger center-block checkPr" type="button" onclick="cart.add('<?php echo $key; ?>', '1');"><i class="fa fa-shopping-cart"></i> В КОРЗИНУ</button>
+                        <?php } ?> 
+                         <button type="button" style="margin-left: 5px" data-toggle="tooltip" btn_type="copyToSend" data-text="<?php echo $product['href'];?>"  trigger="clipb" class="btn btn-lg btn-default checkPr" title="Скопировать ссылку"><i class="fa fa-copy"></i></button>
+                    </div>
+                </div>
+               </div>
+              </div>
             </div>
-            <?php echo $modal_window; ?>  
-            <?php if ($product['status'] == '2') { ?>
-                <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="1">Уточнить наличие</button>
-            <?php } elseif ($product['price'] == 0.00 && $product['quantity'] !== 0) { ?>                                           
-                <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="2">Узнать стоимость</button>
-            <?php } elseif ($product['price'] !== 0.00 && $product['quantity'] == 0) { ?>
-                <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="3">Заказать товар</button> 
-            <?php } elseif ($product['comp_whole'] == '1') { ?>
-                <a href="<?php echo $product['href'];?>"><button class="btn btn-lg btn-danger center-block checkPr">Посмотреть комплект</button></a>
-            <?php } else { ?>     
-                <button class="btn btn-lg btn-danger center-block checkPr" type="button" onclick="cart.add('<?php echo $key; ?>', '1');"><i class="fa fa-shopping-cart"></i> В КОРЗИНУ</button>
-            <?php } ?> 
-          </div>
-          </div>
-        </div>
         <?php } ?>
       </div>
       <div class="row">
@@ -144,6 +149,7 @@
                     Или любым удобным для Вас способом:<br>
                     <a style="cursor: pointer;" href="viber://chat?number=+79124750870"><img src="<?php echo $viber;?>" width="50"></a>
                     <a style="cursor: pointer;" href="https://wa.me/79124750870"><img src="<?php echo $whatsapp;?>" width="50"></a>
+                    <a style="cursor: pointer;" href="tg://resolve?domain=Autorazbor174"><img src="<?php echo $tg;?>" width="50"></a>
                     <a  target="_blank" href="https://vk.com/mgnautorazbor"><img src="<?php echo $lvk;?>" width="50"></a>
                     <a  target="_blank" href="https://www.instagram.com/autorazbor174"><img src="<?php echo $linst;?>" width="50"></a>
                     <a  target="_blank" href="https://www.youtube.com/channel/UCNgBC4t07efN7qMYUls0fcw"><img src="<?php echo $lyt;?>" width="50"></a>

@@ -126,34 +126,34 @@ class ControllerCatalogCatalog extends Controller{
                 }
             }
 //          exit(var_dump($list['products'][17311]['vin']));
-            if (isset($this->request->post['suc'])){
-                $cause = $this->request->post['cause'];
-                $pid = $this->request->post['product_id'];
-                $comment = wordwrap($this->request->post['comment'],70,"\r\n");
-                $mail =  'Имя: '.$this->request->post['name'].'; '. "\r\n" .
-                         'Email: '.$this->request->post['email'].'; '. "\r\n" .
-                         'Телефон: '.$this->request->post['phone'].'; '. "\r\n" .
-                         'Артикул: '.$list['products'][$pid]['vin'].'; '. "\r\n" .
-                         'Наименование товара: '.$list['products'][$pid]['name'].'; '. "\r\n" . 
-                         'Комментарий: '.$comment;
-                $headers  = 'From: autorazbor174@mail.ru' . "\r\n" . 
-                            'Reply-To: autorazbor174@mail.ru' . "\r\n" .
-                            'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-                $suc = true; 
-                switch ($cause){
-                    case 1:
-                        $subject = 'Заявка на уточнение наличия товара с сайта авторазбор174.рф';
-                        break;
-                    case 2:
-                        $subject = 'Заявка на уточнение стоимости товара с сайта авторазбор174.рф';
-                        break;
-                    case 3:
-                        $subject = 'Заявка на заказ товара с сайта авторазбор174.рф';
-                        break;
-                }
-                mail('autorazbor174@mail.ru', $subject, $mail, $headers);
-                $data['suc_text'] = 'Ваша заявка успешно отправлена';
-            }
+//            if (isset($this->request->post['suc'])){
+//                $cause = $this->request->post['cause'];
+//                $pid = $this->request->post['product_id'];
+//                $comment = wordwrap($this->request->post['comment'],70,"\r\n");
+//                $mail =  'Имя: '.$this->request->post['name'].'; '. "\r\n" .
+//                         'Email: '.$this->request->post['email'].'; '. "\r\n" .
+//                         'Телефон: '.$this->request->post['phone'].'; '. "\r\n" .
+//                         'Артикул: '.$list['products'][$pid]['vin'].'; '. "\r\n" .
+//                         'Наименование товара: '.$list['products'][$pid]['name'].'; '. "\r\n" . 
+//                         'Комментарий: '.$comment;
+//                $headers  = 'From: autorazbor174@mail.ru' . "\r\n" . 
+//                            'Reply-To: autorazbor174@mail.ru' . "\r\n" .
+//                            'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+//                $suc = true; 
+//                switch ($cause){
+//                    case 1:
+//                        $subject = 'Заявка на уточнение наличия товара с сайта авторазбор174.рф';
+//                        break;
+//                    case 2:
+//                        $subject = 'Заявка на уточнение стоимости товара с сайта авторазбор174.рф';
+//                        break;
+//                    case 3:
+//                        $subject = 'Заявка на заказ товара с сайта авторазбор174.рф';
+//                        break;
+//                }
+//                mail('autorazbor174@mail.ru', $subject, $mail, $headers);
+//                $data['suc_text'] = 'Ваша заявка успешно отправлена';
+//            }
             $list['modal_window'] = $this->load->view('modal_window/Modal_window');
             $server = $this->config->get('config_url');
             $list['whatsapp'] = $server . 'image/whatsapp.png';
@@ -315,6 +315,7 @@ class ControllerCatalogCatalog extends Controller{
         $this->load->model('product/product');
         $this->load->model('tool/layout');
         $this->load->model('tool/image');
+        $this->load->model('tool/product');
         $products = array();
         $result = '';
         $request = $this->request->post['filter'];
@@ -364,13 +365,29 @@ class ControllerCatalogCatalog extends Controller{
         if(count($products)){
             $list['products'] = array();
             foreach ($products as $prod){
-                if ($prod['image']) {
-                    $image = $this->model_tool_image->resize($prod['image'], 228, 228);
-                } else {
-                    $image = $this->model_tool_image->resize('placeholder.png', 228, 228);
+                $photos = $this->model_tool_product->getProdImg($prod['product_id']);
+                $image = array();
+                $local_id = 0;
+                foreach($photos as $img){
+                    $image[] = array (
+                        'thumb'         => $this->model_tool_image->resize($img['image'], 228, 228),
+                        'main'          => $img['image']==$prod['image']?TRUE:FALSE,
+                        'lid'           => $local_id
+                    );
+                ++$local_id;    
+                }
+                if(!count($image)){
+                    $image[] = array (
+                        'thumb'         => $this->model_tool_image->resize('no-image.png', 228, 228),
+                        'main'          => TRUE,
+                        'lid'           => 0
+                    );
+                } elseif (!in_array(TRUE,array_column($image,'main'))) {
+                    $image[0]['main'] = TRUE;
                 }
                 $list['products'][$prod['product_id']] = array(
-                    'thumb' => $image,
+                    'image' => $image,
+                    'product_id' => $prod['product_id'],
                     'href' => $this->url->link('catalog/product', 'product_id='.$prod['product_id']),
                     'name' => $prod['name'],
                     'status' => $prod['status'],

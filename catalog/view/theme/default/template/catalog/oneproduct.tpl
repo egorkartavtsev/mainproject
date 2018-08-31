@@ -115,7 +115,7 @@
                 <button type="button" data-toggle="tooltip" class="btn btn-default" title="<?php echo $button_wishlist; ?>" onclick="wishlist.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-heart"></i></button>
                 <button type="button" data-toggle="tooltip" class="btn btn-default" title="<?php echo $button_compare; ?>" onclick="compare.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-exchange"></i></button>
                 <button type="button" data-toggle="tooltip" class="btn btn-default" title="Скопировать ссылку" id="send_prod"><i class="fa fa-copy"></i></button>
-                <button type="button" class="btn btn-info" btn_type="reqPrice" data-toggle="modal" data-target="#myModal"  data-whatever="question_modal" pcause="5">Задать вопрос о товаре</button>
+                <button type="button" class="btn btn-info" btn_type="reqPrice" data-toggle="modal" data-target="#myModal"  data-whatever="question_modal" pid="<?php echo $product['product_id'];?>" pcause="4">Задать вопрос о товаре</button>
             </div>
             <?php if(isset($images[0]['popup'])){ ?>
                 <div style="margin-top:5%">
@@ -135,16 +135,13 @@
                 <li><?php echo $text_stock; ?> <?php echo $stock; ?></li>
             </ul>
           <!-------------------------------------------->
-            <?php if ($product['price'] == 0.00 || $stock == 0)  { ?>
-                <?php if ($product['price'] == 0.00) { ?>
-                    <hr>
-                    <button type="button" class="btn btn-primary btn-lg" btn_type="reqPrice" data-toggle="modal" data-target="#myModal" pcause="2">Узнать стоимость товара</button>
-                <?php } else { ?>
-                    <h2><?php echo $product['price']; ?></h2>
-                    <hr>
-                    <button type="button" class="btn btn-primary btn-lg" btn_type="reqPrice" data-toggle="modal" data-target="#myModal" pcause="3">Заказать товар</button>
-                <?php } ?>
-                <?php echo $modal_window; ?>
+            <hr>
+            <?php if ($status == '2') { ?>
+                <button class="btn btn-primary btn-lg" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="1">Уточнить наличие</button>
+            <?php } elseif ($product['price'] == 0.00 && $stock !== 0) { ?>                                           
+                <button class="btn btn-primary btn-lg" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="2">Узнать стоимость</button>
+            <?php } elseif ($product['price'] !== 0.00 && $stock == 0) { ?>
+                <button class="btn btn-primary btn-lg" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="3">Заказать товар</button> 
             <?php } else { ?>
                 <?php if(!isset($whole) || !$whole) { ?>
                     <?php if ($product['price']) { ?>
@@ -152,7 +149,6 @@
                             <h2><?php echo $product['price']; ?></h2>
                         </ul>
                     <?php } ?>
-                <hr>
                 <div id="product">
                     <?php if ($recurrings) { ?>
                         <hr>
@@ -180,6 +176,7 @@
                 </div>
                 <?php }?>
             <?php }?>
+            <?php echo $modal_window; ?>
             <div class="col-lg-12"<p>&nbsp;</p></div>
             <div id="vk_poll"></div>
             <div class="col-lg-12"<p>&nbsp;</p></div>
