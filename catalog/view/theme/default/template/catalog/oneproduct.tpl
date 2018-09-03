@@ -115,7 +115,7 @@
                 <button type="button" data-toggle="tooltip" class="btn btn-default" title="<?php echo $button_wishlist; ?>" onclick="wishlist.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-heart"></i></button>
                 <button type="button" data-toggle="tooltip" class="btn btn-default" title="<?php echo $button_compare; ?>" onclick="compare.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-exchange"></i></button>
                 <button type="button" data-toggle="tooltip" class="btn btn-default" title="Скопировать ссылку" id="send_prod"><i class="fa fa-copy"></i></button>
-                <button type="button" class="btn btn-info" btn_type="reqPrice" data-toggle="modal" data-target="#myModal"  data-whatever="question_modal" pid="<?php echo $product['product_id'];?>" pcause="4">Задать вопрос о товаре</button>
+                <button type="button" class="btn btn-info" btn_type="reqPrice" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="4">Задать вопрос о товаре</button>
             </div>
             <?php if(isset($images[0]['popup'])){ ?>
                 <div style="margin-top:5%">
@@ -176,7 +176,6 @@
                 </div>
                 <?php }?>
             <?php }?>
-            <?php echo $modal_window; ?>
             <div class="col-lg-12"<p>&nbsp;</p></div>
             <div id="vk_poll"></div>
             <div class="col-lg-12"<p>&nbsp;</p></div>

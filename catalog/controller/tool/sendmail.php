@@ -22,20 +22,7 @@
             $charset ='iso-8859-1';
             $comment = wordwrap($this->request->post['comment'],70,"\r\n");
             $cause = $this->request->post['cause'];
-            if ($cause == '4') {
-                $quest = 'Вопрос: ';
-            } else {
-                $quest = 'Комментарий: ';
-            }
-            $mail =  'Имя: '.$name.'; '. "\r\n" .
-                     'Email: '.$email.'; '. "\r\n" .
-                     'Телефон: '.$phone.'; '. "\r\n" .
-                     'Артикул: '.$vin.'; '. "\r\n" .
-                     'Наименование товара: '.$product_name.'; '. "\r\n" . 
-                     $quest.$comment;
-            $headers  = "MIME-Version: 1.0\n";
-            $headers .= "From:".trim($email)."\n";
-            $headers .= "Content-type: text/html; charset=$charset\n";
+            $quest = 'Комментарий: ';
             $subject ='';
             switch ($cause){
                 case 1:
@@ -49,8 +36,24 @@
                     break;
                 case 4:
                     $subject = 'Вопрос о товаре "'.$product_name.'" с сайта авторазбор174.рф';
+                    $quest = 'Вопрос: ';
+                    break;
+                case 5:
+                    $subject = 'Заказ на звонок с сайта авторазбор174.рф';
+                    $vin = "-";
+                    $product_name = "-"; 
+                    $email = 'autorazbor174@mail.ru';
                     break;
             }
+            $mail =  'Имя: '.$name.'; '. "\r\n" .
+                     'Email: '.$email.'; '. "\r\n" .
+                     'Телефон: '.$phone.'; '. "\r\n" .
+                     'Артикул: '.$vin.'; '. "\r\n" .
+                     'Наименование товара: '.$product_name.'; '. "\r\n" . 
+                     $quest.$comment;
+            $headers  = "MIME-Version: 1.0\n";
+            $headers .= "From:".trim($email)."\n";
+            $headers .= "Content-type: text/html; charset=$charset\n";
             mail('autorazbor174@mail.ru', $subject, $mail, $headers);
             
             return;    

@@ -36,19 +36,33 @@
 <script type='text/javascript'>
     $('#myModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
-        var recipient = button.data('whatever');
+        var recipient = button.attr('pcause');
         var modal = $(this);
-        if (recipient === 'question_modal') {
+        if (recipient === '4') {
             modal.find('.modal-title').text('Вопрос о товаре:');
             modal.find('#quest').text('Ваш вопрос:');
             modal.find('[name=comment]').attr('placeholder', 'Ваш вопрос...');
             modal.find('[name=comment]').attr('required', 'required');
-        }
-        if (recipient !== 'question_modal') {
+            modal.find('[name=email]').attr('required', 'required');
+            modal.find('[name=phone]').removeAttr('required', 'required');  
+            modal.find('[name=name]').removeAttr('required', 'required');
+        } else if (recipient === '5') {
+            modal.find('.modal-title').text('Заказть звонок:');
+            modal.find('[name=phone]').attr('required', 'required');  
+            modal.find('[name=name]').attr('required', 'required');
+            modal.find('#quest').text('Комментарий:');
+            modal.find('[name=comment]').attr('placeholder', 'Комментарий к запросу...');
+            modal.find('[name=email]').removeAttr('required');  
+            modal.find('[name=comment]').removeAttr('required');
+        } else {
             modal.find('.modal-title').text('Вы можете заполнить форму ниже и наши менеджеры свяжутся с Вами.');
             modal.find('#quest').text('Комментарий:');
             modal.find('[name=comment]').attr('placeholder', 'Комментарий к заявке...'); 
             modal.find('[name=comment]').removeAttr('required');
+            modal.find('[name=name]').removeAttr('required');
+            modal.find('[name=phone]').removeAttr('required');
+            modal.find('[name=email]').attr('required', 'required');
+            
         }
     });
     $('#myModal').on('shown.bs.modal', function () {

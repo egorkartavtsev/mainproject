@@ -95,7 +95,6 @@
                                     </p>
                                 </div>
                             </div>
-                            <?php echo $modal_window; ?>
                             <div class="col-lg-12">
                                 <div class="btn-group center-block" style="width: fit-content">
                                     <?php if ($product['status'] == '2') { ?>
