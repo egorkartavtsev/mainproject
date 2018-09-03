@@ -1,36 +1,41 @@
 function checkEventes(){
-    $('#chatAudio')[0].autoplay;
-    ajax({
-      url:"index.php?route=tool/formTool/getNewNotices&token="+getURLVar('token'),
-      method:"POST",
-      datatype: "json",
-      success:function(data){
-            sup = JSON.parse(data);
-            if(parseInt(sup['notified'])){
-                $('#chatAudio')[0].play();
-                var toolbar =  $('.toolbar');
-                toolbar.addClass('pulse');
-                $.each(sup['notices'], function(k,v){
-                    if(parseInt(sup['notices'][k]['new'])){
-                        var tmp = '<re>';
-                                tmp+= '<a href="#'+k+'" data-toggle="tab" aria-controls="'+k+'" role="tab" ';
-                                if(parseInt(sup['notices'][k]['fastviewed'])){
-                                    tmp+= 'btn_type="upd-notice">';
-                                } else{
-                                    tmp+= '>';
+        if(!hasQueries()){
+            ajax({
+              url:"index.php?route=tool/notices/getNewNotices&token="+getURLVar('token'),
+              method:"POST",
+              datatype: "json",
+                success:function(data){
+                    if(data){
+                        sup = JSON.parse(data);
+                        if(parseInt(sup['notified'])){
+                            $('#chatAudio')[0].play();
+                            var toolbar =  $('.toolbar');
+                            toolbar.addClass('pulse');
+                            $.each(sup['notices'], function(k,v){
+                                if(parseInt(sup['notices'][k]['new'])){
+                                    var tmp = '<re>';
+                                            tmp+= '<a href="#'+k+'" data-toggle="tab" aria-controls="'+k+'" role="tab" ';
+                                            if(parseInt(sup['notices'][k]['fastviewed'])){
+                                                tmp+= 'btn_type="upd-notice">';
+                                            } else{
+                                                tmp+= '>';
+                                            }
+                                                tmp+= '<span class="hasNew">!</span>';
+                                            tmp+= '</a>';
+                                        tmp+= '</re>';
+                                    toolbar.find('[aria-controls='+k+']').parent().after(tmp);
+                                    //alert(sup['notices'][k]['fastview']);
+                                    $(document).find('#persInfo').find('#'+k).html(sup['notices'][k]['tab']);
                                 }
-                                    tmp+= '<span class="hasNew">!</span>';
-                                tmp+= '</a>';
-                            tmp+= '</re>';
-                        toolbar.find('[aria-controls='+k+']').parent().after(tmp);
-                        //alert(sup['notices'][k]['fastview']);
-                        $(document).find('#persInfo').find('#'+k).html(sup['notices'][k]['tab']);
+                            });
+                        }
                     }
-                })
-            }
+                    setTimeout(checkEventes, 2500);
+                }
+            });
+        } else {
             setTimeout(checkEventes, 2500);
-      }
-    });
+        }
 }
 
 function searchingProds(){
@@ -317,6 +322,7 @@ $(document).ready(function() {
     
     $(document).on('click', '[btn_type=showProd]', function(){
         var prod = $(this).attr('target');
+        $("#prodinfocard").html('<img src="wait.gif" style="width: 100px;" class="center-block">');;
         ajax({
             url:"index.php?route=tool/formTool/getProdCard&token="+getURLVar('token'),
             method:"POST",

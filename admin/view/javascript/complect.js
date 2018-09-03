@@ -2,6 +2,10 @@
     var complect = [];
     var prodList = [];
     var prodCount = 0;
+    var openedAJAXes = false;
+    
+    
+    
     function addInput($token){
         
         $cont = '<tr id="c'+window.count+'">';
@@ -108,17 +112,22 @@
                                    for (var i in param.data) send+= i+"="+param.data[i]+"&";
                                    // send=send+"ajax=true"; // если хотите передать сообщение об успехе
                     }
-
+                    window.openedAJAXes = true;
                     req.open(method, param.url, true);
                     req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                     req.send(send);
-                    req.onreadystatechange = function()
-                    {
-                                   if (req.readyState == 4 && req.status == 200) //если ответ положительный
-                                   {
-                                                   if(param.success)param.success(req.responseText);
-                                   }
+                    req.onreadystatechange = function(){
+                        if(req.readyState !== 1){
+                            window.openedAJAXes = false;
+                        }
+                        if (req.readyState == 4 && req.status == 200){ //если ответ положительный
+                           if(param.success)param.success(req.responseText);
+                        }
                     }
+    }
+
+    function hasQueries(){
+        return window.openedAJAXes;
     }
 
     function create($token){

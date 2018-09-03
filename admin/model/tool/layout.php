@@ -66,7 +66,8 @@ class ModelToolLayout extends Model {
                 'text' => $row['text'],
                 'fastviewed' => $row['fastviewed'],
                 'target_table' => $row['target_table'],
-                'new'  => 0
+                'new'  => 0,
+                'notified'  => 0
             );
             $sql = "SELECT * FROM ".DB_PREFIX.$row['target_table']." WHERE viewed = 0 ";
             $sql1 = "UPDATE ".DB_PREFIX.$row['target_table']." SET notified = 1 WHERE viewed = 0 ";
@@ -78,8 +79,10 @@ class ModelToolLayout extends Model {
             if($tmp->num_rows){
                 $result['notices'][$row['name']]['new'] = $tmp->num_rows;
                 $result['new'] = 1;
-                $result['notified'] = in_array(0,array_column($tmp->rows,'notified'))?1:0;
-                $this->db->query($sql1);
+                if(in_array(0,array_column($tmp->rows,'notified'))){
+                    $result['notified'] = 1;
+                    $this->db->query($sql1);
+                }
             }
         }
         return $result;

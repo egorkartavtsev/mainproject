@@ -95,8 +95,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 .hasNew{
     position: absolute;
-    top: 0px;
-    margin-left: -13px;
+    margin-top: -13px;
     padding: 4px 12px;
     border-radius: 50%;
     background-color: #f13f3f;

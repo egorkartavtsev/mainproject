@@ -217,16 +217,5 @@ class ControllerToolFormTool extends Controller {
         $this->load->model('tool/layout');
         $this->model_tool_layout->checkfastviewed($target);
     }
-    
-    public function getNewNotices() {
-        $this->load->model('tool/layout');
-        $res = $this->model_tool_layout->getnoticeTotals();
-        foreach ($res['notices'] as $key => $notice) {
-            $tmp = 'get'.$key;
-            $res['notices'][$key]['tab'] = $this->model_tool_layout->$tmp();
-        }
-
-        echo json_encode($res);
-    }
 }
 
