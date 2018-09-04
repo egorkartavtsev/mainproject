@@ -19,43 +19,47 @@
             $vin = $product['vin'];
             $product_name = $description['name'];
             //$charset ='utf-8';
-            $charset ='iso-8859-1';
+            $charset ='UTF-8';
             $comment = wordwrap($this->request->post['comment'],70,"\r\n");
             $cause = $this->request->post['cause'];
             $quest = 'Комментарий: ';
             $subject ='';
             switch ($cause){
                 case 1:
-                    $subject = 'Заявка на уточнение наличия товара с сайта авторазбор174.рф';
+                    $subject = "=?UTF-8?b?".'Заявка на уточнение наличия товара с сайта авторазбор174.рф'."?=";
                     break;
                 case 2:
-                    $subject = 'Заявка на уточнение стоимости товара с сайта авторазбор174.рф';
+                    $subject = "=?UTF-8?b?".'Заявка на уточнение стоимости товара с сайта авторазбор174.рф'."?=";
                     break;
                 case 3:
-                    $subject = 'Заявка на заказ товара с сайта авторазбор174.рф';
+                    $subject = "=?UTF-8?b?".'Заявка на заказ товара с сайта авторазбор174.рф'."?=";
                     break;
                 case 4:
-                    $subject = 'Вопрос о товаре "'.$product_name.'" с сайта авторазбор174.рф';
+                    $subject = "=?UTF-8?b?".'Вопрос о товаре "'.$product_name.'" с сайта авторазбор174.рф'."?=";
                     $quest = 'Вопрос: ';
                     break;
                 case 5:
                     $subject = 'Заказ на звонок с сайта авторазбор174.рф';
                     $vin = "-";
-                    $product_name = "-"; 
-                    $email = 'autorazbor174@mail.ru';
+                    $product_name = "-";
+                    if ($this->request->post['email'] !=='') {
+                        $email = 'autorazbor174@mail.ru';
+                    }
                     break;
             }
-            $mail =  'Имя: '.$name.'; '. "\r\n" .
-                     'Email: '.$email.'; '. "\r\n" .
-                     'Телефон: '.$phone.'; '. "\r\n" .
-                     'Артикул: '.$vin.'; '. "\r\n" .
-                     'Наименование товара: '.$product_name.'; '. "\r\n" . 
+            $mail =  'Имя: '.$name.'; '. "\n" .
+                     'Email: '.$email.'; '. "\n" .
+                     'Телефон: '.$phone.'; '. "\n" .
+                     'Артикул: '.$vin.'; '. "\n" .
+                     'Наименование товара: '.$product_name.'; '. "\n" . 
                      $quest.$comment;
-            $headers  = "MIME-Version: 1.0\n";
+            
+            $headers  = "Content-type: text/html; charset=$charset\n";
+            $headers .= "MIME-Version: 1.0\n";
             $headers .= "From:".trim($email)."\n";
             $headers .= "Content-type: text/html; charset=$charset\n";
-            mail('autorazbor174@mail.ru', $subject, $mail, $headers);
             
+            mail('autorazbor174@mail.ru', $subject, $mail, $headers);
             return;    
         }
     } 

@@ -12,8 +12,15 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/catalog/view/theme/default/template/catalog/showproducts.tpl</file>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/catalog/view/theme/default/template/modal_window/Modal_window.tpl</file>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/catalog/controller/tool/sendmail.php</file>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/catalog/view/javascript/common.js</file>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/catalog/view/theme/default/template/catalog/oneproduct.tpl</file>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/catalog/controller/catalog/catalog.php</file>
             <file>file:/C:/Server/OSPanel/domains/mgnauto/catalog/view/theme/default/template/common/header.tpl</file>
             <file>file:/C:/Server/OSPanel/domains/mgnauto/admin/view/stylesheet/stylesheet.css</file>
+            <file>file:/C:/Server/OSPanel/domains/mgnauto/catalog/controller/common/header.php</file>
         </group>
     </open-files>
 </project-private>
