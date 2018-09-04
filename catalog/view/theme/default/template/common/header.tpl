@@ -72,7 +72,7 @@
                 <a target="_blank" href="https://baza.drom.ru/user/AUTORAZBOR174RU"><img src="<?php echo $ldrom;?>" width="40"></a>
                 <a target="_blank" href="https://www.avito.ru/autorazbor174"><img src="<?php echo $lavito;?>" width="40"></a>
                 <a href="tel: +79124750870" class="btn btn-lg" style="color: #fff; background-color: #30295d;"><span><i class="fa fa-phone"></i> <b class="hidden-xs hidden-sm">+ ‎7 (912) 475 08 70</b><b class="hidden-md hidden-lg">Позвонить</b></span></a>
-                <button type="button" class="btn btn-info" btn_type="reqPrice" data-toggle="modal" data-target="#myModal"  data-whatever="question_modal" pcause="5">Заказать звонок</button>
+                <button type="button" class="btn btn-lg" style="color: #fff; background-color: #30295d;" btn_type="reqPrice" data-toggle="modal" data-target="#myModal"  data-whatever="question_modal" pcause="5">Заказать звонок</button>
             </div>
             <div><p></p></div>
             <div class="">

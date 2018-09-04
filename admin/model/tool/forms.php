@@ -2,7 +2,11 @@
 
 class ModelToolForms extends Model {
     private $systemFields = array(
-        'vin' => 'Внутренний номер', 'quantity' => 'Количество', 'price' => 'Цена', 'youtube' => 'YouTube(только код!)'
+        'vin' => 'Внутренний номер', 
+        'youtube' => 'YouTube(только код!)',
+        'price' => 'Цена',
+        'selfprice' => 'Себестоимость', 
+        'quantity' => 'Количество'
     );
     private $ignoreFields = array('complect', 'heading', 'type_id', 'manager', 'status');
 
@@ -382,6 +386,10 @@ class ModelToolForms extends Model {
                     . '<label>Внутренний номер:</label>'
                     . '<input class="form-control" name="info[vin]" disabled unique="unique" field="vin" value="'.$info['vin'].'"/>'
                  . '</div>';
+        $systemF.= '<div class="form-group-sm col-md-6">'
+                    . '<label>YouTube(только код видео!):</label>'
+                    . '<input class="form-control" name="info[youtube]" field="youtube" value="'.$info['youtube'].'"/>'
+                 . '</div>';
         foreach ($this->systemFields as $key => $field) {
             if($key!=='vin' && $key!=='youtube'){
                 $systemF.= '<div class="form-group-sm editForm col-md-3">'
@@ -390,10 +398,6 @@ class ModelToolForms extends Model {
                          . '</div>';
             }
         }
-        $systemF.= '<div class="form-group-sm col-md-9">'
-                    . '<label>YouTube(только код видео!):</label>'
-                    . '<input class="form-control" name="info[youtube]" field="youtube" value="'.$info['youtube'].'"/>'
-                 . '</div>';
         $systemF.= '<div class="form-group-sm editForm col-md-3">'
                 . '<div class = "row paddingrow"><label>Статус</label></div>'
                 . '<select class="form-control" name="info[status]">'

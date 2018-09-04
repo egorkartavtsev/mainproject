@@ -115,7 +115,7 @@ class ControllerToolFormTool extends Controller {
                 $images[0]['main'] = TRUE;
         }
         $data['images'] = $images;
-        echo $this->load->view('form/prodCard', $data);
+        echo $this->load->view('modals/prodCard', $data);
     }
     
     

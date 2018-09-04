@@ -7,9 +7,10 @@ html, body {
 	font-size: 12px;
 	color: #666666;
 	text-rendering: optimizeLegibility;
-	background-image: url(/image/back1.jpg);
+/*	background-image: url(/image/back1.jpg);
         background-repeat: repeat;
         background-size: 380px;
+        background-attachment: fixed;*/
 }
 h1, h2, h3, h4, h5, h6, p {
 	margin-top: 0;
@@ -180,10 +181,17 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 .elderAD{
-    background-color: #fef1f1!important;
+    background-color: #fef1f1;
     border-color: #fde2e2;
     color: #a20505;
 }
+
+.noteld{
+    background-color: #fff;
+    border-color: #fdf2f2;
+    color: #303030;
+}
+
 .client_item{
     cursor: pointer;
     border: 1px solid #c3cfc3;

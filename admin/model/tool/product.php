@@ -498,6 +498,7 @@ class ModelToolProduct extends Model {
         $result['options']['quantity'] = array('field_type' => 'system', 'value' => $info['info']['quantity']);
         $result['options']['status'] = array('field_type' => 'system', 'value' => $info['info']['status']);
         $result['options']['price'] = array('field_type' => 'system', 'value' => $info['info']['price']);
+        $result['options']['selfprice'] = array('field_type' => 'system', 'value' => $info['info']['selfprice']?$info['info']['selfprice']:ceil($info['info']['price']/2));
         $result['options']['image'] = array('field_type' => 'system', 'value' => $info['info']['image']);
         $result['options']['youtube'] = array('field_type' => 'system', 'value' => $youtube);
         $result['image'] = isset($info['image'])?$info['image']:'no_image.png';
@@ -546,6 +547,7 @@ class ModelToolProduct extends Model {
             'complect' => FALSE,
             'name' => $sup->row['name'],
             'price' => $sup->row['price'],
+            'selfprice' => $sup->row['selfprice'],
             'quantity' => $sup->row['quantity'],
             'edit' => $this->url->link('production/catalog/edit', 'token='.$this->session->data['token'].'&product_id='.$sup->row['product_id']),
             'go_site' => HTTP_CATALOG.'index.php?route=catalog/product&product_id='.$sup->row['product_id'],

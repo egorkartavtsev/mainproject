@@ -113,7 +113,7 @@ class ControllerAvitoAvitoList extends Controller{
                 'dateStart' => $ad['dateStart'],
                 'dateEnd' => $ad['dateEnd'],
                 'price' => $ad['price'],
-                'class' => (int)$ad['message']?'elderAD':''
+                'class' => (int)$ad['message']?'elderAD':'noteld'
             );
         }
         $this->response->setOutput($this->load->view('avito/list', $data));

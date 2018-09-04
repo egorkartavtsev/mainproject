@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="col-sm-12">
-        <div class="alert alert-dismissible">
+        <div class="alert alert-success">
             <h4>Фильтры и сортировака:</h4>
             <div class="col-md-4">
                 <div class="form-group col-md-6">
@@ -71,26 +71,29 @@
                 </div>
                 <div class="clearfix"><p></p></div>
                 <div class="clearfix"></div>
-                <button class="btn btn-sm bnt-block btn-primary" id="button-filter">применить фильтры</button>
-                <button class="btn btn-sm bnt-block btn-danger" id="clear-filter">очистить фильтры</button>
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <button class="btn btn-sm bnt-block btn-primary" id="button-filter">применить фильтры</button>
+                    <button class="btn btn-sm bnt-block btn-danger" id="clear-filter">очистить фильтры</button>
+                </div>
             </div>
-        </div>
-        <div class="form-group col-md-6">
-            <label>Сортировка:</label>
-            <select class="form-control" target="sort">
-                <option disabled selected>Выберите принцип сортировки</option>
-                <option value="<?php echo $url;?>&sort=p.price" <?php echo (isset($sort) && $sort=='p.price')?'selected':'';?>>Цена</option>
-                <option value="<?php echo $url;?>&sort=p2a.dateStart" <?php echo (isset($sort) && $sort=='p2a.dateStart')?'selected':'';?>>Дата начала активации</option>
-                <option value="<?php echo $url;?>&sort=p2a.dateEnd" <?php echo (isset($sort) && $sort=='p2a.dateEnd')?'selected':'';?>>Дата окончания активации</option>
-            </select>
-        </div>
-        <div class="form-group col-md-6">
-            <label>Порядок:</label>
-            <select class="form-control" target="order">
-                <option disabled selected>Выберите порядок сортировки</option>
-                <option value="<?php echo $url;?><?php echo isset($sort)?'&sort='.$sort:'';?>&order=DESC" <?php echo isset($sort)?'':'disabled';?> <?php echo (isset($order) && $order=='DESC')?'selected':'';?>>По убываню</option>
-                <option value="<?php echo $url;?><?php echo isset($sort)?'&sort='.$sort:'';?>&order=ASC" <?php echo isset($sort)?'':'disabled';?> <?php echo (isset($order) && $order=='ASC')?'selected':'';?>>По возрастанию</option>
-            </select>
+            <div class="form-group col-md-6">
+                <label>Сортировка:</label>
+                <select class="form-control" target="sort">
+                    <option disabled selected>Выберите принцип сортировки</option>
+                    <option value="<?php echo $url;?>&sort=p.price" <?php echo (isset($sort) && $sort=='p.price')?'selected':'';?>>Цена</option>
+                    <option value="<?php echo $url;?>&sort=p2a.dateStart" <?php echo (isset($sort) && $sort=='p2a.dateStart')?'selected':'';?>>Дата начала активации</option>
+                    <option value="<?php echo $url;?>&sort=p2a.dateEnd" <?php echo (isset($sort) && $sort=='p2a.dateEnd')?'selected':'';?>>Дата окончания активации</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label>Порядок:</label>
+                <select class="form-control" target="order">
+                    <option disabled selected>Выберите порядок сортировки</option>
+                    <option value="<?php echo $url;?><?php echo isset($sort)?'&sort='.$sort:'';?>&order=DESC" <?php echo isset($sort)?'':'disabled';?> <?php echo (isset($order) && $order=='DESC')?'selected':'';?>>По убываню</option>
+                    <option value="<?php echo $url;?><?php echo isset($sort)?'&sort='.$sort:'';?>&order=ASC" <?php echo isset($sort)?'':'disabled';?> <?php echo (isset($order) && $order=='ASC')?'selected':'';?>>По возрастанию</option>
+                </select>
+            </div>
         </div>
         <table class="table table-hover">
             <thead>

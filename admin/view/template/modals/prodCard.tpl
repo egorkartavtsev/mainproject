@@ -58,6 +58,10 @@
                 <td class="text-right h4"><?php echo $price;?></td>
             </tr>
             <tr>
+                <td class="text-right h4">Себестоимость: </td>
+                <td class="text-right h4"><?php echo $selfprice;?></td>
+            </tr>
+            <tr>
                 <td class="text-right h4">Расположение: </td>
                 <td class="text-right h4"><?php echo $location?></td>
             </tr>

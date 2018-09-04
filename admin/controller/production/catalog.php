@@ -794,6 +794,7 @@ class ControllerProductionCatalog extends Controller {
             $info['youtube'] = $product['youtube'];
             $info['manager'] = $this->session->data['username'];
             $info['price'] = $product['price'];
+            $info['selfprice'] = $product['selfprice'];
             $info['quantity'] = $product['quantity'];
             $info['status'] = $product['status'];
             $this->load->language('catalog/product');
