@@ -22,12 +22,15 @@ function getURLVar(key) {
 	}
 }
 
-function validation(field_type, value, req){
+function validation(field_type, value){
     var allow = false;
     var reg = '';
     switch(field_type){
         case 'char':
             reg = /^([a-zа-яё]+)$/i;
+        break;
+        case 'latin':
+            reg = /^([a-z0-9]+)$/i;
         break;
         case 'varchar':
             reg = /^([a-zа-яё\d\s\\\.\,\-\,\+\/]+)$/i;
@@ -70,27 +73,33 @@ $(document).ready(function() {
     
     $(document).on('input', '[name=captcha]', function(){
         var inp = $(this);
-        if(inp.val().length=='6'){
-            $.ajax({
-                url: "index.php?route="+getURLVar('route')+"/validate",
-                method: "POST",
-                data:
-                {
-                    captcha: inp.val()
-                },
-                success:function(data){
-                    if(data){
-                        alert('Проверочный код введён верно!')
-                        inp.parent().parent().remove();
-                        $(document).find("[btn_type=nextstep]").removeAttr('disabled');
-                    } else {
-                        $(document).find("[btn_type=nextstep]").attr('disabled', 'disabled');
-                        alert('Введён неверный проверочный код!')
-                    }
-                }      
-            });
+        var reg = /^([a-z0-9]+)$/i;
+        if(reg.test(inp.val())){
+            if(inp.val().length=='6'){
+                $.ajax({
+                    url: "index.php?route=checkout/checkout/validate",
+                    method: "POST",
+                    data:
+                    {
+                        captcha: inp.val()
+                    },
+                    success:function(data){
+                        if(data){
+                            alert('Проверочный код введён верно!')
+                            inp.parent().parent().remove();
+                            $(document).find("[btn_type=nextstep]").removeAttr('disabled');
+                            $(document).find("#nextStep").removeAttr('disabled');
+                        } else {
+                            $(document).find("[btn_type=nextstep]").attr('disabled', 'disabled');
+                            alert('Введён неверный проверочный код!')
+                        }
+                    }      
+                });
+            } else {
+                $(document).find("[btn_type=nextstep]").attr('disabled', 'disabled');
+            }
         } else {
-            $(document).find("[btn_type=nextstep]").attr('disabled', 'disabled');
+            inp.val(inp.val().substring(0, (inp.val().length-1)));
         }
     });
     

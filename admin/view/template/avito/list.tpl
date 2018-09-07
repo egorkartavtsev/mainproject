@@ -150,7 +150,7 @@
     });
     $(document).on('click', '#button-filter', function(){
         var url = 'index.php?route=avito/avito_list&token='+getURLVar('token');
-        $(this).parent().parent().find('[target=filter]').each(function(){
+        $(this).parent().parent().parent().find('[target=filter]').each(function(){
             if($(this).val()!='' && $(this).val()!=' '){
                 url = url+'&filter_'+$(this).attr('target-name')+'='+$(this).val();
             }

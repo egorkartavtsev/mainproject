@@ -26,16 +26,16 @@
             $subject ='';
             switch ($cause){
                 case 1:
-                    $subject = "=?UTF-8?b?".'Заявка на уточнение наличия товара с сайта авторазбор174.рф'."?=";
+                    $subject = 'Заявка на уточнение наличия товара с сайта авторазбор174.рф';
                     break;
                 case 2:
-                    $subject = "=?UTF-8?b?".'Заявка на уточнение стоимости товара с сайта авторазбор174.рф'."?=";
+                    $subject = 'Заявка на уточнение стоимости товара с сайта авторазбор174.рф';
                     break;
                 case 3:
-                    $subject = "=?UTF-8?b?".'Заявка на заказ товара с сайта авторазбор174.рф'."?=";
+                    $subject ='Заявка на заказ товара с сайта авторазбор174.рф';
                     break;
                 case 4:
-                    $subject = "=?UTF-8?b?".'Вопрос о товаре "'.$product_name.'" с сайта авторазбор174.рф'."?=";
+                    $subject = 'Вопрос о товаре "'.$product_name.'" с сайта авторазбор174.рф';
                     $quest = 'Вопрос: ';
                     break;
                 case 5:
@@ -43,29 +43,24 @@
                     $vin = "-";
                     $product_name = "-";
                     if ($this->request->post['email'] !=='') {
-                        $email = 'autorazbor174@mail.ru';
+                        $email = 'mail@autorazbor174.ru';
                     }
                     break;
             }
-            $mail =  'Имя: '.$name.'; '. "\n" .
-                     'Email: '.$email.'; '. "\n" .
-                     'Телефон: '.$phone.'; '. "\n" .
-                     'Артикул: '.$vin.'; '. "\n" .
-                     'Наименование товара: '.$product_name.'; '. "\n" . 
+            $mail =  'Имя: '.$name.'; '. "\r\n" .
+                     'Email: '.$email.'; '. "\r\n" .
+                     'Телефон: '.$phone.'; '. "\r\n" .
+                     'Артикул: '.$vin.'; '. "\r\n" .
+                     'Наименование товара: '.$product_name.'; '. "\r\n" . 
                      $quest.$comment;
             
-            $headers  = "Content-type: text/html; charset=$charset\n";
+//            $headers  = "Content-type: text/html; charset=".$charset."\n";
             $headers .= "MIME-Version: 1.0\n";
             $headers .= "From:".trim($email)."\n";
-            $headers .= "Content-type: text/html; charset=$charset\n";
+            $headers .= "Content-type: text/html; charset=".$charset."\n";
             
             mail('autorazbor174@mail.ru', $subject, $mail, $headers);
             return;    
         }
-    } 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+    }
 

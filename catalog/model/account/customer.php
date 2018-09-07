@@ -175,4 +175,45 @@ class ModelAccountCustomer extends Model {
 	public function deleteLoginAttempts($email) {
 		$this->db->query("DELETE FROM `" . DB_PREFIX . "customer_login` WHERE email = '" . $this->db->escape(utf8_strtolower($email)) . "'");
 	}
+        
+        public function checkEmail($email) {
+		return $this->db->query("SELECT * FROM `" . DB_PREFIX . "customer` WHERE `email` = '" . $this->db->escape($email) . "'")->num_rows;
+	}
+        
+        public function createAccount($customer) {
+            $salt = token(9);
+            $code = token(15);
+            $store_id = 0;
+            $sql = "INSERT INTO ".DB_PREFIX."customer SET "
+                    . "firstname = '" . $this->db->escape((isset($customer['firstname'])?$customer['firstname']:'')) . "', "
+                    . "lastname = '" . $this->db->escape((isset($customer['lastname'])?$customer['lastname']:'')) . "', "
+                    . "patron = '" . $this->db->escape((isset($customer['patron'])?$customer['patron']:'')) . "', "
+                    . "email = '" . $this->db->escape($customer['email']) . "', "
+                    . "telephone = '" . $this->db->escape($customer['telephone']) . "', "
+                    . "zone = '" . $this->db->escape((isset($customer['zone'])?$customer['zone']:'')) . "', "
+                    . "city = '" . $this->db->escape((isset($customer['city'])?$customer['city']:'')) . "', "
+                    . "address = '" . $this->db->escape((isset($customer['address'])?$customer['address']:'')) . "', "
+                    . "ip = '" . $this->db->escape($_SERVER['REMOTE_ADDR']) . "', "
+                    . "store_id = " . $this->db->escape($store_id) . ", "
+                    . "status = 1, "
+                    . "approved = 0, "
+                    . "code = '" . $this->db->escape($code) . "', "
+                    . "password = '" . $this->db->escape(sha1(CU_SALT . md5(CU_SALT . sha1($customer['password'])))) . "', "
+                    . "date_added = NOW()";
+            if($this->db->query($sql)){
+                return $code;
+            } else {
+                return false;
+            }
+        }
+        
+        public function approvEmail($email, $code) {
+            $sup = $this->db->query("SELECT * FROM ".DB_PREFIX."customer WHERE email = '".$this->db->escape($email)."' AND code='".$this->db->escape($code)."'");
+            if($sup->num_rows){
+                $this->db->query("UPDATE ".DB_PREFIX."customer SET approved = 1");
+                return TRUE;
+            } else {
+                return FALSE;
+            }
+        }
 }

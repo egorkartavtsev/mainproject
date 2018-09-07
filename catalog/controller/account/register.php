@@ -427,13 +427,13 @@ class ControllerAccountRegister extends Controller {
 		}
 
 		// Captcha
-		if ($this->config->get($this->config->get('config_captcha') . '_status') && in_array('register', (array)$this->config->get('config_captcha_page'))) {
-			$captcha = $this->load->controller('extension/captcha/' . $this->config->get('config_captcha') . '/validate');
-
-			if ($captcha) {
-				$this->error['captcha'] = $captcha;
-			}
-		}
+//		if ($this->config->get($this->config->get('config_captcha') . '_status') && in_array('register', (array)$this->config->get('config_captcha_page'))) {
+//			$captcha = $this->load->controller('extension/captcha/' . $this->config->get('config_captcha') . '/validate');
+//
+//			if ($captcha) {
+//				$this->error['captcha'] = $captcha;
+//			}
+//		}
 
 		// Agree to terms
 		if ($this->config->get('config_account_id')) {
@@ -473,4 +473,34 @@ class ControllerAccountRegister extends Controller {
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
+        
+        public function checkEmail(){
+            $this->load->model('account/customer');
+            $result = $this->model_account_customer->checkEmail($this->request->post['email']);
+            echo !$result;
+        }
+        
+        public function createAccount(){
+            $this->load->model('account/customer');
+            $tmp = explode(";", $this->request->post['form']);
+            foreach ($tmp as $row){
+                $sup = explode("=", $row);
+                if(isset($sup[1])){
+                    $form[$sup[0]] = $sup[1];
+                }
+            }
+            $result = $this->model_account_customer->createAccount($form);
+            if($result){
+                $mail =  'Здравствуйте! Для подтверждения регистрации '
+                       . 'на сайте авторазбор174.рф, пройдите по ссылке '.$this->url->link('account/approve', 'code='.$result.'&email='.$form['email']);
+            
+                $headers  = "MIME-Version: 1.0\n";
+                $headers .= "From:autorazbor174@mail.ru\n";
+                $headers .= "Content-type: text/html; charset=UTF-8\n";
+
+                mail($form['email'], 'Подтверждение регистрации аккаунта', $mail, $headers);
+            }
+            echo $result;
+        }
+        
 }

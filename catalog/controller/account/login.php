@@ -3,6 +3,9 @@ class ControllerAccountLogin extends Controller {
 	private $error = array();
 
 	public function index() {
+            
+//            exit(var_dump($this->session->data));
+            
 		$this->load->model('account/customer');
 
 		// Login override for admin users
@@ -191,11 +194,11 @@ class ControllerAccountLogin extends Controller {
 		}
 
 		// Check if customer has been approved.
-		$customer_info = $this->model_account_customer->getCustomerByEmail($this->request->post['email']);
-
-		if ($customer_info && !$customer_info['approved']) {
-			$this->error['warning'] = $this->language->get('error_approved');
-		}
+//		$customer_info = $this->model_account_customer->getCustomerByEmail($this->request->post['email']);
+//
+//		if ($customer_info && !$customer_info['approved']) {
+//			$this->error['warning'] = $this->language->get('error_approved');
+//		}
 
 		if (!$this->error) {
 			if (!$this->customer->login($this->request->post['email'], $this->request->post['password'])) {
