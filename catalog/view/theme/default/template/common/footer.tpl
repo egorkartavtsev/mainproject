@@ -1,24 +1,9 @@
 <footer>
   <div class="container">
     <p style="text-align: center;"><?php echo $powered; ?></p>
+    <p style="text-align: left;">Сайт носит исключительно информационный характер и ни при каких условиях не является публичной офертой, определяемой положениями ч. 2 ст. 437 Гражданского кодекса Российской Федерации.<br> Для получения подробной информации о стоимости запасных частей пожалуйста, обращайтесь к специалистам компании.</p>
   </div>
 </footer>
-<div class="modal fade" id="wapp_viber" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Viber</h4>
-      </div>
-      <div class="modal-body">
-        Чтобы передать нам изображения деталей либо другую необходимую информацию, 
-        используйте программу Viber. Контактный телефон: +7 (912) 475-08-70
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Закрыть</button>
-      </div>
-    </div>
-  </div>
-</div>
 <!--<script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js" type="text/javascript"></script>
 <script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="catalog/view/javascript/common.js" type="text/javascript"></script>-->
