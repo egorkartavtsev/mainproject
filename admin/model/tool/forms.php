@@ -312,8 +312,7 @@ class ModelToolForms extends Model {
             $this->db->query("INSERT INTO ".DB_PREFIX."product_history SET sku = '".$prodItem['vin']."', manager = '".$this->session->data['username']."', date_added = NOW(), type_modify = 'Создание товара' ");            
             //product to store
             $this->db->query("INSERT INTO ".DB_PREFIX."product_to_store (product_id, store_id) VALUES (".(int)$product_id.", 0)");
-            //old link-tables
-            $this->model_tool_product->oldLinks($product_id, $prod2Lib);
+            
             //complect settings
             if((int)$product['price'] && $this->model_tool_complect->isCompl($product['vin'])){
                 $this->model_tool_complect->compReprice($product['vin']);

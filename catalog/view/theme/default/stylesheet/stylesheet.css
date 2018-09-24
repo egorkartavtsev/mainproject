@@ -479,10 +479,10 @@ footer h5 {
 }
 /* list group */
 .list-group a {
-	/*border: 1px solid #DDDDDD;*/
 	color: #fff;
-	padding: 8px 12px;
+        padding: 8px 12px;
         text-align: left;
+        background-color: #d9534f;
 }
 
 .child{

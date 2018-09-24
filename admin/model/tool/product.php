@@ -401,22 +401,22 @@ class ModelToolProduct extends Model {
     }
     
     public function oldLinks($pid, $fills) {
-        $brands = array();
-        $categories = array();
-        foreach ($fills as $fid) {
-            $sup = $this->db->query("SELECT b.id AS bid FROM ".DB_PREFIX."lib_fills lf LEFT JOIN ".DB_PREFIX."brand b ON b.name = lf.name WHERE lf.id = ".(int)$fid);
-            if($sup->row['bid']){$brands[] = $sup->row['bid'];}
-        }
-        foreach ($fills as $fid) {
-            $sup = $this->db->query("SELECT cd.category_id AS cid FROM ".DB_PREFIX."lib_fills lf LEFT JOIN ".DB_PREFIX."category_description cd ON cd.name = lf.name WHERE lf.id = ".(int)$fid);
-            if($sup->row['cid']){$categories[] = $sup->row['cid'];}
-        }
-        foreach ($brands as $brand) {
-            $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand SET product_id = ".(int)$pid.", brand_id = ".(int)$brand);
-        }
-        foreach ($categories as $cat) {
-            $this->db->query("INSERT INTO ".DB_PREFIX."product_to_category SET product_id = ".(int)$pid.", category_id = ".(int)$cat);
-        }
+//        $brands = array();
+//        $categories = array();
+//        foreach ($fills as $fid) {
+//            $sup = $this->db->query("SELECT b.id AS bid FROM ".DB_PREFIX."lib_fills lf LEFT JOIN ".DB_PREFIX."brand b ON b.name = lf.name WHERE lf.id = ".(int)$fid);
+//            if($sup->row['bid']){$brands[] = $sup->row['bid'];}
+//        }
+//        foreach ($fills as $fid) {
+//            $sup = $this->db->query("SELECT cd.category_id AS cid FROM ".DB_PREFIX."lib_fills lf LEFT JOIN ".DB_PREFIX."category_description cd ON cd.name = lf.name WHERE lf.id = ".(int)$fid);
+//            if($sup->row['cid']){$categories[] = $sup->row['cid'];}
+//        }
+//        foreach ($brands as $brand) {
+//            $this->db->query("INSERT INTO ".DB_PREFIX."product_to_brand SET product_id = ".(int)$pid.", brand_id = ".(int)$brand);
+//        }
+//        foreach ($categories as $cat) {
+//            $this->db->query("INSERT INTO ".DB_PREFIX."product_to_category SET product_id = ".(int)$pid.", category_id = ".(int)$cat);
+//        }
     }
     
     public function getLevelSets($item) {

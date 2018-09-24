@@ -34,9 +34,7 @@ class ModelCatalogProduct extends Model {
                         . "p.modR AS model_row, "
                         . "c.whole AS com_whole, "
                         . "c.price AS com_price,"
-                        . "(SELECT b.name "
-                            . "FROM " . DB_PREFIX . "brand b "
-                            . "WHERE b.id = p.brand) AS manufacturer, "
+                        . "p.brand AS manufacturer, "
 //                        . "(SELECT c.whole "
 //                            . "FROM " . DB_PREFIX . "complects c "
 //                            . "WHERE c.heading = p.vin OR c.heading = p.comp) AS com_whole, "
@@ -86,8 +84,6 @@ class ModelCatalogProduct extends Model {
                                 . "ON (p.vin = c.heading OR p.comp = c.heading) "
                             . "LEFT JOIN " . DB_PREFIX . "product_to_store p2s "
                                 . "ON (p.product_id = p2s.product_id) "
-                            . "LEFT JOIN " . DB_PREFIX . "manufacturer m "
-                                . "ON (p.brand = m.manufacturer_id) "
                             . "WHERE p.product_id = '" . (int)$product_id . "' "
                                 . "AND pd.language_id = '" . (int)$this->config->get('config_language_id') . "' "
                                 . "AND p.status = '1' AND p.date_available <= NOW() "
@@ -779,20 +775,20 @@ class ModelCatalogProduct extends Model {
                 'category'  => array(),
                 'brand'     => array()
             );
-            $sql = "SELECT name FROM ".DB_PREFIX."category_description WHERE ";
+            $sql = "SELECT name FROM ".DB_PREFIX."lib_fills WHERE ";
             
             
             foreach ($search as $word) {
                 if(trim($word)!==''){
-                    $sup = $this->db->query("SELECT name FROM ".DB_PREFIX."brand WHERE LOCATE('".$word."', transcript) OR LOCATE('".$word."', name) ");
+                    $sup = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE (LOCATE('".$word."', translate) OR LOCATE('".$word."', name)) AND library_id = 1");
                     if(!empty($sup->rows)){
                         $result['brand'][] = $sup->row['name'];
                     } else {
-                        $sql.= "(LOCATE('".$word."', alters) OR LOCATE('".$word."', name)) AND ";
+                        $sql.= "(LOCATE('".$word."', translate) OR LOCATE('".$word."', name)) AND ";
                     }
                 }
             }
-            $sql.= "1";
+            $sql.= "library_id = 3";
             $sup = $this->db->query($sql);
             if(!empty($sup->rows)){
                 foreach ($sup->rows as $row) {

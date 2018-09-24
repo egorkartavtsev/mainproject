@@ -464,14 +464,14 @@ class ControllerProductionCatalog extends Controller {
                 
 		$results = $this->model_catalog_product->getProducts($filter_data);
                 
-		$this->load->model('catalog/category');
-
-		$filter_data = array(
-			'sort'        => 'name',
-			'order'       => 'ASC'
-		);
-                        
-		$data['categories'] = $this->model_catalog_category->getCategories($filter_data);
+//		$this->load->model('catalog/category');
+//
+//		$filter_data = array(
+//			'sort'        => 'name',
+//			'order'       => 'ASC'
+//		);
+//                        
+//		$data['categories'] = $this->model_catalog_category->getCategories($filter_data);
                 $data['utype'] = $this->session->data['uType'];
 //                exit(var_dump($results));
 		foreach ($results as $result) {

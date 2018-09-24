@@ -126,15 +126,7 @@ class ControllerLayoutHeader extends Controller {
 			);
 
 			$this->load->model('setting/store');
-
-			$results = $this->model_setting_store->getStores();
-
-			foreach ($results as $result) {
-				$data['stores'][] = array(
-					'name' => $result['name'],
-					'href' => $result['url']
-				);
-			}
+                        
                         $data['ses_token'] = $this->request->get['token'];
                         
                         $fcItems = $this->user->getLayout();

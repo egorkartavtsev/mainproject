@@ -278,25 +278,25 @@ class ControllerAccountRegister extends Controller {
 		// Custom Fields
 		$this->load->model('account/custom_field');
 
-		$data['custom_fields'] = $this->model_account_custom_field->getCustomFields();
-
-		if (isset($this->request->post['custom_field'])) {
-			if (isset($this->request->post['custom_field']['account'])) {
-				$account_custom_field = $this->request->post['custom_field']['account'];
-			} else {
-				$account_custom_field = array();
-			}
-
-			if (isset($this->request->post['custom_field']['address'])) {
-				$address_custom_field = $this->request->post['custom_field']['address'];
-			} else {
-				$address_custom_field = array();
-			}
-
-			$data['register_custom_field'] = $account_custom_field + $address_custom_field;
-		} else {
-			$data['register_custom_field'] = array();
-		}
+//		$data['custom_fields'] = $this->model_account_custom_field->getCustomFields();
+//
+//		if (isset($this->request->post['custom_field'])) {
+//			if (isset($this->request->post['custom_field']['account'])) {
+//				$account_custom_field = $this->request->post['custom_field']['account'];
+//			} else {
+//				$account_custom_field = array();
+//			}
+//
+//			if (isset($this->request->post['custom_field']['address'])) {
+//				$address_custom_field = $this->request->post['custom_field']['address'];
+//			} else {
+//				$address_custom_field = array();
+//			}
+//
+//			$data['register_custom_field'] = $account_custom_field + $address_custom_field;
+//		} else {
+//			$data['register_custom_field'] = array();
+//		}
 
 		if (isset($this->request->post['password'])) {
 			$data['password'] = $this->request->post['password'];

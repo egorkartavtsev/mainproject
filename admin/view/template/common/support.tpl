@@ -11,11 +11,14 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-4"></div>
         <div class="col-lg-4">
-            <?php echo $res->num_rows;?>
         </div>
-        <div class="col-lg-4"></div>
+        <div class="col-lg-4">
+            база: <?php echo $red->num_rows;?><br>
+            база: <?php echo var_dump($red->row);?><br>
+        </div>
+            <div class="col-lg-4">
+            </div>
     </div>
 </div>
 <?php echo $footer;?>
