@@ -121,7 +121,7 @@ $('#button-track_no-add').on('click', function() {
 				]]></add>
 			</operation>
 		</file>
-		<file path="catalog/view/theme/*/template/account/order_info.tpl">
+		<file path="view/theme/*/template/account/order_info.tpl">
 			<operation>
 				<search><![CDATA[<b><?php echo $text_shipping_method; ?></b> <?php echo $shipping_method; ?>]]></search>
 				<add position="after"><![CDATA[
