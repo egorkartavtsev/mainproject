@@ -109,15 +109,15 @@
                         <h3>Видеопрезентация:</h3>
                         <iframe style="width: 100%; min-height: 300px;" src="https://www.youtube.com/embed/<?php echo $youtube;?>?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                     <?php } ?>
-                    <?php if(count($similar)){ ?>
+                    <?php if(count($similar_list)){ ?>
                         <h3>Похожие товары:</h3>
                         <div class="owl-carousel owl-theme">
-                            <?php foreach($similar as $product) { ?>
+                            <?php foreach($similar_list as $sim) { ?>
                                 <div class="item">
                                     <div class="product-layout product-grid">
                                         <div class="label-thumd center-block">
-                                                <?php if ($product['comp']){ ?>
-                                                        <?php if ($product['com_whole'] == '1'){ ?>
+                                                <?php if ($sim['comp']){ ?>
+                                                        <?php if ($sim['com_whole'] == '1'){ ?>
                                                                 <div class="whole" title="На фото изображен полный комплект, содержащий данную деталь. &#013Цена указана за полный комплект.">
                                                                         Продажа комплектом
                                                                 </div>
@@ -130,38 +130,25 @@
                                         </div>
                                         <div class="product-thumb">
                                             <div class="image">
-                                                <a href="<?php echo $product['href'];?>">
-                                                    <img src="<?php echo $product['image'];?>" alt="<?php echo $product['name'];?>" title="<?php echo $product['name']; ?>" class="img-thumbnail d-block w-100 img-responsive" />
+                                                <a href="<?php echo $sim['href'];?>">
+                                                    <img src="<?php echo $sim['image'];?>" alt="<?php echo $sim['name'];?>" title="<?php echo $sim['name']; ?>" class="img-thumbnail d-block w-100 img-responsive" />
                                                 </a>
                                             </div>
                                             <div class="col-lg-12 nameProd">
-                                              <h4><a href="<?php echo $product['href'];?>" ><?php echo $product['name'];?></a></h4>
+                                              <h4><a href="<?php echo $sim['href'];?>" ><?php echo $sim['name'];?></a></h4>
+                                            </div>
+                                            <div class="col-lg-12 text-center">
+                                              <h5>Артикул: <?php echo $sim['vin'];?></h5>
                                             </div>
                                             <div>
                                                 <div class="col-lg-12 text-center priceProd">
                                                     <p>
-                                                        <?php if ($product['price'] !== '0' && $product['com_whole'] !== '1') { ?>
-                                                                <b>Цена: <?php echo $product['price'];?> &#8381;</b>
+                                                        <?php if ($sim['price'] !== '0' && $sim['com_whole'] !== '1') { ?>
+                                                                <b>Цена: <?php echo $sim['price'];?> &#8381;</b>
                                                         <?php } else { ?>
                                                                 &nbsp;
                                                         <?php }?>
                                                     </p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <div class="btn-group center-block" style="width: fit-content">
-                                                    <?php if ($product['status'] == '2') { ?>
-                                                            <button class="btn btn-lg btn-danger checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="1">Уточнить наличие</button>
-                                                    <?php } elseif ($product['price'] == 0.00 && $product['quantity'] !== 0) { ?>                                           
-                                                            <button class="btn btn-lg btn-danger checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="2">Узнать стоимость</button>
-                                                    <?php } elseif ($product['price'] !== 0.00 && $product['quantity'] == 0) { ?>
-                                                            <button class="btn btn-lg btn-danger checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="3"><i class="fa fa-warning"></i> Заказать товар</button> 
-                                                    <?php } elseif ($product['com_whole'] == '1') { ?>
-                                                            <a href="<?php echo $product['href'];?>"><button class="btn btn-lg btn-danger checkPr">Посмотреть комплект</button></a>
-                                                    <?php } else { ?>     
-                                                            <button class="btn btn-lg btn-danger checkPr" type="button" onclick="cart.add('<?php echo $key; ?>', '1');"><i class="fa fa-shopping-cart"></i> В КОРЗИНУ</button>
-                                                    <?php } ?>
-                                                    <button type="button" data-toggle="tooltip" btn_type="copyToSend" data-text="<?php echo $product['href'];?>"  trigger="clipb" class="btn btn-lg btn-danger checkPr" title="Скопировать ссылку"><i class="fa fa-copy"></i></button>
                                                 </div>
                                             </div>
                                         </div>

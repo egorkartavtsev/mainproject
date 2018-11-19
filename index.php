@@ -2,6 +2,7 @@
 //exit("Извините. Сайт временно недоступен. Ведутся технические работы. Спасибо за понимание.");
 // Version
 define('VERSION', '2.2');
+
 // Configuration
 if (is_file('config.php')) {
 	require_once('config.php');

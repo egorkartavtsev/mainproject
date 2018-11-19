@@ -713,9 +713,9 @@ class ModelCatalogProduct extends Model {
             }
         }
         
-        public function searchProducts($request) {
+        public function searchProducts($filter) {
             $fields = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE searching = 1 ");
-            $reqwords = explode(" ", $request);
+            $reqwords = explode(" ", $filter['filter_name']);
             $query = "SELECT *, p.image AS img, pd.name AS title, p.price AS product_price FROM " . DB_PREFIX . "product p "
                     . "LEFT JOIN " . DB_PREFIX . "product_description pd "
                         . "ON (p.product_id = pd.product_id) "
@@ -733,13 +733,44 @@ class ModelCatalogProduct extends Model {
                 $query.= ") ";
             }
             $query.="AND status = 1 ";
-            $query.="ORDER BY p.date_added DESC";
+            $query.="ORDER BY p.date_added DESC LIMIT ".(int)$filter['limit']." OFFSET ".(int)$filter['start'];
 //            exit($query);
             $result = $this->db->query($query);
 //            exit(var_dump($query));
 //            exit(var_dump($result->rows));
             return $result->rows;
         }
+        
+        
+        public function totalSearchProducts($filter) {
+            $fields = $this->db->query("SELECT * FROM ".DB_PREFIX."type_lib WHERE searching = 1 ");
+            $reqwords = explode(" ", $filter['filter_name']);
+            $query = "SELECT *, p.image AS img, pd.name AS title, p.price AS product_price FROM " . DB_PREFIX . "product p "
+                    . "LEFT JOIN " . DB_PREFIX . "product_description pd "
+                        . "ON (p.product_id = pd.product_id) "
+                    . "LEFT JOIN ". DB_PREFIX . "complects c "
+                        . "ON (p.vin = c.heading OR p.comp = c.heading) "
+                    . "WHERE !LOCATE('complect', vin) ";
+            //exit(var_dump($reqwords));
+            foreach ($reqwords as $word){
+                $query.= "AND (p.vin = '".$this->db->escape($word)."' ";
+                foreach($fields->rows as $field){
+                    if(trim($field['name'])!=''){
+                        $query.="OR LOCATE ('".$this->db->escape($word)."', p.".$field['name'].")  ";
+                    }
+                }
+                $query.= ") ";
+            }
+            $query.="AND status = 1 ";
+            $query.="ORDER BY p.date_added DESC ";
+//            exit($query);
+            $result = $this->db->query($query);
+//            exit(var_dump($query));
+//            exit(var_dump($result->rows));
+            return $result->num_rows;
+        }
+        
+        
         
         public function findAlters($request) {
             $search = explode(" ", trim($request));

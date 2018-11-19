@@ -94,11 +94,9 @@ class ModelProductProduct extends Model {
     public function getSimilar($id, $struct=1){
         $result = [];
         if($struct==1){
-            $result = $this->db->query("SELECT *, p2.product_id AS target_product_id  FROM ".DB_PREFIX."product p "
+            $result = $this->db->query("SELECT * FROM ".DB_PREFIX."product p "
                     . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
-                    . "LEFT JOIN ".DB_PREFIX."product p2 ON p.product_id != p2.product_id AND p.model = p2.model "
-                    . "LEFT JOIN ".DB_PREFIX."product_image pi ON p2.product_id = pi.product_id "
-                    . "WHERE p.product_id=".(int)$id." ORDER BY p2.date_added DESC LIMIT 15")->rows;
+                    . "WHERE p.price > 0 AND p.status > 0 AND p.model=(SELECT model FROM ".DB_PREFIX."product p2 WHERE p2.product_id=".(int)$id.") ORDER BY p.date_added DESC LIMIT 15")->rows;
         }
         return $result;
     }
