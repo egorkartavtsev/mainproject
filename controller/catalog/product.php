@@ -155,16 +155,17 @@ class ControllerCatalogProduct extends Controller {
             $data['product_id'] = $this->request->get['product_id'];
             $data['youtube'] = $product['youtube'];
             $similar = $this->model_product_product->getSimilar($this->request->get['product_id']);
-            $data['similar'] = [];
+            $data['similar_list'] = [];
             foreach($similar as $sim){
-                $data['similar'][] = [
+                $data['similar_list'][] = [
                     'image' => $this->model_tool_image->resize($sim['image'], 200, 170),
                     'price' => $sim['price'],
+                    'vin' => $sim['vin'],
                     'comp' => $sim['comp'],
                     'com_whole' => $sim['comp_whole'],
                     'quantity' => $sim['quantity'],
                     'status' => $sim['status'],
-                    'href'  => $this->url->link('catalog/product', 'product_id='.$sim['target_product_id']),
+                    'href'  => $this->url->link('catalog/product', 'product_id='.$sim['product_id']),
                     'name'  => $sim['name']
                 ];
             }

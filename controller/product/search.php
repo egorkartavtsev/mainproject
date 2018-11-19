@@ -31,7 +31,7 @@ class ControllerProductSearch extends Controller {
 		if (isset($this->request->get['limit'])) {
 			$limit = (int)$this->request->get['limit'];
 		} else {
-			$limit = $this->config->get($this->config->get('config_theme') . '_product_limit');
+			$limit = 15;
 		}
 
 		if (isset($this->request->get['search'])) {
@@ -146,9 +146,8 @@ class ControllerProductSearch extends Controller {
 				'limit'               => $limit
 			);
 			
-                        
-			$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
-			$results = $this->model_catalog_product->searchProducts($filter_data['filter_name'], $byvin);
+                        $results = $this->model_catalog_product->searchProducts($filter_data);
+                        $product_total = $this->model_catalog_product->totalSearchProducts($filter_data);
                         
 			foreach ($results as $result) {
                                 $type = $this->model_tool_product->getType($result['structure']);
