@@ -109,54 +109,7 @@
                         <h3>Видеопрезентация:</h3>
                         <iframe style="width: 100%; min-height: 300px;" src="https://www.youtube.com/embed/<?php echo $youtube;?>?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                     <?php } ?>
-                    <?php if(count($similar_list)){ ?>
-                        <h3>Похожие товары:</h3>
-                        <div class="owl-carousel owl-theme">
-                            <?php foreach($similar_list as $sim) { ?>
-                                <div class="item">
-                                    <div class="product-layout product-grid">
-                                        <div class="label-thumd center-block">
-                                                <?php if ($sim['comp']){ ?>
-                                                        <?php if ($sim['com_whole'] == '1'){ ?>
-                                                                <div class="whole" title="На фото изображен полный комплект, содержащий данную деталь. &#013Цена указана за полный комплект.">
-                                                                        Продажа комплектом
-                                                                </div>
-                                                        <?php } else { ?>
-                                                                <div class="whole" title="На фото изображен комплект деталей.&#013При продаже деталь будет снята с комплетка.&#013Цена указана за «голую» деталь">
-                                                                        Деталь из комплекта
-                                                                </div>
-                                                        <?php }?>
-                                                <?php }?>
-                                        </div>
-                                        <div class="product-thumb">
-                                            <div class="image">
-                                                <a href="<?php echo $sim['href'];?>">
-                                                    <img src="<?php echo $sim['image'];?>" alt="<?php echo $sim['name'];?>" title="<?php echo $sim['name']; ?>" class="img-thumbnail d-block w-100 img-responsive" />
-                                                </a>
-                                            </div>
-                                            <div class="col-lg-12 nameProd">
-                                              <h4><a href="<?php echo $sim['href'];?>" ><?php echo $sim['name'];?></a></h4>
-                                            </div>
-                                            <div class="col-lg-12 text-center">
-                                              <h5>Артикул: <?php echo $sim['vin'];?></h5>
-                                            </div>
-                                            <div>
-                                                <div class="col-lg-12 text-center priceProd">
-                                                    <p>
-                                                        <?php if ($sim['price'] !== '0' && $sim['com_whole'] !== '1') { ?>
-                                                                <b>Цена: <?php echo $sim['price'];?> &#8381;</b>
-                                                        <?php } else { ?>
-                                                                &nbsp;
-                                                        <?php }?>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php }?>
-                        </div>
-                    <?php } ?>
+                    
                 </div>
             </div>
         </div>
@@ -230,6 +183,56 @@
             <div id="vk_poll"></div>
             <div class="col-lg-12"<p>&nbsp;</p></div>
             <div id="vk_groups"></div>
+        </div>
+        <div class="col-sm-12">
+            <?php if(count($similar_list)){ ?>
+                <h3>Похожие товары:</h3>
+                <div class="owl-carousel owl-theme">
+                    <?php foreach($similar_list as $sim) { ?>
+                        <div class="item">
+                            <div class="product-layout product-grid">
+                                <div class="label-thumd center-block">
+                                        <?php if ($sim['comp']){ ?>
+                                                <?php if ($sim['com_whole'] == '1'){ ?>
+                                                        <div class="whole" title="На фото изображен полный комплект, содержащий данную деталь. &#013Цена указана за полный комплект.">
+                                                                Продажа комплектом
+                                                        </div>
+                                                <?php } else { ?>
+                                                        <div class="whole" title="На фото изображен комплект деталей.&#013При продаже деталь будет снята с комплетка.&#013Цена указана за «голую» деталь">
+                                                                Деталь из комплекта
+                                                        </div>
+                                                <?php }?>
+                                        <?php }?>
+                                </div>
+                                <div class="product-thumb">
+                                    <div class="image">
+                                        <a href="<?php echo $sim['href'];?>">
+                                            <img src="<?php echo $sim['image'];?>" alt="<?php echo $sim['name'];?>" title="<?php echo $sim['name']; ?>" class="img-thumbnail d-block w-100 img-responsive" />
+                                        </a>
+                                    </div>
+                                    <div class="col-lg-12 nameProd">
+                                      <h4><a href="<?php echo $sim['href'];?>" ><?php echo $sim['name'];?></a></h4>
+                                    </div>
+                                    <div class="col-lg-12 text-center">
+                                      <h5>Артикул: <?php echo $sim['vin'];?></h5>
+                                    </div>
+                                    <div>
+                                        <div class="col-lg-12 text-center priceProd">
+                                            <p>
+                                                <?php if ($sim['price'] !== '0' && $sim['com_whole'] !== '1') { ?>
+                                                        <b>Цена: <?php echo $sim['price'];?> &#8381;</b>
+                                                <?php } else { ?>
+                                                        &nbsp;
+                                                <?php }?>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php }?>
+                </div>
+            <?php } ?>
         </div>
     </div>
     <?php echo $modal_window; ?>
@@ -518,7 +521,7 @@ $(document).ready(function() {
         alert(copyLink.replace("&amp;", "&"));
     });
     $('.owl-carousel').owlCarousel({
-        items: 3,
+        items: 5,
 	autoPlay: 5000,
 	singleItem: false,
 	navigation: false,
