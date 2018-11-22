@@ -67,7 +67,6 @@ class ControllerExtensionPaymentocstoreYk extends Controller {
             } else {
               $server = $this->config->get('config_url');
             }
-
             $data = $this->_setData(array(
                      'text_proceed_payment',
                      'action'     => $this->getUrl(),
