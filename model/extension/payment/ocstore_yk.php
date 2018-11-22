@@ -67,7 +67,7 @@ class ModelExtensionPaymentOcstoreYk extends Model {
         
         $result =  array(
             'onpay'         => $this->isLaterpayButtonLK($order_info) || $this->isLaterpayMode($order_info),
-            'payment_code'  => $order_info ? $order_info['payment_code'] : ''
+  //        'payment_code'  => $order_info ? $order_info['payment_code'] : ''
          );
          
          return $result;

@@ -33,35 +33,31 @@
         </thead>
         <tbody>
           <tr>
-            <td class="text-left" style="width: 50%;"><?php if ($invoice_no) { ?>
-              <b><?php echo $text_invoice_no; ?></b> <?php echo $invoice_no; ?><br />
-              <?php } ?>
-              <b><?php echo $text_order_id; ?></b> #<?php echo $order_id; ?><br />
-              <b><?php echo $text_date_added; ?></b> <?php echo $date_added; ?></td>
-            <td class="text-left" style="width: 50%;"><?php if ($payment_method) { ?>
+            <td class="text-left" style="width: 50%;">
+              <p><b><?php echo $text_order_id; ?></b> #<?php echo $order_id; ?></p>
+              <p><b><?php echo $text_date_added; ?></b> <?php echo $date_added; ?></p>
+              <p><b><?php echo $column_status; ?>: </b><?php echo $status; ?></p></td>
+          <!--  <td class="text-left" style="width: 50%;"><?php if ($payment_method) { ?>
               <b><?php echo $text_payment_method; ?></b> <?php echo $payment_method; ?><br />
               <?php } ?>
               <?php if ($shipping_method) { ?>
               <b><?php echo $text_shipping_method; ?></b> <?php echo $shipping_method; ?>
-              <?php } ?></td>
+              <?php } ?></td> -->
           </tr>
         </tbody>
       </table>
       <table class="table table-bordered table-hover">
         <thead>
           <tr>
-            <td class="text-left" style="width: 50%; vertical-align: top;"><?php echo $text_payment_address; ?></td>
-            <?php if ($shipping_address) { ?>
-            <td class="text-left" style="width: 50%; vertical-align: top;"><?php echo $text_shipping_address; ?></td>
-            <?php } ?>
+            <td class="text-left" style="vertical-align: top;"><?php echo $text_shipping_address; ?></td>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="text-left"><?php echo $payment_address; ?></td>
-            <?php if ($shipping_address) { ?>
-            <td class="text-left"><?php echo $shipping_address; ?></td>
-            <?php } ?>
+            <td class="text-left" style="width: 50%;">
+            <p><b>Регион: </b><?php echo $zone ;?></p>
+            <p><b>Населенный пункт:  </b><?php echo $city ;?></p>
+            <p><b>Адрес: </b><?php echo $address_1 ;?></p></td>
           </tr>
         </tbody>
       </table>
@@ -74,9 +70,6 @@
               <td class="text-right"><?php echo $column_quantity; ?></td>
               <td class="text-right"><?php echo $column_price; ?></td>
               <td class="text-right"><?php echo $column_total; ?></td>
-              <?php if ($products) { ?>
-              <td style="width: 20px;"></td>
-              <?php } ?>
             </tr>
           </thead>
           <tbody>
@@ -91,23 +84,7 @@
               <td class="text-right"><?php echo $product['quantity']; ?></td>
               <td class="text-right"><?php echo $product['price']; ?></td>
               <td class="text-right"><?php echo $product['total']; ?></td>
-              <td class="text-right" style="white-space: nowrap;"><?php if ($product['reorder']) { ?>
-                <a href="<?php echo $product['reorder']; ?>" data-toggle="tooltip" title="<?php echo $button_reorder; ?>" class="btn btn-primary"><i class="fa fa-shopping-cart"></i></a>
-                <?php } ?>
-                <a href="<?php echo $product['return']; ?>" data-toggle="tooltip" title="<?php echo $button_return; ?>" class="btn btn-danger"><i class="fa fa-reply"></i></a></td>
-            </tr>
-            <?php } ?>
-            <?php foreach ($vouchers as $voucher) { ?>
-            <tr>
-              <td class="text-left"><?php echo $voucher['description']; ?></td>
-              <td class="text-left"></td>
-              <td class="text-right">1</td>
-              <td class="text-right"><?php echo $voucher['amount']; ?></td>
-              <td class="text-right"><?php echo $voucher['amount']; ?></td>
-              <?php if ($products) { ?>
-              <td></td>
-              <?php } ?>
-            </tr>
+              
             <?php } ?>
           </tbody>
           <tfoot>
@@ -116,9 +93,6 @@
               <td colspan="3"></td>
               <td class="text-right"><b><?php echo $total['title']; ?></b></td>
               <td class="text-right"><?php echo $total['text']; ?></td>
-              <?php if ($products) { ?>
-              <td></td>
-              <?php } ?>
             </tr>
             <?php } ?>
           </tfoot>

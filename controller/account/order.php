@@ -58,8 +58,8 @@ class ControllerAccountOrder extends Controller {
 
 		$data['orders'] = array();
 
-		$this->load->model('extension/payment/ocstore_payeer');
-		$this->load->model('extension/payment/ocstore_yk');
+		//$this->load->model('extension/payment/ocstore_payeer');
+		//$this->load->model('extension/payment/ocstore_yk');
 		$this->load->model('account/order');
 
 		$order_total = $this->model_account_order->getTotalOrders();
@@ -68,23 +68,16 @@ class ControllerAccountOrder extends Controller {
 
 		foreach ($results as $result) {
 			$product_total = $this->model_account_order->getTotalOrderProductsByOrderId($result['order_id']);
-			$voucher_total = $this->model_account_order->getTotalOrderVouchersByOrderId($result['order_id']);
-
-			$ocstore_yk_onpay_info  = $this->model_extension_payment_ocstore_yk->checkLaterpay($result['order_id']);
-
 			$data['orders'][] = array(
 				'order_id'   => $result['order_id'],
 				'name'       => $result['firstname'] . ' ' . $result['lastname'],
 				'status'     => $result['status'],
 				'date_added' => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
-				'products'   => ($product_total + $voucher_total),
-				'total'      => $this->currency->format($result['total'], $result['currency_code'], $result['currency_value']),
-				'ocstore_payeer_onpay'  => $this->model_extension_payment_ocstore_payeer->checkLaterpay($result['order_id']) ? $this->url->link('extension/payment/ocstore_payeer/laterpay', sprintf('order_id=%s&order_tt=%s', $result['order_id'], $result['total'], 'SSL')) : '',
-				'ocstore_yk_onpay'      => $ocstore_yk_onpay_info['onpay'] ? $this->url->link('extension/payment/ocstore_yk/laterpay', sprintf('order_id=%s&order_ttl=%s&paymentType=%s', $result['order_id'], $result['total'], $ocstore_yk_onpay_info['payment_code']), 'SSL') : '',
+				'products'   => $product_total,
+				'total'      => (int)$result['total'],
 				'view'       => $this->url->link('account/order/info', 'order_id=' . $result['order_id'], true),
 			);
 		}
-
 		$pagination = new Pagination();
 		$pagination->total = $order_total;
 		$pagination->page = $page;
@@ -210,48 +203,24 @@ class ControllerAccountOrder extends Controller {
 			$data['order_id'] = $this->request->get['order_id'];
 			$data['date_added'] = date($this->language->get('date_format_short'), strtotime($order_info['date_added']));
 
-			if ($order_info['payment_address_format']) {
-				$format = $order_info['payment_address_format'];
-			} else {
-				$format = '{firstname} {lastname}' . "\n" . '{company}' . "\n" . '{address_1}' . "\n" . '{address_2}' . "\n" . '{city} {postcode}' . "\n" . '{zone}' . "\n" . '{country}';
-			}
-
 			$find = array(
 				'{firstname}',
 				'{lastname}',
-				'{company}',
+				'{patron}',
 				'{address_1}',
-				'{address_2}',
 				'{city}',
-				'{postcode}',
-				'{zone}',
-				'{zone_code}',
-				'{country}'
+				'{zone}'
 			);
 
 			$replace = array(
-				'firstname' => $order_info['payment_firstname'],
-				'lastname'  => $order_info['payment_lastname'],
-				'company'   => $order_info['payment_company'],
+				'firstname' => $order_info['firstname'],
+				'lastname'  => $order_info['lastname'],
+				'patron'      => $order_info['patron'],
 				'address_1' => $order_info['payment_address_1'],
-				'address_2' => $order_info['payment_address_2'],
 				'city'      => $order_info['payment_city'],
-				'postcode'  => $order_info['payment_postcode'],
-				'zone'      => $order_info['payment_zone'],
-				'zone_code' => $order_info['payment_zone_code'],
-				'country'   => $order_info['payment_country']
+				'zone'      => $order_info['payment_zone']
 			);
-
-			$data['payment_address'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
-
-			$data['payment_method'] = $order_info['payment_method'];
-
-			if ($order_info['shipping_address_format']) {
-				$format = $order_info['shipping_address_format'];
-			} else {
-				$format = '{firstname} {lastname}' . "\n" . '{company}' . "\n" . '{address_1}' . "\n" . '{address_2}' . "\n" . '{city} {postcode}' . "\n" . '{zone}' . "\n" . '{country}';
-			}
-
+                        
 			$find = array(
 				'{firstname}',
 				'{lastname}',
@@ -264,27 +233,14 @@ class ControllerAccountOrder extends Controller {
 				'{zone_code}',
 				'{country}'
 			);
-
-			$replace = array(
-				'firstname' => $order_info['shipping_firstname'],
-				'lastname'  => $order_info['shipping_lastname'],
-				'company'   => $order_info['shipping_company'],
-				'address_1' => $order_info['shipping_address_1'],
-				'address_2' => $order_info['shipping_address_2'],
-				'city'      => $order_info['shipping_city'],
-				'postcode'  => $order_info['shipping_postcode'],
-				'zone'      => $order_info['shipping_zone'],
-				'zone_code' => $order_info['shipping_zone_code'],
-				'country'   => $order_info['shipping_country']
-			);
-
-			$data['shipping_address'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
-
-			$data['shipping_method'] = $order_info['shipping_method'];
 
 			$this->load->model('catalog/product');
 			$this->load->model('tool/upload');
-
+                        //info address
+                        $data ['address_1'] = $order_info['payment_address_1'];
+                        $data ['city']      = $order_info['payment_city'];
+                        $data ['zone']      = $order_info['payment_zone'];
+                        $data ['status']    = $order_info['order_status'];
 			// Products
 			$data['products'] = array();
 
@@ -327,25 +283,12 @@ class ControllerAccountOrder extends Controller {
 					'model'    => $product['model'],
 					'option'   => $option_data,
 					'quantity' => $product['quantity'],
-					'price'    => $this->currency->format($product['price'] + ($this->config->get('config_tax') ? $product['tax'] : 0), $order_info['currency_code'], $order_info['currency_value']),
-					'total'    => $this->currency->format($product['total'] + ($this->config->get('config_tax') ? ($product['tax'] * $product['quantity']) : 0), $order_info['currency_code'], $order_info['currency_value']),
-					'reorder'  => $reorder,
-					'return'   => $this->url->link('account/return/add', 'order_id=' . $order_info['order_id'] . '&product_id=' . $product['product_id'], true)
+					'price'    => (int) $product['price'],
+					'total'    => (int) $product['total']
+				//	'reorder'  => $reorder,
+				//	'return'   => $this->url->link('account/return/add', 'order_id=' . $order_info['order_id'] . '&product_id=' . $product['product_id'], true)
 				);
 			}
-
-			// Voucher
-			$data['vouchers'] = array();
-
-			$vouchers = $this->model_account_order->getOrderVouchers($this->request->get['order_id']);
-
-			foreach ($vouchers as $voucher) {
-				$data['vouchers'][] = array(
-					'description' => $voucher['description'],
-					'amount'      => $this->currency->format($voucher['amount'], $order_info['currency_code'], $order_info['currency_value'])
-				);
-			}
-
 			// Totals
 			$data['totals'] = array();
 
@@ -354,7 +297,7 @@ class ControllerAccountOrder extends Controller {
 			foreach ($totals as $total) {
 				$data['totals'][] = array(
 					'title' => $total['title'],
-					'text'  => $this->currency->format($total['value'], $order_info['currency_code'], $order_info['currency_value']),
+					'text'  => (int)$total['value'],
 				);
 			}
 
@@ -362,16 +305,6 @@ class ControllerAccountOrder extends Controller {
 
 			// History
 			$data['histories'] = array();
-
-			$results = $this->model_account_order->getOrderHistories($this->request->get['order_id']);
-
-			foreach ($results as $result) {
-				$data['histories'][] = array(
-					'date_added' => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
-					'status'     => $result['status'],
-					'comment'    => $result['notify'] ? nl2br($result['comment']) : ''
-				);
-			}
 
 			$data['continue'] = $this->url->link('account/order', '', true);
 
