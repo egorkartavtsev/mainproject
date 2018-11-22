@@ -1,4 +1,4 @@
-<aside id="column-left" class="col-sm-3 hidden-xs">
+<aside id="column-left" class="col-sm-2 hidden-xs">
 <?php if ($modules) { ?>
 
   <?php foreach ($modules as $module) { ?>

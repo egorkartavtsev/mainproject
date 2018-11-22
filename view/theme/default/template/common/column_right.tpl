@@ -1,5 +1,5 @@
 <aside id="column-right" class="hidden-xs">
-  <div class="col-md-3">
+  <div class="col-md-2">
       <?php if(0){ ?>
         <div class="list-group">
             <a href="http://mgnauto/index.php?route=account/account" class="list-group-item">Личный кабинет</a>

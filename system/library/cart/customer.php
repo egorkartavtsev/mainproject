@@ -80,7 +80,11 @@ class Customer {
 	public function isLogged() {
 		return $this->customer_id;
 	}
-
+        
+        public function getTotalInfo() {
+            return $this->db->query("SELECT * FROM ".DB_PREFIX."customer WHERE customer_id = ".$this->customer_id)->row;
+        }
+        
 	public function getId() {
 		return $this->customer_id;
 	}
