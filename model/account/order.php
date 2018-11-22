@@ -89,9 +89,6 @@ class ModelAccountOrder extends Model {
 				'total'                   => $order_query->row['total'],
 				'order_status_id'         => $order_query->row['order_status_id'],
 				'language_id'             => $order_query->row['language_id'],
-				'currency_id'             => $order_query->row['currency_id'],
-				'currency_code'           => $order_query->row['currency_code'],
-				'currency_value'          => $order_query->row['currency_value'],
 				'date_modified'           => $order_query->row['date_modified'],
 				'date_added'              => $order_query->row['date_added'],
 				'ip'                      => $order_query->row['ip']
@@ -110,7 +107,22 @@ class ModelAccountOrder extends Model {
 			$limit = 1;
 		}
 
-		$query = $this->db->query("SELECT o.order_id, o.firstname, o.lastname, os.name as status, o.date_added, o.total, o.currency_code, o.currency_value FROM `" . DB_PREFIX . "order` o LEFT JOIN " . DB_PREFIX . "order_status os ON (o.order_status_id = os.order_status_id) WHERE o.customer_id = '" . (int)$this->customer->getId() . "' AND o.order_status_id > '0' AND o.store_id = '" . (int)$this->config->get('config_store_id') . "' AND os.language_id = '" . (int)$this->config->get('config_language_id') . "' ORDER BY o.order_id DESC LIMIT " . (int)$start . "," . (int)$limit);
+		$query = $this->db->query("SELECT "
+                                            . "o.order_id, "
+                                            . "o.firstname, "
+                                            . "o.lastname, "
+                                            . "os.name as status, "
+                                            . "o.date_added, "
+                                            . "o.total, "
+                                        . "FROM `" . DB_PREFIX . "order` o "
+                                        . "LEFT JOIN " . DB_PREFIX . "order_status os ON (o.order_status_id = os.order_status_id) "
+                                        . "WHERE "
+                                            . "o.customer_id = '" . (int)$this->customer->getId() . "' "
+                                            . "AND o.order_status_id > '0' "
+                                            . "AND o.store_id = '" . (int)$this->config->get('config_store_id') . "' "
+                                            . "AND os.language_id = '" . (int)$this->config->get('config_language_id') . "' "
+                                        . "ORDER BY o.order_id DESC "
+                                        . "LIMIT " . (int)$start . "," . (int)$limit);
 
 		return $query->rows;
 	}

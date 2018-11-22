@@ -1,6 +1,7 @@
 <?php
 class ControllerAccountAccount extends Controller {
 	public function index() {
+            $backinfo = $this->customer->getTotalInfo();
 		if (!$this->customer->isLogged()) {
 			$this->session->data['redirect'] = $this->url->link('account/account', '', true);
 
@@ -30,9 +31,13 @@ class ControllerAccountAccount extends Controller {
 		} else {
 			$data['success'] = '';
 		} 
-
-		$data['heading_title'] = $this->language->get('heading_title');
-
+                $data['firstname']=$backinfo['firstname'];
+                $data['lastname']=$backinfo['lastname'];
+                $data['patron']=$backinfo['patron'];
+                $data['email']=$backinfo['email'];
+                $data['patron']=$backinfo['patron'];
+		
+                $data['heading_title'] = $this->language->get('heading_title');
 		$data['text_my_account'] = $this->language->get('text_my_account');
 		$data['text_my_orders'] = $this->language->get('text_my_orders');
 		$data['text_my_newsletter'] = $this->language->get('text_my_newsletter');

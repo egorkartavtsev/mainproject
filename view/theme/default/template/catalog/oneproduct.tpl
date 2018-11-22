@@ -110,7 +110,8 @@
                         <iframe style="width: 100%; min-height: 300px;" src="https://www.youtube.com/embed/<?php echo $youtube;?>?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
                     <?php } ?>
                     <?php if(count($similar_list)){ ?>
-                        <h3>Похожие товары:</h3>
+                        <h3>Похожие товары:</h3> 
+                        <a  target="_blank" class="btn btn-danger" href="<?php echo $allPLink;?>">Показать все</a>
                         <div class="owl-carousel owl-theme">
                             <?php foreach($similar_list as $sim) { ?>
                                 <div class="item">

@@ -60,7 +60,8 @@ class ControllerCatalogProduct extends Controller {
                 'comp'       => $product['comp']==''?FALSE:$product['comp'],
                 'com_whole'  => $product['comp_whole'],
                 'price'      => $product['price'],
-            );  
+                'modR'       => $product['modR'],
+            );            
 //      -------------------------------Изображенияттттест-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------                
             if (isset($product['image']) && $product['image']!=''){
                 $data['images'] = array();
@@ -150,6 +151,12 @@ class ControllerCatalogProduct extends Controller {
 //      =====================================Оповещение=======================================================================================================================================               
             $data['recurrings'] = $this->model_catalog_product->getProfiles($this->request->get['product_id']);
 //      =====================================Отправка данных в tpl=============================================================================================================================              
+//      =====================================Генерация ссылки показать все=============================================================================================================================              
+            if ($product['modR'] != '') {
+                    $data['allPLink'] = $this->url->link('product/search','search='.$product['modR']);
+            } 
+                else { $data['allPLink'] = $this->url->link('product/search','search='.$description['name']); }                                     
+//      =====================================Остальное=============================================================================================================================              
             $data['modal_window'] = $this->load->view('modal_window/Modal_window');
             $data['sendLink'] = $this->url->link('catalog/product', 'product_id='.$this->request->get['product_id']);
             $data['product_id'] = $this->request->get['product_id'];
