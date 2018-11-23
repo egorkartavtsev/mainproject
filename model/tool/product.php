@@ -28,6 +28,7 @@ class ModelToolProduct extends Model {
                             . "p.product_id AS id_comp_ref, "
                             . "c.id AS c_id, "
                             . "p.price AS comp_price, "
+                            . "c.heading, "
                             . "p.vin AS link,"
                             . "c.whole "
                         . "FROM ".DB_PREFIX."complects c "
@@ -38,7 +39,7 @@ class ModelToolProduct extends Model {
                             . "p.product_id, pd.name, p.minimum, p.price, p.status "
                         . "FROM ".DB_PREFIX."product p "
                         . "LEFT JOIN ".DB_PREFIX."product_description pd ON p.product_id = pd.product_id "
-                        . "WHERE comp = '".$comp."' OR vin = '".$comp."'")->rows;
+                        . "WHERE comp = '".$sup['heading']."' OR vin = '".$sup['heading']."'")->rows;
                 
                 return $sup;
             } else {
