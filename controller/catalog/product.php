@@ -18,7 +18,8 @@ class ControllerCatalogProduct extends Controller {
             $photos = $this->model_product_catalog->getProductImages($this->request->get['product_id']);
             $type = $this->model_tool_product->getType($product['structure']);
             $description = $this->model_tool_product->getDescription($this->request->get['product_id']);
-            $complect_arr = $this->model_tool_product->getProductCompls($this->request->get['product_id']);
+            $complect_arr = $this->model_tool_product->getProductCompls($product['comp']);
+            //exit(var_dump($complect_arr));
 //      ------------------------------Комплекты(Как в старом)200------------------------------------------------------------------------------------------------------------------------------------
             if($complect_arr){
                 $data['id_comp_ref'] = isset($complect_arr['id_comp_ref'])?$complect_arr['id_comp_ref']:NULL;
