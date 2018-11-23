@@ -18,7 +18,7 @@
     <?php } else { ?>
     <?php $class = 'col-sm-12'; ?>
     <?php } ?>
-    <div id="content" class="<?php echo $class; ?>"><?php echo $content_top; ?>
+    <div id="content" class=""><?php echo $content_top; ?>
       <div id="success_box"></div>
       <div class="row">
         <?php if ($column_left || $column_right) { ?>
@@ -26,7 +26,7 @@
         <?php } else { ?>
             <?php $class = 'col-sm-8'; ?>
         <?php } ?>
-        <div class="<?php echo $class; ?>">
+        <div class="">
             <div class="label-thumd">
             <?php if ($ean){ ?>
                 <?php if ($ean=='Б/У') { ?> 
@@ -113,7 +113,6 @@
                                         <td colspan='3' style="text-align: center; font-size: 14pt;">Цена комплекта <?php if(!$whole) { ?>со скидкой<?php } ?>: <span class="label label-danger"><?php echo $c_price; ?> руб.</span></td>
                                     </tr>
                                 <tr>
-                                    <td colspan='3' style="text-align: center;"><button class="btn btn-primary" onclick="cart.add('<?php echo $id_comp_ref; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i> Купить весь комплект</button></td>
                                 </tr>
                                 <?php }?>
                         <?php } else { ?>
@@ -240,7 +239,7 @@
         <?php } else { ?>
         <?php $class = 'col-sm-4'; ?>
         <?php } ?>
-        <div class="<?php echo $class; ?>">
+        <div class="">
           <div class="btn-group">
             <button type="button" data-toggle="tooltip" class="btn btn-default" title="<?php echo $button_wishlist; ?>" onclick="wishlist.add('<?php echo $product_id; ?>');"><i class="fa fa-heart"></i></button>
             <button type="button" data-toggle="tooltip" class="btn btn-default" title="<?php echo $button_compare; ?>" onclick="compare.add('<?php echo $product_id; ?>');"><i class="fa fa-exchange"></i></button>
@@ -513,7 +512,7 @@
         <?php } else { ?>
         <?php $class = 'col-xs-6 col-sm-3'; ?>
         <?php } ?>
-        <div class="<?php echo $class; ?>">
+        <div class="">
           
           <div class="product-thumb transition">
             <div class="image"><a href="<?php echo $product['href']; ?>"><img src="<?php echo $product['thumb']; ?>" alt="<?php echo $product['name']; ?>" title="<?php echo $product['name']; ?>" class="img-responsive" /></a></div>

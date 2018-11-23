@@ -5,6 +5,7 @@
     <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
     <?php } ?>
   </ul>
+    <div class="alert alert-success"><a href ='index.php?route=account/login'>Войдите в личный кабинет</a> или <a href='index.php?route=account/register'>зарегистрируйте новый</a> для получения дополнительных возможностей.<button type="button" class="close" data-dismiss="alert">×</button></div>
   <div class="row">
       
       <div id="orderInfo">

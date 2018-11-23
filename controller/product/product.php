@@ -387,14 +387,15 @@ class ControllerProductProduct extends Controller {
                         $data['compability'] = $product_info['compability'];
                         //exit(var_dump($product_info));
                         $data['note'] = $product_info['note'];
-                        $data['ean'] = $product_info['ean'];
+                        //$data['ean'] = $product_info['ean'];
                         $data['condition'] = $product_info['con_p'];
                         $data['price'] = $product_info['price'];
                         $data['comp'] = $product_info['comp'];
                         $data['com_whole'] = $product_info['com_whole'];
                         $data['com_price'] = $product_info['com_price'];
                         $data['no_prod'] = FALSE;
-                        $data['sendLink'] = $this->url->link('product/product', 'product_id='.$product_id);
+                        /*Надо проверить catalog заменен вместо product*/	
+                        $data['sendLink'] = $this->url->link('catalog/product', 'product_id='.$product_id);
                         
 			if ($product_info['quantity'] <= 0) {
 				$data['stock'] = $product_info['stock_status'];
