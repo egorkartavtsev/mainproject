@@ -1,7 +1,7 @@
 <?php
 class ControllerCheckoutCheckout extends Controller {
     
-    private $trnslt = array(
+	private $trnslt = array(
         'secondname'    => array('form'  => 'Фамилия', 'db'    => 'lastname'),
         'firstname'     => array('form'  => 'Имя', 'db'    => 'firstname'),
         'patron'        => array('form'  => 'Отчество', 'db'    => 'patron'),    
@@ -11,8 +11,7 @@ class ControllerCheckoutCheckout extends Controller {
         'city'          => array('form'  => 'Населённый пункт', 'db'    => 'payment_city'),      
         'street'        => array('form'  => 'Улица', 'db'    => 'payment_address_1')
     );
-
-
+	
     public function index() {
 		// Validate cart has products and has stock.
 		if (!$this->cart->hasProducts()) {
@@ -84,6 +83,7 @@ class ControllerCheckoutCheckout extends Controller {
                 $post = $this->request->post['form'];
                 $form = array();
                 $result = '<ul>';
+                //exit(var_dump($post));
                 $this->session->data['cust_mail'] = FALSE;
                 foreach ($post as $field){
                     $sup = explode(":", $field);

@@ -2,11 +2,12 @@
 class ModelCheckoutNewOrder extends Model {
     
 	public function newOrder($data) {
+            //exit(var_dump($data));
             $sql = "INSERT INTO ".DB_PREFIX."order SET ";
             foreach ($data as $key => $value) {
                 $sql.= $key." = '". $this->db->escape($value)."', ";
             }
-            $sql.= "store_id = 1, order_status_id = 16, date_added = NOW(), date_modified = NOW() ";
+            $sql.= "customer_id = ".$this->customer->isLogged().", store_id = 0, order_status_id = 16, date_added = NOW(), date_modified = NOW() ";
             $this->db->query($sql);
             $this->session->data['order_id'] = $this->db->getLastId();
 	}
