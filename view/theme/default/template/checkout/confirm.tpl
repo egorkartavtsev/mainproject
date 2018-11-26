@@ -39,8 +39,8 @@
       <?php } ?>
     </tbody>
     <tfoot>
-      <?php foreach ($totals as $total) { ?>
       <tr>
+      <?php foreach ($totals as $total) { ?>
         <td colspan="4" class="text-right"><strong><?php echo $total['title']; ?>:</strong></td>
         <td class="text-right"><?php echo $total['text']; ?></td>
       </tr>

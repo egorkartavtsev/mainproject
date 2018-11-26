@@ -39,12 +39,12 @@
     <li>
       <div>
         <table class="table table-bordered">
-          <?php foreach ($totals as $total) { ?>
           <tr>
-            <td class="text-right"><strong><?php echo $total['title']; ?></strong></td>
+            <td class="text-right"><strong>Итого:</strong></td>
+          <?php foreach ($totals as $total) { ?>
             <td class="text-right"><?php echo $total['text']; ?></td>
           </tr>
-          <?php } ?>
+          <?php  break;} ?>
         </table>
         <p class="text-right"><a href="<?php echo $cart; ?>"><strong><i class="fa fa-shopping-cart"></i> <?php echo $text_cart; ?></strong></a>&nbsp;&nbsp;&nbsp;<a href="<?php echo $checkout; ?>"><strong><i class="fa fa-share"></i> <?php echo $text_checkout; ?></strong></a></p>
       </div>

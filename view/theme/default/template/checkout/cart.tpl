@@ -107,14 +107,15 @@
       <?php } ?>
       <br />
       <div class="row">
-        <div class="col-sm-4 col-sm-offset-8">
+        <div class="col-sm-5 col-sm-offset-7">
           <table class="table table-bordered">
-            <?php foreach ($totals as $total) { ?>
             <tr>
-              <td class="text-right"><strong><?php echo $total['title']; ?>:</strong></td>
+              <td class="text-right"><strong>Итого:</strong></td>
+               <?php foreach ($totals as $total) { ?>
               <td class="text-right"><?php echo $total['text']; ?></td>
+                <?php break; } ?>
             </tr>
-            <?php } ?>
+          
           </table>
         </div>
       </div>

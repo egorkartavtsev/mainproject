@@ -29,7 +29,8 @@ class ControllerCheckoutCart extends Controller {
 			$data['column_model'] = $this->language->get('column_model');
 			$data['column_quantity'] = $this->language->get('column_quantity');
 			$data['column_price'] = $this->language->get('column_price');
-			$data['column_total'] = $this->language->get('column_total');
+	//
+                        $data['column_total'] = $this->language->get('column_total');
 
 			$data['button_update'] = $this->language->get('button_update');
 			$data['button_remove'] = $this->language->get('button_remove');
@@ -402,9 +403,6 @@ class ControllerCheckoutCart extends Controller {
 		$this->response->setOutput(json_encode($json));
 	}
         
-//        public function addComplect() {
-//            
-//        }
 
 	public function edit() {
 		$this->load->language('checkout/cart');
