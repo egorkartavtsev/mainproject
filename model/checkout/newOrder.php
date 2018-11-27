@@ -7,7 +7,11 @@ class ModelCheckoutNewOrder extends Model {
             foreach ($data as $key => $value) {
                 $sql.= $key." = '". $this->db->escape($value)."', ";
             }
-            $sql.= "customer_id = ".$this->customer->isLogged().", store_id = 0, order_status_id = 16, date_added = NOW(), date_modified = NOW() ";
+            $custLogged = $this->customer->isLogged();
+            if ($custLogged == ''){ 
+                $custLogged= '0';
+            }
+            $sql.="customer_id =  ".$custLogged.", store_id = 0, order_status_id = 16, date_added = NOW(), date_modified = NOW() ";
             $this->db->query($sql);
             $this->session->data['order_id'] = $this->db->getLastId();
 	}

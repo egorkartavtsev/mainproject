@@ -290,16 +290,16 @@ class ControllerAccountOrder extends Controller {
 				);
 			}
 			// Totals
-			$data['totals'] = array();
+			$data['total'] = (int)$order_info['total'];
 
-			$totals = $this->model_account_order->getOrderTotals($this->request->get['order_id']);
-
-			foreach ($totals as $total) {
-				$data['totals'][] = array(
-					'title' => $total['title'],
-					'text'  => (int)$total['value'],
-				);
-			}
+//			$totals = $this->model_account_order->getOrderTotals($this->request->get['order_id']);
+//
+//			foreach ($totals as $total) {
+//				$data['totals'][] = array(
+//					'title' => $total['title'],
+//					'text'  => (int)$total['value'],
+//				);
+//			}
 
 			$data['comment'] = nl2br($order_info['comment']);
 

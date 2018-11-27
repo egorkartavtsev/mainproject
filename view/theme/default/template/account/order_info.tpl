@@ -88,13 +88,11 @@
             <?php } ?>
           </tbody>
           <tfoot>
-            <?php foreach ($totals as $total) { ?>
             <tr>
               <td colspan="3"></td>
-              <td class="text-right"><b><?php echo $total['title']; ?></b></td>
-              <td class="text-right"><?php echo $total['text']; ?></td>
+              <td class="text-right"><b>Итого: </b></td>
+              <td class="text-right"><?php echo $total; ?></td>
             </tr>
-            <?php } ?>
           </tfoot>
         </table>
       </div>

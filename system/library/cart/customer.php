@@ -58,8 +58,8 @@ class Customer {
 			$this->db->query("UPDATE " . DB_PREFIX . "customer SET ip = '" . $this->db->escape($this->request->server['REMOTE_ADDR']) . "' WHERE customer_id = '" . (int)$this->customer_id . "'");
 
 			return true;
-		} else {
-			return false;
+		} else { 
+      			return false;
 		}
 	}
 
@@ -77,7 +77,7 @@ class Customer {
 		$this->address_id = '';
 	}
 
-	public function isLogged() {
+	public function isLogged() { 
 		return $this->customer_id;
 	}
         
