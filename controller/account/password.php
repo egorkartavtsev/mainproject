@@ -3,12 +3,18 @@ class ControllerAccountPassword extends Controller {
 	private $error = array();
 
 	public function index() {
+            
 		if (!$this->customer->isLogged()) {
 			$this->session->data['redirect'] = $this->url->link('account/password', '', true);
 
 			$this->response->redirect($this->url->link('account/login', '', true));
 		}
 
+		$this->document->addScript('view/javascript/jquery/datetimepicker/moment.js');
+		$this->document->addScript('view/javascript/jquery/datetimepicker/locale/'.$this->session->data['language'].'.js');
+		$this->document->addScript('view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js');
+		$this->document->addStyle('view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css');
+             
 		$this->load->language('account/password');
 
 		$this->document->setTitle($this->language->get('heading_title'));
@@ -62,6 +68,18 @@ class ControllerAccountPassword extends Controller {
 		$data['button_continue'] = $this->language->get('button_continue');
 		$data['button_back'] = $this->language->get('button_back');
 
+                if (isset($this->request->post['password'])) {
+			$data['password'] = $this->request->post['password'];
+		} else {
+			$data['password'] = '';
+		}
+
+		if (isset($this->request->post['confirm'])) {
+			$data['confirm'] = $this->request->post['confirm'];
+		} else {
+			$data['confirm'] = '';
+		}
+                
 		if (isset($this->error['password'])) {
 			$data['error_password'] = $this->error['password'];
 		} else {
@@ -98,8 +116,8 @@ class ControllerAccountPassword extends Controller {
 		$data['header'] = $this->load->controller('common/header');
 
 		$this->response->setOutput($this->load->view('account/password', $data));
+                echo $data['code'];
 	}
-
 	protected function validate() {
 		if ((utf8_strlen($this->request->post['password']) < 4) || (utf8_strlen($this->request->post['password']) > 20)) {
 			$this->error['password'] = $this->language->get('error_password');
