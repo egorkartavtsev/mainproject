@@ -12,7 +12,7 @@
           <div class="panel-heading"><h2><?php echo $text_my_account; ?></h2></div>
           <div class="btn-group-vertical panel-body col-sm-12" role="group">
             <a class="btn btn-block btn-danger" href="<?php echo $edit; ?>"><?php echo $text_edit; ?></a>
-            <a class="btn btn-block btn-danger" href="<?php echo $password; ?>"><?php echo $text_password; ?></a>
+            <tr <a class="btn btn-block btn-danger" href="<?php echo $password; ?>"></a>
             <a class="btn btn-block btn-danger" href="<?php echo $wishlist; ?>"><?php echo $text_wishlist; ?></a>
             <a class="btn btn-block btn-danger" href="<?php echo $order; ?>"><?php echo $text_order; ?></a>
             <?php if ($reward) { ?>
@@ -20,6 +20,7 @@
             <?php } ?>
             <a class="btn btn-block btn-danger" href="<?php echo $return; ?>"><?php echo $text_return; ?></a>
             <a class="btn btn-block btn-danger" href="<?php echo $newsletter; ?>"><?php echo $text_newsletter; ?></a>
+           <tr <a class="btn btn-block btn-danger" href='index.php?route=account/identification'></a> 
           </div>
           <?php echo $content_bottom; ?>
         </div>

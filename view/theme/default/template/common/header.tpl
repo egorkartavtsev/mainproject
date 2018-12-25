@@ -6,6 +6,7 @@
 <html dir="<?php echo $direction; ?>" lang="<?php echo $lang; ?>">
 <!--<![endif]-->
 <head>
+
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -48,12 +49,12 @@
 <?php echo $analytic; ?>
 <?php } ?>
 </head>
-<body>
+<body class="darkBg">
 <nav id="top">
 <div class="container">
     <div class="row">
         <div class="col-sm-2">
-            <div id="logo">
+            <div class="collectonme" id="logo">
               <?php if ($logo) { ?>
                 <a href="<?php echo $home; ?>"><img src="<?php echo $logo; ?>" title="<?php echo $name; ?>" width="200" alt="<?php echo $name; ?>" class="img-responsive center-block" /></a>
               <?php } else { ?>
@@ -61,7 +62,7 @@
               <?php } ?>
             </div>
         </div>
-        <div class="col-sm-10">
+        <div  class="col-sm-10">
             <div class="text-right">
                 <a style="cursor: pointer;" href="viber://chat?number=+79124750870"><img src="<?php echo $viber;?>" width="40"></a>
                 <a style="cursor: pointer;" href="https://wa.me/79124750870"><img src="<?php echo $whatsapp;?>" width="40"></a>
@@ -124,3 +125,19 @@
   </nav>
 </div>
 </nav>
+</body>
+<script src="view/javascript/jquery/snow/snowfall.jquery.min.js" type="text/javascript"></script>
+
+<script>
+
+	$(document).ready(function() {
+
+		document.body.className  = "darkBg";
+
+		$(document).snowfall({
+			flakeCount: 400 // Количество снежинок
+		});
+
+	});
+
+</script>

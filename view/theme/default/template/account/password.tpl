@@ -43,6 +43,45 @@
             <input type="submit" value="<?php echo $button_continue; ?>" class="btn btn-primary" />
           </div>
         </div>
+     <script type="text/javascript">
+    $(document).ready(function() {
+         $(document).on('input', '#formRegist #input-password', function(){
+            $('#errorPass').remove();
+            $(this).parent().parent().find('#input-confirm').attr('disabled', 'disabled');
+            if($(this).val().length>=6){
+                if(validation($(this).attr('data-type'), $(this).val())){
+                    $(this).parent().parent().find('#input-confirm').removeAttr('disabled');
+                } else {
+                    $(this).after('<p class="alter alert-danger" id="errorPass">Пароль содержит запрещённые символы!</p>');
+                    $(this).parent().parent().find('#lastStep').attr('disabled', 'true');
+                }
+            } else {
+                $(this).after('<p class="alter alert-danger" id="errorPass">Пароль слишком короткий!</p>');
+                $(this).parent().parent().find('#lastStep').attr('disabled', 'true');
+            }
+        });
+        $(document).on('input', '#formRegist #input-confirm', function(){
+            $('#errorConf').remove();
+            if($(this).val() === $(this).parent().parent().find('#input-password').val()){
+                $(this).parent().parent().find('#lastStep').removeAttr('disabled');
+            } else {
+                $(this).parent().parent().find('#lastStep').attr('disabled', 'true');
+                $(this).after('<p class="alter alert-danger" id="errorConf">Введённые пароли не совпадают!</p>');
+            }
+        });
+         $.ajax({
+                url: 'index.php?route=account/password',
+                method: 'post',
+                data:{form:form},
+                success:function(data){
+                    if(data){
+                        location.href = 'index.php?route=account/password';                        
+                    } else {
+                        alert('Возникла ошибка на сервере. Пожалуйста повторите попытку. Надеемся на Ваше понимание.');
+                    }
+                }
+            });
+    }
       </form>
       <?php echo $content_bottom; ?></div>
     <?php echo $column_right; ?></div>
