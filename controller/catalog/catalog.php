@@ -335,7 +335,7 @@ class ControllerCatalogCatalog extends Controller{
         } else {
             $sort = "ORDER BY p.date_added DESC";
         }
-//        exit(var_dump($filter));
+//       exit(var_dump($filter));
 //        exit(var_dump($this->request->get));
 //        exit($sort);
         $list['pagination'] = '';

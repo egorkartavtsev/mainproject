@@ -49,7 +49,7 @@
 <?php echo $analytic; ?>
 <?php } ?>
 </head>
-<body class="darkBg">
+<body class="darkBg" >
 <nav id="top">
 <div class="container">
     <div class="row">
@@ -133,10 +133,13 @@
 	$(document).ready(function() {
 
 		document.body.className  = "darkBg";
-
+                         
 		$(document).snowfall({
-			flakeCount: 400 // Количество снежинок
-		});
+                        
+			flakeCount: 400   // Количество снежинок
+		      
+        });
+                
 
 	});
 

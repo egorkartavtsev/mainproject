@@ -36,7 +36,8 @@ class ControllerAccountAccount extends Controller {
                 $data['patron']=$backinfo['patron'];
                 $data['email']=$backinfo['email'];
                 $data['patron']=$backinfo['patron'];
-		
+                $data['approved']=$backinfo['approved'];
+                
                 $data['heading_title'] = $this->language->get('heading_title');
 		$data['text_my_account'] = $this->language->get('text_my_account');
 		$data['text_my_orders'] = $this->language->get('text_my_orders');
