@@ -126,21 +126,3 @@
 </div>
 </nav>
 </body>
-<script src="view/javascript/jquery/snow/snowfall.jquery.min.js" type="text/javascript"></script>
-
-<script>
-
-	$(document).ready(function() {
-
-		document.body.className  = "darkBg";
-                         
-		$(document).snowfall({
-                        
-			flakeCount: 400   // Количество снежинок
-		      
-        });
-                
-
-	});
-
-</script>

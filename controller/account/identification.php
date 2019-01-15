@@ -38,10 +38,10 @@ class ControllerAccountIdentification extends Controller {
                     $data['email']=$backinfo['email'];
                     
                     
-                    $resultURL = $this->url->link('account/identification','code='.$backinfo['code'].'&uid='.$backinfo['customer_id'],true);
+                    $resultURL = $this->url->link('account/identification','code='.$backinfo['code'].'&uid='.$backinfo['customer_id']);
                     
                    
-                    if (mail($data['email'], 'Регистрация' , "Ссылка для  подтверждения: ".$resultURL." ","From: АВТОРАЗБОР174.РФ \r\n")) { 
+                    if (mail($data['email'], 'Регистрация' , "Ссылка для  подтверждения: ".html_entity_decode($resultURL)." ","From: АВТОРАЗБОР174.РФ \r\n")) { 
                                 $data['textIdentificdtion'] = 'На данный email: <b>'.$backinfo['email'].'</b> придет сообщениe с ссылкой для активации. Если письма нет, проверьте папку спам.';
                                 echo json_encode(array('message' => $data['textIdentificdtion']));
                     } 
