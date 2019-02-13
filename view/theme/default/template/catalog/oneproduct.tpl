@@ -76,15 +76,21 @@
                             <?php  if (!in_array(2, array_column($complect, 'status'))) { ?>
                                 <?php  if (!in_array(0, array_column($complect, 'price'))) { ?>
                                         <?php if ( $product['price'] != 0.00 ) { ?>
-                                            <?php if(!$whole) { ?>
+                                          <?php if($summ==$c_price) { ?>  
+                                                <tr>
+                                                   <td style="text-align: right; font-size: 10pt;">Итого:</td>
+                                                   <td colspan='2' style="text-align: left; font-size: 14pt;"><?php echo $summ; ?> руб.</td>
+                                                </tr>
+                                            <?php } ?>
+                                          <?php if($summ!=$c_price) { ?>  
                                                 <tr>
                                                    <td style="text-align: right; font-size: 10pt;">Итого:</td>
                                                    <td colspan='2' style="text-align: left; font-size: 14pt;"><s><?php echo $summ; ?> руб.</s></td>
                                                 </tr>
-                                            <?php } ?>
                                         <tr>
                                             <td colspan='3' style="text-align: center; font-size: 14pt;">Цена комплекта <?php if(!$whole) { ?>со скидкой<?php } ?>: <span class="label label-danger"><?php echo $c_price; ?> руб.</span></td>
                                         </tr>
+                                        <?php }?>
                                         <tr>
                                             <td colspan='3' style="text-align: center;"><button class="btn btn-primary" onclick="cart.add('<?php echo $id_comp_ref; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i> Купить весь комплект</button></td>
                                         </tr>
