@@ -813,7 +813,9 @@ class ModelCatalogProduct extends Model {
                 if(trim($word)!==''){
                     $sup = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE (LOCATE('".$word."', translate) OR LOCATE('".$word."', name)) AND library_id = 1");
                     if(!empty($sup->rows)){
-                        $result['brand'][] = $sup->row['name'];
+                        foreach($sup->rows as $row){
+                            $result['brand'][] = $row['name'];
+                        }
                     } else {
                         $sql.= "(LOCATE('".$word."', translate) OR LOCATE('".$word."', name)) AND ";
                     }
