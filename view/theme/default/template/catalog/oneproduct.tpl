@@ -82,7 +82,7 @@
                                                    <td colspan='2' style="text-align: left; font-size: 14pt;"><?php echo $summ; ?> руб.</td>
                                                 </tr>
                                             <?php } ?>
-                                          <?php if($summ!=$c_price) { ?>  
+                                          <?php if($summ < $c_price) { ?>  
                                                 <tr>
                                                    <td style="text-align: right; font-size: 10pt;">Итого:</td>
                                                    <td colspan='2' style="text-align: left; font-size: 14pt;"><s><?php echo $summ; ?> руб.</s></td>
