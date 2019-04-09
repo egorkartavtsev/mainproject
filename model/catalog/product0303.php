@@ -801,7 +801,6 @@ class ModelCatalogProduct extends Model {
         
         public function searchVariants($request) {
             $exceptions = array('задний', 'передний', 'верхний', 'нижний', 'левый', 'правый', 'центральный', 'задние', 'передние', 'верхние', 'нижние', 'левые', 'правые', 'центральные', 'задняя', 'передняя', 'верхняя', 'нижняя', 'левая', 'правая', 'центральная', 'заднее', 'переднее', 'верхнее', 'нижнее', 'левое', 'правое', 'центральное');
-            if (strlen($request) >= 5) {
             $search = explode(" ", $request);
             $result = array(
                 'category'  => array(),
@@ -814,7 +813,9 @@ class ModelCatalogProduct extends Model {
                 if(trim($word)!==''){
                     $sup = $this->db->query("SELECT name FROM ".DB_PREFIX."lib_fills WHERE (LOCATE('".$word."', translate) OR LOCATE('".$word."', name)) AND library_id = 1");
                     if(!empty($sup->rows)){
-                        $result['brand'][] = $sup->row['name'];
+                        foreach($sup->rows as $row){
+                            $result['brand'][] = $row['name'];
+                        }
                     } else {
                         $sql.= "(LOCATE('".$word."', translate) OR LOCATE('".$word."', name)) AND ";
                     }
@@ -830,6 +831,5 @@ class ModelCatalogProduct extends Model {
                 }
             }
             return $result;
-            }
         }
 }

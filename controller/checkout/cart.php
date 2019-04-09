@@ -38,12 +38,14 @@ class ControllerCheckoutCart extends Controller {
 
 			if (!$this->cart->hasStock() && (!$this->config->get('config_stock_checkout') || $this->config->get('config_stock_warning'))) {
 				$data['error_warning'] = $this->language->get('error_stock');
+                                $data['control'] = '1';
 			} elseif (isset($this->session->data['error'])) {
 				$data['error_warning'] = $this->session->data['error'];
-
+                                $data['control'] = '0';
 				unset($this->session->data['error']);
 			} else {
 				$data['error_warning'] = '';
+                                $data['control'] = '0';
 			}
 
 			if ($this->config->get('config_customer_price') && !$this->customer->isLogged()) {
