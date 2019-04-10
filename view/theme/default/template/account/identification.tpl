@@ -15,45 +15,50 @@
     <?php } ?>
     <div id="content" class=" <?php echo $class; ?> "><?php echo $content_top; ?>
       <h1><?php echo $heading_title; ?></h1>
-        <table class="table table-bordered table-hover">
-          <tbody>
-           <div action="<?php echo $action; ?>" id="formIdentification" method="post" enctype="multipart/form-data" class="form-horizontal">
+           <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" class="form-horizontal">
           <div class="form-group required">
            <fieldset>
             <div class="col-sm-10">
                      <label type="text" name="emailUser"  id=""><?php echo $textIdentificdtion; ?> </label>
-                     <input type="text" name="codeEmail" value="" placeholder="" id="input-codeEmail" class="form-control" />
+                     <input type="text" name="codeEmail" value="" placeholder="" id="codeEmail" class="form-control" />
             </div>
            </fieldset>
           </div>
-          </div>
+          </form>
                  <div class="buttons clearfix" >
             <div class="pull-right"><input class="btn btn-primary" type="submit" name="button1" id="btn-codeEmail"></div>
             </div>
-          </tbody>
-        </table>
       <?php echo $content_bottom; ?></div>
     <?php echo $column_right; ?></div>
 </div>
 <script type="text/javascript">
         $(document).ready(function() {
-            $(document).on('click', '#btn-codeEmail', function(){  
+            $(document).on('click', '#btn-codeEmail', function(){
+                 console.log("*****************start debug");
              $.ajax({
                     url: 'index.php?route=account/identification/bottonCompleteClick',
-                    method: 'post',
-                    data:{},
-                    success:function(data){
-                        if(data){
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        codeEmail: $("#codeEmail").val()
+                    },
+                    success:function(json){
+                              console.log("*****************start debug");
+                       // var json = JSON.parse(data); 
+                      //  console.log(data);
+                        console.log (json);
+                        if( json['result'] === "yes" ){
+                                  console.log("*****************start debug");
                             //location.href = 'index.php?route=account/account';  
-                            console.log(data)
-                            alert(''<?php echo $textTIdentificdtion; ?>'');
-                            alert(data);
-                            
-                        } else {
+                            alert('Верно введен код идентификации');
+                        }
+                         else {
+                                   console.log("*****************start debug");
                             alert('Введен неверно код идентификации');
                         }
                     }
                 });
+                return false;
             });
         });
     </script>

@@ -61,7 +61,7 @@
 <noscript><div><img src="https://mc.yandex.ru/watch/53224228" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
 </head>
-<body class="darkBg">
+<body class="darkBg" >
 <nav id="top">
 <div class="container">
     <div class="row">
@@ -138,18 +138,3 @@
 </div>
 </nav>
 </body>
-<script src="view/javascript/jquery/snow/snowfall.jquery.min.js" type="text/javascript"></script>
-
-<script>
-
-	$(document).ready(function() {
-
-		document.body.className  = "darkBg";
-
-		$(document).snowfall({
-			flakeCount: 400 // Количество снежинок
-		});
-
-	});
-
-</script>

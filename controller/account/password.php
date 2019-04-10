@@ -116,8 +116,8 @@ class ControllerAccountPassword extends Controller {
 		$data['header'] = $this->load->controller('common/header');
 
 		$this->response->setOutput($this->load->view('account/password', $data));
-                echo $data['code'];
 	}
+        
 	protected function validate() {
 		if ((utf8_strlen($this->request->post['password']) < 4) || (utf8_strlen($this->request->post['password']) > 20)) {
 			$this->error['password'] = $this->language->get('error_password');
