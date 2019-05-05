@@ -114,7 +114,7 @@
                         <?php } elseif ($product['price'] == 0.00 && $product['quantity'] !== 0) { ?>                                           
                             <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="2">Узнать стоимость</button>
                         <?php } elseif ($product['price'] !== 0.00 && $product['quantity'] == 0) { ?>
-                            <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="3">Заказать товар</button> 
+                            <button class="btn btn-lg btn-danger center-block checkPr" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="3">Товара нет в наличии - Заказать товар</button> 
                         <?php } elseif ($product['comp_whole'] == '1') { ?>
                             <a href="<?php echo $product['href'];?>"><button class="btn btn-lg btn-danger center-block checkPr">Посмотреть комплект</button></a>
                         <?php } else { ?>     

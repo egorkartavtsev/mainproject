@@ -149,7 +149,7 @@
             <?php } elseif ($product['price'] == 0.00 && $stock !== 0) { ?>                                           
                 <button class="btn btn-primary btn-lg" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="2">Узнать стоимость</button>
             <?php } elseif ($product['price'] !== 0.00 && $stock == 0) { ?>
-                <button class="btn btn-primary btn-lg" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="3">Заказать товар</button> 
+                <button class="btn btn-danger btn-lg" btn_type = "reqPrice" type="button" data-toggle="modal" data-target="#myModal" pid="<?php echo $product['product_id'];?>" pcause="3">Товара нет в наличии - Заказать товар</button> 
             <?php } else { ?>
                 <?php if(!isset($whole) || !$whole) { ?>
                     <?php if ($product['price']) { ?>

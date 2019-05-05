@@ -300,8 +300,8 @@
                 <?php } else { ?>
                     <h2><?php echo $price; ?></h2>
                     <hr>
-                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-                    Заказать товар
+                    <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#myModal">
+                    Товара нет в наличии - Заказать товар
                     </button>
                 <?php } ?>
                 <!-- Modal -->
