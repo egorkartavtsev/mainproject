@@ -37,4 +37,11 @@ class ModelCheckoutNewOrder extends Model {
             $order = $this->session->data['order_id'];
             $this->db->query("UPDATE ".DB_PREFIX."order SET ".$field." = '".$value."' WHERE order_id = ".(int)$order);
         }
+        
+        public function textOrderEmail(){
+             $order = $this->session->data['order_id'];
+             $sql = $this->db->query("SELECT * FROM ".DB_PREFIX."order_product WHERE order_id = ".(int)$order);
+             $textEmail = $sql; 
+             return $textEmail;
+        }
 }

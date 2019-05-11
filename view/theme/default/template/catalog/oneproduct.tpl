@@ -37,6 +37,7 @@
                     </div>
                  <?php } ?>
             <?php } ?>
+        <div class="hidden-xs hidden-sm">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#tab-description" data-toggle="tab"><?php echo $tab_description; ?></a></li>
             </ul>
@@ -118,6 +119,7 @@
                 </div>
             </div>
         </div>
+        </div>
         <div class="col-sm-4">
             <div class="btn-group">
                 <button type="button" data-toggle="tooltip" class="btn btn-default" title="<?php echo $button_wishlist; ?>" onclick="wishlist.add('<?php echo $product['product_id']; ?>');"><i class="fa fa-heart"></i></button>
@@ -184,6 +186,88 @@
                 </div>
                 <?php }?>
             <?php }?>
+            <div class="hidden-lg hidden-md">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab-description" data-toggle="tab"><?php echo $tab_description; ?></a></li>
+            </ul>
+            <div class="tab-content">
+                <?php if(isset($complect) && $c_id!='') { ?>
+                    <div class="alert alert-danger" id="complect">
+                        <h3><?php if(!isset($whole) || !$whole) { echo $entry_compl;} else { echo "Деталь продаётся только в комплекте: ";} ?></h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Название:</th>
+                                    <?php if(!$whole && $whole != 0.00) { ?>
+                                        <?php  if (!in_array(0, array_column($complect, 'price'))) { ?>
+                                            <th>Цена:</th>
+                                        <?php } ?>
+                                    <?php } ?>
+                                </tr>
+                            </thead>
+                            <?php $summ = 0; foreach($complect as $acc) { ?>
+                                <tr>
+                                    <td><a href="index.php?route=catalog/product&product_id=<?php echo $acc['product_id'];?>" target="blank"><?php echo $acc['name'];?></a></td>
+                                    <?php  if (!in_array(0, array_column($complect, 'price'))) { ?>
+                                        <?php if ( $product['price'] != 0.00 ) { ?>
+                                            <?php $summ+= $acc['price'];?>
+                                            <?php if(!$whole) { ?>
+                                                <td><?php echo $acc['price'];?> руб.</td>
+                                                <?php if($acc['status'] != '2') { ?>
+                                                    <td><button class="btn btn-primary" onclick="cart.add('<?php echo $acc['product_id']; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i></button></td>
+                                                <?php } else { ?>
+                                                    <td>В резерве</td>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        <?php } ?>
+                                    <?php } ?>    
+                                </tr>
+                            <?php }?>
+                            <?php  if (!in_array(2, array_column($complect, 'status'))) { ?>
+                                <?php  if (!in_array(0, array_column($complect, 'price'))) { ?>
+                                        <?php if ( $product['price'] != 0.00 ) { ?>
+                                          <?php if($summ==$c_price) { ?>  
+                                                <tr>
+                                                   <td style="text-align: right; font-size: 10pt;">Итого:</td>
+                                                   <td colspan='2' style="text-align: left; font-size: 14pt;"><?php echo $summ; ?> руб.</td>
+                                                </tr>
+                                            <?php } ?>
+                                          <?php if($summ != $c_price) { ?>  
+                                                <tr>
+                                                   <td style="text-align: right; font-size: 10pt;">Итого:</td>
+                                                   <td colspan='2' style="text-align: left; font-size: 14pt;"><s><?php echo $summ; ?> руб.</s></td>
+                                                </tr>
+                                        <tr>
+                                            <td colspan='3' style="text-align: center; font-size: 14pt;">Цена комплекта <?php if(!$whole) { ?>со скидкой<?php } ?>: <span class="label label-danger"><?php echo $c_price; ?> руб.</span></td>
+                                        </tr>
+                                         <?php } ?>
+                                        <tr>
+                                            <td colspan='3' style="text-align: center;"><button class="btn btn-primary" onclick="cart.add('<?php echo $id_comp_ref; ?>', '<?php echo $acc['minimum']; ?>');"><i class="fa fa-cart-plus"></i> Купить весь комплект</button></td>
+                                        </tr>
+                                        <?php }?>
+                                <?php } else { ?>
+                                    <tr>
+                                        <td colspan='2' style="text-align: center;"><button type="button" class="btn btn-primary btn-lg" btn_type="reqPrice" data-toggle="modal" data-target="#myModal" pcause="4">Узнать стоимость комплекта</button></td>
+                                    </tr>                                       
+                                <?php }?>
+                            <?php } else { ?>
+                                <tr>
+                                    <td colspan='2' style="text-align: center;"><button type="button" class="btn btn-primary btn-lg" btn_type="reqPrice" data-toggle="modal" data-target="#myModal" pcause="1">Уточнить наличие</button></td>                                
+                                </tr> 
+                            <?php }?>
+                        </table>
+                        
+                    </div>
+                <?php }?>
+                <div class="tab-pane active" id="tab-description">
+                    <?php echo $description; ?>
+                    <?php if ($youtube!=='') { ?>
+                        <h3>Видеопрезентация:</h3>
+                        <iframe style="width: 100%; min-height: 300px;" src="https://www.youtube.com/embed/<?php echo $youtube;?>?rel=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
             <div class="col-lg-12"<p>&nbsp;</p></div>
             <div id="vk_poll"></div>
             <div class="col-lg-12"<p>&nbsp;</p></div>

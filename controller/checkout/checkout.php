@@ -98,8 +98,9 @@ class ControllerCheckoutCheckout extends Controller {
                     $this->model_checkout_newOrder->newOrder($form);
                     $this->session->data['cust_mail'] = $form['email'];
                     $this->model_checkout_newOrder->setProducts($this->cart->getProducts());
+                    $textEmail = $this->model_checkout_newOrder->textOrderEmail();
                     $this->cart->clear();
-                    mail(ADM_EMAIL, 'сообщение с сайта авторазбор174.рф', 'Новый заказ с сайта авторазбор174.рф');
+                    mail(ADM_EMAIL, 'сообщение с сайта авторазбор174.рф', 'Новый заказ с сайта авторазбор174.рф'.$textEmail.'');
                 break;
                 case '2':
                     foreach ($form as $key => $value) {

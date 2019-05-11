@@ -71,6 +71,10 @@ function copyLinkToSend(btn, text){
 
 $(document).ready(function() {
     
+    $(document).on('click', '#but-trash', function(){
+       $('[name=search]').val(''); 
+    });
+    
     $(document).on('input', '[name=captcha]', function(){
         var inp = $(this);
         var reg = /^([a-z0-9]+)$/i;

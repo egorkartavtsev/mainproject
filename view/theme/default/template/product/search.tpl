@@ -156,6 +156,7 @@
     <?php echo $column_right; ?></div>
 </div>
 <script type="text/javascript">
+    
 $('#button-search').bind('click', function() {
 	url = 'index.php?route=product/search';
 
