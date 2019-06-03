@@ -118,7 +118,7 @@
                         <?php } elseif ($product['comp_whole'] == '1') { ?>
                             <a href="<?php echo $product['href'];?>"><button class="btn btn-lg btn-danger center-block checkPr">Посмотреть комплект</button></a>
                         <?php } else { ?>     
-                            <button class="btn btn-lg btn-danger center-block checkPr" type="button" onclick="cart.add('<?php echo $key; ?>', '1');"><i class="fa fa-shopping-cart"></i> В КОРЗИНУ</button>
+                            <button class="btn btn-lg btn-danger center-block checkPr" type="button" onclick="cart.add('<?php echo $product['product_id'];; ?>', '1');"><i class="fa fa-shopping-cart"></i> В КОРЗИНУ</button>
                         <?php } ?> 
                          <button type="button" style="margin-left: 5px" data-toggle="tooltip" btn_type="copyToSend" data-text="<?php echo $product['href'];?>"  trigger="clipb" class="btn btn-lg btn-default checkPr" title="Скопировать ссылку"><i class="fa fa-copy"></i></button>
                     </div>
